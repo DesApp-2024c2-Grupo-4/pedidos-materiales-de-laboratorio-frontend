@@ -25,7 +25,7 @@ Header.defaultProps={
 }
 export default function Header(props) {
   const userActual = JSON.parse(localStorage.getItem('usuario'));
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState(true);
   const navigate=useNavigate();
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -36,7 +36,7 @@ export default function Header(props) {
   };
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/");
+    navigate("/login");
   };
   return (
     <ThemeProvider theme={Theme1}>

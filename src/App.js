@@ -37,7 +37,7 @@ function App() {
           </Route>
 
           <Route path='/' element={<RedirectLaboratorio/>}>
-              <Route path="/Laboratorio/Pedidos" element={<Pedidos />} /> {/*pedidos laboratorio*/}
+              <Route path="/Laboratorio/Pedidos" element={<Pedidos />}/>
               <Route path="/Laboratorio/Equipos" element={<Equipos/>}/>
               <Route path="/Laboratorio/Usuarios" element={<Usuarios/>}/>
               <Route path="/Laboratorio/Materiales" element={<Materiales/>}/>

@@ -31,6 +31,7 @@ function Pedidos() {
 
 
   /********************************************** */
+
   const [tipo_pedido, setTipoPedido] = React.useState("TODOS");
   const [fecha_utilizacion, set_fecha_utilizacion] = React.useState("");
   const [fecha_inicio, set_fecha_inicio] = React.useState("");
@@ -89,18 +90,14 @@ function Pedidos() {
   }, [tipo_pedido, fecha_fin, edificio])
 
   useEffect(() => {
-    let mounted = true;
     const userActual = JSON.parse(localStorage.getItem('usuario'));
     setEsAdmin(userActual.admin)
-
     getListaPedidos()
       .then(items => {
-        if (mounted) {
-          console.log("voy a setear los pedidos");
+        if (items) {
           setListaPedidos(items)
         }
       })
-    return () => mounted = false;
   }, [])
 
   return (

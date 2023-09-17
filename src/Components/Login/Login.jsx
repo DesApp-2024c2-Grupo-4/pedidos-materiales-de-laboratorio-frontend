@@ -1,36 +1,45 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { Navigate } from "react-router-dom";
-import { Grid, Box, Button } from "@mui/material";
+import { Grid, Box, Button, TextField } from "@mui/material";
 import { getUsuario } from "../../Services/getUsuarioService";
 import { formValidate } from "../../utils/formValidator";
 import logo_universidad from "../Image/logo-universidad.png";
 import "./login.css";
-//const theme = createTheme();
+import { useNavigate } from 'react-router-dom'; 
+import { userContext } from "../../Context/LabProvider";
+import FormError from "../Mensajes/FormError";
 
 export default function LoginOp() {
-  const { required, patternEmail, minLength, validateTrim } = formValidate();
+  const {user, setUser} = React.useContext(userContext)
+  const navigate = useNavigate()
+  const { required, minLength, validateTrim } = formValidate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    //recordar sacar
+    //BORRAR
     defaultValues: {
-      email: "Admin01",
+      user: "Admin01",
       password: "123123",
+    //   user: "",
+    //   password: "",
     },
   });
 
-  const onSubmit = async ({ email, password }) => {
+  const onSubmit = async ({ user, password }) => {
     try {
-      await getUsuario(email, password);
-      console.log("usuario logeado");
-      Navigate("/Laboratorio/Pedidos");
+        const value = await getUsuario(user, password);
+        if(value[0]) {
+            localStorage.setItem('usuario', JSON.stringify(value[0]))
+            setUser(value[0] || JSON.parse(localStorage.getItem('usuario')))
+            const rol = value[0].rol
+            if(rol == "docente") navigate("/Docente/Pedidos");
+            else if (rol == "admin") navigate("/Laboratorio/Pedidos")
+            else navigate("/login")
+        }
     } catch (error) {
-      console.log(error.code);
-      // const {code, message} = erroresFirebase(error.code)
-      // setError(code,{ message })
+        console.log(error);
     }
   };
 
@@ -77,11 +86,11 @@ export default function LoginOp() {
                   type="text"
                   placeholder="Usuario"
                   label="Usuario"
-                  {...register("email", {
+                  {...register("user", {
                     required,
                   })}
                 />
-                {errors && errors.email}
+                <FormError error={errors.user}/>
               </Box>
               <Box>
                 <input
@@ -90,11 +99,11 @@ export default function LoginOp() {
                   placeholder="Contraseña"
                   label="Contraseña"
                   {...register("password", {
-                    minLength,
-                    pattern: validateTrim,
+                    //minLength,
+                    //pattern: validateTrim,
                   })}
                 />
-                {errors && errors.password}
+                <FormError error={errors.password}/>
               </Box>
               <Button className="button-login" type="submit">
                 Login
