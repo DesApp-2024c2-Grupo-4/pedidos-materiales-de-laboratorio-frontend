@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { userContext } from "../../Context/LabProvider";
 import FormError from "../Mensajes/FormError";
 
-export default function LoginOp() {
+export default function Login() {
   const {user, setUser} = React.useContext(userContext)
   const navigate = useNavigate()
   const { required, minLength, validateTrim } = formValidate();
@@ -93,14 +93,17 @@ export default function LoginOp() {
                 <FormError error={errors.user}/>
               </Box>
               <Box>
-                <input
+                <TextField
+                  variant="filled"
+                  error={errors.password}
+                  sx={{borderBottomColor: "#ffffff", borderBottom: 'solid'}}
                   className="input-login"
                   type="password"
                   placeholder="Contraseña"
                   label="Contraseña"
                   {...register("password", {
-                    //minLength,
-                    //pattern: validateTrim,
+                    minLength,
+                    pattern: validateTrim,
                   })}
                 />
                 <FormError error={errors.password}/>

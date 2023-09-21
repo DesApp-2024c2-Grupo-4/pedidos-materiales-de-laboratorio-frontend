@@ -17,7 +17,6 @@ import Usuarios from './Components/Laboratorio/Usuarios';
 import Materiales from './Components/Laboratorio/Materiales'
 import Reactivos from './Components/Laboratorio/Reactivos'
 import LabProvider from './Context/LabProvider';
-import LoginOp from './Components/Login/LoginOp';
 
 function App() {
 
