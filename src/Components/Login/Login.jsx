@@ -29,13 +29,14 @@ export default function Login() {
 
   const onSubmit = async ({ user, password }) => {
     try {
-        const value = await getUsuario(user, password);
-        if(value[0]) {
-            localStorage.setItem('usuario', JSON.stringify(value[0]))
-            setUser(value[0] || JSON.parse(localStorage.getItem('usuario')))
-            const rol = value[0].rol
-            if(rol == "docente") navigate("/Docente/Pedidos");
-            else if (rol == "admin") navigate("/Laboratorio/Pedidos")
+        const hashPass = btoa(password)
+        const value = await getUsuario(user, hashPass);
+        if(value) {
+            localStorage.setItem('usuario', JSON.stringify(value))
+            setUser(value || JSON.parse(localStorage.getItem('usuario')))
+            const rol = value.rol
+            if(rol === "docente") navigate("/Docente/Pedidos");
+            else if (rol === "admin") navigate("/Laboratorio/Pedidos")
             else navigate("/login")
         }
     } catch (error) {
@@ -44,30 +45,6 @@ export default function Login() {
   };
 
   return (
-    /* <ThemeProvider theme={Theme1}>
-    <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-        type="text"
-        placeholder='Usuario'
-        label='Usuario'
-        {...register("user", { 
-            required
-        })}
-        />
-        { errors && errors.user}
-        <input
-        type="password"
-        placeholder='Contraseña'
-        label='Contraseña'
-        {...register("email", { 
-            minLength,
-            pattern: validateTrim
-        })}
-        />
-        { errors && errors.password}
-        <button type="submit" >Logearse</button>
-    </form>
-    </ThemeProvider>*/
     <Box className="container">
       <Grid container>
         <Grid item xs={0} md={4}></Grid>
@@ -81,11 +58,18 @@ export default function Login() {
             </Box>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Box className="container-input">
-                <input
+              <TextField 
+                  variant="filled"
+                  error={errors.user ? true : false}
+                  sx={{borderBottomColor: "#ffffff", borderBottom: 'solid', input: { color: 'white' } }}
                   className="input-login"
                   type="text"
                   placeholder="Usuario"
                   label="Usuario"
+                  InputLabelProps={{
+                    style: {
+                      color: 'white'
+                    } }} 
                   {...register("user", {
                     required,
                   })}
@@ -93,14 +77,22 @@ export default function Login() {
                 <FormError error={errors.user}/>
               </Box>
               <Box>
-                <TextField
+                <TextField 
                   variant="filled"
-                  error={errors.password}
-                  sx={{borderBottomColor: "#ffffff", borderBottom: 'solid'}}
+                  error={errors.password ? true : false}
+                  sx={{borderBottomColor: "#ffffff", borderBottom: 'solid', input: { color: 'white' }}}
                   className="input-login"
                   type="password"
                   placeholder="Contraseña"
                   label="Contraseña"
+                  InputLabelProps={{
+                    style: {
+                      // textOverflow: 'ellipsis',
+                      // whiteSpace: 'nowrap',
+                      // overflow: 'hidden',
+                      // width: '100%',
+                      color: 'white'
+                    } }} 
                   {...register("password", {
                     minLength,
                     pattern: validateTrim,
