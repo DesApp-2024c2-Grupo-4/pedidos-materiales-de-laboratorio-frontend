@@ -95,7 +95,7 @@ export default function Login() {
                     } }} 
                   {...register("password", {
                     minLength,
-                    pattern: validateTrim,
+                    validate: validateTrim,
                   })}
                 />
                 <FormError error={errors.password}/>

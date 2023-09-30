@@ -3,7 +3,7 @@ import { urlBD } from '../connectDB';
 
 export const getUsuario = async(usuario, password) => {
     try {
-        const data = await fetch(`${urlBD}/api/usuario/getOneByUsuarioContrasenia`,{
+        const data = await fetch(`${urlBD}/api/auth/login`,{
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',
@@ -26,7 +26,7 @@ export async function getListaUsuariosFiltrada(buscar) {
         const response = await axios({
             method: 'get',
             params,
-            url: `${urlBD}/api/usuarios/`,
+            url: `${urlBD}/api/usuario/`,
             responseType: 'json'
         });
         return response.data;

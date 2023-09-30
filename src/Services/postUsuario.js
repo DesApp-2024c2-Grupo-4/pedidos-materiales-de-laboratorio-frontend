@@ -2,7 +2,7 @@ export async function postUsuario(data) {
 
     const requestJson = JSON.stringify(data);
     try {
-      const response = await fetch("http://localhost:3000/api/usuario/post", {
+      const response = await fetch("http://localhost:3000/api/auth/register", {
         method: "POST",
         body: requestJson,
         headers: {

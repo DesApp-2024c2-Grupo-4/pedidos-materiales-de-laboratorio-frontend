@@ -84,7 +84,7 @@ const ModUsuario = (
         event.preventDefault();
         const dato = {
             "usuario": nuevoUsuario,
-            "contrasenia": nuevaContrasenia,
+            "contrasenia": btoa(nuevaContrasenia),
             "nombre": nuevoNombre, //.toLocaleUpperCase(),
             "apellido": nuevoApellido, //.toUpperCase(),
             "dni": parseInt(nuevoDNI),
