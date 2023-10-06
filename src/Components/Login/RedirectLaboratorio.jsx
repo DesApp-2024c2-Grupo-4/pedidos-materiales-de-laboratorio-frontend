@@ -17,7 +17,7 @@ const RedirectLaboratorio = () => {
         localStorage.setItem("usuario", JSON.stringify(user));
     }, [user]);
     
-    if(user.rol === 'admin'){
+    if(user.rol === 'lab'){
         return(
             <div >  
                 <Outlet/>

@@ -36,7 +36,7 @@ export default function Login() {
             setUser(value || JSON.parse(localStorage.getItem('usuario')))
             const rol = value.rol
             if(rol === "docente") navigate("/Docente/Pedidos");
-            else if (rol === "admin") navigate("/Laboratorio/Pedidos")
+            else if (rol === "lab") navigate("/Laboratorio/Pedidos")
             else navigate("/login")
         }
     } catch (error) {
