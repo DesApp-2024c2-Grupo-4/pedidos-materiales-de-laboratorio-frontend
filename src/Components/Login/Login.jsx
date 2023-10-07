@@ -10,14 +10,10 @@ import { userContext } from "../../Context/LabProvider";
 import FormError from "../Mensajes/FormError";
 
 export default function Login() {
-  const {user, setUser} = React.useContext(userContext)
+  const {setUser} = React.useContext(userContext)
   const navigate = useNavigate()
   const { required, minLength, validateTrim } = formValidate();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const {register, handleSubmit, formState: { errors },} = useForm({
     //BORRAR
     defaultValues: {
       user: "Admin01",

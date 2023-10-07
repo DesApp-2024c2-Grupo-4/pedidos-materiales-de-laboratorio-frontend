@@ -101,7 +101,7 @@ function Pedidos() {
   }, [])
 
   return (
-    <ThemeProvider theme={Theme1}>
+    <Box>
 
       <Box sx={{ flexGrow: 1, m: 2 }}>
         <Header texto={texto} isUserAdmin={true}></Header>
@@ -131,7 +131,7 @@ function Pedidos() {
         set_edificio={set_edificio}
         tipo_pedido={tipo_pedido}
 
-        open={open}
+        open={Boolean(open)}
         setOpen={setOpen}
         handleClose={handleClose}
         scroll={scroll}
@@ -155,7 +155,7 @@ function Pedidos() {
               alignItems="space-between"
               spacing={{ xs: 2, md: 3 }} columns={{ xs: 3, sm: 6, md: 12 }}>
 
-              {listaPedidos.map((pedido) => (
+              {listaPedidos?.map((pedido) => (
                 <Grid item xs={3} key={pedido._id}>
 
                   <PedidoV1 key={pedido._id}
@@ -165,7 +165,7 @@ function Pedidos() {
               ))}
             </Grid>
           </Box>)}
-    </ThemeProvider>
+    </Box>
   );
 }
 

@@ -153,7 +153,7 @@ const PedidoEquipos = (props) => {
                     mensajeAlerta={mensajeAlerta}
                     handleClose={handleClose}
                     id={id}
-                    open={open}
+                    open={Boolean(open)}
                     anchorEl={anchorEl}
 
                 />

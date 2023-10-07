@@ -95,7 +95,7 @@ setElegido={setElegido}   }) {
 
     return (
 
-        <ThemeProvider theme={Theme1}>
+        <>
 
 
 
@@ -300,7 +300,7 @@ setElegido={setElegido}   }) {
             >
             </PopUp>
 
-        </ThemeProvider >
+        </ >
 
 
     );

@@ -119,9 +119,9 @@ function AltaUsuario({ open = { open }, setOpen = { setOpen }, scroll = { scroll
 
     return (
 
-        <ThemeProvider theme={Theme1}>
+        <>
             <Dialog
-                open={open}
+                open={Boolean(open)}
                 onClose={handleClose}
                 scroll={scroll}
                 aria-labelledby="scroll-dialog-title"
@@ -358,7 +358,7 @@ function AltaUsuario({ open = { open }, setOpen = { setOpen }, scroll = { scroll
                                         id="perfil"
                                         label="perfil"
                                         name="perfil"
-                                        defaultValue={perfil}
+                                        defaultValue={perfil || ""}
                                         onChange={(e) => guardarPerfil(e.target.value)}
                                         required
                                     >
@@ -477,7 +477,7 @@ function AltaUsuario({ open = { open }, setOpen = { setOpen }, scroll = { scroll
             </PopUp>
 
 
-        </ThemeProvider >
+        </ >
 
 
     );

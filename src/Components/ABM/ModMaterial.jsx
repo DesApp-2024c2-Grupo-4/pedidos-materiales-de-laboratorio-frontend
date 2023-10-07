@@ -94,7 +94,7 @@ function ModMaterial(
 
     return (
 
-        <ThemeProvider theme={Theme1}>
+        <>
 
 
 
@@ -290,7 +290,7 @@ function ModMaterial(
             />
 
 
-        </ThemeProvider >
+        </ >
 
 
     );

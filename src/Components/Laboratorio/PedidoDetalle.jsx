@@ -59,7 +59,7 @@ function PedidoDetalle(
     return (
         <div>
             <Dialog
-                open={open}
+                open={!!open}
                 onClose={handleClose}
                 scroll={scroll}
                 aria-labelledby="scroll-dialog-title"

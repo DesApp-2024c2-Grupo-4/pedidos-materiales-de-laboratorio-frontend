@@ -134,7 +134,7 @@ const ModUsuario = (
     }, [elegido]);
 
     return (
-        <ThemeProvider theme={Theme1}>
+        <>
 
 
 
@@ -353,7 +353,7 @@ const ModUsuario = (
                                 id="perfil"
                                 label="perfil"
                                 name="perfil"
-                                value={nuevoPerfil}
+                                value={nuevoPerfil || ""}
                                 onChange={(e) => modPerfil(e.target.value)}
 
                             >
@@ -474,7 +474,7 @@ const ModUsuario = (
                 children={<UsuarioModificado usuario={mensajeSalida} />}
             >
             </PopUp>
-        </ThemeProvider >
+        </ >
     )
 }
 
