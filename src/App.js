@@ -19,8 +19,6 @@ import Reactivos from './Components/Laboratorio/Reactivos'
 import LabProvider from './Context/LabProvider';
 import './navbar.css';
 import './pedidos.css';
-import { ThemeProvider } from "@mui/material/styles";
-import Theme1 from "./Components/Theme/Theme1";
 
 function App() {
   return (
