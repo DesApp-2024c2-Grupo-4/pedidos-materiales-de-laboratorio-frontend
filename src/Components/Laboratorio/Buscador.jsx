@@ -27,7 +27,7 @@ const Buscador = (props) => {
 				placeholder={props.placeholder}
 				type="text"
 				variant="outlined"
-				fullWidthprops
+				//fullWidthprops
 				size="small"
 				onChange={handleInputChange}
 				value={term}

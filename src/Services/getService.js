@@ -12,7 +12,7 @@ export async function getListaEquiposFiltrada(buscar) {
     try {
         const response = await axios({
             method: 'get',params,
-            url: `http://localhost:3000/api/equipos/`,
+            url: `http://localhost:3000/api/equipo/`,
             responseType: 'json'
         });
         return response.data;
@@ -32,7 +32,7 @@ export async function getListaMaterialesFiltrada(buscar) {
     try {
         const response = await axios({
             method: 'get',params,
-            url: `http://localhost:3000/api/materiales/`,
+            url: `http://localhost:3000/api/material/`,
             responseType: 'json'
         });
         return response.data;
@@ -53,7 +53,7 @@ export async function getListaReactivosFiltrada(buscar) {
     try {
         const response = await axios({
             method: 'get',params,
-            url: `http://localhost:3000/api/reactivos/`,
+            url: `http://localhost:3000/api/reactivo/`,
             responseType: 'json'
         });
         return response.data;

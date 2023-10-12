@@ -1,27 +1,26 @@
-import React from 'react';
-import teal from '@mui/material/colors/teal'
-import green from '@mui/material/colors/green'
+import React from "react";
+import teal from "@mui/material/colors/teal";
+import green from "@mui/material/colors/green";
 
-
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 
 const Theme1 = createTheme({
     palette: {
         mode: 'light',
         primary: {
            
-            main:'#fff'
+            main:'#26a69a'
         
 
         },
         
         secondary: {
 
-            main: "#1D2F58",
+            main: "#b4e0bc",
             oscuro:'#248f37'
         },
         verdeC: {
-            main: "#1D2F58"
+            main: "#b4e0bc"
 
         },
         

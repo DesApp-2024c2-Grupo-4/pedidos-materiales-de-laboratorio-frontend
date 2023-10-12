@@ -77,7 +77,7 @@ function PedidoV1({ pedido, esAdmin}) {
   
 
   return (
-    <ThemeProvider theme={Theme1}>
+    <>
       <Box sx={{ m: 10}} 
        styles={{
         display: "flex",
@@ -136,7 +136,7 @@ function PedidoV1({ pedido, esAdmin}) {
       {!(esAdmin)
         ? (<PedidoDetalle 
           key={pedido._id.toString()}
-          open={open}
+          open={Boolean(open)}
           setOpen={setOpen}
           handleClose={handleClose}
           scroll={scroll}
@@ -145,7 +145,7 @@ function PedidoV1({ pedido, esAdmin}) {
         : (
           <PedidoDetalleLabo 
           key={pedido._id.toString()}
-          open={open}
+          open={Boolean(open)}
             setOpen={setOpen}
             handleClose={handleClose}
             scroll={scroll}
@@ -154,7 +154,7 @@ function PedidoV1({ pedido, esAdmin}) {
           ></PedidoDetalleLabo>)
       }
 
-    </ThemeProvider>
+    </>
   );
 
 }

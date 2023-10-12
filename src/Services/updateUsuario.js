@@ -1,9 +1,8 @@
 export default async function updateUsuario(id, data) {
   
     try {
-      
         const requestJson = JSON.stringify(data);
-
+        
         const response = await fetch('http://localhost:3000/api/usuario/update/' + id, {
             method: "PATCH",
             body: requestJson,

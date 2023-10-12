@@ -54,7 +54,7 @@ function Pedidos() {
 
 
   return (
-    <ThemeProvider theme={Theme1}>
+    <>
 
       <Box sx={{ flexGrow: 1, m: 2 }}>
 
@@ -102,7 +102,7 @@ function Pedidos() {
 
 
 
-    </ThemeProvider>
+    </>
    
   );
 }

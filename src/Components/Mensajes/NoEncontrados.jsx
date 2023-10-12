@@ -20,7 +20,7 @@ const theme=createTheme({
 const NoEncontrados = () => {
     return (
         
-        <ThemeProvider theme={theme}>
+        <>
         <Container 
         maxwidth="sm"
         >
@@ -30,7 +30,7 @@ const NoEncontrados = () => {
           </Typography>
         </Box>
         </Container>
-        </ThemeProvider>
+        </>
         
     );
 };

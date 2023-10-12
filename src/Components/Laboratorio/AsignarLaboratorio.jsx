@@ -37,8 +37,8 @@ function AsignarLaboratorio(pedido,
 
 
 
-  const [edificioElegido, setEdificioElegido] = useState(edificio)
-  const [laboAsignado, setLaboAsignado] = useState(numero_laboratorio)
+  const [edificioElegido, setEdificioElegido] = useState(edificio || "")
+  const [laboAsignado, setLaboAsignado] = useState(numero_laboratorio || "")
   const [estado_ped, setEstadoPed] = useState(tipo_pedido)
   const edificio_elegido = (event) => {
     if (event.target.value !== null) {
