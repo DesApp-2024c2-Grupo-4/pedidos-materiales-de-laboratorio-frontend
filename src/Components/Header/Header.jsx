@@ -37,7 +37,7 @@ export default function Header(props) {
     navigate("/login");
   };
   return (
-    <ThemeProvider theme={Theme1}>
+    <>
     <Box sx={{ flexGrow: 1 }}>
       <AppBar style={{ backgroundColor: "#b4e0bc" }} position="static" 
       maxwidth="lg"
@@ -45,11 +45,9 @@ export default function Header(props) {
         
         <Toolbar>
         <img width={150} heigth={60} src={logo} alt="logo" />
-        <ThemeProvider theme={themeHeader}>
           <Typography variant="h6" align='center'color={"primary.main"} component="div" sx={{ flexGrow: 1 }}>
             {props.texto}
           </Typography>
-          </ThemeProvider>
           {(props.isNotLogin && userActual ) && (
             <div>
               <IconButton
@@ -60,9 +58,7 @@ export default function Header(props) {
                 onClick={handleMenu}
                 color="inherit"
               > 
-              <ThemeProvider theme={themeHeader}>
               <Typography  color={"primary.main"}> {(userActual.nombre)} {(userActual.apellido) } </Typography>
-              </ThemeProvider>
                 <Avatar alt="usuario">{(userActual.nombre).charAt(0).concat((userActual.apellido).charAt(0))}</Avatar>
               </IconButton>
               <Menu
