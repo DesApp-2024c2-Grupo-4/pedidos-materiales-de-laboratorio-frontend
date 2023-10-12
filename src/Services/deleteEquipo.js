@@ -1,6 +1,7 @@
+import { urlBD } from '../connectDB';
 export default async function deleteEquipo(id) {
     try {
-        const response = await fetch('http://localhost:3000/api/equipo/delete/' + id, {
+        const response = await fetch(`${urlBD}/api/equipo/delete/` + id, {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',
