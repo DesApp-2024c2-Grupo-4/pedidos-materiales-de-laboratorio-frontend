@@ -10,18 +10,18 @@ const Theme1 = createTheme({
         mode: 'light',
         primary: {
            
-            main:'#26a69a'
+            main:'#fff'
         
 
         },
         
         secondary: {
 
-            main: "#b4e0bc",
+            main: "#1D2F58",
             oscuro:'#248f37'
         },
         verdeC: {
-            main: "#b4e0bc"
+            main: "#1D2F58"
 
         },
         

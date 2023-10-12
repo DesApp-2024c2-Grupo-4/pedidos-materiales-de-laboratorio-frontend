@@ -92,7 +92,7 @@ export default function Login() {
 
   return (
     <ThemeProvider theme={Theme1}>
-      <Box sx={{ flexGrow: 1, m: 2 }}>
+      <Box sx={{ flexGrow: 1}}>
         <Typography variant="body1" align='center' color='primary.main' />
           <Header texto={"UNAHUR-DESARROLLO DE APLICACIONES-CARGA DE PEDIDOS DE LABORATORIO"} isNotLogin={false} ></Header>
         {/* </Typography> */}

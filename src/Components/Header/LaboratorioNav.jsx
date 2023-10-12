@@ -27,13 +27,13 @@ const LaboratorioNav = () => {
     setValue(locationToTabIndex[currentLocation] || 0);
   }, []);
   return (
-    <Box sx={{ mt: -1, ml:4, flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-        <Tabs value={value} onChange={handleChange}>
-          <Tab label="Pedidos" onClick={() => navigate("/Laboratorio/Pedidos")} />
-          <Tab label="Equipos" onClick={() => navigate("/Laboratorio/Equipos")} />
-          <Tab label="Materiales" onClick={() => navigate("/Laboratorio/Materiales")}/>
-          <Tab label="Reactivos" onClick={() => navigate("/Laboratorio/Reactivos")}/>
-          <Tab label="Usuarios" onClick={() => navigate("/Laboratorio/Usuarios")}/>
+    <Box sx={{ml:4, flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+        <Tabs value={value} onChange={handleChange} >
+          <Tab label="Pedidos" className='nav-button' onClick={() => navigate("/Laboratorio/Pedidos")} />
+          <Tab label="Equipos" className='nav-button' onClick={() => navigate("/Laboratorio/Equipos")} />
+          <Tab label="Materiales" className='nav-button' onClick={() => navigate("/Laboratorio/Materiales")}/>
+          <Tab label="Reactivos" className='nav-button' onClick={() => navigate("/Laboratorio/Reactivos")}/>
+          <Tab label="Usuarios" className='nav-button' onClick={() => navigate("/Laboratorio/Usuarios")}/>
       </Tabs>
     </Box>
   )
