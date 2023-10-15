@@ -48,7 +48,7 @@ export default function Header(props) {
           <Typography variant="h6" align='center'color={"primary.main"} component="div" sx={{ flexGrow: 1 }}>
             {props.texto}
           </Typography>
-          {(props.isNotLogin && userActual ) && (
+          {(userActual ) && (
             <div>
               <IconButton
                 size="large"
@@ -83,7 +83,7 @@ export default function Header(props) {
         </Toolbar>
         {
           props.isUserAdmin && (
-            <LaboratorioNav></LaboratorioNav>
+            <LaboratorioNav/>
           )
         }
       </AppBar>

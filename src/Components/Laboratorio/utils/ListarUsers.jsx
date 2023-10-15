@@ -23,6 +23,7 @@ const ListarUsers = ({listaUsuarios, setElegido, setVerEdicion, setResetPage, re
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
     };
+    console.log(displayedUsuarios)
   
     const handleChangeRowsPerPage = (event) => {
       setRowsPerPage(parseInt(event.target.value, 10));
@@ -65,7 +66,7 @@ const ListarUsers = ({listaUsuarios, setElegido, setVerEdicion, setResetPage, re
                   <TableCell align="center">{row.apellido}</TableCell>
                   <TableCell align="center">{row.email}</TableCell>
                   <TableCell align="center">{row.dni}</TableCell>
-                  <TableCell align="center">{row.rol == 'laboratorio' ? "Laboratorio" : "Docente"}</TableCell>
+                  <TableCell align="center">{row.rol == 'lab' ? "Laboratorio" : "Docente"}</TableCell>
                   <TableCell align="center">
                     <IconButton aria-label="editar" onClick={() => handleEditar(row)}>
                       <EditIcon />

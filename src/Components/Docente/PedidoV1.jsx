@@ -133,7 +133,7 @@ function PedidoV1({ pedido, esAdmin}) {
           </CardActionArea>
         </Card>
       </Box>
-      {!(esAdmin)
+      {!(esAdmin === 'lab')
         ? (<PedidoDetalle 
           key={pedido._id.toString()}
           open={Boolean(open)}
