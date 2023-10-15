@@ -13,6 +13,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import moment from 'moment'
 import Grid from '@mui/material/Grid';
+import pedidoicon from '../Image/pedido-icon.png';
 const useStyles = makeStyles(() => ({
     root: {
         display: "flex",
@@ -66,6 +67,7 @@ function PedidoDetalle(
                 aria-describedby="scroll-dialog-description"
                 maxWidth="lg"
             >
+                <img className="pedido-icon-detalle" src={pedidoicon} alt="" />
                 <DialogTitle id="scroll-dialog-title">Pedido n°: {descripcion}</DialogTitle>
                 <DialogContent dividers={scroll === 'paper'}>
                     <DialogContentText

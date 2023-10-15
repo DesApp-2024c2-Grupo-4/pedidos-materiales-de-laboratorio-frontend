@@ -1,4 +1,5 @@
 import React from "react";
+import pedidoicon from '../Image/pedido-icon.png';
 import { Icon, makeStyles } from "@material-ui/core";
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import Theme1 from '../Theme/Theme1';
@@ -84,20 +85,22 @@ function PedidoV1({ pedido, esAdmin}) {
         margin: "8px",
         height: "240px"
       }} padding="2px">
-        <Card style={{ backgroundColor: "#b4e0bc", borderRadius: 15 }}>
-          <CardActionArea onClick={handleClickOpen('body')}>
+        <Card>
+          <CardActionArea className="card" onClick={handleClickOpen('body')}>
             <CardHeader
               style={{ textAlign: "left" }}
               avatar={
-                <Avatar>
-                  <AssignmentIcon />
-                </Avatar>
+                
+                  <img className="pedido-icon" src={pedidoicon} alt="" />
+                
               }
-              title={`Pedido número ${descripcion}`}
+              
+              title={`Pedido #${descripcion}`}
               // subheader={`Fecha : ${fecha_solicitud}`}
-              subheader={`Fecha de Práctica : ${fecha_utilizar}`}
+              subheader={`Fecha de Práctica: ${fecha_utilizar}`}
               action={
                 <IconButton>
+                  <div className="pedido-estado"></div>
                   <MoreVertIcon />
                 </IconButton>
               }
@@ -108,25 +111,25 @@ function PedidoV1({ pedido, esAdmin}) {
               title="Background image"
             />
             <CardContent style={{ textAlign: "left" }}>
-              <p>
-                <strong>Laboratorio: </strong> {numero_laboratorio !== 0 ? numero_laboratorio : "Sin asignar" }
+              <p className="pedido-item">
+                <strong className="pedido-categoria">Laboratorio: </strong> {numero_laboratorio !== 0 ? numero_laboratorio : "Sin asignar" }
               </p>
-              <p>
-                <strong>Edificio: </strong> {edificio}
+              <p className="pedido-item">
+                <strong className="pedido-categoria">Edificio: </strong> {edificio}
               </p>
-              <p>
-                <strong>Alumnos: </strong> {alumnos}
+              <p className="pedido-item">
+                <strong className="pedido-categoria">Alumnos: </strong> {alumnos}
               </p>
-              <p>
-                <strong>Docente : </strong> {`${docente.nombre} ${docente.apellido}`}
+              <p className="pedido-item">
+                <strong className="pedido-categoria">Docente: </strong> {`${docente.nombre} ${docente.apellido}`}
               </p>
              {(( fecha_utilizacion<formatManiana)&& (tipo_pedido==="PENDIENTE"))?(
-                <Typography sx={{color:'red'}}>
-              <p>
-                <strong>Estado: {tipo_pedido}</strong>
+                <Typography sx={{color:'white'}}>
+              <p className="pedido-item">
+                <strong className="pedido-categoria">Estado: {tipo_pedido}</strong>
               </p></Typography>):(
-               <Typography ><p>
-                <strong>Estado: </strong>{tipo_pedido}
+               <Typography ><p className="pedido-item">
+                <strong className="pedido-categoria">Estado: </strong>{tipo_pedido}
               </p></Typography>)}
               
             </CardContent>

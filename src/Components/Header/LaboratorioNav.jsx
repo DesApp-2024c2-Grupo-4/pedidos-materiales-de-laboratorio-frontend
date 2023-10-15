@@ -27,7 +27,7 @@ const LaboratorioNav = () => {
     setValue(locationToTabIndex[currentLocation] || 0);
   }, []);
   return (
-    <Box sx={{ml:4, flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+    <Box sx={{ml:4, flexGrow: 1, display: { md: 'flex' } }}>
         <Tabs value={value} onChange={handleChange} >
           <Tab label="Pedidos" className='nav-button' onClick={() => navigate("/Laboratorio/Pedidos")} />
           <Tab label="Equipos" className='nav-button' onClick={() => navigate("/Laboratorio/Equipos")} />

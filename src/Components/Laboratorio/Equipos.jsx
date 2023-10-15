@@ -65,7 +65,7 @@ export default function Equipos() {
             borderLeft: 'var(--Grid-borderWidth) solid',
             borderRight: 'var(--Grid-borderWidth) solid',
             borderBottom: 'var(--Grid-borderWidth) solid',
-            borderColor: 'divider', paddingX: 2, borderRadius: 4, paddingY: 1, marginBottom: 4, marginX: 10,
+            borderColor: 'divider', paddingX: 2, borderRadius: 4, paddingY: 1, marginBottom: 0, marginX: 10,
           }}
           spacing={{ xs: 1, md: 1 }} columns={{ xs: 12 }}>
           <Grid container direction="row"

@@ -103,11 +103,11 @@ function Pedidos() {
   return (
     <Box>
 
-      <Box sx={{ flexGrow: 1, m: 2 }}>
+      <Box sx={{ flexGrow: 1, m: 0 }}>
         <Header texto={texto} isUserAdmin={true}></Header>
       </Box>
 
-      <Box sx={{ flexGrow: 1, m: 2 }}>
+      <Box sx={{ flexGrow: 1, m: 0 }}>
         <Grid container columns={12} justifyContent="flex-end" direction="row" alignItems="flex-start">
           <Grid item xs={1} align="center"  >
             <Card
@@ -144,16 +144,16 @@ function Pedidos() {
       {(listaPedidos.length < 1) ?
         (<Box sx={{ flexGrow: 1, md: 2 }}><NoEncontrados /></Box>)
         : (
-          <Box sx={{ flexGrow: 1, md: 2 }}>
+          <Box className="main-wrap" sx={{ flexGrow: 1, md: 2 }}>
             <Grid container direction="row"
               sx={{
                 display: 'flex',
                 justifyContent: 'center',
-                p: 8,
-                m: 4,
+                p: 0,
+                m: 0,
               }}
               alignItems="space-between"
-              spacing={{ xs: 2, md: 3 }} columns={{ xs: 3, sm: 6, md: 12 }}>
+              spacing={{ xs: 2, md: 3 }} columns={{ sm: 6,  lg: 12 }}>
 
               {listaPedidos?.map((pedido) => (
                 <Grid item xs={3} key={pedido._id}>
