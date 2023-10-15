@@ -42,7 +42,7 @@ function Pedidos() {
   useEffect(() => {
     let mounted = true;
     const userActual = JSON.parse(localStorage.getItem('usuario'));
-    setEsAdmin(userActual.admin)
+    setEsAdmin(userActual.rol === 'lab')
     getPedidosPorDni(userActual.dni)
       .then(items => {
         if (mounted) {

@@ -82,7 +82,7 @@ export default function Header(props) {
         </Toolbar>
         {
           props.isUserAdmin && (
-            <LaboratorioNav></LaboratorioNav>
+            <LaboratorioNav/>
           )
         }
       </AppBar>

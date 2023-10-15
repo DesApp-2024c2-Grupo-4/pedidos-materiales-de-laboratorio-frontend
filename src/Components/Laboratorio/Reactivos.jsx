@@ -57,7 +57,7 @@ export default function Reactivos() {
 
       <Box sx={{ flexGrow: 1, m: 2 }}>
 
-        <Header texto={'Laboratorio'} isUserAdmin={true}>
+        <Header texto={'Laboratorio'} isUserAdmin={'lab'}>
         </Header>
 
       </Box>

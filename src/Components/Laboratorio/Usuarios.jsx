@@ -65,7 +65,7 @@ export default function Usuarios() {
 
       <Box sx={{ flexGrow: 1, m: 2 }}>
 
-        <Header texto={'Laboratorio'} isUserAdmin={true}>
+        <Header texto={'Laboratorio'} isUserAdmin={'lab'}>
         </Header>
 
       </Box>
@@ -216,7 +216,7 @@ const Lista = (props) => {
                 <TableCell align="center">{row.apellido}</TableCell>
                 <TableCell align="center">{row.email}</TableCell>
                 <TableCell align="center">{row.dni}</TableCell>
-                <TableCell align="center">{(row.admin) ? "Laboratorio" : "Docente"}</TableCell>
+                <TableCell align="center">{(row.rol=='lab') ? "Laboratorio" : "Docente"}</TableCell>
                 <TableCell align="center">
                   <IconButton aria-label="editar" onClick={() => handleEditar(row)}>
                     <EditIcon />
