@@ -82,8 +82,8 @@ function PedidoV1({ pedido, esAdmin }) {
         }}
         padding="2px"
       >
-        <Card>
-          <CardActionArea className="card" onClick={handleClickOpen("body")}>
+        <Card  className="card">
+          <CardActionArea  onClick={handleClickOpen("body")}>
             <CardHeader
               style={{ textAlign: "left" }}
               avatar={<img className="pedido-icon" src={pedidoicon} alt="" />}

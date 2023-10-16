@@ -66,6 +66,14 @@
     -moz-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
     margin-bottom: 30px !important;
     min-height: 250px !important;
+    transition-duration: 0.3s!important;
+    transition-property: transform !important;
+    transform: translateZ(0)!important;
+}
+.card:hover {
+    margin-top: 20px;
+    box-shadow: 5px 5px 5px 0px rgba(25, 25, 29, 0.2)!important;
+    transform: scale(1.05)!important;
 }
 
 .MuiPaper-elevation1 {
