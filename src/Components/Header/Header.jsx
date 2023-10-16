@@ -12,6 +12,7 @@ import logo from "../Image/logo uni-01.png";
 import { useNavigate } from "react-router-dom";
 import LaboratorioNav from "./LaboratorioNav";
 import { Button } from "@mui/material";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 Header.defaultProps = {
   isNotLogin: true,
@@ -50,9 +51,10 @@ export default function Header(props) {
             />
             {props.isNotLogin && userActual && (
               <div>
-                <Button onClick={handleMenu} className="user_name">
+                <Button onClick={handleMenu} className={`user_name ${Boolean(anchorEl) ? 'flipped' : ''}`}  >
                   {userActual.nombre} {userActual.apellido}
                 </Button>
+                  
                 <Menu
                   id="menu-appbar"
                   sx={{ml:1.2, mt:1}}
