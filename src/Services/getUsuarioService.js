@@ -11,6 +11,7 @@ export const getUsuario = async(usuario, password) => {
                     },
                     body: JSON.stringify({usuario, password})
             })
+            if(data.statusText === "Unauthorized") {throw new Error;}
         return data.json()
     } catch (error) {
         console.log(error)

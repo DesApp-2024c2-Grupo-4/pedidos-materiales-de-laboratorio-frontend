@@ -25,7 +25,7 @@
 }
 .title-login{
     color: white;
-    font-size: 30px;
+    font-size: 50px;
 }
 .containter-form-login{
     padding: 121px 50px 15px;
@@ -41,6 +41,7 @@
     font-size: 18px;
     width: 100%;
     border-bottom: solid;
+    margin-top: 5vh !important;
 }
 .input-login::placeholder {
     color:white;
