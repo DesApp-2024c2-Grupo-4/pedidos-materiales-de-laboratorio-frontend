@@ -42,7 +42,7 @@ function Pedidos() {
   useEffect(() => {
     let mounted = true;
     const userActual = JSON.parse(localStorage.getItem('usuario'));
-    setEsAdmin(userActual.admin)
+    setEsAdmin(userActual.rol === 'lab')
     getPedidosPorDni(userActual.dni)
       .then(items => {
         if (mounted) {
@@ -54,7 +54,7 @@ function Pedidos() {
 
 
   return (
-    <ThemeProvider theme={Theme1}>
+    <>
 
       <Box sx={{ flexGrow: 1, m: 2 }}>
 
@@ -102,7 +102,7 @@ function Pedidos() {
 
 
 
-    </ThemeProvider>
+    </>
    
   );
 }

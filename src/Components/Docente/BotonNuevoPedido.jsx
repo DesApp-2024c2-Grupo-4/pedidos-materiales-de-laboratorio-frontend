@@ -16,7 +16,7 @@ import SendIcon from '@mui/icons-material/Send';
 const BotonNPedido = ({ setNuevoPedido }) => {
   const navigate = useNavigate();
   return (
-    <ThemeProvider theme={Theme1}>
+    <>
 
 
       <Grid container justifyContent="flex-end"
@@ -60,7 +60,7 @@ const BotonNPedido = ({ setNuevoPedido }) => {
 
 
 
-    </ThemeProvider>
+    </>
 
   );
 }

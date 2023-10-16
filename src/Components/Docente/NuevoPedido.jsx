@@ -1,34 +1,20 @@
 import React, { useState, useEffect } from 'react';
-
 import Button from '@mui/material/Button';
-
 import { Grid, Box } from '@mui/material';
-
 import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material/styles';
-
 import Header from '../Header/Header'
-
 import Theme1 from '../Theme/Theme1';
-
 import moment from 'moment'
-
-
 import { useNavigate } from 'react-router-dom';
 import { postPedido } from '../../Services/postPedidoService'
 import { getListaMateriales, getListaEquipos, getListaReactivos } from '../../Services/getService';
-
 import { getCantidadPedidos } from '../../Services/getPedidosService';
-
 import SendIcon from '@mui/icons-material/Send';
 import ReplyAllIcon from '@mui/icons-material/ReplyAll';
-
 import PedidoEquipos from './PedidoEquipos';
-
 import PedidoCabecera from './PedidoCabecera';
-
 import PedidoMaterial from './PedidoMaterial';
-
 import PedidoReactivo from './PedidoReactivo';
 import CartelOk from '../Mensajes/CartelOk';
 
@@ -449,7 +435,7 @@ export default function NuevoPedido() {
   }, [])
 
   return (
-    <ThemeProvider theme={Theme1}>
+    <>
       <Box sx={{ flexGrow: 1, m: 2 }}>
 
         <Header texto={texto} ></Header>
@@ -620,7 +606,7 @@ export default function NuevoPedido() {
 
 
 
-    </ThemeProvider>
+    </>
   )
 }
 

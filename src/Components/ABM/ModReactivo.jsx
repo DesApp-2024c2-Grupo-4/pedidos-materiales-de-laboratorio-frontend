@@ -100,7 +100,7 @@ function ModReactivo(
 
     return (
 
-        <ThemeProvider theme={Theme1}>
+        <>
 
 
 
@@ -292,7 +292,7 @@ function ModReactivo(
             >
             </PopUp>
 
-        </ThemeProvider >
+        </ >
 
 
     );

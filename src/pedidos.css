@@ -1,0 +1,268 @@
+.MuiCardActionArea-root {
+
+}
+
+.css-kplr0i-MuiGrid-root {
+    justify-content: center;
+    margin-top: 30px !important;
+}
+
+.MuiButtonBase-root {
+    padding: 12px 16px !important;
+}
+
+.css-14130fx-MuiGrid-root > .MuiGrid-item {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.MuiBox-root {
+    margin: 0 !important;
+}
+
+.main-wrap {
+    display: block;
+    width: 90%;
+    margin: 0 auto !important;
+}
+
+.pedido {
+    margin: 0 2em !important;
+}
+
+.MuiCardActionArea-root {
+    background-color: #1D2F58 !important;
+    color: white !important;
+}
+
+.MuiTypography-colorTextSecondary {
+    color: white !important;
+}
+
+.MuiSvgIcon-root {
+    color: white;
+}
+
+.pedido-item {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 14px;
+    margin-top: 5px;
+    font-weight: lighter;
+    color: white;
+}
+
+.pedido-categoria {
+    font-weight: bold;
+    margin-right: 1px;
+    letter-spacing: 1px;
+}
+
+.card {
+    border-radius: 20px !important;
+    width: 90% !important;
+    margin: 0 auto !important;
+    box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
+    margin-bottom: 30px !important;
+    min-height: 250px !important;
+    transition-duration: 0.3s!important;
+    transition-property: transform !important;
+    transform: translateZ(0)!important;
+}
+.card:hover {
+    margin-top: 20px;
+    box-shadow: 5px 5px 5px 0px rgba(25, 25, 29, 0.2)!important;
+    transform: scale(1.05)!important;
+}
+
+.MuiPaper-elevation1 {
+    box-shadow: none !important;
+}
+
+.pedido-icon {
+    width: 60px;
+}
+
+/* cambiar estos 3 colores */
+
+.pedido-estado-red {
+    width: 22px;
+    height: 22px;
+    background-color: red;
+    border-radius: 50%;
+    position: relative;
+    right: 10px;
+    filter: drop-shadow(4px 4px 10px red);
+    border: 1px solid rgb(227, 10, 10);
+    animation: pedido-estado-red  2s infinite;
+    
+}  
+@-webkit-keyframes pedido-estado-red  {
+    0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.4);
+    }
+    70% {
+        -webkit-box-shadow: 0 0 0 10px rgba(255,0,0, 0);
+    }
+    100% {
+        -webkit-box-shadow: 0 0 0 0 rgba(255,0,0, 0);
+    }
+}
+@keyframes pedido-estado-red  {
+    0% {
+    -moz-box-shadow: 0 0 0 0 rgba(255,0,0, 0.4);
+    box-shadow: 0 0 0 0 rgba(255,0,0, 0.4);
+    }
+    70% {
+        -moz-box-shadow: 0 0 0 10px rgba(255,0,0, 0);
+        box-shadow: 0 0 0 10px rgba(255,0,0, 0);
+    }
+    100% {
+        -moz-box-shadow: 0 0 0 0 rgba(255,0,0, 0);
+        box-shadow: 0 0 0 0 rgba(255,0,0, 0);
+    }
+}
+.pedido-estado-yellow {
+    width: 22px;
+    height: 22px;
+    background-color: orange;
+    border-radius: 50%;
+    position: relative;
+    right: 10px;
+    filter: drop-shadow(4px 4px 10px orange);
+    border: 1px solid orange;
+    animation: pedido-estado-yellow  2s infinite;
+    
+}  
+@-webkit-keyframes pedido-estado-yellow  {
+    0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(255, 165, 0, 0.4);
+    }
+    70% {
+        -webkit-box-shadow: 0 0 0 10px rgba(255, 165, 0, 0);
+    }
+    100% {
+        -webkit-box-shadow: 0 0 0 0 rgba(255, 165, 0, 0);
+    }
+}
+@keyframes pedido-estado-yellow  {
+    0% {
+    -moz-box-shadow: 0 0 0 0 rgba(255, 165, 0, 0.4);
+    box-shadow: 0 0 0 0 rgba(255, 165, 0, 0.4);
+    }
+    70% {
+        -moz-box-shadow: 0 0 0 10px rgba(255, 165, 0, 0);
+        box-shadow: 0 0 0 10px rgba(255, 165, 0, 0);
+    }
+    100% {
+        -moz-box-shadow: 0 0 0 0 rgba(255, 165, 0, 0);
+        box-shadow: 0 0 0 0 rgba(255, 165, 0, 0);
+    }
+}
+.pedido-estado-green {
+    width: 22px;
+    height: 22px;
+    background-color: rgb(0, 255, 0);
+    border-radius: 50%;
+    position: relative;
+    right: 10px;
+    filter: drop-shadow(4px 4px 10px rgb(0, 255, 0));
+    border: 1px solid rgb(0, 255, 0);
+    animation: pedido-estado-green  2s infinite;
+    
+}  
+@-webkit-keyframes pedido-estado-green  {
+    0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.4);
+    }
+    70% {
+        -webkit-box-shadow: 0 0 0 10px rgba(0,255,0, 0);
+    }
+    100% {
+        -webkit-box-shadow: 0 0 0 0 rgba(0,255,0, 0);
+    }
+}
+@keyframes pedido-estado-green  {
+    0% {
+    -moz-box-shadow: 0 0 0 0 rgba(0,255,0, 0.4);
+    box-shadow: 0 0 0 0 rgba(0,255,0, 0.4);
+    }
+    70% {
+        -moz-box-shadow: 0 0 0 10px rgba(0,255,0, 0);
+        box-shadow: 0 0 0 10px rgba(0,255,0, 0);
+    }
+    100% {
+        -moz-box-shadow: 0 0 0 0 rgba(0,255,0, 0);
+        box-shadow: 0 0 0 0 rgba(0,255,0, 0);
+    }
+}
+.pedido-estado-gray {
+    width: 22px;
+    height: 22px;
+    background-color: gray;
+    border-radius: 50%;
+    position: relative;
+    right: 10px;
+    filter: drop-shadow(4px 4px 10px gray);
+    border: 1px solid rgb(128, 128, 128);
+    animation: pedido-estado-gray  2s infinite;
+    
+}  
+@-webkit-keyframes pedido-estado-gray  {
+    0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(128, 128, 128, 0.4);
+    }
+    70% {
+        -webkit-box-shadow: 0 0 0 10px rgba(128, 128, 128, 0);
+    }
+    100% {
+        -webkit-box-shadow: 0 0 0 0 rgba(128, 128, 128, 0);
+    }
+}
+@keyframes pedido-estado-gray  {
+    0% {
+    -moz-box-shadow: 0 0 0 0 rgba(128, 128, 128, 0.4);
+    box-shadow: 0 0 0 0 rgba(128, 128, 128, 0.4);
+    }
+    70% {
+        -moz-box-shadow: 0 0 0 10px rgba(128, 128, 128, 0);
+        box-shadow: 0 0 0 10px rgba(128, 128, 128, 0);
+    }
+    100% {
+        -moz-box-shadow: 0 0 0 0 rgba(0,128,0, 0);
+        box-shadow: 0 0 0 0 rgba(0,128,0, 0);
+    }
+}
+.MuiCardHeader-title {
+    font-weight: bold !important;
+    font-size: 16px !important;
+}
+
+.css-14130fx-MuiGrid-root {
+    margin-left: 0 !important;
+}
+
+.css-1nxlw3t-MuiPaper-root-MuiDialog-paper {
+    background-color: #1D2F58 !important;
+    border: 2px solid #131f3c;
+}
+
+#scroll-dialog-title {
+    color: white !important;
+}
+
+.pedido-icon-detalle {
+    width: 100px;
+    margin-left: 32px;
+    margin-top: 10px;
+}
+
+.pedido-estado-detalle {
+
+}
+
+.pedido-flex {
+    display: flex;
+    
+}

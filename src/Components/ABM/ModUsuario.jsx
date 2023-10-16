@@ -31,7 +31,7 @@ const ModUsuario = (
     const [nuevaMatricula, setNuevaMatricula] = useState("")
     const [nuevoDNI, setNuevoDNI] = useState("")
     const [email, setEmail] = useState("");
-    const [nuevoPerfil, setNuevoPerfil] = useState("");
+    const [nuevoPerfil, setNuevoPerfil] = useState("" || elegido.rol);
     const [nuevoEditor, setNuevoEditor] = useState("")
     const [openMensaje, setOpenMensaje] = useState(false);
     const [mensajeSalida, setMensajeSalida] = useState("");
@@ -71,7 +71,6 @@ const ModUsuario = (
     };
     const modPerfil = (event) => {
         if (event !== null) {
-            if (event === true) { setVer("block") } else { setVer("block") }
             setNuevoPerfil(event);
         }
     };
@@ -84,7 +83,7 @@ const ModUsuario = (
         event.preventDefault();
         const dato = {
             "usuario": nuevoUsuario,
-            "contrasenia": nuevaContrasenia,
+            "contrasenia": btoa(nuevaContrasenia),
             "nombre": nuevoNombre, //.toLocaleUpperCase(),
             "apellido": nuevoApellido, //.toUpperCase(),
             "dni": parseInt(nuevoDNI),
@@ -92,7 +91,7 @@ const ModUsuario = (
             // "admin": nuevoPerfil,
             "editor": nuevoEditor,
             "email": email,
-            "admin": nuevoPerfil
+            "rol": nuevoPerfil
 
         }
         //if (nuevoPerfil === "DOCENTE") { dato.admin = false } else { dato.admin = true }
@@ -122,7 +121,7 @@ const ModUsuario = (
         setEmail(elegido.email);
 
         setNuevoEditor(elegido.editor);
-        setNuevoPerfil(elegido.admin);
+        setNuevoPerfil(elegido.rol);
         /*if (elegido.perfil) {
             //setVer("block")
             setNuevoPerfil("LABORATORIO")
@@ -130,11 +129,11 @@ const ModUsuario = (
             //setVer("none")
             setNuevoPerfil("DOCENTE")
         }*/
-        (elegido.admin) ? setVer("block") : setVer("none");
+        (elegido.rol === 'lab') ? setVer("block") : setVer("none");
     }, [elegido]);
 
     return (
-        <ThemeProvider theme={Theme1}>
+        <>
 
 
 
@@ -353,14 +352,15 @@ const ModUsuario = (
                                 id="perfil"
                                 label="perfil"
                                 name="perfil"
-                                value={nuevoPerfil}
+                                defaultValue={nuevoPerfil || ''}
+                                value={nuevoPerfil || ''}
                                 onChange={(e) => modPerfil(e.target.value)}
 
                             >
 
 
-                                <MenuItem sx={{ fontSize: 12 }} value={false}>DOCENTE</MenuItem>
-                                <MenuItem sx={{ fontSize: 12 }} value={true}>LABORATORIO</MenuItem>
+                                <MenuItem sx={{ fontSize: 12 }} value={'docente'}>DOCENTE</MenuItem>
+                                <MenuItem sx={{ fontSize: 12 }} value={'lab'}>LABORATORIO</MenuItem>
 
                             </Select>
                         </FormControl>
@@ -474,7 +474,7 @@ const ModUsuario = (
                 children={<UsuarioModificado usuario={mensajeSalida} />}
             >
             </PopUp>
-        </ThemeProvider >
+        </ >
     )
 }
 
@@ -502,7 +502,7 @@ const UsuarioModificado = ({ usuario }) => {
                 <strong> Email: </strong> {usuario.email}
             </p>
             <p>
-                <strong> Perfil: </strong> {usuario.admin ? "LABORATORIO" : "DOCENTE"}
+                <strong> Perfil: </strong> {usuario.rol === 'lab' ? "LABORATORIO" : "DOCENTE"}
             </p>
             {/*<p>
             <strong> Editor: </strong> {usuario.editor ? "SI" : "NO"}

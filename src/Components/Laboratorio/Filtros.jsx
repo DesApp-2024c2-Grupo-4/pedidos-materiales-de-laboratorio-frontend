@@ -49,6 +49,7 @@ export default function Filtros(props) {
     return (
 
         <Box sx={{ flexGrow: 1, mb: 6 }}
+        
 
         >
             <Dialog

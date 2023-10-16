@@ -69,9 +69,9 @@ function AltaReactivo(
 
     return (
 
-        <ThemeProvider theme={Theme1}>
+        <>
             <Dialog
-                open={open}
+                open={!!open}
                 onClose={handleClose}
                 scroll={scroll}
                 aria-labelledby="scroll-dialog-title"
@@ -264,7 +264,7 @@ function AltaReactivo(
                 children={<ReactivoDadoAlta reactivo={mensajeSalida} />}
             >
             </PopUp>
-        </ThemeProvider >
+        </ >
 
 
     );

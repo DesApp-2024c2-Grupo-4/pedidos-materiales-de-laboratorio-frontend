@@ -3,16 +3,7 @@ import Header from "../Header/Header";
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import EditIcon from '@material-ui/icons/Edit';
 import Container from '@mui/material/Container';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableRow from '@mui/material/TableRow';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination'
 import { ThemeProvider } from '@mui/material/styles';
 import Theme1 from '../Theme/Theme1';
 import { getListaReactivosFiltrada } from "../../Services/getService";
@@ -22,6 +13,7 @@ import Buscador from './Buscador';
 import Button from '@mui/material/Button';
 import AltaReactivo from '../ABM/AltaReactivo';
 import ModReactivo from '../ABM/ModReactivo';
+import Listar from './utils/Listar';
 
 
 export default function Reactivos() {
@@ -61,11 +53,11 @@ export default function Reactivos() {
   };
 
   return (
-    <ThemeProvider theme={Theme1}>
+    <>
 
       <Box sx={{ flexGrow: 1, m: 2 }}>
 
-        <Header texto={'Laboratorio'} isUserAdmin={true}>
+        <Header texto={'Laboratorio'} isUserAdmin={'lab'}>
         </Header>
 
       </Box>
@@ -95,7 +87,7 @@ export default function Reactivos() {
             </Grid>
             <Grid item xs={4} container justifyContent="flex-end">
               <Nuevo
-                open={open}
+                open={Boolean(open)}
                 setOpen={setOpen}
                 handleClose={handleClose}
                 scroll={scroll}
@@ -115,16 +107,17 @@ export default function Reactivos() {
 
             />
           </Grid>
-          <Lista listaReactivos={listaReactivos}
-            setResetPage={setResetPage} resetPage={resetPage}
-            elegido={elegido}
+          <Listar 
+            lista={listaReactivos}
+            type="CAS"
             setElegido={setElegido}
             setVerEdicion={setVerEdicion}
+            setResetPage={setResetPage} resetPage={resetPage}
 
-          ></Lista>
+          ></Listar>
         </Grid>
       </Container>
-    </ThemeProvider>
+    </>
   )
 }
 
@@ -156,7 +149,7 @@ const Nuevo = (
       </Button>
       <AltaReactivo
 
-        open={open}
+        open={Boolean(open)}
         setOpen={setOpen}
         handleClose={handleClose}
         scroll={scroll}
@@ -164,76 +157,5 @@ const Nuevo = (
 
       />
     </div>
-  )
-}
-const Lista = (props) => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const startIndex = page * rowsPerPage;
-  const endIndex = startIndex + rowsPerPage;
-  const displayedItems = props.listaReactivos.slice(startIndex, endIndex);
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const handleEditar = (event) => {
-    props.setElegido(event)
-    console.log(props.elegido)
-    console.log(event); // quitar
-    props.setVerEdicion("block")
-  }
-  React.useEffect(() => {
-    if (props.listaReactivos.length > 0 && props.resetPage) {
-      setPage(0);
-      props.setResetPage(false);
-    }
-  }, [props.listaReactivos, props.resetPage]);
-  return (
-    <Container>
-      <TableContainer>
-        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Descripción</TableCell>
-              <TableCell align="center">CAS</TableCell>
-              <TableCell></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {displayedItems.map((row, index) => (
-              <TableRow
-                key={index}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">{row.descripcion} </TableCell>
-                <TableCell align="center">{row.cas}</TableCell>
-                <TableCell align="center">
-                  <IconButton aria-label="editar" onClick={() => handleEditar(row)}>
-                    <EditIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={props.listaReactivos.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        labelRowsPerPage={"Elementos por página"}
-        labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
-      />
-    </Container>
   )
 }

@@ -1,10 +1,10 @@
-
+import { urlBD } from '../connectDB';
 
   export async function postEquipo(data) {
 
     const requestJson = JSON.stringify(data);
     try {
-      const response = await fetch("http://localhost:3000/api/equipo/post", {
+      const response = await fetch(`${urlBD}/api/equipo/post`, {
         method: "POST",
         body: requestJson,
         headers: {

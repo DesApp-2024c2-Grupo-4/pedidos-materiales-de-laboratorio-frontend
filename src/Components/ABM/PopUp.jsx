@@ -15,9 +15,9 @@ const PopUp = (props) => {
     const handleClose = props.handleClose;
     const scroll = props.scroll;
     return (
-        <ThemeProvider theme={Theme1}>
+        <>
             <Dialog
-            open={open}
+            open={Boolean(open)}
             onClose={handleClose}
             scroll={scroll}
             aria-labelledby="scroll-dialog-title"
@@ -56,7 +56,7 @@ const PopUp = (props) => {
                     </Grid>
                 </DialogContent>
             </Dialog>
-        </ThemeProvider>
+        </>
     )
 }
 

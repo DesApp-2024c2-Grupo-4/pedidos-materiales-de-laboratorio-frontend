@@ -44,7 +44,7 @@ const CartelOk = (props) => {
     <div>
       <Popover
         id={id}
-        open={open}
+        open={Boolean(open)}
         anchorEl={anchorEl}
         onClose={props.handleClose2}
 

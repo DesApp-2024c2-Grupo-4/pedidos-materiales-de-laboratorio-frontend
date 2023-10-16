@@ -60,9 +60,9 @@ function AltaMaterial(
 
     return (
 
-        <ThemeProvider theme={Theme1}>
+        <>
             <Dialog
-                open={open}
+                open={!!open}
                 onClose={handleClose}
                 scroll={scroll}
                 aria-labelledby="scroll-dialog-title"
@@ -255,7 +255,7 @@ function AltaMaterial(
             />
 
 
-        </ThemeProvider >
+        </ >
 
 
     );

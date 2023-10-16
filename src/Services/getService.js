@@ -1,9 +1,9 @@
 import axios from 'axios';
-
+import { urlBD } from '../connectDB';
 //EQUIPOS
 
 export function getListaEquipos() {
-    return fetch('http://localhost:3000/api/equipo/getAll')
+    return fetch(`${urlBD}/api/equipo/getAll`)
         .then(data => data.json())
 }
 export async function getListaEquiposFiltrada(buscar) {
@@ -12,7 +12,7 @@ export async function getListaEquiposFiltrada(buscar) {
     try {
         const response = await axios({
             method: 'get',params,
-            url: `http://localhost:3000/api/equipos/`,
+            url: `${urlBD}/api/equipo/`,
             responseType: 'json'
         });
         return response.data;
@@ -23,7 +23,7 @@ export async function getListaEquiposFiltrada(buscar) {
 
 //MATERIALES
 export function getListaMateriales() {
-    return fetch('http://localhost:3000/api/material/getAll')
+    return fetch(`${urlBD}/api/material/getAll`)
         .then(data => data.json())
 }
 export async function getListaMaterialesFiltrada(buscar) {
@@ -32,7 +32,7 @@ export async function getListaMaterialesFiltrada(buscar) {
     try {
         const response = await axios({
             method: 'get',params,
-            url: `http://localhost:3000/api/materiales/`,
+            url: `${urlBD}/api/material/`,
             responseType: 'json'
         });
         return response.data;
@@ -44,7 +44,7 @@ export async function getListaMaterialesFiltrada(buscar) {
 // REACTIVOS
 
 export function getListaReactivos() {
-    return fetch('http://localhost:3000/api/reactivo/getAll')
+    return fetch(`${urlBD}/api/reactivo/getAll`)
         .then(data => data.json())
 }
 export async function getListaReactivosFiltrada(buscar) {
@@ -53,7 +53,7 @@ export async function getListaReactivosFiltrada(buscar) {
     try {
         const response = await axios({
             method: 'get',params,
-            url: `http://localhost:3000/api/reactivos/`,
+            url: `${urlBD}/api/reactivo/`,
             responseType: 'json'
         });
         return response.data;

@@ -1,0 +1,149 @@
+header {
+    padding: 1em .5em 0;
+    background-color: #1D2F58 !important;
+}
+
+.MuiToolbar-gutters {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+}
+
+.user_name {
+    color: white !important;
+    padding: 10px 20px !important;
+    border: white 2px solid !important;
+    border-radius: 20% 20% / 60% !important;
+    transition: transform 0.3s !important;
+}
+
+.user_name::after {
+    margin: -10px 0 -10px .5vw;
+   /*font-size: 25px;*/
+    border-left: 7px solid transparent;
+    border-top: 12px solid #fff;
+    border-right: 7px solid transparent;
+    transition: transform 0.1s !important;
+    content: "";
+} 
+.user_name.flipped::after {
+    transform: scaleY(-1) !important;
+}
+
+
+.user_name:hover {
+    background:#2a4483 !important;
+}
+
+.nav-button {
+    color: white !important;
+}
+
+.css-1lg7qpc {
+    justify-content: center;
+}
+
+.css-18md96b-MuiButtonBase-root-MuiTab-root {
+    padding: 0px 30px !important;
+}
+
+.css-1pt20bd {
+    margin: 0px !important;
+}
+
+.css-ewljzv-MuiButtonBase-root-MuiTab-root.Mui-selected {
+    border-bottom: 5px solid white;
+}
+
+.css-1gg7olp {
+    justify-content: center !important;
+}
+
+@media (width < 900px){
+    .css-1gg7olp {
+        display: flex !important;
+        justify-content: center !important;
+    }
+}
+
+@media (width < 768px){
+    .logo {
+        width: 350px;
+    }
+    .user_name {
+        font-size: 0 !important;
+        padding: 6px 15px !important;
+        border-radius: 10px !important;
+    }
+
+    .user_name::after {
+        font-size: 30px;
+    }
+
+    .css-ewljzv-MuiButtonBase-root-MuiTab-root {
+        font-size: 13px !important;
+    }
+}
+
+@media (width < 510px){
+    .logo {
+        width: 280px;
+    }
+    .user_name {
+        padding: 4px 10px !important;
+    }
+
+    .user_name::after {
+        font-size: 22px;
+    }
+
+    .css-ewljzv-MuiButtonBase-root-MuiTab-root {
+        font-size: 0 !important;
+        min-width: 1px !important;
+    }
+
+    .css-1gg7olp {
+        border-top: 2px solid #223a71 !important;
+    }
+
+    .css-ewljzv-MuiButtonBase-root-MuiTab-root:nth-child(1)::after {
+        content: "Ped";
+        font-size: 15px !important;
+    }
+
+    .css-ewljzv-MuiButtonBase-root-MuiTab-root:nth-child(2)::after {
+        content: "Equ";
+        font-size: 15px !important;
+    }
+
+    .css-ewljzv-MuiButtonBase-root-MuiTab-root:nth-child(3)::after {
+        content: "Mat";
+        font-size: 15px !important;
+    }
+
+    .css-ewljzv-MuiButtonBase-root-MuiTab-root:nth-child(4)::after {
+        content: "Rea";
+        font-size: 15px !important;
+    }
+
+    .css-ewljzv-MuiButtonBase-root-MuiTab-root:nth-child(5)::after {
+        content: "Usu";
+        font-size: 15px !important;
+    }
+}
+
+@media (width < 400px){
+    .logo {
+        width: 230px;
+    }
+    .user_name {
+        padding: 3px 6px !important;
+    }
+
+    .user_name::after {
+        font-size: 18px;
+    }
+
+    .css-hyum1k-MuiToolbar-root {
+        padding-left: 0px !important;
+    }
+}

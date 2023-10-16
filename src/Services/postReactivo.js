@@ -1,8 +1,9 @@
+import { urlBD } from '../connectDB';
 export async function postReactivo(data) {
 
     const requestJson = JSON.stringify(data);
     try {
-      const response = await fetch("http://localhost:3000/api/reactivo/post", {
+      const response = await fetch(`${urlBD}/api/reactivo/post`, {
         method: "POST",
         body: requestJson,
         headers: {

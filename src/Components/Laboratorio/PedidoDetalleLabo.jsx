@@ -1,5 +1,5 @@
 import React from "react";
-
+import pedidoicon from '../Image/pedido-icon.png';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
@@ -57,30 +57,28 @@ function PedidoDetalle(
     return (
         <div>
             <Dialog
-                open={open}
+                open={Boolean(open)}
                 onClose={handleClose}
                 scroll={scroll}
                 aria-labelledby="scroll-dialog-title"
                 aria-describedby="scroll-dialog-description"
                 maxWidth="lg"
             >
-                <DialogTitle id="scroll-dialog-title">Pedido n°: {descripcion}</DialogTitle>
+                <div className="pedido-flex">
+                    <img className="pedido-icon-detalle" src={pedidoicon} alt="" />
+                    <DialogTitle id="scroll-dialog-title">Pedido #{descripcion}</DialogTitle>
+                    <label htmlFor="fecha_utilizacion" id="label_fecha_utilizacion"> Fecha de práctica: <br></br> {fechaActual2} {hora}</label>
+                    <div className="pedido-estado pedido-estado-detalle"></div>
+                </div>
                 <DialogContent dividers={scroll === 'paper'}>
                     <DialogContentText
                         id="scroll-dialog-description"
                         ref={descriptionElementRef}
                         tabIndex={-1}      >
-
-
-
+                        
                         <div>
 
                             <fieldset>
-                                <label htmlFor="fecha_trabajo" id="label_fecha_trabajo">Fecha solicitud : </label> <input type="text" id="fecha_trabajo" name="fecha_trabajo" value={fechaActual} disabled />
-                                <label htmlFor="fecha_utilizacion" id="label_fecha_utilizacion"> Fecha Utilización : </label> <input type="text" id="fecha_utilizacion" name="fecha_utilizacion" value={fechaActual2} disabled />
-                                <label htmlFor="hora" id="label_hora"> Hora: </label> <input type="text" id="hora" name="hora" value={hora} disabled />
-
-                                <br></br>
                                 <label id="label_docente"> Docente : </label> <input type="text" id="docente" name="docente" value={`${docente.nombre}  ${docente.apellido}`} disabled />
                                 <label id="label_alumno"> Alumnos : </label> <input type="text" id="alumno" name="alumno" value={alumnos} disabled />
                                 <label id="label_grupo"> Grupos : </label> <input type="text" id="grupo" name="grupo" value={cantidad_grupos} disabled />

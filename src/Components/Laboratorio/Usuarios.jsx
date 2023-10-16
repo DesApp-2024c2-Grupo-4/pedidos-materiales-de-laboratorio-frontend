@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import Header from "../Header/Header";
 import Box from '@mui/material/Box';
@@ -60,11 +61,11 @@ export default function Usuarios() {
   };
 
   return (
-    <ThemeProvider theme={Theme1}>
+    <>
 
       <Box sx={{ flexGrow: 1, m: 2 }}>
 
-        <Header texto={'Laboratorio'} isUserAdmin={true}>
+        <Header texto={'Laboratorio'} isUserAdmin={'lab'}>
         </Header>
 
       </Box>
@@ -94,7 +95,7 @@ export default function Usuarios() {
             </Grid>
             <Grid item xs={4} container justifyContent="flex-end">
               <NuevoUsuario
-                open={open}
+                open={Boolean(open)}
                 setOpen={setOpen}
                 handleClose={handleClose}
                 scroll={scroll}
@@ -115,14 +116,16 @@ export default function Usuarios() {
             />
           </Grid>
 
-          <Lista listaUsuarios={listaUsuarios} setResetPage={setResetPage} resetPage={resetPage}
+          <Lista 
+            listaUsuarios={listaUsuarios}
             elegido={elegido}
             setElegido={setElegido}
             setVerEdicion={setVerEdicion}
+            setResetPage={setResetPage} resetPage={resetPage}
           ></Lista>
         </Grid>
       </Container>
-    </ThemeProvider>
+    </>
   )
 }
 
@@ -151,7 +154,7 @@ const NuevoUsuario = (
       </Button>
       <AltaUsuario
 
-        open={open}
+        open={Boolean(open)}
         setOpen={setOpen}
         handleClose={handleClose}
         scroll={scroll}
@@ -213,7 +216,7 @@ const Lista = (props) => {
                 <TableCell align="center">{row.apellido}</TableCell>
                 <TableCell align="center">{row.email}</TableCell>
                 <TableCell align="center">{row.dni}</TableCell>
-                <TableCell align="center">{(row.admin) ? "Laboratorio" : "Docente"}</TableCell>
+                <TableCell align="center">{(row.rol=='lab') ? "Laboratorio" : "Docente"}</TableCell>
                 <TableCell align="center">
                   <IconButton aria-label="editar" onClick={() => handleEditar(row)}>
                     <EditIcon />

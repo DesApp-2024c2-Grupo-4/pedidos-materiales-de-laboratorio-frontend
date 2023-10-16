@@ -1,10 +1,11 @@
+import { urlBD } from '../connectDB';
 export default async function updatePedido(id, data) {
   
     try {
       
         const requestJson = JSON.stringify(data);
 
-        const response = await fetch('http://localhost:3000/api/pedido/update/' + id, {
+        const response = await fetch(`${urlBD}/api/pedido/update/` + id, {
             method: "PATCH",
             body: requestJson,
             headers: {
