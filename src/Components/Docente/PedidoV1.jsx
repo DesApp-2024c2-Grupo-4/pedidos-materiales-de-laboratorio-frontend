@@ -132,8 +132,8 @@ function PedidoV1({ pedido, esAdmin }) {
                 <Typography sx={{ color: "white" }}>
                   <p className="pedido-item">
                     <strong className="pedido-categoria">
-                      Estado: {tipo_pedido}
-                    </strong>
+                      Estado: </strong>
+                      {tipo_pedido}
                   </p>
                 </Typography>
               ) : (
