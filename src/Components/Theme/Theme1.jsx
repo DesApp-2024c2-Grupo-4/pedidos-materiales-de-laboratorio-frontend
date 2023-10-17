@@ -1,8 +1,8 @@
 import React from "react";
 import teal from "@mui/material/colors/teal";
 import green from "@mui/material/colors/green";
-
 import { createTheme } from "@mui/material/styles";
+//import { createTheme } from "@material-ui/core/styles";
 
 const Theme1 = createTheme({
   palette: {
