@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Login from "./Components/Login/Login";
+import ChatOnline from "./Components/chat-online/chat-online";
 import RedirectDocente from "./Components/Login/RedirectDocente";
 import RedirectLaboratorio from "./Components/Login/RedirectLaboratorio";
 import RedirectLog from "./Components/Login/RedirectLog";
