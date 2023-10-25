@@ -54,7 +54,7 @@ export default function Materiales() {
 
       <Box sx={{ flexGrow: 1, m: 2 }}>
 
-        <Header texto={'Laboratorio'} isUserAdmin={true}>
+        <Header texto={'Laboratorio'} isUserAdmin={'lab'}>
         </Header>
 
       </Box>

@@ -2,17 +2,17 @@ import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import logo from "../Image/logo_unahur.png";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import Theme1 from "../Theme/Theme1";
+import logo from "../Image/logo uni-01.png";
 import { useNavigate } from "react-router-dom";
 import LaboratorioNav from "./LaboratorioNav";
 import { Button } from "@mui/material";
-import { useState } from "react";
-import Fade from "@mui/material/Fade";
-import { useEffect } from "react";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 Header.defaultProps = {
   isNotLogin: true,
@@ -20,7 +20,7 @@ Header.defaultProps = {
 };
 export default function Header(props) {
   const userActual = JSON.parse(localStorage.getItem("usuario"));
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -37,58 +37,38 @@ export default function Header(props) {
     <>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar
-          style={{ backgroundColor: "#b4e0bc" }}
+          style={{ backgroundColor: "#1D2F58" }}
           position="static"
           maxwidth="lg"
         >
           <Toolbar>
-            <img width={150} heigth={60} src={logo} alt="logo" />
-            <Typography
-              variant="h6"
-              align="center"
-              color={"primary.main"}
-              component="div"
-              sx={{ flexGrow: 1 }}
-            >
-              {props.texto}
-            </Typography>
-            {userActual ? (
+            <img
+              className="logo"
+              width={450}
+              heigth={90}
+              src={logo}
+              alt="logo"
+            />
+            {props.isNotLogin && userActual && (
               <div>
-                <Button
-                  size="small"
-                  aria-controls={
-                    Boolean(anchorEl) ? '"menu-appbar"' : undefined
-                  }
-                  aria-expanded={Boolean(anchorEl) ? "true" : undefined}
-                  aria-haspopup="true"
-                  onClick={handleMenu}
-                  color="inherit"
-                >
-                  <Typography component={'span'} color={"primary.main"}>
-                    {" "}{userActual.nombre} {userActual.apellido}{" "}
-                  </Typography>
-                  <Avatar alt="usuario">
-                    {userActual.nombre.charAt(0).concat(userActual.apellido.charAt(0))}
-                  </Avatar>
+                <Button onClick={handleMenu} className={`user_name ${Boolean(anchorEl) ? 'flipped' : ''}`}  >
+                  {userActual.nombre} {userActual.apellido}
                 </Button>
+                  
                 <Menu
                   id="menu-appbar"
+                  sx={{ml:1.2, mt:1}}
+                  size="small"
                   anchorEl={anchorEl}
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
-                  MenuListProps={{
-                    "aria-labelledby": "fade-button",
-                  }}
-                  TransitionComponent={Fade}
                 >
                   <MenuItem onClick={handleLogout}> Cerrar sesión </MenuItem>
                 </Menu>
               </div>
-            ) : (
-              navigate("/login")
             )}
           </Toolbar>
-          {props.isUserAdmin && <LaboratorioNav></LaboratorioNav>}
+          {props.isUserAdmin && <LaboratorioNav />}
         </AppBar>
       </Box>
     </>

@@ -8,12 +8,14 @@ import "./login.css";
 import { useNavigate } from 'react-router-dom'; 
 import { userContext } from "../../Context/LabProvider";
 import FormError from "../Mensajes/FormError";
+import { useState } from "react";
 
 export default function Login() {
   const {setUser} = React.useContext(userContext)
   const navigate = useNavigate()
+  const [error, setError] = useState(null)
   const { required, minLength, validateTrim } = formValidate();
-  const {register, handleSubmit, formState: { errors },} = useForm({
+  const {register, handleSubmit, formState: { errors }} = useForm({
     //BORRAR
     defaultValues: {
       user: "Admin01",
@@ -27,16 +29,19 @@ export default function Login() {
     try {
         const hashPass = btoa(password)
         const value = await getUsuario(user, hashPass);
-        if(value) {
+        console.log(value)
+        if(value) {    
             localStorage.setItem('usuario', JSON.stringify(value))
             setUser(value || JSON.parse(localStorage.getItem('usuario')))
             const rol = value.rol
             if(rol === "docente") navigate("/Docente/Pedidos");
             else if (rol === "lab") navigate("/Laboratorio/Pedidos")
-            else navigate("/login")
+            else navigate("/login")            
+        }else{
+          throw new Error
         }
     } catch (error) {
-        console.log(error);
+        setError({error: true ,message: 'Usuario o Contraseña incorrectos'})
     }
   };
 
@@ -57,10 +62,9 @@ export default function Login() {
               <TextField 
                   variant="filled"
                   error={errors.user ? true : false}
-                  sx={{borderBottomColor: "#ffffff", borderBottom: 'solid', input: { color: 'white' } }}
+                  sx={{ borderBottom: !errors.user ? 'solid': 'none', input: { color: 'white' } }}
                   className="input-login"
                   type="text"
-                  placeholder="Usuario"
                   label="Usuario"
                   InputLabelProps={{
                     style: {
@@ -76,11 +80,11 @@ export default function Login() {
                 <TextField 
                   variant="filled"
                   error={errors.password ? true : false}
-                  sx={{borderBottomColor: "#ffffff", borderBottom: 'solid', input: { color: 'white' }}}
+                  sx={{borderBottom: !errors.password ? 'solid': 'none', input: { color: 'white' }}}
                   className="input-login"
                   type="password"
-                  placeholder="Contraseña"
                   label="Contraseña"
+                  autocomplete="on"
                   InputLabelProps={{
                     style: {
                       // textOverflow: 'ellipsis',
@@ -99,6 +103,7 @@ export default function Login() {
               <Button className="button-login" type="submit">
                 Login
               </Button>
+               <FormError error={error}/>
             </form>
           </Box>
         </Grid>

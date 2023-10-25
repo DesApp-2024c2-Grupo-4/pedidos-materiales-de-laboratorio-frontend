@@ -25,7 +25,7 @@ const Listar = ({
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
-  const displayedEquipos = lista.slice(startIndex, endIndex);
+  const listaFiltrada = lista.slice(startIndex, endIndex);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -58,16 +58,17 @@ const Listar = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {displayedEquipos.map((row, index) => (
+            {listaFiltrada.map((row, index) => (
               <TableRow
                 key={index}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                sx={{ "&:last-child td, &:last-child th": { border: '0 solid transparent' } }}
               >
                 <TableCell component="th" scope="row">{row.descripcion}{" "}</TableCell>
                 <TableCell align="center">{row.clase || row.cas}</TableCell>  
                 <TableCell align="center">{row.stock == 0 ? 'Consultar': row.stock}</TableCell>
                 <TableCell align="center">
                   <IconButton
+                    variant={'primary.main'}
                     aria-label="editar"
                     onClick={() => handleEditar(row)}
                   >

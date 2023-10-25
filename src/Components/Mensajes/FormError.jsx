@@ -1,13 +1,14 @@
+import { FormControl, FormHelperText } from '@mui/material'
 import React from 'react'
 
 const FormError = ({error}) => {
   return (
-    <>
+    <FormControl error={error} >
         {error && 
-          <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-            <span className="font-medium">Oops!</span> {error.message}</p>
+          <FormHelperText sx={{ fontSize:'14px'}}>
+            <span >Oops!</span> {error.message}</FormHelperText>
           }
-    </>
+    </FormControl>
   )
 }
 

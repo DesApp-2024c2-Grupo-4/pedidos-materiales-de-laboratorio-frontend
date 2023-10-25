@@ -12,14 +12,14 @@ import NuevoPedido from "./Components/Docente/NuevoPedido";
 import Docente from "./Components/Docente/Pedidos";
 
 import Pedidos from "./Components/Laboratorio/Pedidos";
-import Alta_Equipo from "./Components/ABM/AltaEquipo";
-import Equipos from "./Components/Laboratorio/Equipos";
-import Usuarios from "./Components/Laboratorio/Usuarios";
-import Materiales from "./Components/Laboratorio/Materiales";
-import Reactivos from "./Components/Laboratorio/Reactivos";
-import LabProvider from "./Context/LabProvider";
-import { ThemeProvider } from "@mui/material/styles";
-import Theme1 from "./Components/Theme/Theme1";
+import Alta_Equipo from './Components/ABM/AltaEquipo';
+import Equipos from './Components/Laboratorio/Equipos';
+import Usuarios from './Components/Laboratorio/Usuarios';
+import Materiales from './Components/Laboratorio/Materiales'
+import Reactivos from './Components/Laboratorio/Reactivos'
+import LabProvider from './Context/LabProvider';
+import './navbar.css';
+import './pedidos.css';
 
 function App() {
   return (
