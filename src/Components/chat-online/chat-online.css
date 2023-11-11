@@ -1,25 +1,3 @@
-.container{
-    background-image: 
-    linear-gradient(
-      rgba(4, 9, 28, 0.7),
-      rgba(4, 9, 28, 0.7)
-    ),
-    url(../Image/fondo-login.png);
-    height: 100vh;
-    background-repeat: no-repeat;
-    width: 100%;
-    background-size: cover;
-    background-position: center;
-}
-*{
-    margin: 0;
-    padding: 0;
-}
-
-.title-login{
-    color: white;
-    font-size: 30px;
-}
 
 
 .input-login:focus{
@@ -123,6 +101,7 @@
 }
 .icono-cerrar{
     color: #ffffff;
+    cursor: pointer;
 }
 .container-message{
     display: flex;

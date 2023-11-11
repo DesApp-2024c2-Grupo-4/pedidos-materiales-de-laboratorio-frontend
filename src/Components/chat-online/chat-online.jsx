@@ -3,47 +3,48 @@ import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import { Grid, Box, Button, TextField } from "@mui/material";
 import CloseIcon from "@material-ui/icons/Close";
 import "./chat-online.css";
-import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import {io}  from "socket.io-client";
-import { getEquipoPorId } from "../../Services/getEquipoPorId";
-
+import { io } from "socket.io-client";
+import { getMensajes, enviarMensaje } from "../../Services/chat-service.js";
 
 const ENDPOINT = "http://localhost:3001";
 const socket = io(ENDPOINT);
 
-export default function ChatOnline() {
-  const [nuevoMensaje, setNuevoMensaje] = useState('');
+export default function ChatOnline({ pedido, onClose }) {
+  const [mensaje_input, setMensaje] = useState("");
   const [mensajes, setMensajes] = useState([]);
-  const [pedido, setpedido] = useState([]);
 
   useEffect(() => {
-    socket.on('chat_message', (data) => {
-      setMensajes(mensajes => [...mensajes, data]);
+    socket.on("chat_message", (data) => {
+      setMensajes((mensajes) => [...mensajes, data]);
     });
 
     return () => {
-      socket.off('connect');
-      socket.off('chat_message');
-    }
-
+      socket.off("connect");
+      socket.off("chat_message");
+    };
   }, []);
 
- 
-  React.useEffect(() => {
-    getEquipoPorId('64fe5abb1e88e7c93f8d13fa').then(resp=>{
-      setMensajes(pedido => [...pedido, resp]);
-    });
-  }, []);
   const handleSubmit = (e) => {
-    socket.emit('chat_message', {
-      usuario: socket.id,
-      mensaje: nuevoMensaje
-    });
+    debugger;
+    e.preventDefault();
+    let objMensaje = {
+      // id_equivalencia: id,
+      texto: e.target.input.value,
+      // id_remitente: usuario_id,
+      // id: `${socket - id}${Math.random()}`,
+      socketID: socket.id,
+    };
+    /*  enviarMensaje(objMensaje).then((rpta) => {
+      setMensajes([...mensajes, rpta.data]);
+      setMensaje("");
+    }); */
+    socket.emit("chat_message", objMensaje);
+   
   };
 
   return (
-    <Box className="container">
+    <Box className="container-chat">
       <Grid container>
         <Grid item xs={0} md={3}></Grid>
         <Grid item xs={12} md={6}>
@@ -51,38 +52,27 @@ export default function ChatOnline() {
             <Box className="chat-online">
               <Box className="container-cerrar">
                 <Box className="cerrar">
-                  <CloseIcon className="icono-cerrar" />
+                  <CloseIcon onClick={onClose} className="icono-cerrar" />
                 </Box>
               </Box>
               <Box className="chat">
                 <Box className="container-message">
-                {pedido.lista_mensajes.map((resp,index) => (
-                    true ? (
-                      <Box key={index} className="chat-prof">
-                        <p className="message-prof">{resp.mensaje}</p>
-                        <Box className="icono-message">
-                          <p>
-                            {pedido.docente.nombre[0].toLocaleUpperCase() +
-                              pedido.docente.apellido[0].toLocaleUpperCase()}
-                          </p>
-                        </Box>
-                      </Box>
-                    ) : (
-                      <Box key={index} className="chat-labo">
-                        <p className="message">{resp.mensaje}</p>
-                        <Box className="icono-message">
-                          <p>LAB</p>
-                        </Box>
-                      </Box>
-                    )
+                  {mensajes.map((mensaje) => (
+                    <li>
+                      {mensaje.socketID}: {mensaje.texto}
+                    </li>
                   ))}
                 </Box>
               </Box>
               <form onSubmit={handleSubmit}>
                 <Box className="container-enviar">
-                  <input className="input" name="input" placeholder="  hola..."></input>
+                  <input
+                    className="input"
+                    name="input"
+                    placeholder="  hola..."
+                  ></input>
                   <button className="button" type="submit">
-                  <ArrowDropUpIcon className="icono" /> 
+                    <ArrowDropUpIcon className="icono" />
                   </button>
                 </Box>
               </form>
