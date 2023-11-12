@@ -6,8 +6,9 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import TableContainer from '@mui/material/TableContainer';
+import { Button } from '@material-ui/core';
 
 
 import Paper from '@mui/material/Paper';
@@ -65,10 +66,22 @@ function PedidoDetalle(
                 maxWidth="lg"
             >
                 <div className="pedido-flex">
-                    <img className="pedido-icon-detalle" src={pedidoicon} alt="" />
-                    <DialogTitle id="scroll-dialog-title">Pedido #{descripcion}</DialogTitle>
-                    <label htmlFor="fecha_utilizacion" id="label_fecha_utilizacion"> Fecha de práctica: <br></br> {fechaActual2} {hora}</label>
-                    <div className="pedido-estado pedido-estado-detalle"></div>
+                    <div className="pedido-grupo">
+                        <img className="pedido-icon-detalle" src={pedidoicon} alt="" />
+                        <DialogTitle className="pedido-numero" id="scroll-dialog-title">Pedido #{descripcion}</DialogTitle>
+                    </div>
+                    <div className="pedido-grupo">
+                        <label htmlFor="fecha_utilizacion" id="label_fecha_utilizacion"> Fecha de práctica: <br></br> {fechaActual2} {hora}</label>
+                    </div>
+                    <div className="pedido-grupo pedido-grupo-iconos">
+                        <div className="chat-icon">✉️</div>
+                        <div className={`pedido-estado pedido-estado-detalle pedido-estado-fix ${tipo_pedido === "PENDIENTE"
+                        ? "pedido-estado-yellow"
+                        : tipo_pedido === "RECHAZADO"
+                        ? "pedido-estado-red"
+                        : "pedido-estado-green"}`}></div>
+                        <MoreVertIcon style={{color:'#fff'}} />
+                    </div>
                 </div>
                 <DialogContent dividers={scroll === 'paper'}>
                     <DialogContentText
@@ -76,29 +89,27 @@ function PedidoDetalle(
                         ref={descriptionElementRef}
                         tabIndex={-1}      >
                         
-                        <div>
+                        <div className="pedido-info">
 
-                            <fieldset>
-                                <label id="label_docente"> Docente : </label> <input type="text" id="docente" name="docente" value={`${docente.nombre}  ${docente.apellido}`} disabled />
-                                <label id="label_alumno"> Alumnos : </label> <input type="text" id="alumno" name="alumno" value={alumnos} disabled />
-                                <label id="label_grupo"> Grupos : </label> <input type="text" id="grupo" name="grupo" value={cantidad_grupos} disabled />
-                                <br></br>
-                                <label htmlFor="laboratorio" id="label_laboratorio"> Laboratorio: </label> <input type="text" id="laboratorio" name="laboratorio" value={(numero_laboratorio !== 0 ? numero_laboratorio : "Sin Asignar")} disabled />
-                                <label htmlFor="edificio" id="label_edificio"> Edificio: </label> <input type="text" id="edificio" name="edificio" value={edificio} disabled />
-                                <label htmlFor="estado" id="label_estado"> Estado: </label> <input type="text" id="tipo_pedido" name="tipo_pedido" value={tipo_pedido} disabled />
+                            <fieldset className="pedido-info-fieldset">
+                                <label htmlFor="laboratorio" id="label_laboratorio"> <strong>Laboratorio:</strong> {(numero_laboratorio !== 0 ? numero_laboratorio : "Sin Asignar")}</label>
+                                <label id="label_alumno"> <strong>Alumnos:</strong> {alumnos}</label>
+                                <label htmlFor="estado" id="label_estado"> <strong>Estado:</strong> {tipo_pedido}</label>
+                                <label htmlFor="edificio" id="label_edificio"> <strong>Edificio:</strong> {edificio}</label>
+                                <label id="label_grupo"> <strong>Grupos:</strong> {cantidad_grupos}</label>
+                                <label id="label_docente"> <strong>Docente:</strong> {`${docente.nombre}  ${docente.apellido}`}</label>
                             </fieldset>
                         </div>
-                        <hr></hr>
-                        <h4>Equipos</h4>
+                        <div id="card-info-detalle">
                         {/* LISTA EQUIPOS */}
                         <TableContainer component={Paper}>
                             <Table sx={{ minWidth: 650 }} aria-label="simple table">
 
-
-                                <Grid container direction="row" justifyContent="start"
+                                <h4 className="pedido-categoria-detalle">Equipos</h4>
+                                <Grid container direction="row" justifyContent="start" className="requerimientos-header"
                                     alignItems="center" spacing={{ xs: 2, md: 2 }} columns={{ xs: 12 }} >
                                     <Grid item xs={6} container justifyContent="flex-start" >
-                                        Descripcion
+                                        Descripción
                                     </Grid>
                                     <Grid item xs={2} container justifyContent="flex-start" >
                                         Tipo
@@ -139,18 +150,18 @@ function PedidoDetalle(
 
 
                             </Table>
-                        </TableContainer>
+                        
 
                         {/* LISTA MATERIALES */}
-                        <h4>Materiales</h4>
+                        <h4 className="pedido-categoria-detalle">Materiales</h4>
 
-                        <TableContainer component={Paper}>
+                        
                             <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                                <Grid container direction="row" justifyContent="Start"
+                                <Grid container direction="row" justifyContent="Start" className="requerimientos-header"
                                     alignItems="center" spacing={{ xs: 2, md: 2 }} columns={{ xs: 12 }} >
 
                                     <Grid item xs={6} container justifyContent="flex-start" >
-                                        Descripcion
+                                        Descripción
                                     </Grid>
                                     <Grid item xs={5} container justifyContent="flex-end" >
                                         Cantidad
@@ -175,19 +186,19 @@ function PedidoDetalle(
 
                                 </TableBody>
                             </Table>
-                        </TableContainer>
+                        
                         {/* LISTA REACTIVOS */}
 
-                        <h4>Reactivos</h4>
+                        <h4 className="pedido-categoria-detalle">Reactivos</h4>
 
-                        <TableContainer component={Paper}>
+                        
                             <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                                <Grid container direction="row" justifyContent="flex-start"
-                                    alignItems="center" marginBottom={1} spacing={{ xs: 1, md: 1 }} columns={{ xs: 12 }} >
+                                <Grid container direction="row" justifyContent="flex-start" className="requerimientos-header"
+                                    alignItems="center" marginBottom={1} spacing={{ xs: 1, md: 1 }} columns={{ xs: 12 }}>
 
                                     <Grid item xs={2} container justifyContent="center" >
 
-                                        Descripcion
+                                        Descripción
                                     </Grid>
                                     <Grid item xs={2} container justifyContent="center" >
                                         Cas
@@ -274,12 +285,13 @@ function PedidoDetalle(
 
                             </Table>
                         </TableContainer>
+                        </div>
+                        
 
 
 
                         <Grid container direction='row'
                             sx={{ marginTop: 4 }}>
-
                             <AsignarLaboratorio
                                 pedido={pedido}
                                 _id={_id}

@@ -98,6 +98,7 @@ const PedidoCabecera = (props) => {
     <div> <Grid container component="form" onSubmit={props.cargaEncabezado} noValidate direction="row"
       justifyContent="space-around"
       alignItems="center"
+      className='pedido-nuevo-form'
 
       sx={{
         '--Grid-borderWidth': '1px', borderTop: 'var(--Grid-borderWidth) solid',
