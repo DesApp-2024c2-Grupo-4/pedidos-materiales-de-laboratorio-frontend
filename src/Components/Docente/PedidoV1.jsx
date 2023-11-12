@@ -91,7 +91,7 @@ function PedidoV1({ pedido, esAdmin }) {
               // subheader={`Fecha : ${fecha_solicitud}`}
               subheader={`Fecha de Práctica: ${fecha_utilizar}`}
               action={
-                <IconButton>
+                <IconButton  >
                   <div
                     className={
                       tipo_pedido === "PENDIENTE"
@@ -101,7 +101,7 @@ function PedidoV1({ pedido, esAdmin }) {
                         : "pedido-estado-green"
                     }
                   ></div>
-                  <MoreVertIcon />
+                  <MoreVertIcon style={{color:'#fff'}} />
                 </IconButton>
               }
             />
