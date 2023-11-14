@@ -16,6 +16,8 @@ import Grid from '@mui/material/Grid';
 import pedidoicon from '../Image/pedido-icon.png';
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { Button } from '@material-ui/core';
+import { Badge, Tooltip } from "@mui/material";
+import MailIcon from '@mui/icons-material/Mail';
 const useStyles = makeStyles(() => ({
     root: {
         display: "flex",
@@ -78,7 +80,11 @@ function PedidoDetalle(
                         <label htmlFor="fecha_utilizacion" id="label_fecha_utilizacion"> Fecha de práctica: <br></br> {fechaActual2} {hora}</label>
                     </div>
                     <div className="pedido-grupo pedido-grupo-iconos">
-                        <div className="chat-icon">✉️</div>
+                        <Tooltip title="Mensajes">
+                            <Badge badgeContent={4} color="primary">
+                                <MailIcon sx={{color:'whitesmoke'}} />  
+                            </Badge>
+                        </Tooltip>
                         <div className={`pedido-estado pedido-estado-detalle pedido-estado-fix ${tipo_pedido === "PENDIENTE"
                         ? "pedido-estado-yellow"
                         : tipo_pedido === "RECHAZADO"

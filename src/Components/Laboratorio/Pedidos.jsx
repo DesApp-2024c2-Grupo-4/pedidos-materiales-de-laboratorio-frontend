@@ -85,7 +85,7 @@ function Pedidos() {
     console.log("se renderiza");
 
 
-  }, [tipo_pedido, fecha_fin, edificio])
+  }, [tipo_pedido, fecha_fin, fecha_inicio, edificio])
 
   useEffect(() => {
     const userActual = JSON.parse(localStorage.getItem('usuario'));
@@ -121,6 +121,7 @@ function Pedidos() {
       </Box>
       <Filtros
         cargarEstado={cargarEstado}
+        setTipoPedido={setTipoPedido}
         fecha_fin={fecha_fin}
         set_fecha_fin={set_fecha_fin}
         set_fecha_inicio={set_fecha_inicio}
@@ -139,7 +140,7 @@ function Pedidos() {
 
 
 
-      {(listaPedidos.length < 1) ?
+      {(listaPedidos && listaPedidos.length < 1) ?
         (<Box sx={{ flexGrow: 1, md: 2 }}><NoEncontrados /></Box>)
         : (
           <Box className="main-wrap" sx={{ flexGrow: 1, md: 2 }}>

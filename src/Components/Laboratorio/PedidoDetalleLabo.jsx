@@ -17,6 +17,8 @@ import Grid from '@mui/material/Grid';
 
 
 import AsignarLaboratorio from "./AsignarLaboratorio";
+import { Badge, Tooltip } from "@mui/material";
+import MailIcon from '@mui/icons-material/Mail';
 
 
 
@@ -74,7 +76,11 @@ function PedidoDetalle(
                         <label htmlFor="fecha_utilizacion" id="label_fecha_utilizacion"> Fecha de práctica: <br></br> {fechaActual2} {hora}</label>
                     </div>
                     <div className="pedido-grupo pedido-grupo-iconos">
-                        <div className="chat-icon">✉️</div>
+                        <Tooltip title="Mensajes">
+                            <Badge badgeContent={4} color="secondary">
+                                <MailIcon sx={{color:'whitesmoke'}} />
+                            </Badge>
+                        </Tooltip>
                         <div className={`pedido-estado pedido-estado-detalle pedido-estado-fix ${tipo_pedido === "PENDIENTE"
                         ? "pedido-estado-yellow"
                         : tipo_pedido === "RECHAZADO"
@@ -102,7 +108,7 @@ function PedidoDetalle(
                         </div>
                         <div id="card-info-detalle">
                         {/* LISTA EQUIPOS */}
-                        <TableContainer component={Paper}>
+                        <TableContainer sx={{maxHeight: 400}}>
                             <Table sx={{ minWidth: 650 }} aria-label="simple table">
 
                                 <h4 className="pedido-categoria-detalle">Equipos</h4>
@@ -127,10 +133,10 @@ function PedidoDetalle(
 
                                             //key={row._id}
                                             // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-
+                                            
                                             <Grid key={index} container direction="row"
                                                 alignItems="center" spacing={{ xs: 2, md: 2 }} columns={{ xs: 12 }} >
-
+                                                    
                                                 <Grid item xs={6} container justifyContent="start" >
 
                                                     {row.equipo.descripcion}

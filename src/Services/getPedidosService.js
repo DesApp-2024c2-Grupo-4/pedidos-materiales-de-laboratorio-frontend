@@ -27,7 +27,8 @@ export async function axiosGetPedido(fecha_utilizacion, tipo_pedido, fecha_inici
     if((fecha_inicio.length>0) &&( fecha_fin.length>0)){
         params.fecha_fin=fecha_fin;params.fecha_inicio=fecha_inicio    }
     try {
-       
+        console.log(params)
+       console.log(params.fecha_inicio)
         const response = await axios({
             method: 'get',params,
             
