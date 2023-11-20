@@ -26,19 +26,17 @@ export default function ChatOnline({ pedido, onClose }) {
   }, []);
 
   const handleSubmit = (e) => {
-    debugger;
+    console.log(pedido)
     e.preventDefault();
     let objMensaje = {
-      // id_equivalencia: id,
-      texto: e.target.input.value,
-      // id_remitente: usuario_id,
-      // id: `${socket - id}${Math.random()}`,
-      socketID: socket.id,
+      nombre:pedido.docente.nombre,
+      id_remitente: 3434344334,
+      mensaje:e.target.input.value,
+      read:true 
     };
-    /*  enviarMensaje(objMensaje).then((rpta) => {
-      setMensajes([...mensajes, rpta.data]);
-      setMensaje("");
-    }); */
+      enviarMensaje(objMensaje).then((rpta) => {
+      setMensajes([...mensajes, rpta]);
+    });
     socket.emit("chat_message", objMensaje);
    
   };
@@ -59,7 +57,7 @@ export default function ChatOnline({ pedido, onClose }) {
                 <Box className="container-message">
                   {mensajes.map((mensaje) => (
                     <li>
-                      {mensaje.socketID}: {mensaje.texto}
+                      {mensaje.nombre}: {mensaje.mensaje}
                     </li>
                   ))}
                 </Box>

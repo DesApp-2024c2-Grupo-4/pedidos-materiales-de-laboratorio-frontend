@@ -4,22 +4,26 @@ import { urlBD } from '../connectDB';
 
 export async function getMensajes(id) {
     const apiResponse = await axios.get(
-        `${urlBD}/mensajes/${id}`
+        `${urlBD}/api/mail/mails/${id}`
     );
     return apiResponse;
 }
 
 export async function enviarMensaje(mensaje) {
-    const apiResponse = await axios.post(
-        `${urlBD}/mensajes/`,
-        mensaje,
-        {
-            headers: {
-                'Content-Type': 'application/json'
-            }
+    try {
+    const requestJson = JSON.stringify(mensaje);
+    const response = await fetch(`${urlBD}/api/mail/send`, {
+        method: "POST",
+        body: requestJson,
+        headers: {
+          'Content-Type': 'application/json',
         }
-    );
-    return apiResponse;
+      });
+      return response.json();
+    } catch (e) {
+      console.log(e);
+    }
+   
 }
 
 export async function updateMensaje(mensaje) {
@@ -33,7 +37,7 @@ export async function updateMensaje(mensaje) {
 
 export async function deleteMensaje(id_mensaje) {
     const apiResponse = await axios.delete(
-        `${urlBD}/mensajes/${id_mensaje}`
+        `${urlBD}/api/mail/delete/${id_mensaje}`
     );
     return apiResponse;
 }
