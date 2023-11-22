@@ -111,7 +111,7 @@ function AsignarLaboratorio(pedido,
     <Grid container direction='row' component="form" onSubmit={modificarEncabezado}
       // sx={{ marginTop: 4 }}
       >
-
+        
       <Grid container 
       // component="form" noValidate 
       direction="row"
@@ -127,7 +127,7 @@ function AsignarLaboratorio(pedido,
           <Grid item xs={2} container
           //  justifyContent="start" 
            >
-
+            <InputLabel id="laboratorio_label">Laboratorio</InputLabel>
             <TextField
             fullWidth
               // sx={{ marginTop: 1 }}
@@ -135,7 +135,6 @@ function AsignarLaboratorio(pedido,
               id="laboratorio"
               variant="outlined"
               name="laboratorio"
-              label="Laboratorio"
               type="number"
               InputLabelProps={{
                 shrink: true,
@@ -154,7 +153,7 @@ function AsignarLaboratorio(pedido,
           
           >
             <FormControl fullWidth>
-              <InputLabel id="edificio">Edificio</InputLabel>
+              <InputLabel id="edificio_label">Edificio</InputLabel>
               <Select
                 InputLabelProps={{
                   shrink: true,
@@ -179,7 +178,7 @@ function AsignarLaboratorio(pedido,
         
           >
             <FormControl fullWidth>
-              <InputLabel id="tipo_pedido">Estado Pedido</InputLabel>
+              <InputLabel id="tipo_pedido_label">Estado Pedido</InputLabel>
               <Select
                 InputLabelProps={{
                   shrink: true,
@@ -205,9 +204,22 @@ function AsignarLaboratorio(pedido,
       <Grid container direction='row' spacing={{ xs: 1, md: 1 }} columns={{ xs: 12 }} 
        sx={{}}   justifyContent="flex-end" >
 
-        <Grid item xs={6} 
+        <Grid item xs={12} className='grid-botones'
        
           >
+                                            <Button
+                                    fullWidth
+                                    margin="normal"
+                                    variant="outlined"
+                                    bgcolor={"secondary"} color={"primary"}
+
+                                    //onClick={modificarEncabezado}
+                                    type="submit"
+                                    className='boton-cerrar-pedido'
+                                    >
+                                    Cerrar
+
+                            </Button>
           <Button
 
             fullWidth
@@ -217,8 +229,9 @@ function AsignarLaboratorio(pedido,
 
             //onClick={modificarEncabezado}
             type="submit"
+            className='boton-modificar-pedido'
           >
-            Modificar
+            Editar
 
           </Button>
 

@@ -14,13 +14,13 @@ import Paper from "@mui/material/Paper";
 import moment from "moment";
 import Grid from "@mui/material/Grid";
 import pedidoicon from "../Image/pedido-icon.png";
-import Badge from "@mui/material/Badge";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { Button } from "@material-ui/core";
+import { Badge, Tooltip } from "@mui/material";
 import MailIcon from "@mui/icons-material/Mail";
 import ChatOnline from "../chat-online/chat-online";
-import Modal from '@mui/material/Modal';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
 const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
@@ -39,10 +39,7 @@ function PedidoDetalle({
   handleClose = { handleClose },
   pedido = { pedido },
 }) {
-    const [openButton, setOpenButton] = React.useState(false);
-  const handleOpen = () => setOpenButton(true);
-  const handleCloseButton = () => setOpenButton(false);
-
+  const { root } = useStyles();
 
   const {
     numero_tp,
@@ -63,226 +60,136 @@ function PedidoDetalle({
   const fechaActual2 = moment(fecha_utilizacion).utc().format("DD/MM/YYYY");
   const hora = moment(fecha_utilizacion).utc().format("HH:mm");
   const descriptionElementRef = React.useRef(null);
-
+  const [openButton, setOpenButton] = React.useState(false);
+  const handleOpen = () => setOpenButton(true);
+  const handleCloseButton = () => setOpenButton(false);
   //console.log(lista_materiales);
 
   return (
     <div>
       <Dialog
-        open={!!open}
+        open={Boolean(open)}
         onClose={handleClose}
         scroll={scroll}
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
         maxWidth="lg"
       >
-        <Button onClick={handleOpen}><Badge color="primary">
-          <MailIcon
-            color="action"
-          />
-        </Badge></Button>
-      <Modal
-        open={openButton}
-        onClose={handleCloseButton}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box >
-          <ChatOnline pedido={pedido} onClose={handleCloseButton}></ChatOnline>
-        </Box>
-      </Modal>
-        <img className="pedido-icon-detalle" src={pedidoicon} alt="" />
-        <DialogTitle id="scroll-dialog-title">
-          Pedido n°: {descripcion}
-        </DialogTitle>
+        <div className="pedido-flex">
+          <div className="pedido-grupo">
+            <img className="pedido-icon-detalle" src={pedidoicon} alt="" />
+            <DialogTitle className="pedido-numero" id="scroll-dialog-title">
+              Pedido #{descripcion}
+            </DialogTitle>
+          </div>
+          <div className="pedido-grupo">
+            <label htmlFor="fecha_utilizacion" id="label_fecha_utilizacion">
+              {" "}
+              Fecha de práctica: <br></br> {fechaActual2} {hora}
+            </label>
+          </div>
+          <div className="pedido-grupo pedido-grupo-iconos">
+            <Tooltip title="Mensajes">
+              <Badge badgeContent={4} color="primary">
+                <MailIcon sx={{ color: "whitesmoke" }} />
+              </Badge>
+              <Modal
+                open={openButton}
+                onClose={handleCloseButton}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box>
+                  <ChatOnline
+                    pedido={pedido}
+                    onClose={handleCloseButton}
+                  ></ChatOnline>
+                </Box>
+              </Modal>
+            </Tooltip>
+            <div
+              className={`pedido-estado pedido-estado-detalle pedido-estado-fix ${
+                tipo_pedido === "PENDIENTE"
+                  ? "pedido-estado-yellow"
+                  : tipo_pedido === "RECHAZADO"
+                  ? "pedido-estado-red"
+                  : "pedido-estado-green"
+              }`}
+            ></div>
+            <MoreVertIcon style={{ color: "#fff" }} />
+          </div>
+        </div>
         <DialogContent dividers={scroll === "paper"}>
           <DialogContentText
             id="scroll-dialog-description"
             ref={descriptionElementRef}
             tabIndex={-1}
           >
-            <div>
-              <fieldset>
-                <label htmlFor="fecha_trabajo" id="label_fecha_trabajo">
-                  {" "}
-                  Fecha solicitud:{" "}
-                </label>{" "}
-                <input
-                  type="text"
-                  id="fecha_trabajo"
-                  name="fecha_trabajo"
-                  value={fechaActual}
-                  disabled
-                />
-                <label htmlFor="fecha_utilizacion" id="label_fecha_utilizacion">
-                  {" "}
-                  Fecha Utilización:{" "}
-                </label>{" "}
-                <input
-                  type="text"
-                  id="fecha_utilizacion"
-                  name="fecha_utilizacion"
-                  value={fechaActual2}
-                  disabled
-                />
-                <label htmlFor="hora" id="label_hora">
-                  {" "}
-                  Hora:{" "}
-                </label>{" "}
-                <input
-                  type="text"
-                  id="hora"
-                  name="hora"
-                  value={hora}
-                  disabled
-                />
-                <br></br>
-                <label id="label_docente"> Docente: </label>{" "}
-                <input
-                  type="text"
-                  id="docente"
-                  name="docente"
-                  value={`${docente.nombre}  ${docente.apellido}`}
-                  disabled
-                />
-                <label id="label_alumno"> Alumnos: </label>{" "}
-                <input
-                  type="text"
-                  id="alumno"
-                  name="alumno"
-                  value={alumnos}
-                  disabled
-                />
-                <label id="label_grupo"> Grupos: </label>{" "}
-                <input
-                  type="text"
-                  id="grupo"
-                  name="grupo"
-                  value={cantidad_grupos}
-                  disabled
-                />
-                <br></br>
+            <div className="pedido-info">
+              <fieldset className="pedido-info-fieldset">
                 <label htmlFor="laboratorio" id="label_laboratorio">
                   {" "}
-                  Laboratorio:{" "}
-                </label>{" "}
-                <input
-                  type="text"
-                  id="laboratorio"
-                  name="laboratorio"
-                  value={
-                    numero_laboratorio !== 0
-                      ? numero_laboratorio
-                      : "Sin Asignar"
-                  }
-                  disabled
-                />
-                <label htmlFor="edificio" id="label_edificio">
+                  <strong>Laboratorio:</strong>{" "}
+                  {numero_laboratorio !== 0
+                    ? numero_laboratorio
+                    : "Sin Asignar"}
+                </label>
+                <label id="label_alumno">
                   {" "}
-                  Edificio:{" "}
-                </label>{" "}
-                <input
-                  type="text"
-                  id="edificio"
-                  name="edificio"
-                  value={edificio}
-                  disabled
-                />
+                  <strong>Alumnos:</strong> {alumnos}
+                </label>
                 <label htmlFor="estado" id="label_estado">
                   {" "}
-                  Estado:{" "}
-                </label>{" "}
-                <input
-                  type="text"
-                  id="tipo_pedido"
-                  name="tipo_pedido"
-                  value={tipo_pedido}
-                  disabled
-                />
+                  <strong>Estado:</strong> {tipo_pedido}
+                </label>
+                <label htmlFor="edificio" id="label_edificio">
+                  {" "}
+                  <strong>Edificio:</strong> {edificio}
+                </label>
+                <label id="label_grupo">
+                  {" "}
+                  <strong>Grupos:</strong> {cantidad_grupos}
+                </label>
+                <label id="label_docente">
+                  {" "}
+                  <strong>Docente:</strong>{" "}
+                  {`${docente.nombre}  ${docente.apellido}`}
+                </label>
               </fieldset>
             </div>
-            <hr></hr>
-            <h4>Equipos</h4>
-            {/* LISTA EQUIPOS */}
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="start"
-                  alignItems="center"
-                  spacing={{ xs: 2, md: 2 }}
-                  columns={{ xs: 12 }}
-                >
-                  <Grid item xs={6} container justifyContent="flex-start">
-                    Descripcion
+            <div id="card-info-detalle" className="card-info-prof">
+              {/* LISTA EQUIPOS */}
+              <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                  <h4 className="pedido-categoria-detalle">Equipos</h4>
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="start"
+                    className="requerimientos-header"
+                    alignItems="center"
+                    spacing={{ xs: 2, md: 2 }}
+                    columns={{ xs: 12 }}
+                  >
+                    <Grid item xs={6} container justifyContent="flex-start">
+                      Descripción
+                    </Grid>
+                    <Grid item xs={2} container justifyContent="flex-start">
+                      Tipo
+                    </Grid>
+                    <Grid item xs={3} container justifyContent="flex-end">
+                      Cantidad
+                    </Grid>
                   </Grid>
-                  <Grid item xs={2} container justifyContent="flex-start">
-                    Tipo
-                  </Grid>
-                  <Grid item xs={3} container justifyContent="flex-end">
-                    Cantidad
-                  </Grid>
-                </Grid>
 
-                {lista_equipos.length > 0 ? (
-                  <div>
-                    {lista_equipos.map((row) => (
-                      // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-
-                      <Grid
-                        key={row.equipo._id.toString()}
-                        container
-                        direction="row"
-                        alignItems="center"
-                        spacing={{ xs: 2, md: 2 }}
-                        columns={{ xs: 12 }}
-                      >
-                        <Grid item xs={6} container justifyContent="start">
-                          {row.equipo.descripcion}
-                        </Grid>
-                        <Grid item xs={2} container justifyContent="flex-start">
-                          {row.equipo.clase}
-                        </Grid>
-                        <Grid item xs={3} container justifyContent="end">
-                          {row.cantidad}
-                        </Grid>
-                      </Grid>
-                    ))}
-                  </div>
-                ) : (
-                  <div></div>
-                )}
-              </Table>
-            </TableContainer>
-
-            {/* LISTA MATERIALES */}
-            <h4>Materiales</h4>
-
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="Start"
-                  alignItems="center"
-                  spacing={{ xs: 2, md: 2 }}
-                  columns={{ xs: 12 }}
-                >
-                  <Grid item xs={6} container justifyContent="flex-start">
-                    Descripcion
-                  </Grid>
-                  <Grid item xs={5} container justifyContent="flex-end">
-                    Cantidad
-                  </Grid>
-                </Grid>
-                <TableBody>
-                  {lista_materiales.length > 0 ? (
+                  {lista_equipos.length > 0 ? (
                     <div>
-                      {lista_materiales.map((row, index) => (
-                        // key={row._id}
+                      {lista_equipos.map((row, index) => (
+                        //key={row._id}
+                        // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+
                         <Grid
-                          key={row.material._id.toString()}
+                          key={index}
                           container
                           direction="row"
                           alignItems="center"
@@ -290,9 +197,17 @@ function PedidoDetalle({
                           columns={{ xs: 12 }}
                         >
                           <Grid item xs={6} container justifyContent="start">
-                            {row.material.descripcion}
+                            {row.equipo.descripcion}
                           </Grid>
-                          <Grid item xs={5} container justifyContent="flex-end">
+                          <Grid
+                            item
+                            xs={2}
+                            container
+                            justifyContent="flex-start"
+                          >
+                            {row.equipo.clase}
+                          </Grid>
+                          <Grid item xs={3} container justifyContent="end">
                             {row.cantidad}
                           </Grid>
                         </Grid>
@@ -301,122 +216,182 @@ function PedidoDetalle({
                   ) : (
                     <div></div>
                   )}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            {/* LISTA REACTIVOS */}
+                </Table>
 
-            <h4>Reactivos</h4>
+                {/* LISTA MATERIALES */}
+                <h4 className="pedido-categoria-detalle">Materiales</h4>
 
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="flex-start"
-                  alignItems="center"
-                  marginBottom={1}
-                  spacing={{ xs: 1, md: 1 }}
-                  columns={{ xs: 12 }}
-                >
-                  <Grid item xs={2} container justifyContent="start">
-                    Descripcion
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="Start"
+                    className="requerimientos-header"
+                    alignItems="center"
+                    spacing={{ xs: 2, md: 2 }}
+                    columns={{ xs: 12 }}
+                  >
+                    <Grid item xs={6} container justifyContent="flex-start">
+                      Descripción
+                    </Grid>
+                    <Grid item xs={5} container justifyContent="flex-end">
+                      Cantidad
+                    </Grid>
                   </Grid>
-                  <Grid item xs={2} container justifyContent="center">
-                    Cas
-                  </Grid>
-                  <Grid item xs={1} container justifyContent="start">
-                    Calidad
-                  </Grid>
-                  <Grid item xs={2} container justifyContent="center">
-                    Cant Total
-                  </Grid>
-                  <Grid item xs={1} container justifyContent="center">
-                    U. de Medida
-                  </Grid>
-                  <Grid item xs={1} container justifyContent="center">
-                    Tipo Conc.
-                  </Grid>
-                  <Grid item xs={1} container justifyContent="center">
-                    Medida Conc.
-                  </Grid>
-                  <Grid item xs={2} container justifyContent="center">
-                    Disolvente
-                  </Grid>
-                  {/* <Grid item xs={1} container justifyContent="center" >
-                                        Otro Disolv
-                                    </Grid> */}
-                  {/*  <Grid item xs={1} container justifyContent="center" >
+                  <TableBody>
+                    {lista_materiales.length > 0 ? (
+                      <div>
+                        {lista_materiales.map((row, index) => (
+                          <Grid
+                            key={index}
+                            container
+                            direction="row"
+                            alignItems="center"
+                            spacing={{ xs: 2, md: 2 }}
+                            columns={{ xs: 12 }}
+                          >
+                            <Grid item xs={6} container justifyContent="start">
+                              {row.material.descripcion}
+                            </Grid>
+                            <Grid
+                              item
+                              xs={5}
+                              container
+                              justifyContent="flex-end"
+                            >
+                              {row.cantidad}
+                            </Grid>
+                          </Grid>
+                        ))}
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                  </TableBody>
+                </Table>
+
+                {/* LISTA REACTIVOS */}
+
+                <h4 className="pedido-categoria-detalle">Reactivos</h4>
+
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="flex-start"
+                    className="requerimientos-header"
+                    alignItems="center"
+                    marginBottom={1}
+                    spacing={{ xs: 1, md: 1 }}
+                    columns={{ xs: 12 }}
+                  >
+                    <Grid item xs={2} container justifyContent="center">
+                      Descripción
+                    </Grid>
+                    <Grid item xs={2} container justifyContent="center">
+                      Cas
+                    </Grid>
+                    <Grid item xs={1} container justifyContent="center">
+                      Calidad
+                    </Grid>
+                    <Grid item xs={2} container justifyContent="center">
+                      Cant Total
+                    </Grid>
+                    <Grid item xs={1} container justifyContent="center">
+                      U. de Medida
+                    </Grid>
+                    <Grid item xs={1} container justifyContent="center">
+                      Tipo Conc.
+                    </Grid>
+                    <Grid item xs={1} container justifyContent="center">
+                      Medida Conc.
+                    </Grid>
+                    <Grid item xs={2} container justifyContent="center">
+                      Disolvente
+                    </Grid>
+                    {/* <Grid item xs={1} container justifyContent="center" >
                                         Cant Total
+                                    </Grid>
+                                    <Grid item xs={1} container justifyContent="center" >
+                                        U. Med
                                     </Grid> */}
-                  {/* <Grid item xs={1} container justifyContent="center" >
-                                        Med Concent
-                                    </Grid> */}
-                </Grid>
+                  </Grid>
 
-                {lista_reactivos.length > 0 ? (
-                  <div>
-                    {lista_reactivos.map((row) => (
-                      <Grid
-                        key={row.reactivo._id.toString()}
-                        container
-                        direction="row"
-                        justifyContent="start"
-                        alignItems="center"
-                        spacing={{ xs: 1, md: 1 }}
-                        columns={{ xs: 12 }}
-                      >
-                        <Grid item xs={2} container justifyContent="center">
-                          {row.reactivo.descripcion}
-                        </Grid>
-                        <Grid item xs={2} container justifyContent="center">
-                          {row.reactivo.cas}
-                        </Grid>
-                        <Grid item xs={1} container justifyContent="start">
-                          {row.calidad}
-                        </Grid>
-                        <Grid item xs={2} container justifyContent="center">
-                          {row.cantidad}
-                        </Grid>
-                        <Grid item xs={1} container justifyContent="center">
-                          {row.un_medida}
-                        </Grid>
-                        <Grid item xs={1} container justifyContent="center">
-                          {row.concentracion_tipo}
-                        </Grid>
+                  {lista_reactivos.length > 0 ? (
+                    <div>
+                      {lista_reactivos.map((row, index) => (
                         <Grid
-                          item
-                          xs={1}
+                          key={index}
                           container
-                          justifyContent="center"
+                          direction="row"
+                          justifyContent="start"
                           alignItems="center"
+                          spacing={{ xs: 1, md: 1 }}
+                          columns={{ xs: 12 }}
                         >
-                          {row.concentracion_medida}
-                        </Grid>
-                        <Grid item xs={2} container justifyContent="center">
-                          {row.disolvente === "otro" ? (
-                            <div>{row.otro_disolvente_descripcion}</div>
-                          ) : (
-                            <div>{row.disolvente} </div>
-                          )}
-                        </Grid>
-                        {/* <Grid item xs={1} container justifyContent="center" >
-                                                    {row.otro_disolvente_descripcion}
-                                                </Grid>  */}
-                        {/* <Grid item xs={1} container justifyContent="center" >
+                          <Grid item xs={2} container justifyContent="center">
+                            {row.reactivo.descripcion}
+                          </Grid>
+                          <Grid item xs={2} container justifyContent="center">
+                            {row.reactivo.cas}
+                          </Grid>
+                          <Grid item xs={1} container justifyContent="center">
+                            {row.calidad}
+                          </Grid>
+                          <Grid item xs={2} container justifyContent="center">
+                            {row.cantidad}
+                          </Grid>
+                          <Grid item xs={1} container justifyContent="center">
+                            {row.un_medida}
+                          </Grid>
+                          <Grid item xs={1} container justifyContent="center">
+                            {row.concentracion_tipo}
+                          </Grid>
+                          <Grid
+                            item
+                            xs={1}
+                            container
+                            justifyContent="center"
+                            alignItems="center"
+                          >
+                            {row.concentracion_medida}
+                          </Grid>
+                          <Grid item xs={2} container justifyContent="center">
+                            {row.disolvente === "otro" ? (
+                              <div>{row.otro_disolvente_descripcion}</div>
+                            ) : (
+                              <div>{row.disolvente} </div>
+                            )}
+                            {/* {row.disolvente} */}
+                          </Grid>
+                          {/* <Grid item xs={1} container justifyContent="center" >
                                                     {row.cantidad}
                                                 </Grid> */}
-                        {/* <Grid item xs={1} container justifyContent="center" alignItems="center">
+                          {/* <Grid item xs={1} container justifyContent="center" alignItems="center">
                                                     {row.concentracion_medida}
                                                 </Grid> */}
-                      </Grid>
-                    ))}
-                  </div>
-                ) : (
-                  <div></div>
-                )}
-              </Table>
-            </TableContainer>
+                        </Grid>
+                      ))}
+                    </div>
+                  ) : (
+                    <div></div>
+                  )}
+                </Table>
+              </TableContainer>
+            </div>
+
+            <Button
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              bgcolor={"secondary"}
+              color={"primary"}
+              //onClick={modificarEncabezado}
+              type="submit"
+              className="boton-cerrar-pedido boton-cerrar-pedido-prof"
+            >
+              Cerrar
+            </Button>
           </DialogContentText>
         </DialogContent>
       </Dialog>

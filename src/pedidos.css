@@ -67,6 +67,7 @@
     transition-duration: 0.3s!important;
     transition-property: transform !important;
     transform: translateZ(0)!important;
+    margin-top: 50px !important;
 }
 .card:hover {
     margin-top: 20px;
@@ -252,15 +253,247 @@
 
 .pedido-icon-detalle {
     width: 100px;
-    margin-left: 32px;
     margin-top: 10px;
 }
 
 .pedido-estado-detalle {
+    
+}
 
+#card-info-detalle * {
+    background-color:#1D2F58;
 }
 
 .pedido-flex {
     display: flex;
-    
+    justify-content: space-between;
 }
+
+.pedido-grupo {
+    display: flex;
+    align-items: center;
+    width: 30%;
+    justify-content: center;
+}
+
+.pedido-grupo-iconos {
+    justify-content: space-evenly;
+}
+
+.pedido-estado-fix {
+    margin-left: 20px;
+}
+
+#label_fecha_utilizacion {
+    color: white !important;
+    font-size: 20px;
+}
+
+.pedido-numero {
+    padding: 5px !important;
+    position: relative;
+    bottom: 10px;
+    font-size: 22px !important;
+}
+
+.chat-icon {
+    font-size: 30px;
+    transition: all 300ms;
+}
+
+.chat-icon:hover {
+    transform: scale(1.3);
+    cursor: pointer;
+}
+
+.pedido-categoria-detalle {
+    background-color: rgba(27, 98, 26, 1) !important;
+    color: white;
+    padding-left: 20px;
+    margin: 2vh 0px;
+    height: 46px;
+    line-height: 40px;
+    border-radius: 15px;
+}
+
+.pedido-info {
+    background-color: rgba(217, 217, 217, 1) !important;
+    padding: 10px 60px !important;
+    border-radius: 8px !important;
+}
+
+.css-ypiqx9-MuiDialogContent-root {
+    padding: 20px 12px !important;
+}
+
+.pedido-info-fieldset {
+    display: grid;
+    grid-template-areas: "1fr 1fr 1fr"
+                        "1fr 1fr 1fr";
+    justify-content: space-between;
+    border: none;
+    padding: 3px 12px;
+}
+
+.pedido-info-fieldset > label {
+    font-size: 14px;
+}
+
+.pedido-info-fieldset > * > strong {
+    color: rgba(29, 47, 88, 1) !important;
+}
+
+.requerimientos-header {
+    background-color: #1D2F58;
+    color: white;
+    padding-bottom: 3px;
+    border-bottom: 2px solid white !important;
+    padding-top: 10px !important;
+    margin-bottom: 3px !important;
+}
+
+.css-quj9j6-MuiTable-root {
+    color: white;
+}
+
+#card-info-detalle {
+    overflow-y: auto;
+}
+
+.boton-nuevo {
+    background: #1B621A !important;
+    border-radius: 50% !important;
+    color: white !important;
+    height: 100px !important;
+    width: 100px !important;
+    position: fixed !important;
+    bottom: 0;
+    box-shadow: 2px 2px 5px 0px rgba(33, 33, 33, 0.744) !important;
+    right: 0;
+    margin-right: calc(1% + 25px) !important;
+    margin-bottom: calc(1% + 25px) !important;
+}
+
+.boton-add {
+    font-size: 4.5rem !important;
+}
+
+.boton-nuevo:hover {
+    background: #1d7f1b !important;
+}
+
+.boton-nuevo:hover .boton-add {
+    font-size: 5rem !important;
+    transition: all 300ms;
+}
+
+.pedido-nuevo-form {
+    margin-top: 40px !important;
+}
+
+@media (width < 769px) {
+    .boton-nuevo {
+        height: 80px !important;
+        width: 80px !important;
+    }
+}
+
+.filtros-grupo {
+    display: block !important;
+    margin: 0 auto !important;
+}
+
+.grid-filtros {
+    flex-direction: row !important;
+}
+
+.css-1emkr9y-MuiGrid-root {
+    flex-basis: 70px !important;
+    width: 10px !important;
+}
+
+button span .css-i4bv87-MuiSvgIcon-root {
+    position: relative;
+    right: 10px;
+    bottom: 3px;
+    height: 60px !important;
+}
+
+#fecha_inicio, #fecha_fin {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 3px;
+    color: white !important;
+    width: 140px !important;
+}
+
+.css-hsmc6z-MuiTypography-root {
+    color: white !important;
+}
+
+.css-1lr46si {
+    margin-top: 60px !important;
+}
+
+.css-1nxlw3t-MuiPaper-root-MuiDialog-paper {
+    width: 1100px !important;
+}
+
+
+.boton-modificar-pedido {
+    margin-top: 20px !important;
+    width: 200px !important;
+    background-color: rgba(63, 236, 80, 1) !important;
+    color: black !important;
+    text-transform: capitalize !important;
+    font-size: 20px !important;
+    padding: 2px 12px !important;
+    font-weight: 300 !important;
+}
+
+.css-fley9l-MuiGrid-root legend {
+    text-align: center;
+}
+
+#laboratorio, .card #edificio, #tipo_pedido {
+    color: white !important;
+}
+
+#tipo_pedido_label, #edificio_label, #laboratorio_label {
+    color: white !important;
+}
+
+#laboratorio_label {
+    font-size: 12px;
+    position: absolute;
+    left: 50px;
+    top: 640px;
+    z-index: 2;
+}
+
+.grid-botones {
+    display: flex;
+    justify-content: center;
+}
+
+.grid-botones button{
+    margin: 0px 12px;
+}
+
+.boton-cerrar-pedido {
+    margin-top: 20px !important;
+    width: 200px !important;
+    background: rgba(217, 217, 217, 1) !important;
+    color: black !important;
+    text-transform: capitalize !important;
+    font-size: 20px !important;
+    padding: 2px 12px !important;
+    font-weight: 300 !important;
+}
+
+.boton-cerrar-pedido-prof {
+    margin-left: 40% !important;
+}
+

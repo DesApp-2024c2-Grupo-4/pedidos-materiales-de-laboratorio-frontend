@@ -3,9 +3,7 @@ import PedidoV1 from "../Docente/PedidoV1";
 import { getListaPedidos } from "../../Services/getPedidosService";
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import Theme1 from '../Theme/Theme1';
 import Header from '../Header/Header'
-import { ThemeProvider } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import NoEncontrados from "../Mensajes/NoEncontrados"
 import Filtros from "./Filtros";
@@ -87,7 +85,7 @@ function Pedidos() {
     console.log("se renderiza");
 
 
-  }, [tipo_pedido, fecha_fin, edificio])
+  }, [tipo_pedido, fecha_fin, fecha_inicio, edificio])
 
   useEffect(() => {
     const userActual = JSON.parse(localStorage.getItem('usuario'));
@@ -114,15 +112,16 @@ function Pedidos() {
 
             // style={{ color: "#b4e0bc", borderRadius: 15 }}
             >
-              <CardActionArea onClick={handleClickOpen('body')}>
+              {/* <CardActionArea onClick={handleClickOpen('body')}>
                 <FilterListIcon fontSize="large" style={{ color: "#b4e0bc" }} />
-              </CardActionArea>
+              </CardActionArea> */}
             </Card>
           </Grid>
         </Grid>
       </Box>
       <Filtros
         cargarEstado={cargarEstado}
+        setTipoPedido={setTipoPedido}
         fecha_fin={fecha_fin}
         set_fecha_fin={set_fecha_fin}
         set_fecha_inicio={set_fecha_inicio}
@@ -141,7 +140,7 @@ function Pedidos() {
 
 
 
-      {(listaPedidos.length < 1) ?
+      {(listaPedidos && listaPedidos.length < 1) ?
         (<Box sx={{ flexGrow: 1, md: 2 }}><NoEncontrados /></Box>)
         : (
           <Box className="main-wrap" sx={{ flexGrow: 1, md: 2 }}>
