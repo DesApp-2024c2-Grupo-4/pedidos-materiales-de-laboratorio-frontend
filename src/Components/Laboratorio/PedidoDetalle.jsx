@@ -41,6 +41,7 @@ function PedidoDetalle({
 }) {
   const { root } = useStyles();
 
+  
   const {
     numero_tp,
     fecha_solicitud,
