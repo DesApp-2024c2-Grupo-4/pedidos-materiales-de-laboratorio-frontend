@@ -13,8 +13,14 @@ const socket = io(ENDPOINT);
 export default function ChatOnline({ pedido, onClose }) {
   const [mensaje_input, setMensaje] = useState("");
   const [mensajes, setMensajes] = useState([]);
-
+ const userActual = JSON.parse(localStorage.getItem("usuario"));
+ const pedidoId =pedido._id
   useEffect(() => {
+
+    // Únete al chat cuando el componente se monta
+    socket.emit("joinChat", pedidoId);
+
+
     socket.on("chat_message", (data) => {
       setMensajes((mensajes) => [...mensajes, data]);
     });
@@ -26,21 +32,37 @@ export default function ChatOnline({ pedido, onClose }) {
   }, []);
 
   const handleSubmit = (e) => {
-    console.log(pedido);
+    debugger
+    console.log(userActual)
     e.preventDefault();
     let objMensaje = {
-      nombre: pedido.docente.nombre,
-      id_remitente: 3434344334,
+      nombre:userActual.rol == 'lab'? 'LAB' : userActual.nombre[0].toLocaleUpperCase() + userActual.apellido[0].toLocaleUpperCase(),
+      id_emisor: userActual.dni,
       mensaje: e.target.input.value,
       read: true,
+      id_pedido:pedido._id
     };
     enviarMensaje(objMensaje).then((rpta) => {
       setMensajes([...mensajes, rpta]);
     });
-    
-    socket.emit("chat_message", objMensaje);
+    const message =objMensaje.mensaje
+    socket.emit("sendMessage", pedidoId, message);
+    e.target.input.value = "";
   };
 
+
+  function sendMessage() {
+    const pedidoId = document.getElementById('pedidoIdInput').value;
+    const message = document.getElementById('messageInput').value;
+    socket.emit('sendMessage', pedidoId, message);
+  }
+
+  socket.on('chatMessage', (message) => {
+    const chatMessages = document.getElementById('chatMessages');
+    const messageElement = document.createElement('p');
+    messageElement.textContent = message;
+    chatMessages.appendChild(messageElement);
+  });
   return (
     <Box className="container-chat">
       <Grid container>
@@ -56,13 +78,12 @@ export default function ChatOnline({ pedido, onClose }) {
               <Box className="chat">
                 <Box className="container-message">
                   {mensajes.map((mensaje,index) =>
-                    mensaje.nombre != "LAB" ? (
+                    mensaje.id_emisor != userActual.dni? (
                       <Box key={index} className="chat-prof">
                         <p className="message-prof">{mensaje.mensaje}</p>
                         <Box className="icono-message">
                           <p>
-                            {pedido.docente.nombre[0].toLocaleUpperCase() +
-                              pedido.docente.apellido[0].toLocaleUpperCase()}
+                            {mensaje.nombre}
                           </p>
                         </Box>
                       </Box>
@@ -70,7 +91,7 @@ export default function ChatOnline({ pedido, onClose }) {
                       <Box key={index} className="chat-labo">
                         <p className="message">{mensaje.mensaje}</p>
                         <Box className="icono-message">
-                          <p>LAB</p>
+                        {mensaje.nombre}
                         </Box>
                       </Box>
                     )
