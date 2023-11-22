@@ -91,7 +91,7 @@ function PedidoDetalle({
           <div className="pedido-grupo pedido-grupo-iconos">
             <Tooltip title="Mensajes">
               <Badge badgeContent={4} color="primary">
-                <MailIcon sx={{ color: "whitesmoke" }} />
+                <MailIcon onClick={handleOpen} sx={{ color: "whitesmoke" }} />
               </Badge>
               <Modal
                 open={openButton}

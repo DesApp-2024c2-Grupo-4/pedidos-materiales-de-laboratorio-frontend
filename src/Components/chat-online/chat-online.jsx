@@ -26,19 +26,19 @@ export default function ChatOnline({ pedido, onClose }) {
   }, []);
 
   const handleSubmit = (e) => {
-    console.log(pedido)
+    console.log(pedido);
     e.preventDefault();
     let objMensaje = {
-      nombre:pedido.docente.nombre,
+      nombre: pedido.docente.nombre,
       id_remitente: 3434344334,
-      mensaje:e.target.input.value,
-      read:true 
+      mensaje: e.target.input.value,
+      read: true,
     };
-      enviarMensaje(objMensaje).then((rpta) => {
+    enviarMensaje(objMensaje).then((rpta) => {
       setMensajes([...mensajes, rpta]);
     });
+    
     socket.emit("chat_message", objMensaje);
-   
   };
 
   return (
@@ -55,11 +55,26 @@ export default function ChatOnline({ pedido, onClose }) {
               </Box>
               <Box className="chat">
                 <Box className="container-message">
-                  {mensajes.map((mensaje) => (
-                    <li>
-                      {mensaje.nombre}: {mensaje.mensaje}
-                    </li>
-                  ))}
+                  {mensajes.map((mensaje,index) =>
+                    mensaje.nombre != "LAB" ? (
+                      <Box key={index} className="chat-prof">
+                        <p className="message-prof">{mensaje.mensaje}</p>
+                        <Box className="icono-message">
+                          <p>
+                            {pedido.docente.nombre[0].toLocaleUpperCase() +
+                              pedido.docente.apellido[0].toLocaleUpperCase()}
+                          </p>
+                        </Box>
+                      </Box>
+                    ) : (
+                      <Box key={index} className="chat-labo">
+                        <p className="message">{mensaje.mensaje}</p>
+                        <Box className="icono-message">
+                          <p>LAB</p>
+                        </Box>
+                      </Box>
+                    )
+                  )}
                 </Box>
               </Box>
               <form onSubmit={handleSubmit}>
