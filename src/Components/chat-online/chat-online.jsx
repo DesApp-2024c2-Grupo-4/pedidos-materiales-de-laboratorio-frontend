@@ -11,51 +11,52 @@ const ENDPOINT = "http://localhost:3001";
 const socket = io(ENDPOINT);
 
 export default function ChatOnline({ pedido, onClose }) {
-  const [mensaje_input, setMensaje] = useState('');
+  const [mensaje_input, setMensaje] = useState("");
   const [mensajes, setMensajes] = useState([]);
-  const userActual = JSON.parse(localStorage.getItem('usuario'));
-  const pedidoId = pedido._id;
-
+ const userActual = JSON.parse(localStorage.getItem("usuario"));
+ const pedidoId =pedido._id
   useEffect(() => {
-    debugger
-    // Unirse al chat cuando el componente se monta
-    socket.emit('joinChat', pedidoId);
 
-    // Manejar mensajes del servidor
-    socket.on('chatMessage', (data) => {
-      
-      setMensajes([...mensajes, data]);
+    // Únete al chat cuando el componente se monta
+    socket.emit("joinChat", pedidoId);
+    getMensajes(pedidoId).then((res)=>{
+      setMensajes(res);
+    })
+
+    socket.on("chat_message", async (data) => {
+      debugger
+      if(data){
+        const mails = {...mensajes}
+        mails.list_mensajes.push(data)
+        setMensajes(mails);
+      }
     });
 
     return () => {
-      // Desconectarse y dejar de escuchar cuando el componente se desmonta
-      socket.off('connect');
-      socket.off('chatMessage');
+      socket.off("connect");
+      socket.off("chat_message");
     };
-  }, [pedidoId, mensajes]);
+  }, []);
 
   const handleSubmit = (e) => {
+    debugger
+    console.log(userActual)
     e.preventDefault();
-
-    // Crear objeto de mensaje
     let objMensaje = {
-      nombre:
-        userActual.rol === 'lab'
-          ? 'LAB'
-          : userActual.nombre[0].toLocaleUpperCase() +
-            userActual.apellido[0].toLocaleUpperCase(),
+      nombre:userActual.rol == 'lab'? 'LAB' : userActual.nombre[0].toLocaleUpperCase() + userActual.apellido[0].toLocaleUpperCase(),
       id_emisor: userActual.dni,
       mensaje: e.target.input.value,
       read: true,
-      id_pedido: pedido._id,
+      id_pedido:pedido._id
     };
     enviarMensaje(objMensaje).then((rpta) => {
-      debugger
-      socket.emit('sendMessage', pedidoId, rpta);
+      setMensajes([...mensajes, rpta]);
     });
-    // Limpiar el campo de mensaje después de enviar
-    e.target.input.value = '';
+    const message =objMensaje.mensaje
+    socket.emit("sendMessage", pedidoId, message);
+    e.target.input.value = "";
   };
+
   return (
     <Box className="container-chat">
       <Grid container>
