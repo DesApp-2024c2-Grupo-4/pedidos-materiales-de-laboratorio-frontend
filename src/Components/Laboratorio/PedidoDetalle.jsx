@@ -20,7 +20,9 @@ import { Badge, Tooltip } from "@mui/material";
 import MailIcon from "@mui/icons-material/Mail";
 import ChatOnline from "../chat-online/chat-online";
 import Modal from "@mui/material/Modal";
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
+import { getMensajes } from "../../Services/chat-service";
 const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
@@ -40,8 +42,8 @@ function PedidoDetalle({
   pedido = { pedido },
 }) {
   const { root } = useStyles();
+ 
 
-  
   const {
     numero_tp,
     fecha_solicitud,
@@ -64,7 +66,22 @@ function PedidoDetalle({
   const [openButton, setOpenButton] = React.useState(false);
   const handleOpen = () => setOpenButton(true);
   const handleCloseButton = () => setOpenButton(false);
-  //console.log(lista_materiales);
+  const [cant, setCant] = useState(0);
+
+  useEffect(() => {
+    getMensajes(pedido._id).then((res) => {
+      const ultimoElemento = res.data.list_mensajes[res.data.list_mensajes.length - 1];
+      
+      if (ultimoElemento.nombre == "LAB") {
+        const mensajesNoLeidos = res.data.list_mensajes.reduce((count, mensaje) => {
+          return count + (mensaje.read ? 0 : 1);
+        }, 0);
+  
+        // Usar la función de setCant para obtener el estado más actualizado
+        setCant((prevCant) => (prevCant !== mensajesNoLeidos ? mensajesNoLeidos : prevCant));
+      }
+    });
+  }, [pedido._id]);
 
   return (
     <div>
@@ -91,7 +108,7 @@ function PedidoDetalle({
           </div>
           <div className="pedido-grupo pedido-grupo-iconos">
             <Tooltip title="Mensajes">
-              <Badge badgeContent={4} color="primary">
+              <Badge badgeContent={cant} color="primary">
                 <MailIcon onClick={handleOpen} sx={{ color: "whitesmoke" }} />
               </Badge>
               <Modal

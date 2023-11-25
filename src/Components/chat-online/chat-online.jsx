@@ -5,56 +5,73 @@ import CloseIcon from "@material-ui/icons/Close";
 import "./chat-online.css";
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
-import { getMensajes, enviarMensaje } from "../../Services/chat-service.js";
+import {
+  getMensajes,
+  enviarMensaje,
+  updateMensaje,
+} from "../../Services/chat-service.js";
 
 const ENDPOINT = "http://localhost:3001";
 const socket = io(ENDPOINT);
 
 export default function ChatOnline({ pedido, onClose }) {
-  const [mensaje_input, setMensaje] = useState("");
   const [mensajes, setMensajes] = useState([]);
- const userActual = JSON.parse(localStorage.getItem("usuario"));
- const pedidoId =pedido._id
+  const userActual = JSON.parse(localStorage.getItem("usuario"));
+  const pedidoId = pedido._id;
   useEffect(() => {
-
     // Únete al chat cuando el componente se monta
     socket.emit("joinChat", pedidoId);
-    getMensajes(pedidoId).then((res)=>{
-      setMensajes(res);
-    })
-
-    socket.on("chat_message", async (data) => {
-      debugger
-      if(data){
-        const mails = {...mensajes}
-        mails.list_mensajes.push(data)
-        setMensajes(mails);
+    socket.on("chatMessage", (data) => {
+      setMensajes(data);
+    });
+    getMensajes(pedidoId).then((res) => {
+      if (res.data) {
+        const ultimoElemento =
+          res.data.list_mensajes[res.data.list_mensajes.length - 1];
+        if (userActual.rol == "LAB" && ultimoElemento.nombre != "LAB") {
+          res.data.list_mensajes.map((resp) => {
+            resp.read = true;
+          });
+          updateMensaje(res.data);
+        } else if (userActual.rol != "LAB" && ultimoElemento.nombre == "LAB") {
+          res.data.list_mensajes.map((resp) => {
+            resp.read = true;
+          });
+          updateMensaje(res.data);
+        }
+        setMensajes(res.data.list_mensajes);
+      } else {
+        setMensajes([]);
       }
     });
-
     return () => {
       socket.off("connect");
-      socket.off("chat_message");
+      socket.off("chatMessage");
     };
   }, []);
 
   const handleSubmit = (e) => {
-    debugger
-    console.log(userActual)
+    console.log(userActual);
     e.preventDefault();
     let objMensaje = {
-      nombre:userActual.rol == 'lab'? 'LAB' : userActual.nombre[0].toLocaleUpperCase() + userActual.apellido[0].toLocaleUpperCase(),
-      id_emisor: userActual.dni,
-      mensaje: e.target.input.value,
-      read: true,
-      id_pedido:pedido._id
+      id_pedido: pedido._id,
+      mail: {
+        nombre:
+          userActual.rol == "lab"
+            ? "LAB"
+            : userActual.nombre[0].toLocaleUpperCase() +
+              userActual.apellido[0].toLocaleUpperCase(),
+        id_emisor: userActual.dni,
+        mensaje: e.target.input.value,
+        read: false,
+      },
     };
+
     enviarMensaje(objMensaje).then((rpta) => {
-      setMensajes([...mensajes, rpta]);
+      setMensajes(rpta.list_mensajes);
+      socket.emit("sendMessage", pedidoId, rpta.list_mensajes);
+      e.target.input.value = "";
     });
-    const message =objMensaje.mensaje
-    socket.emit("sendMessage", pedidoId, message);
-    e.target.input.value = "";
   };
 
   return (
@@ -71,22 +88,18 @@ export default function ChatOnline({ pedido, onClose }) {
               </Box>
               <Box className="chat">
                 <Box className="container-message">
-                  {mensajes.map((mensaje,index) =>
-                    mensaje.id_emisor != userActual.dni? (
+                  {mensajes.map((mensaje, index) =>
+                    mensaje.id_emisor != userActual.dni ? (
                       <Box key={index} className="chat-prof">
                         <p className="message-prof">{mensaje.mensaje}</p>
                         <Box className="icono-message">
-                          <p>
-                            {mensaje.nombre}
-                          </p>
+                          <p>{mensaje.nombre}</p>
                         </Box>
                       </Box>
                     ) : (
                       <Box key={index} className="chat-labo">
                         <p className="message">{mensaje.mensaje}</p>
-                        <Box className="icono-message">
-                        {mensaje.nombre}
-                        </Box>
+                        <Box className="icono-message">{mensaje.nombre}</Box>
                       </Box>
                     )
                   )}
