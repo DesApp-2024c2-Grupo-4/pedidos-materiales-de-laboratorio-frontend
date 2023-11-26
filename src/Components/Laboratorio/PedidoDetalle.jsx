@@ -1,15 +1,12 @@
-import React, { useMemo } from "react";
-import { Icon, makeStyles } from "@material-ui/core";
+import React from "react";
+import {  makeStyles } from "@material-ui/core";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import moment from "moment";
 import Grid from "@mui/material/Grid";
@@ -23,8 +20,6 @@ import Modal from "@mui/material/Modal";
 import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { getMensajes } from "../../Services/chat-service";
-import { urlBD } from "../../connectDB";
-import { io } from "socket.io-client";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -38,13 +33,12 @@ const useStyles = makeStyles(() => ({
 }));
 
 function PedidoDetalle({
-  open = { open },
-  setOpen = { setOpen },
-  scroll = { scroll },
-  handleClose = { handleClose },
-  pedido = { pedido },
+  open,
+  setOpen,
+  scroll,
+  handleClose,
+  pedido,
 }) {
-  const { root } = useStyles();
  
 
   const {
@@ -70,22 +64,23 @@ function PedidoDetalle({
   const handleOpen = () => setOpenButton(true);
   const handleCloseButton = () => setOpenButton(false);
   const [cant, setCant] = useState(0);
-  const [read, setRead] = useState([]);
+  const [read, setRead] = useState(false);
   
-
-  const socket = io(urlBD);
   useEffect(() => {
     getMensajes(pedido._id).then((res) => {
-      const ultimoElemento = res.data.list_mensajes[res.data.list_mensajes.length - 1];
-      read.lenght == 0 && setRead(res?.data)
-      if (ultimoElemento.nombre == "LAB") {
-        const mensajesNoLeidos = res.data.list_mensajes.reduce((count, mensaje) => {
-          return count + (mensaje.read ? 0 : 1);
-        }, 0);
-        setCant((prevCant) => (prevCant !== mensajesNoLeidos ? mensajesNoLeidos : prevCant));
+      if(res.data != null){
+        const ultimoElemento = res.data.list_mensajes[res.data.list_mensajes.length - 1];     
+        //setRead(res.data.list_mensajes) 
+        if (ultimoElemento.nombre === "LAB") {
+          const mensajesNoLeidos = res?.data?.list_mensajes.reduce((count, mensaje) => {
+            return count + (mensaje.read ? 0 : 1);
+          }, 0);
+          setCant((prevCant) => (prevCant !== mensajesNoLeidos ? mensajesNoLeidos : prevCant));
+        }
+        setRead(ultimoElemento.read)
       }
     });
-  }, [read, pedido._id]);
+  },[read, cant, pedido._id, open])
   return (
     <div>
       <Dialog
@@ -408,8 +403,9 @@ function PedidoDetalle({
               variant="outlined"
               bgcolor={"secondary"}
               color={"primary"}
-              //onClick={modificarEncabezado}
-              type="submit"
+              onClick={() => {
+                handleClose(false)
+              }}
               className="boton-cerrar-pedido boton-cerrar-pedido-prof"
             >
               Cerrar

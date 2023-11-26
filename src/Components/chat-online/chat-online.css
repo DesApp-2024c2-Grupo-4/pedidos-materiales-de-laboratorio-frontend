@@ -76,6 +76,8 @@
 .input{
     background-color: transparent;
     width: 89%;
+    padding-left: 10px;
+    padding-right: 10px;
     height: 36px;
     color: #ffffff;
     border: 1px solid #000000;

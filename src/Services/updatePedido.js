@@ -13,7 +13,6 @@ export default async function updatePedido(id, data) {
             }
         });
         const responseText = await response.text();
-        console.log(responseText);
     } catch (ex) {
         console.log(ex);
     }

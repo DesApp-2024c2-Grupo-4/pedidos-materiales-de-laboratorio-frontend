@@ -1,7 +1,7 @@
 import { Card, CardActionArea, makeStyles } from "@material-ui/core";
 import PedidoV1 from "../Docente/PedidoV1";
 import { getListaPedidos } from "../../Services/getPedidosService";
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Header from '../Header/Header'
 import Grid from '@mui/material/Grid';
@@ -9,6 +9,7 @@ import NoEncontrados from "../Mensajes/NoEncontrados"
 import Filtros from "./Filtros";
 import { axiosGetPedido } from '../../Services/getPedidosService';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import { userContext } from "../../Context/LabProvider";
 
 const useStyles = makeStyles(() => ({
   marginTop: {
@@ -23,7 +24,7 @@ function Pedidos() {
   const [listaPedidos, setListaPedidos] = useState([]);
   const [texto, setEncabezado] = useState("Laboratorio");
   const [esAdmin, setEsAdmin] = useState('')
-
+  const {update, setUpdate} = useContext(userContext)
   const [edicionActiva, setEdicionActiva] = useState(false)
 
 
@@ -96,7 +97,7 @@ function Pedidos() {
           setListaPedidos(items)
         }
       })
-  }, [])
+  }, [open,update, tipo_pedido, fecha_fin, fecha_inicio, edificio])
 
   return (
     <Box>

@@ -8,9 +8,6 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import TableContainer from "@mui/material/TableContainer";
-import { Button } from "@material-ui/core";
-
-import Paper from "@mui/material/Paper";
 import moment from "moment";
 import Grid from "@mui/material/Grid";
 
@@ -21,22 +18,19 @@ import ChatOnline from "../chat-online/chat-online";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { getMensajes } from "../../Services/chat-service";
-import { useMemo } from "react";
 function PedidoDetalle({
-  open = { open },
-  setOpen = { setOpen },
-  scroll = { scroll },
-  handleClose = { handleClose },
-  pedido = { pedido },
+  open,
+  setOpen,
+  scroll,
+  handleClose,
+  pedido ,
 }) {
   const {
-    _id,
     numero_tp,
     fecha_solicitud,
     fecha_utilizacion,
     numero_laboratorio,
     docente,
-    observaciones,
     edificio,
     alumnos,
     cantidad_grupos,
@@ -47,7 +41,6 @@ function PedidoDetalle({
     tipo_pedido,
     materia,
   } = pedido;
-
   const fechaActual = moment(fecha_solicitud).format("DD/MM/YYYY");
   const fechaActual2 = moment(fecha_utilizacion).utc().format("DD/MM/YYYY");
   const descriptionElementRef = React.useRef(null);
@@ -57,19 +50,21 @@ function PedidoDetalle({
   const handleCloseButton = () => setOpenButton(false);
 
   const [cant, setCant] = useState(0);
-  const [read, setRead] = useState([]);
+  const [read, setRead] = useState(false);
   useEffect(() => {
     getMensajes(pedido._id).then((res) => {
-      const ultimoElemento = res?.data?.list_mensajes[res.data.list_mensajes.length - 1];
-      read == [] && setRead(res?.data)
-      if (ultimoElemento?.nombre != "LAB") {
-        const mensajesNoLeidos = res?.data?.list_mensajes.reduce((count, mensaje) => {
-          return count + (mensaje.read ? 0 : 1);
-        }, 0);
-        setCant((prevCant) => (prevCant !== mensajesNoLeidos ? mensajesNoLeidos : prevCant));
+      if(res.data != null){
+        const ultimoElemento = res.data.list_mensajes[res.data.list_mensajes.length - 1];
+        if (ultimoElemento.nombre !== "LAB") {
+          const mensajesNoLeidos = res?.data?.list_mensajes.reduce((count, mensaje) => {
+            return count + (mensaje.read ? 0 : 1);
+          }, 0);
+          setCant((prevCant) => (prevCant !== mensajesNoLeidos ? mensajesNoLeidos : prevCant));
+        }
+        setRead(ultimoElemento.read)
       }
     });
-  },[read, pedido._id])
+  },[read, cant, pedido._id, open])
   return (
     <div>
       <Dialog
@@ -322,7 +317,6 @@ function PedidoDetalle({
                                         U. Med
                                     </Grid> */}
                   </Grid>
-
                   {lista_reactivos.length > 0 ? (
                     <div>
                       {lista_reactivos.map((row, index) => (
@@ -389,7 +383,6 @@ function PedidoDetalle({
             <Grid container direction="row" sx={{ marginTop: 4 }}>
               <AsignarLaboratorio
                 pedido={pedido}
-                _id={_id}
                 numero_tp={numero_tp}
                 fecha_solicitud={fecha_solicitud}
                 fecha_utilizacion={fecha_utilizacion}
@@ -404,6 +397,7 @@ function PedidoDetalle({
                 tipo_pedido={tipo_pedido}
                 materia={materia}
                 handleClose={handleClose}
+                open={open}
               ></AsignarLaboratorio>
             </Grid>
           </DialogContentText>

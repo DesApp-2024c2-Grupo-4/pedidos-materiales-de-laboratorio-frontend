@@ -6,10 +6,11 @@ const LabProvider = ({children}) => {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("usuario")) || {}
   );
+  const [update, setUpdate] = useState(false)
 
   return (
     <userContext.Provider
-    value={{user, setUser}}>
+    value={{user, setUser, update, setUpdate}}>
       {children}
     </userContext.Provider>
   )

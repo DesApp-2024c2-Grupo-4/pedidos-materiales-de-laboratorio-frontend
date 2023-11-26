@@ -1,6 +1,6 @@
 import * as React from "react";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
-import { Grid, Box, Button, TextField } from "@mui/material";
+import { Grid, Box } from "@mui/material";
 import CloseIcon from "@material-ui/icons/Close";
 import "./chat-online.css";
 import { useState, useEffect } from "react";
@@ -11,9 +11,11 @@ import {
   updateMensaje,
 } from "../../Services/chat-service.js";
 import { urlBD } from "../../connectDB";
+import { useRef } from "react";
 const socket = io(urlBD);
 
 export default function ChatOnline({setRead, pedido, onClose }) {
+  const chatRef = useRef();
   const [mensajes, setMensajes] = useState([]);
   const userActual = JSON.parse(localStorage.getItem("usuario"));
   const pedidoId = pedido._id;
@@ -27,18 +29,20 @@ export default function ChatOnline({setRead, pedido, onClose }) {
       if (res.data) {
         const ultimoElemento =
           res.data.list_mensajes[res.data.list_mensajes.length - 1];
-        if (userActual.rol == "LAB" && ultimoElemento.nombre != "LAB") {
+        if (userActual.rol == "lab" && ultimoElemento.nombre != "LAB") {
           res.data.list_mensajes.map((resp) => {
             resp.read = true;
+            ultimoElemento.read = true
           });
           updateMensaje(res.data);
-          setRead(res.data)
-        } else if (userActual.rol != "LAB" && ultimoElemento.nombre == "LAB") {
+          setRead(ultimoElemento.read)
+        } else if (userActual.rol != "lab" && ultimoElemento.nombre == "LAB") {
           res.data.list_mensajes.map((resp) => {
             resp.read = true;
+            ultimoElemento.read = true
           });
           updateMensaje(res.data);
-          setRead(res.data)
+          setRead(ultimoElemento.read)
         }
         setMensajes(res.data.list_mensajes);
       } else {
@@ -49,16 +53,20 @@ export default function ChatOnline({setRead, pedido, onClose }) {
       socket.off("connect");
       socket.off("chatMessage");
     };
-  }, []);
+  },[]);
+
+  useEffect(() => {
+    chatRef.current.scrollTop = chatRef.current.scrollHeight;
+  }, [mensajes]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(e.target.input.value != ""){
+    if(e.target.input.value !== ""){
       let objMensaje = {
         id_pedido: pedido._id,
         mail: {
           nombre:
-            userActual.rol == "lab"
+            userActual.rol === "lab"
               ? "LAB"
               : userActual.nombre[0].toLocaleUpperCase() +
                 userActual.apellido[0].toLocaleUpperCase(),
@@ -88,7 +96,7 @@ export default function ChatOnline({setRead, pedido, onClose }) {
                   <CloseIcon onClick={onClose} className="icono-cerrar" />
                 </Box>
               </Box>
-              <Box className="chat">
+              <Box className="chat" ref={chatRef} sx={{ maxHeight: '300px', overflowY: 'auto' }}>
                 <Box className="container-message">
                   {mensajes?.map((mensaje, index) =>
                     mensaje.id_emisor != userActual.dni ? (
@@ -112,7 +120,7 @@ export default function ChatOnline({setRead, pedido, onClose }) {
                   <input
                     className="input"
                     name="input"
-                    placeholder="  hola..."
+                    placeholder="Escribe un mensaje aquí"
                   ></input>
                   <button className="button" type="submit">
                     <ArrowDropUpIcon className="icono" />
