@@ -20,6 +20,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 function Pedidos() {
+  const {user} = React.useContext(userContext)
   // const { marginTop } = useStyles();
   const [listaPedidos, setListaPedidos] = useState([]);
   const [texto, setEncabezado] = useState("Laboratorio");
@@ -89,8 +90,7 @@ function Pedidos() {
   }, [tipo_pedido, fecha_fin, fecha_inicio, edificio])
 
   useEffect(() => {
-    const userActual = JSON.parse(localStorage.getItem('usuario'));
-    setEsAdmin(userActual.rol)
+    setEsAdmin(user.rol)
     getListaPedidos()
       .then(items => {
         if (items) {

@@ -12,12 +12,14 @@ import {
 } from "../../Services/chat-service.js";
 import { urlBD } from "../../connectDB";
 import { useRef } from "react";
+import { useContext } from "react";
+import { userContext } from "../../Context/LabProvider";
 const socket = io(urlBD);
 
 export default function ChatOnline({setRead, pedido, onClose }) {
   const chatRef = useRef();
   const [mensajes, setMensajes] = useState([]);
-  const userActual = JSON.parse(localStorage.getItem("usuario"));
+  const {user} = useContext(userContext)
   const pedidoId = pedido._id;
   useEffect(() => {
     // Únete al chat cuando el componente se monta
@@ -29,14 +31,14 @@ export default function ChatOnline({setRead, pedido, onClose }) {
       if (res.data) {
         const ultimoElemento =
           res.data.list_mensajes[res.data.list_mensajes.length - 1];
-        if (userActual.rol == "lab" && ultimoElemento.nombre != "LAB") {
+        if (user.rol == "lab" && ultimoElemento.nombre != "LAB") {
           res.data.list_mensajes.map((resp) => {
             resp.read = true;
             ultimoElemento.read = true
           });
           updateMensaje(res.data);
           setRead(ultimoElemento.read)
-        } else if (userActual.rol != "lab" && ultimoElemento.nombre == "LAB") {
+        } else if (user.rol != "lab" && ultimoElemento.nombre == "LAB") {
           res.data.list_mensajes.map((resp) => {
             resp.read = true;
             ultimoElemento.read = true
@@ -66,11 +68,11 @@ export default function ChatOnline({setRead, pedido, onClose }) {
         id_pedido: pedido._id,
         mail: {
           nombre:
-            userActual.rol === "lab"
+            user.rol === "lab"
               ? "LAB"
-              : userActual.nombre[0].toLocaleUpperCase() +
-                userActual.apellido[0].toLocaleUpperCase(),
-          id_emisor: userActual.dni,
+              : user.nombre[0].toLocaleUpperCase() +
+                user.apellido[0].toLocaleUpperCase(),
+          id_emisor: user.dni,
           mensaje: e.target.input.value,
           read: false,
         },
@@ -99,7 +101,7 @@ export default function ChatOnline({setRead, pedido, onClose }) {
               <Box className="chat" ref={chatRef} sx={{ maxHeight: '300px', overflowY: 'auto' }}>
                 <Box className="container-message">
                   {mensajes?.map((mensaje, index) =>
-                    mensaje.id_emisor != userActual.dni ? (
+                    mensaje.id_emisor != user.dni ? (
                       <Box key={index} className="chat-prof">
                         <p className="message-prof">{mensaje.mensaje}</p>
                         <Box className="icono-message">
