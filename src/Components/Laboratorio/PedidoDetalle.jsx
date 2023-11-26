@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Icon, makeStyles } from "@material-ui/core";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
@@ -23,6 +23,9 @@ import Modal from "@mui/material/Modal";
 import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { getMensajes } from "../../Services/chat-service";
+import { urlBD } from "../../connectDB";
+import { io } from "socket.io-client";
+
 const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
@@ -67,22 +70,22 @@ function PedidoDetalle({
   const handleOpen = () => setOpenButton(true);
   const handleCloseButton = () => setOpenButton(false);
   const [cant, setCant] = useState(0);
+  const [read, setRead] = useState([]);
+  
 
+  const socket = io(urlBD);
   useEffect(() => {
     getMensajes(pedido._id).then((res) => {
       const ultimoElemento = res.data.list_mensajes[res.data.list_mensajes.length - 1];
-      
+      read.lenght == 0 && setRead(res?.data)
       if (ultimoElemento.nombre == "LAB") {
         const mensajesNoLeidos = res.data.list_mensajes.reduce((count, mensaje) => {
           return count + (mensaje.read ? 0 : 1);
         }, 0);
-  
-        // Usar la función de setCant para obtener el estado más actualizado
         setCant((prevCant) => (prevCant !== mensajesNoLeidos ? mensajesNoLeidos : prevCant));
       }
     });
-  }, [pedido._id]);
-
+  }, [read, pedido._id]);
   return (
     <div>
       <Dialog
@@ -107,8 +110,8 @@ function PedidoDetalle({
             </label>
           </div>
           <div className="pedido-grupo pedido-grupo-iconos">
-            <Tooltip title="Mensajes">
-              <Badge badgeContent={cant} color="primary">
+            <Tooltip title="Mensajes" >
+              <Badge badgeContent={cant} color="secondary" >
                 <MailIcon onClick={handleOpen} sx={{ color: "whitesmoke" }} />
               </Badge>
               <Modal
@@ -119,6 +122,7 @@ function PedidoDetalle({
               >
                 <Box>
                   <ChatOnline
+                    setRead={setRead}
                     pedido={pedido}
                     onClose={handleCloseButton}
                   ></ChatOnline>

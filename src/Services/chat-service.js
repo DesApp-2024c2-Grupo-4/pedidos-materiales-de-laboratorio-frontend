@@ -29,7 +29,7 @@ export async function enviarMensaje(mensaje) {
 export async function updateMensaje(mensajes) {
     const apiResponse = await axios.put(`${urlBD}/api/mail/update`, JSON.stringify(mensajes), {
         headers: {
-            'Content-Type': 'multipart/form-data'
+            'Content-Type': 'application/json'
         }
     });
     return apiResponse;

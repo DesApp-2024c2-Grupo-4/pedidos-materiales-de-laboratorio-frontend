@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import pedidoicon from "../Image/pedido-icon.png";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
@@ -20,6 +20,8 @@ import MailIcon from "@mui/icons-material/Mail";
 import ChatOnline from "../chat-online/chat-online";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
+import { getMensajes } from "../../Services/chat-service";
+import { useMemo } from "react";
 function PedidoDetalle({
   open = { open },
   setOpen = { setOpen },
@@ -53,6 +55,21 @@ function PedidoDetalle({
   const [openButton, setOpenButton] = React.useState(false);
   const handleOpen = () => setOpenButton(true);
   const handleCloseButton = () => setOpenButton(false);
+
+  const [cant, setCant] = useState(0);
+  const [read, setRead] = useState([]);
+  useEffect(() => {
+    getMensajes(pedido._id).then((res) => {
+      const ultimoElemento = res?.data?.list_mensajes[res.data.list_mensajes.length - 1];
+      read == [] && setRead(res?.data)
+      if (ultimoElemento?.nombre != "LAB") {
+        const mensajesNoLeidos = res?.data?.list_mensajes.reduce((count, mensaje) => {
+          return count + (mensaje.read ? 0 : 1);
+        }, 0);
+        setCant((prevCant) => (prevCant !== mensajesNoLeidos ? mensajesNoLeidos : prevCant));
+      }
+    });
+  },[read, pedido._id])
   return (
     <div>
       <Dialog
@@ -78,7 +95,7 @@ function PedidoDetalle({
           </div>
           <div className="pedido-grupo pedido-grupo-iconos">
             <Tooltip title="Mensajes">
-              <Badge badgeContent={4} color="secondary">
+              <Badge badgeContent={cant} color="secondary">
                 <MailIcon onClick={handleOpen} sx={{ color: "whitesmoke" }} />
               </Badge>
               <Modal
@@ -89,6 +106,7 @@ function PedidoDetalle({
               >
                 <Box>
                   <ChatOnline
+                    setRead={setRead}
                     pedido={pedido}
                     onClose={handleCloseButton}
                   ></ChatOnline>

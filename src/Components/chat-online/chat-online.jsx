@@ -10,11 +10,10 @@ import {
   enviarMensaje,
   updateMensaje,
 } from "../../Services/chat-service.js";
+import { urlBD } from "../../connectDB";
+const socket = io(urlBD);
 
-const ENDPOINT = "http://localhost:3001";
-const socket = io(ENDPOINT);
-
-export default function ChatOnline({ pedido, onClose }) {
+export default function ChatOnline({setRead, pedido, onClose }) {
   const [mensajes, setMensajes] = useState([]);
   const userActual = JSON.parse(localStorage.getItem("usuario"));
   const pedidoId = pedido._id;
@@ -33,11 +32,13 @@ export default function ChatOnline({ pedido, onClose }) {
             resp.read = true;
           });
           updateMensaje(res.data);
+          setRead(res.data)
         } else if (userActual.rol != "LAB" && ultimoElemento.nombre == "LAB") {
           res.data.list_mensajes.map((resp) => {
             resp.read = true;
           });
           updateMensaje(res.data);
+          setRead(res.data)
         }
         setMensajes(res.data.list_mensajes);
       } else {
@@ -51,27 +52,28 @@ export default function ChatOnline({ pedido, onClose }) {
   }, []);
 
   const handleSubmit = (e) => {
-    console.log(userActual);
     e.preventDefault();
-    let objMensaje = {
-      id_pedido: pedido._id,
-      mail: {
-        nombre:
-          userActual.rol == "lab"
-            ? "LAB"
-            : userActual.nombre[0].toLocaleUpperCase() +
-              userActual.apellido[0].toLocaleUpperCase(),
-        id_emisor: userActual.dni,
-        mensaje: e.target.input.value,
-        read: false,
-      },
-    };
-
-    enviarMensaje(objMensaje).then((rpta) => {
-      setMensajes(rpta.list_mensajes);
-      socket.emit("sendMessage", pedidoId, rpta.list_mensajes);
-      e.target.input.value = "";
-    });
+    if(e.target.input.value != ""){
+      let objMensaje = {
+        id_pedido: pedido._id,
+        mail: {
+          nombre:
+            userActual.rol == "lab"
+              ? "LAB"
+              : userActual.nombre[0].toLocaleUpperCase() +
+                userActual.apellido[0].toLocaleUpperCase(),
+          id_emisor: userActual.dni,
+          mensaje: e.target.input.value,
+          read: false,
+        },
+      };
+  
+      enviarMensaje(objMensaje).then((rpta) => {
+        setMensajes(rpta.list_mensajes);
+        socket.emit("sendMessage", pedidoId, rpta.list_mensajes);
+        e.target.input.value = "";
+      });
+    }
   };
 
   return (
@@ -88,7 +90,7 @@ export default function ChatOnline({ pedido, onClose }) {
               </Box>
               <Box className="chat">
                 <Box className="container-message">
-                  {mensajes.map((mensaje, index) =>
+                  {mensajes?.map((mensaje, index) =>
                     mensaje.id_emisor != userActual.dni ? (
                       <Box key={index} className="chat-prof">
                         <p className="message-prof">{mensaje.mensaje}</p>
