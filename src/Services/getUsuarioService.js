@@ -1,5 +1,6 @@
 import axios from "axios";
 
+const token = JSON.parse(localStorage.getItem('token')).token
 
 export const getUsuario = async (usuario, password) => {
   const data = JSON.stringify({ usuario, password });
@@ -22,9 +23,10 @@ export const getUsuario = async (usuario, password) => {
 };
 
 export const getAdmin = async (id) => {
-  try {
+  try {    
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/usuario/getAdmin/${id}`, {
       headers: {
+        Authorization: `Bearer ${token}`,
         Accept: "application/json",
       },
     });
@@ -44,6 +46,9 @@ export async function getListaUsuariosFiltrada(buscar) {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/usuario/`, {
         params,
         responseType: "json",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
     return response.data;
   } catch (error) {

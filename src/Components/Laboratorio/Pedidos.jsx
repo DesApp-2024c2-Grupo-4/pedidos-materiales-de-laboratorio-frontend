@@ -20,12 +20,11 @@ const useStyles = makeStyles(() => ({
 }));
 
 function Pedidos() {
-  const { user } = React.useContext(userContext);
   // const { marginTop } = useStyles();
   const [listaPedidos, setListaPedidos] = useState([]);
   const [texto, setEncabezado] = useState("Laboratorio");
   const [esAdmin, setEsAdmin] = useState("");
-  const { update, setUpdate } = useContext(userContext);
+  const { update,  user } = useContext(userContext);
   const [edicionActiva, setEdicionActiva] = useState(false);
 
   /********************************************** */

@@ -1,11 +1,15 @@
 import axios from 'axios';
 
+const token = JSON.parse(localStorage.getItem('token')).token
+
 export default async function deleteUsuario(id) {
     try {
         const response = await axios.delete(`${process.env.REACT_APP_API_URL}/api/usuario/delete/${id}`, {
-            headers: {
-                'Content-Type': 'application/json',
-            }
+            headers: {        
+                Authorization: `Bearer ${token}`,
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
         });
         if (response.status >= 200 && response.status < 300) {
             return response.data;

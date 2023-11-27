@@ -22,6 +22,7 @@ const LaboratorioNav = () => {
   const admin = useMemo(async () => {
     try {
       const data = await userAdmin(user._id);
+      console.log(data)
       return data;
     } catch (error) {
       console.error(error);
@@ -41,7 +42,6 @@ const LaboratorioNav = () => {
 
     setValue(locationToTabIndex[currentLocation] || 0);
   }, []);
-
   return (
     <Box sx={{ ml: 4, flexGrow: 1, display: { md: 'flex' } }}>
       <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">

@@ -7,6 +7,13 @@ const LabProvider = ({ children }) => {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("usuario")) || {}
   );
+  const [token, setToken] = useState(
+    JSON.parse(localStorage.getItem("token")) || {}
+  );
+  const storeToken = (token) => {
+    localStorage.setItem("token", JSON.stringify(token));
+    setToken(token || JSON.parse(localStorage.getItem("token")));
+  };
   const storeUser = (user) => {
     localStorage.setItem("usuario", JSON.stringify(user));
     setUser(user || JSON.parse(localStorage.getItem("usuario")));
@@ -21,7 +28,7 @@ const LabProvider = ({ children }) => {
   };
   return (
     <userContext.Provider
-      value={{ user, update, setUpdate, userAdmin, storeUser, cleanStorage }}
+      value={{ user, update, setUpdate, userAdmin, storeUser, cleanStorage, storeToken }}
     >
       {children}
     </userContext.Provider>

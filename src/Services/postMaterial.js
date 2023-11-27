@@ -1,11 +1,14 @@
 import axios from "axios";
 
+const token = JSON.parse(localStorage.getItem('token')).token
 
 export async function postMaterial(data) {
   const body = JSON.stringify(data);
   try {
     const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/material/post`, body, {
-      headers: {
+      headers: {        
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
         "Content-Type": "application/json",
       },
     });

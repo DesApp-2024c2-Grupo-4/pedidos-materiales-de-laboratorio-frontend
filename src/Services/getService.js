@@ -1,10 +1,17 @@
 import axios from "axios";
 
+const token = JSON.parse(localStorage.getItem('token')).token
 //EQUIPOS
 
 export async function getListaEquipos() {
   try {
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/equipo/getAll`);
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/equipo/getAll`,{
+      headers: {        
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
     return response.data;
   } catch (error) {
     console.log(error);
@@ -20,6 +27,11 @@ export async function getListaEquiposFiltrada(buscar) {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/equipo/`, {
       params,
       responseType: "json",
+      headers: {        
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
     });
     return response.data;
   } catch (error) {
@@ -29,7 +41,13 @@ export async function getListaEquiposFiltrada(buscar) {
 //MATERIALES
 export async function getListaMateriales() {
   try {
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/material/getAll`);
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/material/getAll`,{
+      headers: {        
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
     return response.data;
   } catch (error) {
     console.log(error);
@@ -45,6 +63,11 @@ export async function getListaMaterialesFiltrada(buscar) {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/material/`, {
       params,
       responseType: "json",
+      headers: {        
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
     });
     return response.data;
   } catch (error) {
@@ -56,7 +79,13 @@ export async function getListaMaterialesFiltrada(buscar) {
 // REACTIVOS
 export async function getListaReactivos() {
   try {
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/reactivo/getAll`);
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/reactivo/getAll`,{
+      headers: {        
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
     return response.data;
   } catch (error) {
     console.log(error);
@@ -72,6 +101,11 @@ export async function getListaReactivosFiltrada(buscar) {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/reactivo/`, {
       params,
       responseType: "json",
+      headers: {        
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
     });
     return response.data;
   } catch (error) {

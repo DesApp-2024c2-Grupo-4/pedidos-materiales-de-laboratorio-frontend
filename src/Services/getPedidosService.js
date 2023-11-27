@@ -1,10 +1,16 @@
 import axios from 'axios';
 
-
+const token = JSON.parse(localStorage.getItem('token')).token
 
 export async function getListaPedidos() {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/pedido/getAll`)
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/pedido/getAll`,{
+        headers: {        
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
       return response.data
     } catch (error) {
       console.log(error)
@@ -13,7 +19,13 @@ export async function getListaPedidos() {
 }
 export async function getCantidadPedidos() {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/pedido/getAll`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/pedido/getAll`,{
+        headers: {        
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
       const cantidad = Object.keys(response.data).length;
       return cantidad;
     } catch (error) {
@@ -40,6 +52,11 @@ export async function axiosGetPedido( tipo_pedido, fecha_inicio, fecha_fin, edif
         }
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/pedido/`, {
             params,
+            headers: {        
+              Authorization: `Bearer ${token}`,
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
         })
         return response.data;
     } catch (error) {

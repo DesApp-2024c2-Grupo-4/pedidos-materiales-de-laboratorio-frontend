@@ -1,11 +1,14 @@
 import axios from 'axios';
 
+const token = JSON.parse(localStorage.getItem('token')).token
 
 export default async function updateUsuario(id, data) {
     const body = JSON.stringify(data);
     try {
       const response = await axios.patch(`${process.env.REACT_APP_API_URL}/api/usuario/update/${id}`, body, {
-        headers: {
+        headers: {        
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
           "Content-Type": "application/json",
         },
       });
