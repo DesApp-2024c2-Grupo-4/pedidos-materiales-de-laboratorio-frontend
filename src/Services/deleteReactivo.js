@@ -1,15 +1,19 @@
+import axios from 'axios';
 import { urlBD } from '../connectDB';
 export default async function deleteReactivo(id) {
     try {
-        const response = await fetch(`${urlBD}/api/reactivo/delete/` + id, {
-            method: "DELETE",
+        const response = await axios.delete(`${urlBD}/api/reactivo/delete/${id}`, {
             headers: {
                 'Content-Type': 'application/json',
             }
         });
-        const responseText = await response.text();
-        console.log(responseText);
-    } catch (ex) {
-        console.log(ex);
+        if (response.status >= 200 && response.status < 300) {
+            return response.data;
+        } else {
+            throw new Error(`Error en la solicitud DELETE: ${response.status}`);
+        }
+    } catch (error) {
+        console.log(error);
+        throw error;
     }
 }

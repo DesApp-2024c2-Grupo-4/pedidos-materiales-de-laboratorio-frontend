@@ -2,24 +2,20 @@ import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import Theme1 from "../Theme/Theme1";
 import logo from "../Image/logo uni-01.png";
 import { useNavigate } from "react-router-dom";
 import LaboratorioNav from "./LaboratorioNav";
 import { Button } from "@mui/material";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { userContext } from "../../Context/LabProvider";
 
 Header.defaultProps = {
   isNotLogin: true,
   isUserAdmin: false,
 };
 export default function Header(props) {
-  const userActual = JSON.parse(localStorage.getItem("usuario"));
+  const { user, cleanStorage } = React.useContext(userContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
   const handleMenu = (event) => {
@@ -30,9 +26,10 @@ export default function Header(props) {
     setAnchorEl(null);
   };
   const handleLogout = () => {
-    localStorage.clear();
+    cleanStorage()
     navigate("/login");
   };
+
 
   
   return (
@@ -51,10 +48,10 @@ export default function Header(props) {
               src={logo}
               alt="logo"
             />
-            {props.isNotLogin && userActual && (
+            {props.isNotLogin && user && (
               <div>
                 <Button onClick={handleMenu} className={`user_name ${Boolean(anchorEl) ? 'flipped' : ''}`}  >
-                  {userActual.nombre} {userActual.apellido}
+                  {user.nombre} {user.apellido}
                 </Button>
                   
                 <Menu
@@ -70,7 +67,7 @@ export default function Header(props) {
               </div>
             )}
           </Toolbar>
-          {props.isUserAdmin && <LaboratorioNav />}
+          {user.rol == "lab" && <LaboratorioNav />}
         </AppBar>
       </Box>
     </>

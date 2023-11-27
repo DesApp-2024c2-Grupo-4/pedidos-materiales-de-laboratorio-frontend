@@ -21,11 +21,11 @@ import PedidoCabecera from "./PedidoCabecera";
 import PedidoMaterial from "./PedidoMaterial";
 import PedidoReactivo from "./PedidoReactivo";
 import CartelOk from "../Mensajes/CartelOk";
+import { userContext } from "../../Context/LabProvider";
 
 export default function NuevoPedido() {
   //PRUEBA CODIGO
-
-  const userActual = JSON.parse(localStorage.getItem("usuario"));
+  const { user } = React.useContext(userContext);
   const [pedidoEquipos, setPedidoEquipos] = useState([]);
   const [listaEquipos, setListaEquipos] = useState([]);
   const [equipoElegido, setEquipoElegido] = useState("");
@@ -421,10 +421,10 @@ export default function NuevoPedido() {
     ) {
       const pedido = {
         docente: {
-          nombre: userActual.nombre,
-          apellido: userActual.apellido,
-          dni: userActual.dni,
-          matricula: userActual.matricula,
+          nombre: user.nombre,
+          apellido: user.apellido,
+          dni: user.dni,
+          matricula: user.matricula,
         },
         descripcion: pedidoEncabezado.descripcion,
         fecha_solicitud: pedidoEncabezado.fecha_solicitud,

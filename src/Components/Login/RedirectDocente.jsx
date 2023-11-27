@@ -5,16 +5,16 @@ import { userContext } from '../../Context/LabProvider';
 
 const RedirectDocente = () => {      
   
-    const {user, setUser} = useContext(userContext)
+    const {user, storeUser} = useContext(userContext)
         
     useEffect(() => {
-        if (localStorage.getItem("usuario")) {
-            setUser(JSON.parse(localStorage.getItem("usuario")));
+        if (user) {
+            storeUser(user);
         }
       }, []);
 
     useEffect(() => {
-        localStorage.setItem("usuario", JSON.stringify(user));
+        storeUser(user);
     }, [user]);
 
 

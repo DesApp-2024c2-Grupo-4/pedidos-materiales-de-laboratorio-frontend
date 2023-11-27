@@ -13,6 +13,7 @@ import Theme1 from '../Theme/Theme1';
 import { ThemeProvider } from '@mui/material/styles';
 
 import NuevoPedido from "./NuevoPedido";
+import { userContext } from "../../Context/LabProvider";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -30,7 +31,7 @@ function Pedidos() {
 
   // controlar si es adminitrador
   const [esAdmin, setEsAdmin] = useState(true)
-
+  const {user} = React.useContext(userContext)
 
 
   const [nuevoPedido, setNuevoPedido] = useState(false);
@@ -41,9 +42,8 @@ function Pedidos() {
 
   useEffect(() => {
     let mounted = true;
-    const userActual = JSON.parse(localStorage.getItem('usuario'));
-    setEsAdmin(userActual.rol === 'lab')
-    getPedidosPorDni(userActual.dni)
+    setEsAdmin(user.rol === 'lab')
+    getPedidosPorDni(user.dni)
       .then(items => {
         if (mounted) {
           setListaPedidos(items)

@@ -11,7 +11,7 @@ import FormError from "../Mensajes/FormError";
 import { useState } from "react";
 
 export default function Login() {
-  const {setUser} = React.useContext(userContext)
+  const {storeUser} = React.useContext(userContext)
   const navigate = useNavigate()
   const [error, setError] = useState(null)
   const { required, minLength, validateTrim } = formValidate();
@@ -30,8 +30,7 @@ export default function Login() {
         const hashPass = btoa(password)
         const value = await getUsuario(user, hashPass);
         if(value) {    
-            localStorage.setItem('usuario', JSON.stringify(value))
-            setUser(value || JSON.parse(localStorage.getItem('usuario')))
+            storeUser(value)
             const rol = value.rol
             if(rol === "docente") navigate("/Docente/Pedidos");
             else if (rol === "lab") navigate("/Laboratorio/Pedidos")

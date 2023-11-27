@@ -1,20 +1,18 @@
+import axios from 'axios';
 import { urlBD } from '../connectDB';
+
 export default async function updatePedido(id, data) {
-  
+    const body = JSON.stringify(data);
     try {
-      
-        const requestJson = JSON.stringify(data);
-
-        const response = await fetch(`${urlBD}/api/pedido/update/` + id, {
-            method: "PATCH",
-            body: requestJson,
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-        const responseText = await response.text();
-    } catch (ex) {
-        console.log(ex);
+      const response = await axios.patch(`${urlBD}/api/pedido/update/${id}`, body, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+      throw error;
     }
-
-};
+  }
+  

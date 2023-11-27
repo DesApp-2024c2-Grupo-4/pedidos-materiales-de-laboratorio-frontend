@@ -1,45 +1,49 @@
 import axios from 'axios';
 import { urlBD } from '../connectDB';
 
-export function getListaPedidos() {
-    return fetch(`${urlBD}/api/pedido/getAll`)
-        .then(data => data.json())
-}
 
-export async function getCantidadPedidos() {
-    const response = await fetch(`${urlBD}/api/pedido/getAll`);
-    const data = await response.json();
-    const cantidad = Object.keys(data).length;
-
-    return cantidad 
-    
-}
-
-
-
-
-export async function axiosGetPedido(fecha_utilizacion, tipo_pedido, fecha_inicio, fecha_fin, edificio)  {
-    console.log(fecha_inicio);
-    var params={}
-    
-    if((tipo_pedido.length>0)&&(tipo_pedido!=="TODOS")){params.tipo_pedido= tipo_pedido}
-    if((edificio.length>0)&&(edificio!=="TODOS")){params.edificio= edificio}
-    if((fecha_inicio.length>0) &&( fecha_fin.length>0)){
-        params.fecha_fin=fecha_fin;params.fecha_inicio=fecha_inicio    }
+export async function getListaPedidos() {
     try {
-        console.log(params)
-       console.log(params.fecha_inicio)
-        const response = await axios({
-            method: 'get',params,
-            
-            url: `${urlBD}/api/pedido/`,
-            responseType: 'json'
-        });
-        console.log(response);
+      const response = await axios.get(`${urlBD}/api/pedido/getAll`)
+      return response.data
+    } catch (error) {
+      console.log(error)
+      throw error; 
+    }
+}
+export async function getCantidadPedidos() {
+    try {
+      const response = await axios.get(`${urlBD}/api/pedido/getAll`);
+      const cantidad = Object.keys(response.data).length;
+      return cantidad;
+    } catch (error) {
+      console.error(error);
+      throw error; 
+    }
+  }
+
+
+
+
+export async function axiosGetPedido( tipo_pedido, fecha_inicio, fecha_fin, edificio)  {
+    var params={}    
+    try {
+        if (tipo_pedido && tipo_pedido !== "TODOS") {
+            params.tipo_pedido = tipo_pedido;
+        }
+        if (edificio && edificio !== "TODOS") {
+            params.edificio = edificio;
+        }
+        if (fecha_inicio && fecha_fin) {
+            params.fecha_inicio = fecha_inicio;
+            params.fecha_fin = fecha_fin;
+        }
+        const response = await axios.get(`${urlBD}/api/pedido/`, {
+            params,
+        })
         return response.data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
+        throw error;
     }
 };
-
-
