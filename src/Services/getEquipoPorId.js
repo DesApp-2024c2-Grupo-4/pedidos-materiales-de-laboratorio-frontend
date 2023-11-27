@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { urlBD } from '../connectDB';
+
 export async function getEquipoPorId (id) {
   try {
-    const response = await axios.get(`${urlBD}/api/equipo/getOne/${id}`)
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/equipo/getOne/${id}`)
     return response.data
   } catch (error) {
     console.log(error)

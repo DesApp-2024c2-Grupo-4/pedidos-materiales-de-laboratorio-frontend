@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { urlBD } from '../connectDB';
+
 export default async function deleteMaterial(id) {
     try {
-        const response = await axios.delete(`${urlBD}/api/material/delete/${id}` , {
+        const response = await axios.delete(`${process.env.REACT_APP_API_URL}/api/material/delete/${id}` , {
             headers: {
                 'Content-Type': 'application/json',
             }

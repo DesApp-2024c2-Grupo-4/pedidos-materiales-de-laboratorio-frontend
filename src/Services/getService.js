@@ -1,10 +1,10 @@
 import axios from "axios";
-import { urlBD } from "../connectDB";
+
 //EQUIPOS
 
 export async function getListaEquipos() {
   try {
-    const response = await axios.get(`${urlBD}/api/equipo/getAll`);
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/equipo/getAll`);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -17,7 +17,7 @@ export async function getListaEquiposFiltrada(buscar) {
     params.buscar = buscar;
   }
   try {
-    const response = await axios.get(`${urlBD}/api/equipo/`, {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/equipo/`, {
       params,
       responseType: "json",
     });
@@ -29,7 +29,7 @@ export async function getListaEquiposFiltrada(buscar) {
 //MATERIALES
 export async function getListaMateriales() {
   try {
-    const response = await axios.get(`${urlBD}/api/material/getAll`);
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/material/getAll`);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -42,7 +42,7 @@ export async function getListaMaterialesFiltrada(buscar) {
     params.buscar = buscar;
   }
   try {
-    const response = await axios.get(`${urlBD}/api/material/`, {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/material/`, {
       params,
       responseType: "json",
     });
@@ -56,7 +56,7 @@ export async function getListaMaterialesFiltrada(buscar) {
 // REACTIVOS
 export async function getListaReactivos() {
   try {
-    const response = await axios.get(`${urlBD}/api/reactivo/getAll`);
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/reactivo/getAll`);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -69,7 +69,7 @@ export async function getListaReactivosFiltrada(buscar) {
     params.buscar = buscar;
   }
   try {
-    const response = await axios.get(`${urlBD}/api/reactivo/`, {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/reactivo/`, {
       params,
       responseType: "json",
     });

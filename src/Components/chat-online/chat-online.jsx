@@ -10,11 +10,10 @@ import {
   enviarMensaje,
   updateMensaje,
 } from "../../Services/chat-service.js";
-import { urlBD } from "../../connectDB";
 import { useRef } from "react";
 import { useContext } from "react";
 import { userContext } from "../../Context/LabProvider";
-const socket = io(urlBD);
+const socket = io(process.env.REACT_APP_API_URL);
 
 export default function ChatOnline({setRead, pedido, onClose }) {
   const chatRef = useRef();

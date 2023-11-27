@@ -1,10 +1,10 @@
 import axios from "axios";
-import { urlBD } from "../connectDB";
+
 
 export const getUsuario = async (usuario, password) => {
   const data = JSON.stringify({ usuario, password });
   try {
-    const response = await axios.post(`${urlBD}/api/auth/login`, data, {
+    const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, data, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -23,7 +23,7 @@ export const getUsuario = async (usuario, password) => {
 
 export const getAdmin = async (id) => {
   try {
-    const response = await axios.get(`${urlBD}/api/usuario/getAdmin/${id}`, {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/usuario/getAdmin/${id}`, {
       headers: {
         Accept: "application/json",
       },
@@ -41,7 +41,7 @@ export async function getListaUsuariosFiltrada(buscar) {
     params.buscar = buscar;
   }
   try {
-    const response = await axios.get(`${urlBD}/api/usuario/`, {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/usuario/`, {
         params,
         responseType: "json",
       });

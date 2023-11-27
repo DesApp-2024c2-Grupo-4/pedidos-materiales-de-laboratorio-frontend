@@ -1,1 +1,0 @@
-export const urlBD = 'http://localhost:3001'

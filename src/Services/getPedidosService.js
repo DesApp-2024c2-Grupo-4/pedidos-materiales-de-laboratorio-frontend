@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { urlBD } from '../connectDB';
+
 
 
 export async function getListaPedidos() {
     try {
-      const response = await axios.get(`${urlBD}/api/pedido/getAll`)
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/pedido/getAll`)
       return response.data
     } catch (error) {
       console.log(error)
@@ -13,7 +13,7 @@ export async function getListaPedidos() {
 }
 export async function getCantidadPedidos() {
     try {
-      const response = await axios.get(`${urlBD}/api/pedido/getAll`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/pedido/getAll`);
       const cantidad = Object.keys(response.data).length;
       return cantidad;
     } catch (error) {
@@ -38,7 +38,7 @@ export async function axiosGetPedido( tipo_pedido, fecha_inicio, fecha_fin, edif
             params.fecha_inicio = fecha_inicio;
             params.fecha_fin = fecha_fin;
         }
-        const response = await axios.get(`${urlBD}/api/pedido/`, {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/pedido/`, {
             params,
         })
         return response.data;

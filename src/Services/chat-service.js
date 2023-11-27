@@ -1,15 +1,14 @@
 import axios from "axios";
-import { urlBD } from "../connectDB";
 
 export async function getMensajes(id) {
-  const apiResponse = await axios.get(`${urlBD}/api/mail/mails/${id}`);
+  const apiResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/mail/mails/${id}`);
   return apiResponse;
 }
 
 export async function enviarMensaje(mensaje) {
   try {
     const body = JSON.stringify(mensaje);
-    const response = await axios.post(`${urlBD}/api/mail/send`, body, {
+    const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/mail/send`, body, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -22,7 +21,7 @@ export async function enviarMensaje(mensaje) {
 
 export async function updateMensaje(mensajes) {
   const apiResponse = await axios.put(
-    `${urlBD}/api/mail/update`,
+    `${process.env.REACT_APP_API_URL}/api/mail/update`,
     JSON.stringify(mensajes),
     {
       headers: {
@@ -35,7 +34,7 @@ export async function updateMensaje(mensajes) {
 
 export async function deleteMensaje(id_mensaje) {
   const apiResponse = await axios.delete(
-    `${urlBD}/api/mail/delete/${id_mensaje}`
+    `${process.env.REACT_APP_API_URL}/api/mail/delete/${id_mensaje}`
   );
   return apiResponse;
 }
