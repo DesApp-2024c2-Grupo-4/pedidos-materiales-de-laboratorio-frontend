@@ -1,5 +1,5 @@
 import React, { createContext, useState } from "react";
-import { getAdmin } from "../Services/getUsuarioService";
+import { getAdmin, getUserInfo } from "../Services/getUsuarioService";
 
 export const userContext = createContext();
 const LabProvider = ({ children }) => {
@@ -26,9 +26,14 @@ const LabProvider = ({ children }) => {
       return await getAdmin(id);
     }
   };
+  const userInfo = async(id) => {
+    if (id){
+      return await getUserInfo(id)
+    }
+  }
   return (
     <userContext.Provider
-      value={{ user, update, setUpdate, userAdmin, storeUser, cleanStorage, storeToken }}
+      value={{ user, update, setUpdate, userAdmin, storeUser, cleanStorage, storeToken, userInfo}}
     >
       {children}
     </userContext.Provider>

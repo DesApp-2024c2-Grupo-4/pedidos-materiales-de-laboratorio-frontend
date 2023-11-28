@@ -18,7 +18,8 @@ const socket = io(process.env.REACT_APP_API_URL);
 export default function ChatOnline({setRead, pedido, onClose }) {
   const chatRef = useRef();
   const [mensajes, setMensajes] = useState([]);
-  const {user} = useContext(userContext)
+  const [userData, setUserData] = useState({});
+  const {user, userInfo} = useContext(userContext)
   const pedidoId = pedido._id;
   useEffect(() => {
     // Únete al chat cuando el componente se monta
@@ -26,6 +27,9 @@ export default function ChatOnline({setRead, pedido, onClose }) {
     socket.on("chatMessage", (data) => {
       setMensajes(data);
     });
+    userInfo(user._id).then((res)=> {
+      setUserData(res)
+    })
     getMensajes(pedidoId).then((res) => {
       if (res.data) {
         const ultimoElemento =
@@ -71,7 +75,7 @@ export default function ChatOnline({setRead, pedido, onClose }) {
               ? "LAB"
               : user.nombre[0].toLocaleUpperCase() +
                 user.apellido[0].toLocaleUpperCase(),
-          id_emisor: user.dni,
+          id_emisor: userData.dni,
           mensaje: e.target.input.value,
           read: false,
         },
@@ -100,7 +104,7 @@ export default function ChatOnline({setRead, pedido, onClose }) {
               <Box className="chat" ref={chatRef} sx={{ maxHeight: '300px', overflowY: 'auto' }}>
                 <Box className="container-message">
                   {mensajes?.map((mensaje, index) =>
-                    mensaje.id_emisor != user.dni ? (
+                    mensaje.id_emisor != userData.dni ? (
                       <Box key={index} className="chat-prof">
                         <p className="message-prof">{mensaje.mensaje}</p>
                         <Box className="icono-message">

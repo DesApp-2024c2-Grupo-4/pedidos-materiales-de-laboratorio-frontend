@@ -28,10 +28,9 @@ function Pedidos() {
 
 
 
-
   // controlar si es adminitrador
   const [esAdmin, setEsAdmin] = useState(true)
-  const {user} = React.useContext(userContext)
+  const {user, userInfo} = React.useContext(userContext)
 
 
   const [nuevoPedido, setNuevoPedido] = useState(false);
@@ -39,16 +38,17 @@ function Pedidos() {
 
   const [listaPedidos, setListaPedidos] = useState([]);
 
-
   useEffect(() => {
     let mounted = true;
     setEsAdmin(user.rol === 'lab')
-    getPedidosPorDni(user.dni)
-      .then(items => {
-        if (mounted) {
-          setListaPedidos(items)
-        }
-      })
+    userInfo(user._id).then((res) => {
+      getPedidosPorDni(res.dni)
+        .then(items => {
+          if (mounted) {
+            setListaPedidos(items)
+          }
+        })
+    })
     return () => mounted = false;
   }, [])
 

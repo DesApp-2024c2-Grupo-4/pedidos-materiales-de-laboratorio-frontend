@@ -6,7 +6,7 @@ export const getUsuario = async (usuario, password) => {
   const data = JSON.stringify({ usuario, password });
   try {
     const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, data, {
-      headers: {
+      headers: {     
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -25,6 +25,21 @@ export const getUsuario = async (usuario, password) => {
 export const getAdmin = async (id) => {
   try {    
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/usuario/getAdmin/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const getUserInfo = async (id) => {
+  try {    
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/usuario/getOne/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: "application/json",

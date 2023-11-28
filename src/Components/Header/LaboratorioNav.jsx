@@ -22,7 +22,6 @@ const LaboratorioNav = () => {
   const admin = useMemo(async () => {
     try {
       const data = await userAdmin(user._id);
-      console.log(data)
       return data;
     } catch (error) {
       console.error(error);

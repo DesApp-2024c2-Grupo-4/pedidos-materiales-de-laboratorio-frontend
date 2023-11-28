@@ -25,7 +25,10 @@ import { userContext } from "../../Context/LabProvider";
 
 export default function NuevoPedido() {
   //PRUEBA CODIGO
-  const { user } = React.useContext(userContext);
+  const { user, userInfo } = React.useContext(userContext);
+  const [userData, setUserData] = useState({});
+
+
   const [pedidoEquipos, setPedidoEquipos] = useState([]);
   const [listaEquipos, setListaEquipos] = useState([]);
   const [equipoElegido, setEquipoElegido] = useState("");
@@ -423,8 +426,8 @@ export default function NuevoPedido() {
         docente: {
           nombre: user.nombre,
           apellido: user.apellido,
-          dni: user.dni,
-          matricula: user.matricula,
+          dni: userData.dni,
+          matricula: userData.matricula,
         },
         descripcion: pedidoEncabezado.descripcion,
         fecha_solicitud: pedidoEncabezado.fecha_solicitud,
@@ -440,7 +443,6 @@ export default function NuevoPedido() {
         lista_reactivos: pedidoReactivos,
         lista_materiales: pedidoMateriales,
       };
-
       postPedido(pedido);
       setConfirCabecera("none");
       setPedidoIncompleto(false);
@@ -457,9 +459,12 @@ export default function NuevoPedido() {
 
   const open2 = Boolean(anchorE2);
   const id2 = open2 ? "simple-popover" : undefined;
-
+  
   useEffect(() => {
     let mounted = true;
+    userInfo(user._id).then((res)=> {
+      setUserData(res)
+    })
     getListaEquipos().then((items) => {
       if (mounted) {
         setListaEquipos(items);
