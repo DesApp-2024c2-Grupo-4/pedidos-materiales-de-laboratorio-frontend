@@ -14,14 +14,16 @@ const LaboratorioNav = () => {
   const navigate = useNavigate();
   const { user, userAdmin } = React.useContext(userContext);
   const [value, setValue] = React.useState(0);
+  const [navAdmin, setNavAdmin] = React.useState(false);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const admin = useMemo(async () => {
+  useMemo(async () => {
     try {
       const data = await userAdmin(user._id);
+      setNavAdmin(data)
       return data;
     } catch (error) {
       console.error(error);
@@ -48,7 +50,7 @@ const LaboratorioNav = () => {
         <Tab label="Equipos" className='nav-button' onClick={() => navigate("/Laboratorio/Equipos")} />
         <Tab label="Materiales" className='nav-button' onClick={() => navigate("/Laboratorio/Materiales")} />
         <Tab label="Reactivos" className='nav-button' onClick={() => navigate("/Laboratorio/Reactivos")} />
-        {admin && <Tab label="Usuarios" className='nav-button' onClick={() => navigate("/Laboratorio/Usuarios")} />}
+        {navAdmin && <Tab label="Usuarios" className='nav-button' onClick={() => navigate("/Laboratorio/Usuarios")} />}
       </Tabs>
     </Box>
   );

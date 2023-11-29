@@ -1,12 +1,11 @@
 import axios from 'axios';
-
-const token = JSON.parse(localStorage.getItem('token')).token
+import { token } from "./getToken";
 
 export async function getPedidosPorDni(dni) {
     try {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/pedido/getAllByDni/${dni}`,{
           headers: {        
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token()}`,
             Accept: "application/json",
             "Content-Type": "application/json",
           },

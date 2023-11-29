@@ -1,12 +1,11 @@
 import axios from 'axios';
-
-const token = JSON.parse(localStorage.getItem('token')).token
+import { token } from "./getToken";
 
 export default async function deleteReactivo(id) {
     try {
         const response = await axios.delete(`${process.env.REACT_APP_API_URL}/api/reactivo/delete/${id}`, {
             headers: {        
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token()}`,
                 Accept: "application/json",
                 "Content-Type": "application/json",
               },

@@ -1,12 +1,12 @@
 import axios from 'axios';
+import { token } from "./getToken";
 
-const token = JSON.parse(localStorage.getItem('token')).token
 
 export default async function deleteUsuario(id) {
     try {
         const response = await axios.delete(`${process.env.REACT_APP_API_URL}/api/usuario/delete/${id}`, {
             headers: {        
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token()}`,
                 Accept: "application/json",
                 "Content-Type": "application/json",
               },

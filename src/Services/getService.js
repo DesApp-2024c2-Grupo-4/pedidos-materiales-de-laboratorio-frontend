@@ -1,13 +1,12 @@
 import axios from "axios";
-
-const token = JSON.parse(localStorage.getItem('token')).token
+import { token } from "./getToken";
 //EQUIPOS
 
 export async function getListaEquipos() {
   try {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/equipo/getAll`,{
       headers: {        
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token()}`,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -28,7 +27,7 @@ export async function getListaEquiposFiltrada(buscar) {
       params,
       responseType: "json",
       headers: {        
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token()}`,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -43,7 +42,7 @@ export async function getListaMateriales() {
   try {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/material/getAll`,{
       headers: {        
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token()}`,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -64,7 +63,7 @@ export async function getListaMaterialesFiltrada(buscar) {
       params,
       responseType: "json",
       headers: {        
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token()}`,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -81,7 +80,7 @@ export async function getListaReactivos() {
   try {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/reactivo/getAll`,{
       headers: {        
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token()}`,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
@@ -102,7 +101,7 @@ export async function getListaReactivosFiltrada(buscar) {
       params,
       responseType: "json",
       headers: {        
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token()}`,
         Accept: "application/json",
         "Content-Type": "application/json",
       },

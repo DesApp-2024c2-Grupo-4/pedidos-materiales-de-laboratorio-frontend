@@ -1,13 +1,12 @@
 import axios from "axios";
-
-const token = JSON.parse(localStorage.getItem('token')).token
+import { token } from "./getToken";
 
 export async function postEquipo(data) {
   const body = JSON.stringify(data);
   try {
     const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/equipo/post`, body, {
       headers: {        
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token()}`,
         Accept: "application/json",
         "Content-Type": "application/json",
       },

@@ -1,13 +1,12 @@
 import axios from 'axios';
-
-const token = JSON.parse(localStorage.getItem('token')).token
+import { token } from "./getToken";
 
 export default async function updateMaterial(id, data) {
     const body = JSON.stringify(data);
     try {
       const response = await axios.patch(`${process.env.REACT_APP_API_URL}/api/material/update/${id}`, body, {
         headers: {        
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token()}`,
           Accept: "application/json",
           "Content-Type": "application/json",
         },

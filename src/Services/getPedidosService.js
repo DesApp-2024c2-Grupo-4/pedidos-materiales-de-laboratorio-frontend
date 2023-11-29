@@ -1,12 +1,12 @@
 import axios from 'axios';
+import { token } from "./getToken";
 
-const token = JSON.parse(localStorage.getItem('token')).token
 
 export async function getListaPedidos() {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/pedido/getAll`,{
         headers: {        
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token()}`,
           Accept: "application/json",
           "Content-Type": "application/json",
         },
@@ -21,7 +21,7 @@ export async function getCantidadPedidos() {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/pedido/getAll`,{
         headers: {        
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token()}`,
           Accept: "application/json",
           "Content-Type": "application/json",
         },
@@ -53,7 +53,7 @@ export async function axiosGetPedido( tipo_pedido, fecha_inicio, fecha_fin, edif
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/pedido/`, {
             params,
             headers: {        
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${token()}`,
               Accept: "application/json",
               "Content-Type": "application/json",
             },

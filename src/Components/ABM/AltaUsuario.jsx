@@ -98,6 +98,7 @@ function AltaUsuario({
         rol: perfil,
         editor: false,
         email: email,
+        admin: false
         // "dni":parseInt(data.get('dni'))
       };
 
