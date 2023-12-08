@@ -14,6 +14,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import enGB from "date-fns/locale/en-GB";
 import ClearIcon from '@mui/icons-material/Clear';
+import { formatDate } from "./utils/formatDate";
 
 export default function Filtros(props) {
   const fechaInicio = props.fecha_inicio;
@@ -21,17 +22,6 @@ export default function Filtros(props) {
   const guardar_inicio = (value) => {
     cambiarFechaInicio(value);
   };
-
-  function formatDate(date) {
-    var d = new Date(date),
-      month = "" + (d.getMonth() + 1),
-      day = "" + d.getDate(),
-      year = d.getFullYear();
-
-    if (month.length < 2) month = "0" + month;
-    if (day.length < 2) day = "0" + day;
-    return [year, month, day].join("-");
-  }
   const cambiarFechaInicio = (value) => {
     const fecha = formatDate(value["$d"]);
     props.set_fecha_inicio(fecha);

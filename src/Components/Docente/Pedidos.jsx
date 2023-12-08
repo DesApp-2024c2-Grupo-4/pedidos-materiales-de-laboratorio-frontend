@@ -14,6 +14,8 @@ import { ThemeProvider } from '@mui/material/styles';
 
 import NuevoPedido from "./NuevoPedido";
 import { userContext } from "../../Context/LabProvider";
+import StepperModal from "./StepperModal";
+import BasicModal from "./BasicModal";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -65,12 +67,8 @@ function Pedidos() {
       {!(nuevoPedido) ? (
 
         <Box sx={{ flexGrow: 0, m: 2 }}>
-           
-
           <BotonNPedido setNuevoPedido={setNuevoPedido}></BotonNPedido>
-        
-
-
+          <BasicModal setNuevoPedido={setNuevoPedido}></BasicModal>
         </Box>
       ) : (<NuevoPedido></NuevoPedido>)}
       {/* opcion pantalla */}

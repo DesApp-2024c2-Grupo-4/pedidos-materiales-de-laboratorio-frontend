@@ -6,7 +6,7 @@ const FormError = ({error}) => {
     <FormControl error={error} >
         {error && 
           <FormHelperText sx={{ fontSize:'14px'}}>
-            <span >Oops!</span> {error.message}</FormHelperText>
+           {error.message}</FormHelperText>
           }
     </FormControl>
   )
