@@ -154,6 +154,7 @@ const CreatePedido = () => {
             activeStep,
             handleBack,
             handleNext,
+            valueHoraFin,
             register,
             listaMateriales,
             errors,

@@ -30,6 +30,7 @@ const StepEquipos = (props) => {
     setError,
     listaEquipos,
     clearErrors,
+    valueHoraFin,
     handleBack,
     handleNext,
     setListaEquipos,
@@ -39,10 +40,36 @@ const StepEquipos = (props) => {
   const [equipo, setEquipo] = useState({});
   const [list, setLista] = useState(getValues("lista_equipos") || []);
   const [selectedRows, setSelectedRows] = useState({});
+  const [saveHistoric, setSaveHistoric] = useState({});
   const stock = () => {
-    const stock = listaEquipos.find((e) => e._id == equipo.equipo);
-    const total = stock && stock.stock - stock.enUso - stock.enReparacion;
-    return total;
+    const fecha_inicio = getValues("fecha_utilizacion");
+    const fecha_fin = valueHoraFin;
+    const find = listaEquipos.find((e) => e._id == equipo.equipo);
+
+    if (find) {
+      // Calcular el stock disponible teniendo en cuenta las reservas
+      const reservas = find.enUso || [];
+      // Filtrar las reservas que se superponen con la fecha de interés
+      const reservasEnFecha = reservas.filter((reserva) => {
+        return (
+          (fecha_inicio >= reserva.fecha_inicio &&
+            fecha_inicio <= reserva.fecha_fin) ||
+          (fecha_fin >= reserva.fecha_inicio &&
+            fecha_fin <= reserva.fecha_fin) ||
+          (fecha_inicio <= reserva.fecha_inicio &&
+            fecha_fin >= reserva.fecha_fin)
+        );
+      });
+      // Sumar la cantidad de todas las reservas que se superponen
+      const cantidadEnFecha = reservasEnFecha.reduce(
+        (total, reserva) => total + reserva.cantidad,
+        0
+      );
+      const stockTotal = find.stock - cantidadEnFecha;
+      const stockDisponible = stockTotal - (find.enReparacion || 0);
+
+      return stockDisponible;
+    }
   };
   const handleEquipo = (e) => {
     if (stock() < getValues("cant_equipo")) {
@@ -54,6 +81,8 @@ const StepEquipos = (props) => {
       clearErrors("cant_equipo");
     }
     if (errors.cant_equipo == undefined) {
+      const fecha_inicio = getValues("fecha_utilizacion");
+      const fecha_fin = valueHoraFin;
       let array = [...getValues("lista_equipos")];
       let listaGeneral = [...listaEquipos];
       let listaMap = [...list];
@@ -61,8 +90,60 @@ const StepEquipos = (props) => {
       let indexGeneral = listaEquipos.findIndex((e) => e._id == equipo.equipo);
       let indexMap = listaMap.findIndex((e) => e._id == equipo.equipo);
       let find = listaEquipos.find((e) => e._id == equipo.equipo);
-      listaGeneral[indexGeneral].enUso +=
-        equipo.cantidad || listaGeneral[indexGeneral].enUso;
+
+      // Verificar superposición con las reservas existentes
+      let overlappingReservation =
+        find.enUso.lenght > 0 &&
+        find.enUso.find((reserva) => {
+          return (
+            (fecha_inicio >= reserva.fecha_inicio &&
+              fecha_inicio <= reserva.fecha_fin) ||
+            (fecha_fin >= reserva.fecha_inicio &&
+              fecha_fin <= reserva.fecha_fin) ||
+            (fecha_inicio <= reserva.fecha_inicio &&
+              fecha_fin >= reserva.fecha_fin)
+          );
+        });
+      let indexFind = find.enUso.findIndex((reserva) => {
+        return (
+          (fecha_inicio >= reserva.fecha_inicio &&
+            fecha_inicio <= reserva.fecha_fin) ||
+          (fecha_fin >= reserva.fecha_inicio &&
+            fecha_fin <= reserva.fecha_fin) ||
+          (fecha_inicio <= reserva.fecha_inicio &&
+            fecha_fin >= reserva.fecha_fin)
+        );
+      });
+
+      if (overlappingReservation) {
+        setSaveHistoric((old) => ({
+          ...old,
+          [find._id]: {index: indexFind, reservation: overlappingReservation},
+        }));
+        // Actualizar la cantidad disponible en la franja horaria superpuesta
+        overlappingReservation.cantidad += equipo.cantidad || 0;
+
+        // Ajustar las franjas horarias comprometidas
+        overlappingReservation.fecha_inicio = Math.min(
+          overlappingReservation.fecha_inicio,
+          fecha_inicio
+        );
+        overlappingReservation.fecha_fin = Math.max(
+          overlappingReservation.fecha_fin,
+          fecha_fin
+        );
+      } else {
+        // No hay superposición, agregar una nueva reserva
+        find.enUso.push({
+          fecha_inicio,
+          fecha_fin,
+          cantidad: equipo.cantidad || 0,
+        });
+      }
+
+      listaGeneral[indexGeneral] = overlappingReservation
+        ? overlappingReservation
+        : find;
       find.id = equipo.equipo;
       find.cantidad = equipo.cantidad || find.cantidad;
 
@@ -80,14 +161,18 @@ const StepEquipos = (props) => {
     }
   };
   const handleDeleteSelected = () => {
-    // Aquí puedes manejar la lógica para eliminar los elementos seleccionados
     let array = [...getValues("lista_equipos")];
     let listaGeneral = [...listaEquipos];
     let listaMap = [...list];
     array = array.filter((e) => !selectedRows.hasOwnProperty(e.equipo));
+    // setSaveHistoric((old) => ({
+    //   ...old,
+    //   [find._id]: {index: indexFind, reservation: overlappingReservation},
+    // }));
     listaGeneral = listaGeneral.map((e) => {
       if (selectedRows.hasOwnProperty(e._id)) {
-        e.enUso -= selectedRows[e._id].cantidad;
+        let find = saveHistoric[e._id]
+        e.enUso[find.index] = find.reservation;
       }
       return e;
     });
@@ -241,10 +326,7 @@ const StepEquipos = (props) => {
           }}
         >
           <Box sx={{ flex: "1 1 auto" }} />
-          <Button
-            onClick={handleBack}
-            sx={{ mr: 1 }}
-          >
+          <Button onClick={handleBack} sx={{ mr: 1 }}>
             Volver
           </Button>
         </Box>

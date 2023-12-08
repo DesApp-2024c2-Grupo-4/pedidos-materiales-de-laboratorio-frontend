@@ -30,6 +30,7 @@ const StepMateriales = (props) => {
     setValue,
     setError,
     listaMateriales,
+    valueHoraFin,
     clearErrors,
     handleNext,
     handleBack,
@@ -40,10 +41,35 @@ const StepMateriales = (props) => {
   const [material, setMaterial] = useState({});
   const [list, setLista] = useState(getValues("lista_materiales") || []);
   const [selectedRows, setSelectedRows] = useState({});
+  const [saveHistoric, setSaveHistoric] = useState({});
   const stock = () => {
-    const stock = listaMateriales.find((e) => e._id == material.material);
-    const total = stock && stock.stock - stock.enUso - stock.enReparacion;
-    return total;
+    const fecha_inicio = getValues("fecha_utilizacion");
+    const fecha_fin = valueHoraFin;
+    const find = listaMateriales.find((e) => e._id == material.material);
+    if (find) {
+      // Calcular el stock disponible teniendo en cuenta las reservas
+      const reservas = find.enUso || [];
+      // Filtrar las reservas que se superponen con la fecha de interés
+      const reservasEnFecha = reservas.filter((reserva) => {
+        return (
+          (fecha_inicio >= reserva.fecha_inicio &&
+            fecha_inicio <= reserva.fecha_fin) ||
+          (fecha_fin >= reserva.fecha_inicio &&
+            fecha_fin <= reserva.fecha_fin) ||
+          (fecha_inicio <= reserva.fecha_inicio &&
+            fecha_fin >= reserva.fecha_fin)
+        );
+      });
+      // Sumar la cantidad de todas las reservas que se superponen
+      const cantidadEnFecha = reservasEnFecha.reduce(
+        (total, reserva) => total + reserva.cantidad,
+        0
+      );
+      const stockTotal = find.stock - cantidadEnFecha;
+      const stockDisponible = stockTotal - (find.enReparacion || 0);
+
+      return stockDisponible;
+    }
   };
   const handleMaterial = (e) => {
     if (stock() < getValues("cant_material")) {
@@ -55,6 +81,8 @@ const StepMateriales = (props) => {
       clearErrors("cant_material");
     }
     if (errors.cant_material == undefined) {
+      const fecha_inicio = getValues("fecha_utilizacion");
+      const fecha_fin = valueHoraFin;
       let array = [...getValues("lista_materiales")];
       let listaGeneral = [...listaMateriales];
       let listaMap = [...list];
@@ -62,8 +90,60 @@ const StepMateriales = (props) => {
       let indexGeneral = listaMateriales.findIndex((e) => e._id == material.material);
       let indexMap = listaMap.findIndex((e) => e._id == material.material);
       let find = listaMateriales.find((e) => e._id == material.material);
-      listaGeneral[indexGeneral].enUso +=
-        material.cantidad || listaGeneral[indexGeneral].enUso;
+
+      // Verificar superposición con las reservas existentes
+      let overlappingReservation =
+        find.enUso.lenght > 0 &&
+        find.enUso.find((reserva) => {
+          return (
+            (fecha_inicio >= reserva.fecha_inicio &&
+              fecha_inicio <= reserva.fecha_fin) ||
+            (fecha_fin >= reserva.fecha_inicio &&
+              fecha_fin <= reserva.fecha_fin) ||
+            (fecha_inicio <= reserva.fecha_inicio &&
+              fecha_fin >= reserva.fecha_fin)
+          );
+        });
+      let indexFind = find.enUso.findIndex((reserva) => {
+        return (
+          (fecha_inicio >= reserva.fecha_inicio &&
+            fecha_inicio <= reserva.fecha_fin) ||
+          (fecha_fin >= reserva.fecha_inicio &&
+            fecha_fin <= reserva.fecha_fin) ||
+          (fecha_inicio <= reserva.fecha_inicio &&
+            fecha_fin >= reserva.fecha_fin)
+        );
+      });
+
+      if (overlappingReservation) {
+        setSaveHistoric((old) => ({
+          ...old,
+          [find._id]: {index: indexFind, reservation: overlappingReservation},
+        }));
+        // Actualizar la cantidad disponible en la franja horaria superpuesta
+        overlappingReservation.cantidad += material.cantidad || 0;
+
+        // Ajustar las franjas horarias comprometidas
+        overlappingReservation.fecha_inicio = Math.min(
+          overlappingReservation.fecha_inicio,
+          fecha_inicio
+        );
+        overlappingReservation.fecha_fin = Math.max(
+          overlappingReservation.fecha_fin,
+          fecha_fin
+        );
+      } else {
+        // No hay superposición, agregar una nueva reserva
+        find.enUso.push({
+          fecha_inicio,
+          fecha_fin,
+          cantidad: material.cantidad || 0,
+        });
+      }
+
+      listaGeneral[indexGeneral] = overlappingReservation
+        ? overlappingReservation
+        : find;
       find.id = material.material;
       find.cantidad = material.cantidad || find.cantidad;
 
@@ -76,21 +156,25 @@ const StepMateriales = (props) => {
       setListaMateriales(listaGeneral);
 
       setMaterial({});
-      setValue("id_material", null);
+      setValue("id_equipo", null);
       setValue("cant_material", null);
     }
   };
   const handleDeleteSelected = () => {
-    // Aquí puedes manejar la lógica para eliminar los elementos seleccionados
     let array = [...getValues("lista_materiales")];
     let listaGeneral = [...listaMateriales];
     let listaMap = [...list];
     array = array.filter((e) => !selectedRows.hasOwnProperty(e.material));
+    // setSaveHistoric((old) => ({
+    //   ...old,
+    //   [find._id]: {index: indexFind, reservation: overlappingReservation},
+    // }));
     listaGeneral = listaGeneral.map((e) => {
-      if(selectedRows.hasOwnProperty(e._id)){
-        e.enUso -= selectedRows[e._id].cantidad
+      if (selectedRows.hasOwnProperty(e._id)) {
+        let find = saveHistoric[e._id]
+        e.enUso[find.index] = find.reservation;
       }
-      return e
+      return e;
     });
     listaMap = listaMap.filter((e) => !selectedRows.hasOwnProperty(e._id));
     setLista(listaMap);
