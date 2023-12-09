@@ -156,7 +156,7 @@ const StepMateriales = (props) => {
       setListaMateriales(listaGeneral);
 
       setMaterial({});
-      setValue("id_equipo", null);
+      setValue("id_material", null);
       setValue("cant_material", null);
     }
   };
