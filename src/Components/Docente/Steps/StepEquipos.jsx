@@ -16,8 +16,8 @@ import FormError from "../../Mensajes/FormError";
 import { formValidate } from "../../../utils/formValidator";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { DataGrid } from "@mui/x-data-grid";
-import { stockItem } from "./handles";
-import { v4 as uuidv4 } from 'uuid';
+import { deleteSelected, handleItem, stockItem } from "./handles";
+import { v4 as uuidv4 } from "uuid";
 const columns = [
   { field: "descripcion", headerName: "Descripción", width: 450 },
   { field: "clase", headerName: "Clase", width: 150 },
@@ -26,6 +26,8 @@ const columns = [
 
 const StepEquipos = (props) => {
   const {
+    list,
+    setLista,
     register,
     errors,
     setValue,
@@ -40,7 +42,6 @@ const StepEquipos = (props) => {
   } = props.values;
   const { validateStock } = formValidate();
   const [equipo, setEquipo] = useState({});
-  const [list, setLista] = useState(getValues("lista_equipos") || []);
   const [selectedRows, setSelectedRows] = useState({});
   const [saveHistoric, setSaveHistoric] = useState({});
   const stock = () => {
@@ -48,36 +49,6 @@ const StepEquipos = (props) => {
     const fecha_fin = valueHoraFin;
     return stockItem(fecha_inicio, fecha_fin, listaEquipos, equipo.equipo);
   };
-  // const handleEquipo = (e) => {
-  //   if (stock() < getValues("cant_equipo")) {
-  //     setError("cant_equipo", {
-  //       type: "manual",
-  //       message: "No puede superar el Stock",
-  //     });
-  //   } else {
-  //     clearErrors("cant_equipo");
-  //   }
-  //   if (errors.cant_equipo == undefined) {
-  //     const fecha_inicio = getValues("fecha_utilizacion");
-  //     const fecha_fin = valueHoraFin;
-  //     const {listaMap, array, listaGeneral} = handleItem(fecha_inicio,fecha_fin, getValues('lista_equipos'), listaEquipos, list, equipo.id, equipo.cantidad, setSaveHistoric)
-      
-
-  //     setLista(listaMap);
-  //     setValue("lista_equipos", array);
-  //     setListaEquipos(listaGeneral);
-
-  //     setEquipo({});
-  //     setValue("id_equipo", null);
-  //     setValue("cant_equipo", null);
-  //   }
-  // };
-  // const handleDeleteSelected = () => {
-  //   const { listaMap, array, listaGeneral } = deleteSelected(getValues("lista_equipos"), listaEquipos, list, selectedRows, equipo.id, saveHistoric)
-  //   setLista(listaMap);
-  //   setValue("lista_equipos", array);
-  //   setListaEquipos(listaGeneral);
-  // };
 
   const handleEquipo = (e) => {
     if (stock() < getValues("cant_equipo")) {
@@ -91,80 +62,16 @@ const StepEquipos = (props) => {
     if (errors.cant_equipo == undefined) {
       const fecha_inicio = getValues("fecha_utilizacion");
       const fecha_fin = valueHoraFin;
-      let array = [...getValues("lista_equipos")];
-      let listaGeneral = [...listaEquipos];
-      let listaMap = [...list];
-      let index = array.findIndex((e) => e.equipo == equipo.equipo);
-      let indexGeneral = listaEquipos.findIndex((e) => e._id == equipo.equipo);
-      let indexMap = listaMap.findIndex((e) => e._id == equipo.equipo);
-      let find = listaEquipos.find((e) => e._id == equipo.equipo);
-
-      // Verificar superposición con las reservas existentes
-      let overlappingReservation =
-        find.enUso.lenght > 0 &&
-        find.enUso.filter((reserva) => {
-          return (
-            (fecha_inicio >= reserva.fecha_inicio &&
-              fecha_inicio <= reserva.fecha_fin) ||
-            (fecha_fin >= reserva.fecha_inicio &&
-              fecha_fin <= reserva.fecha_fin) ||
-            (fecha_inicio <= reserva.fecha_inicio &&
-              fecha_fin >= reserva.fecha_fin)
-          );
-        });
-        console.log(fecha_inicio, fecha_fin);
-      if (overlappingReservation.length > 0) {
-        // Actualizar la cantidad disponible en la franja horaria superpuesta
-        let cantidad = overlappingReservation.reduce((prev, curr) =>{
-          return curr.cantidad + prev
-        },0)
-        cantidad += equipo.cantidad || 0        
-
-        // Ajustar las franjas horarias comprometidas
-        let fecha_inicio_new = overlappingReservation.reduce((prev, curr) =>{
-          return prev < curr.fecha_inicio ? prev : curr.fecha_inicio;
-        },new Date()) 
-        fecha_inicio_new = Math.min(fecha_inicio_new, fecha_inicio);
-        let fecha_fin_new = overlappingReservation.reduce((prev, curr) =>{
-          return prev < curr.fecha_fin ? curr.fecha_fin : prev;
-        },new Date())
-
-        fecha_fin_new = fecha_fin_new = Math.max(fecha_fin_new, fecha_fin);
-        let reservation = {
-          id: uuidv4(),
-          fecha_inicio: fecha_inicio_new,
-          fecha_fin: fecha_fin_new,
-          cantidad,
-        }
-        setSaveHistoric((old) => ({
-          ...old,
-          [find._id]: {newReservation: reservation , oldArray: overlappingReservation},
-        }));
-        find.enUso.push(reservation)
-        find.enUso = find.enUso.filter(e => !overlappingReservation.some(i => i.id == e.id) && e)
-      } else {
-        // No hay superposición, agregar una nueva reserva
-        let reservation = {
-          id: uuidv4(),
-          fecha_inicio,
-          fecha_fin,
-          cantidad: equipo.cantidad || 0,
-        }
-        find.enUso.push(reservation);
-        setSaveHistoric((old) => ({
-          ...old,
-          [find._id]: {newReservation: reservation , oldArray: []},
-        }));
-      }
-
-      listaGeneral[indexGeneral] = find;
-      find.id = equipo.equipo;
-      find.cantidad = equipo.cantidad || find.cantidad;
-
-      let obj = { equipo: equipo.equipo, cant_equipo: equipo.cantidad || 0 };
-      index >= 0 ? (array[index] = obj) : array.push(obj);
-      indexMap >= 0 ? (listaMap[indexMap] = find) : listaMap.push(find);
-
+      const { listaMap, array, listaGeneral } = handleItem(
+        fecha_inicio,
+        fecha_fin,
+        getValues("lista_equipos"),
+        listaEquipos,
+        list,
+        equipo.equipo,
+        equipo.cantidad,
+        setSaveHistoric
+      );
       setLista(listaMap);
       setValue("lista_equipos", array);
       setListaEquipos(listaGeneral);
@@ -175,23 +82,13 @@ const StepEquipos = (props) => {
     }
   };
   const handleDeleteSelected = () => {
-    let array = [...getValues("lista_equipos")];
-    let listaGeneral = [...listaEquipos];
-    let listaMap = [...list];
-    array = array.filter((e) => !selectedRows.hasOwnProperty(e.equipo));
-    listaGeneral = listaGeneral.map((e) => {
-      if (selectedRows.hasOwnProperty(e._id)) {
-        let find = saveHistoric[e._id]
-        if(find.oldArray.lenght == 0){
-          e.enUso = e.enUso.filter(e => find.newReservation.id != e.id)
-        }else{
-          e.enUso = e.enUso.filter(e => find.newReservation.id != e.id)
-          e.enUso = [...e.enUso,...find.oldArray]
-        }
-      }
-      return e;
-    });
-    listaMap = listaMap.filter((e) => !selectedRows.hasOwnProperty(e._id));
+    const { listaMap, array, listaGeneral } = deleteSelected(
+      getValues("lista_equipos"),
+      listaEquipos,
+      list,
+      selectedRows,
+      saveHistoric
+    );
     setLista(listaMap);
     setValue("lista_equipos", array);
     setListaEquipos(listaGeneral);
@@ -341,7 +238,18 @@ const StepEquipos = (props) => {
           }}
         >
           <Box sx={{ flex: "1 1 auto" }} />
-          <Button onClick={handleBack} sx={{ mr: 1 }}>
+          <Button
+            onClick={handleBack}
+            sx={{
+              "&.MuiButtonBase-root": {
+                bgcolor: "#1B621A",
+                borderRadius: "30px",
+                color: "white",
+              },
+              "&:hover": { bgcolor: "#60975E" },
+              mr: 1,
+            }}
+          >
             Volver
           </Button>
         </Box>
@@ -361,7 +269,15 @@ const StepEquipos = (props) => {
             onClick={() => {
               Object.keys(errors).length == 0 && handleNext();
             }}
-            sx={{ mr: 1 }}
+            sx={{
+              "&.MuiButtonBase-root": {
+                bgcolor: "#1B621A",
+                borderRadius: "30px",
+                color: "white",
+              },
+              "&:hover": { bgcolor: "#60975E" },
+              mr: 1,
+            }}
           >
             Siguiente
           </Button>

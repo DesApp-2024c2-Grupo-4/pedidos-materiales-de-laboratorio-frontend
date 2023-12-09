@@ -16,14 +16,53 @@ import FormError from "../../Mensajes/FormError";
 import { formValidate } from "../../../utils/formValidator";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { DataGrid } from "@mui/x-data-grid";
+import DeleteIcon from "@mui/icons-material/Delete";
 const columns = [
-  { field: "descripcion", headerName: "Descripción", width: 450 },
-  { field: "clase", headerName: "Clase", width: 150 },
-  { field: "cantidad", headerName: "Cantidad", width: 150 },
+  { field: "descripcion", headerName: "Descripción", width: 150 },
+  { field: "cas", headerName: "N° CAS", width: 100 },
+  { field: "calidad", headerName: "Calidad", width: 100 },
+  { field: "cantidad", headerName: "Cantidad", width: 100 },
+  { field: "un_medida", headerName: "Un. medida", width: 100 },
+  { field: "concentracion_tipo", headerName: "Tipo", width: 100 },
+  { field: "concentracion_medida", headerName: "Med. Concen.", width: 100 },
+  { field: "disolvente", headerName: "Disolvente", width: 100 },
+  {
+    field: "otro_disolvente_descripcion",
+    headerName: "Otro Disolvente",
+    width: 200,
+  },
 ];
+const calidades = {
+  "p.a.": "P/Análisis",
+  molec: "Calidad Molecular",
+  "°_tec": "°Técnico",
+};
+const medidas = {
+  gr: "Gramo",
+  kg: "Kilo",
+  l: "Litro",
+  ml: "MIlilitro",
+  un: "unidad",
+};
+
+const tipos = {
+  puro: "Puro",
+  molar: "Molar",
+  normal: "Normalidad",
+  "%m/m": "% masa/masa",
+  "%m/v": "% masa/volumen",
+  "%v/v": "% volumen/volumen",
+};
+const disolventes = {
+  agua: "Agua",
+  alcohol: "Alcohol",
+  otro: "Otro",
+};
 
 const StepReactivos = (props) => {
   const {
+    list,
+    setLista,
     register,
     errors,
     setValue,
@@ -37,89 +76,126 @@ const StepReactivos = (props) => {
   } = props.values;
   const { validateStock } = formValidate();
   const [reactivo, setReactivo] = useState({});
-  const [list, setLista] = useState(getValues("lista_reactivos") || []);
   const [selectedRows, setSelectedRows] = useState({});
   const { required, validateNumber } = formValidate();
-  const stock = () => {
-    const stock = listaReactivos.find((e) => e._id == reactivo.reactivo);
-    const total = stock && stock.stock - stock.enUso;
-    return total;
-  };
+  // const stock = () => {
+  //   const stock = listaReactivos.find((e) => e._id == reactivo.reactivo);
+  //   const total = stock && stock.stock - stock.enUso;
+  //   return total;
+  // };
   const handleReactivo = (e) => {
     if (getValues("id_reactivo")) {
-      if(getValues("cant_reactivo") == null){
+      if (getValues("cant_reactivo") == null) {
         setError("cant_reactivo", {
           type: "cant_reactivo",
           message: "Debe ingresar una Cantidad",
         });
+      } else if (getValues("cant_reactivo")) {
+        clearErrors("cant_reactivo");
       }
-      if(getValues("un_medida") == null){
+      if (getValues("un_medida") == null) {
         setError("un_medida", {
           type: "un_medida",
           message: "Debe seleccionar un medida",
         });
+      } else if (getValues("un_medida")) {
+        clearErrors("un_medida");
       }
-      if(getValues("calidad") == null){
+      if (getValues("calidad") == null) {
         setError("calidad", {
           type: "calidad",
           message: "Selecciona Calidad",
         });
+      } else if (getValues("calidad")) {
+        clearErrors("calidad");
       }
-      if(getValues("concentracion_tipo") == null){
+      if (getValues("concentracion_tipo") == null) {
         setError("concentracion_tipo", {
           type: "concentracion_tipo",
           message: "Debe seleccionar un tipo",
         });
-      }if(getValues("concentracion_tipo") == 'puro' &&  getValues("concentracion_medida") == null){
+      } else if (getValues("concentracion_tipo")) {
+        clearErrors("concentracion_tipo");
+      }
+      if (
+        getValues("concentracion_tipo") != "puro" &&
+        getValues("concentracion_medida") == null
+      ) {
         setError("concentracion_medida", {
           type: "concentracion_medida",
           message: "Debe ingresar un valor de medida",
         });
-      }if(getValues("disolvente") == null){
+      } else if (getValues("concentracion_medida")) {
+        clearErrors("concentracion_medida");
+      }
+      if (
+        getValues("concentracion_tipo") != "puro" &&
+        getValues("disolvente") == null
+      ) {
         setError("disolvente", {
           type: "disolvente",
           message: "Debe seleccionar un disolvente",
         });
-      }if(getValues("disolvente") == 'otro' &&  getValues("otro_disolvente_descripcion") == null){
+      } else if (getValues("disolvente")) {
+        clearErrors("disolvente");
+      }
+      if (
+        getValues("disolvente") == "otro" &&
+        getValues("otro_disolvente_descripcion") == null
+      ) {
         setError("otro_disolvente_descripcion", {
           type: "otro_disolvente_descripcion",
           message: "Debe ingresar el detalle",
         });
+      } else if (getValues("otro_disolvente_descripcion")) {
+        clearErrors("otro_disolvente_descripcion");
       }
     } else {
-      clearErrors(["cant_reactivo", "un_medida","calidad","concentracion_tipo","concentracion_medida", "disolvente","otro_disolvente_descripcion"]);
+      clearErrors([
+        "cant_reactivo",
+        "un_medida",
+        "calidad",
+        "concentracion_tipo",
+        "concentracion_medida",
+        "disolvente",
+        "otro_disolvente_descripcion",
+      ]);
     }
-    if (errors.cant_reactivo == undefined) {
+    console.log(list);
+    if (Object.keys(errors).length == 0) {
       let array = [...getValues("lista_reactivos")];
-      let listaGeneral = [...listaReactivos];
       let listaMap = [...list];
       let index = array.findIndex((e) => e.reactivo == reactivo.reactivo);
-      let indexGeneral = listaReactivos.findIndex(
-        (e) => e._id == reactivo.reactivo
-      );
       let indexMap = listaMap.findIndex((e) => e._id == reactivo.reactivo);
       let find = listaReactivos.find((e) => e._id == reactivo.reactivo);
-      listaGeneral[indexGeneral].enUso +=
-        reactivo.cantidad || listaGeneral[indexGeneral].enUso;
-      find.id = reactivo.reactivo;
-      find.cantidad = reactivo.cantidad || find.cantidad;
-      find.cant_reactivo = reactivo.cant_reactivo
-      find.un_medida = reactivo.un_medida
-      find.calidad = reactivo.calidad
-      find.concentracion_tipo = reactivo?.concentracion_tipo || "-"
-      find.concentracion_medida = reactivo?.concentracion_medida || "-"
-      find.disolvente = reactivo?.disolvente || "-"
-      find.otro_disolvente_descripcion = reactivo?.otro_disolvente_descripcion || "-"
+      //objto para guardar en bbdd
       let obj = {
         reactivo: reactivo.reactivo,
-        cant_reactivo: reactivo.cantidad || 0,
+        cantidad: reactivo.cantidad || 0,
+        un_medida: reactivo.un_medida,
+        calidad: reactivo.calidad,
+        concentracion_tipo: reactivo?.concentracion_tipo || null,
+        concentracion_medida: reactivo?.disolvente || null,
+        disolvente: reactivo?.disolvente || null,
+        otro_disolvente_descripcion:
+          reactivo?.otro_disolvente_descripcion || null,
       };
+      //objto para mostrar en lista
+      find.id = reactivo.reactivo;
+      find.cantidad = reactivo.cantidad || find.cantidad;
+      find.un_medida = medidas[reactivo.un_medida];
+      find.calidad = calidades[reactivo.calidad];
+      find.concentracion_tipo = tipos[reactivo?.concentracion_tipo] || "-";
+      find.concentracion_medida = reactivo?.concentracion_medida || "-";
+      find.disolvente = disolventes[reactivo?.disolvente] || "-";
+      find.otro_disolvente_descripcion =
+        reactivo?.otro_disolvente_descripcion || "-";
+
       index >= 0 ? (array[index] = obj) : array.push(obj);
       indexMap >= 0 ? (listaMap[indexMap] = find) : listaMap.push(find);
 
       setLista(listaMap);
       setValue("lista_reactivos", array);
-      setListaReactivos(listaGeneral);
 
       setReactivo({});
       setValue("id_reactivo", null);
@@ -127,21 +203,12 @@ const StepReactivos = (props) => {
     }
   };
   const handleDeleteSelected = () => {
-    // Aquí puedes manejar la lógica para eliminar los elementos seleccionados
     let array = [...getValues("lista_reactivos")];
-    let listaGeneral = [...listaReactivos];
     let listaMap = [...list];
     array = array.filter((e) => !selectedRows.hasOwnProperty(e.reactivo));
-    listaGeneral = listaGeneral.map((e) => {
-      if (selectedRows.hasOwnProperty(e._id)) {
-        e.enUso -= selectedRows[e._id].cantidad;
-      }
-      return e;
-    });
     listaMap = listaMap.filter((e) => !selectedRows.hasOwnProperty(e._id));
     setLista(listaMap);
     setValue("lista_reactivos", array);
-    setListaReactivos(listaGeneral);
   };
   return (
     <>
@@ -291,7 +358,6 @@ const StepReactivos = (props) => {
             </Box>
           )}
         </Box>
-        {(stock() !== undefined || stock() > 0) && <></>}
       </Box>
       {getValues("id_reactivo") && (
         <Box
@@ -335,7 +401,7 @@ const StepReactivos = (props) => {
                 }}
                 value={"gr"}
               >
-                Gramos
+                Gramo
               </MenuItem>
               <MenuItem
                 sx={{
@@ -349,7 +415,7 @@ const StepReactivos = (props) => {
                 sx={{
                   "&.MuiButtonBase-root": { display: "block !important" },
                 }}
-                value={"L"}
+                value={"l"}
               >
                 Litro
               </MenuItem>
@@ -359,7 +425,7 @@ const StepReactivos = (props) => {
                 }}
                 value={"ml"}
               >
-                Mililitros
+                Mililitro
               </MenuItem>
               <MenuItem
                 sx={{
@@ -399,6 +465,7 @@ const StepReactivos = (props) => {
                   concentracion_tipo: e.target.value,
                 }));
                 clearErrors("concentracion_tipo");
+                e.target.value == "puro" && clearErrors("concentracion_medida");
               }}
             >
               <MenuItem
@@ -413,7 +480,7 @@ const StepReactivos = (props) => {
                 sx={{
                   "&.MuiButtonBase-root": { display: "block !important" },
                 }}
-                value={"Molar"}
+                value={"molar"}
               >
                 Molar
               </MenuItem>
@@ -421,7 +488,7 @@ const StepReactivos = (props) => {
                 sx={{
                   "&.MuiButtonBase-root": { display: "block !important" },
                 }}
-                value={"Normal"}
+                value={"normal"}
               >
                 Normalidad
               </MenuItem>
@@ -467,7 +534,7 @@ const StepReactivos = (props) => {
                       required: {
                         value:
                           getValues("id_reactivo") &&
-                          reactivo.concentracion_tipo === "puro" &&
+                          reactivo.concentracion_tipo !== "puro" &&
                           true,
                         message: "Debe ingresar un valor de medida",
                       },
@@ -511,6 +578,8 @@ const StepReactivos = (props) => {
                         disolvente: e.target.value,
                       }));
                       clearErrors("disolvente");
+                      e.target.value != "otro" &&
+                        clearErrors("otro_disolvente_descripcion");
                     }}
                   >
                     <MenuItem
@@ -543,7 +612,7 @@ const StepReactivos = (props) => {
               </>
             )}
           <IconButton
-            sx={{ maxHeight: "8vh", width: "6vw" }}
+            sx={{ maxHeight: "8vh", width: "4.5vw" }}
             aria-label="delete"
             size="small"
             onClick={handleReactivo}
@@ -597,7 +666,7 @@ const StepReactivos = (props) => {
               }}
               initialState={{
                 pagination: {
-                  paginationModel: { page: 0, pageSize: 4 },
+                  paginationModel: { page: 0, pageSize: 3 },
                 },
               }}
               pageSizeOptions={[5, 10]}
@@ -607,10 +676,19 @@ const StepReactivos = (props) => {
               }}
             />
             <Button
-              variant="contained"
-              color="secondary"
+              variant="outlined"
+              color="error"
+              sx={{
+                mt: 1,
+                "&:hover": { color: "red" },
+              }}
               onClick={handleDeleteSelected}
               disabled={selectedRows.length === 0}
+              startIcon={
+                <DeleteIcon
+                  sx={{ width: "10px", height: "10px", mt: "-5px" }}
+                />
+              }
             >
               Eliminar seleccionados
             </Button>
@@ -630,7 +708,18 @@ const StepReactivos = (props) => {
           }}
         >
           <Box sx={{ flex: "1 1 auto" }} />
-          <Button onClick={handleBack} sx={{ mr: 1 }}>
+          <Button
+            onClick={handleBack}
+            sx={{
+              "&.MuiButtonBase-root": {
+                bgcolor: "#1B621A",
+                borderRadius: "30px",
+                color: "white",
+              },
+              "&:hover": { bgcolor: "#60975E" },
+              mr: 1,
+            }}
+          >
             Volver
           </Button>
         </Box>
@@ -651,7 +740,15 @@ const StepReactivos = (props) => {
             // onClick={() => {
             //   Object.keys(errors).length == 0 && handleNext();
             // }}
-            // sx={{ mr: 1 }}
+            sx={{
+              "&.MuiButtonBase-root": {
+                bgcolor: "#1B621A",
+                borderRadius: "30px",
+                color: "white",
+              },
+              "&:hover": { bgcolor: "#60975E" },
+              mr: 1,
+            }}
           >
             Siguiente
           </Button>

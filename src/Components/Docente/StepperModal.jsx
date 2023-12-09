@@ -43,7 +43,8 @@ const StepperModal = ({ steps, title ,children }) => {
 
   return (
     <Box sx={{ width: "100%", height: "80vh", position: "relative" }}>
-      <Box sx={{ height: "10vh" }}>
+      <Box sx={{ 
+            pt:3,height: "10vh" }}>
         <Typography
           sx={{
             width: "100%",

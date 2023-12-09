@@ -301,7 +301,15 @@ const Informacion = (props) => {
                 Object.keys(errors).length == 0 &&
                 handleNext();
             }}
-            sx={{ mr: 1 }}
+            sx={{
+              "&.MuiButtonBase-root": {
+                bgcolor: "#1B621A",
+                borderRadius: "30px",
+                color: "white",
+              },
+              "&:hover": { bgcolor: "#60975E" },
+              mr: 1,
+            }}
           >
             Siguiente
           </Button>

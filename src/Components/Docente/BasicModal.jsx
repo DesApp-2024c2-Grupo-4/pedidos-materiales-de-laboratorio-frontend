@@ -12,8 +12,9 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: "70%",
-  bgcolor: 'background.paper',
-  borderRadius:'20px', 
+  background: "rgb(27,98,26)",
+  background: "linear-gradient(180deg, rgba(27,98,26,1) 0%, rgba(27,98,26,1) 5%, rgba(255,255,255,1) 5%, rgba(255,255,255,1) 77%)",
+  borderRadius:'40px', 
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
@@ -33,6 +34,7 @@ export default function BasicModal() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
+        
         <Box sx={style}>
           <StepperModal
             title="Crear nuevo pedido"

@@ -17,6 +17,7 @@ import FormError from "../../Mensajes/FormError";
 import { formValidate } from "../../../utils/formValidator";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { DataGrid } from "@mui/x-data-grid";
+import { deleteSelected, handleItem, stockItem } from "./handles";
 const columns = [
   { field: "descripcion", headerName: "Descripción", width: 450 },
   { field: "clase", headerName: "Clase", width: 150 },
@@ -25,6 +26,8 @@ const columns = [
 
 const StepMateriales = (props) => {
   const {
+    list,
+    setLista,
     register,
     errors,
     setValue,
@@ -39,37 +42,17 @@ const StepMateriales = (props) => {
   } = props.values;
   const { validateStock } = formValidate();
   const [material, setMaterial] = useState({});
-  const [list, setLista] = useState(getValues("lista_materiales") || []);
   const [selectedRows, setSelectedRows] = useState({});
   const [saveHistoric, setSaveHistoric] = useState({});
   const stock = () => {
     const fecha_inicio = getValues("fecha_utilizacion");
     const fecha_fin = valueHoraFin;
-    const find = listaMateriales.find((e) => e._id == material.material);
-    if (find) {
-      // Calcular el stock disponible teniendo en cuenta las reservas
-      const reservas = find.enUso || [];
-      // Filtrar las reservas que se superponen con la fecha de interés
-      const reservasEnFecha = reservas.filter((reserva) => {
-        return (
-          (fecha_inicio >= reserva.fecha_inicio &&
-            fecha_inicio <= reserva.fecha_fin) ||
-          (fecha_fin >= reserva.fecha_inicio &&
-            fecha_fin <= reserva.fecha_fin) ||
-          (fecha_inicio <= reserva.fecha_inicio &&
-            fecha_fin >= reserva.fecha_fin)
-        );
-      });
-      // Sumar la cantidad de todas las reservas que se superponen
-      const cantidadEnFecha = reservasEnFecha.reduce(
-        (total, reserva) => total + reserva.cantidad,
-        0
-      );
-      const stockTotal = find.stock - cantidadEnFecha;
-      const stockDisponible = stockTotal - (find.enReparacion || 0);
-
-      return stockDisponible;
-    }
+    return stockItem(
+      fecha_inicio,
+      fecha_fin,
+      listaMateriales,
+      material.material
+    );
   };
   const handleMaterial = (e) => {
     if (stock() < getValues("cant_material")) {
@@ -83,74 +66,16 @@ const StepMateriales = (props) => {
     if (errors.cant_material == undefined) {
       const fecha_inicio = getValues("fecha_utilizacion");
       const fecha_fin = valueHoraFin;
-      let array = [...getValues("lista_materiales")];
-      let listaGeneral = [...listaMateriales];
-      let listaMap = [...list];
-      let index = array.findIndex((e) => e.material == material.material);
-      let indexGeneral = listaMateriales.findIndex((e) => e._id == material.material);
-      let indexMap = listaMap.findIndex((e) => e._id == material.material);
-      let find = listaMateriales.find((e) => e._id == material.material);
-
-      // Verificar superposición con las reservas existentes
-      let overlappingReservation =
-        find.enUso.lenght > 0 &&
-        find.enUso.find((reserva) => {
-          return (
-            (fecha_inicio >= reserva.fecha_inicio &&
-              fecha_inicio <= reserva.fecha_fin) ||
-            (fecha_fin >= reserva.fecha_inicio &&
-              fecha_fin <= reserva.fecha_fin) ||
-            (fecha_inicio <= reserva.fecha_inicio &&
-              fecha_fin >= reserva.fecha_fin)
-          );
-        });
-      let indexFind = find.enUso.findIndex((reserva) => {
-        return (
-          (fecha_inicio >= reserva.fecha_inicio &&
-            fecha_inicio <= reserva.fecha_fin) ||
-          (fecha_fin >= reserva.fecha_inicio &&
-            fecha_fin <= reserva.fecha_fin) ||
-          (fecha_inicio <= reserva.fecha_inicio &&
-            fecha_fin >= reserva.fecha_fin)
-        );
-      });
-
-      if (overlappingReservation) {
-        setSaveHistoric((old) => ({
-          ...old,
-          [find._id]: {index: indexFind, reservation: overlappingReservation},
-        }));
-        // Actualizar la cantidad disponible en la franja horaria superpuesta
-        overlappingReservation.cantidad += material.cantidad || 0;
-
-        // Ajustar las franjas horarias comprometidas
-        overlappingReservation.fecha_inicio = Math.min(
-          overlappingReservation.fecha_inicio,
-          fecha_inicio
-        );
-        overlappingReservation.fecha_fin = Math.max(
-          overlappingReservation.fecha_fin,
-          fecha_fin
-        );
-      } else {
-        // No hay superposición, agregar una nueva reserva
-        find.enUso.push({
-          fecha_inicio,
-          fecha_fin,
-          cantidad: material.cantidad || 0,
-        });
-      }
-
-      listaGeneral[indexGeneral] = overlappingReservation
-        ? overlappingReservation
-        : find;
-      find.id = material.material;
-      find.cantidad = material.cantidad || find.cantidad;
-
-      let obj = { material: material.material, cant_material: material.cantidad || 0 };
-      index >= 0 ? (array[index] = obj) : array.push(obj);
-      indexMap >= 0 ? (listaMap[indexMap] = find) : listaMap.push(find);
-
+      const { listaMap, array, listaGeneral } = handleItem(
+        fecha_inicio,
+        fecha_fin,
+        getValues("lista_materiales"),
+        listaMateriales,
+        list,
+        material.material,
+        material.cantidad,
+        setSaveHistoric
+      );
       setLista(listaMap);
       setValue("lista_materiales", array);
       setListaMateriales(listaGeneral);
@@ -161,22 +86,13 @@ const StepMateriales = (props) => {
     }
   };
   const handleDeleteSelected = () => {
-    let array = [...getValues("lista_materiales")];
-    let listaGeneral = [...listaMateriales];
-    let listaMap = [...list];
-    array = array.filter((e) => !selectedRows.hasOwnProperty(e.material));
-    // setSaveHistoric((old) => ({
-    //   ...old,
-    //   [find._id]: {index: indexFind, reservation: overlappingReservation},
-    // }));
-    listaGeneral = listaGeneral.map((e) => {
-      if (selectedRows.hasOwnProperty(e._id)) {
-        let find = saveHistoric[e._id]
-        e.enUso[find.index] = find.reservation;
-      }
-      return e;
-    });
-    listaMap = listaMap.filter((e) => !selectedRows.hasOwnProperty(e._id));
+    const { listaMap, array, listaGeneral } = deleteSelected(
+      getValues("lista_materiales"),
+      listaMateriales,
+      list,
+      selectedRows,
+      saveHistoric
+    );
     setLista(listaMap);
     setValue("lista_materiales", array);
     setListaMateriales(listaGeneral);
@@ -190,7 +106,7 @@ const StepMateriales = (props) => {
           my: "2vh !important",
         }}
         autoComplete="off"
-      >        
+      >
         <Box sx={{ minWidth: 120 }}>
           <FormControl fullWidth>
             <InputLabel id="Equipo">Material</InputLabel>
@@ -198,7 +114,6 @@ const StepMateriales = (props) => {
               labelId="Equipo"
               id="Equipo"
               value={material.material}
-              
               label="Equipo"
               {...register("id_material")}
               onChange={(e) => {
@@ -208,12 +123,15 @@ const StepMateriales = (props) => {
               }}
             >
               {listaMateriales.map((item, index) => (
-                <MenuItem sx={{
-                  '&.MuiButtonBase-root' :
-                  {
-                    display: "block !important", // Agregar estilos flex aquí
-                  },
-                }} key={index} value={item._id}>
+                <MenuItem
+                  sx={{
+                    "&.MuiButtonBase-root": {
+                      display: "block !important", // Agregar estilos flex aquí
+                    },
+                  }}
+                  key={index}
+                  value={item._id}
+                >
                   {item.descripcion}
                 </MenuItem>
               ))}
@@ -326,7 +244,15 @@ const StepMateriales = (props) => {
           <Box sx={{ flex: "1 1 auto" }} />
           <Button
             onClick={handleBack}
-            sx={{ mr: 1 }}
+            sx={{
+              "&.MuiButtonBase-root": {
+                bgcolor: "#1B621A",
+                borderRadius: "30px",
+                color: "white",
+              },
+              "&:hover": { bgcolor: "#60975E" },
+              mr: 1,
+            }}
           >
             Volver
           </Button>
@@ -347,7 +273,15 @@ const StepMateriales = (props) => {
             onClick={() => {
               Object.keys(errors).length == 0 && handleNext();
             }}
-            sx={{ mr: 1 }}
+            sx={{
+              "&.MuiButtonBase-root": {
+                bgcolor: "#1B621A",
+                borderRadius: "30px",
+                color: "white",
+              },
+              "&:hover": { bgcolor: "#60975E" },
+              mr: 1,
+            }}
           >
             Siguiente
           </Button>

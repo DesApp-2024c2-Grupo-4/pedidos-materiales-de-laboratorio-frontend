@@ -19,6 +19,9 @@ const CreatePedido = () => {
   const [listaEquipos, setListaEquipos] = useState([]);
   const [listaMateriales, setListaMateriales] = useState([]);
   const [listaReactivos, setListaReactivos] = useState([]);
+  const [previewEquipos, setPreviewEquipos] = useState([]);
+  const [previewMateriales, setPreviewMateriales] = useState([]);
+  const [previewReactivos, setPreviewReactivos] = useState([]);
   const {
     register,
     handleSubmit,
@@ -127,6 +130,8 @@ const CreatePedido = () => {
       >
         <StepEquipos
           values={{
+            list: previewEquipos,
+            setLista: setPreviewEquipos,
             activeStep,
             handleBack,
             handleNext,
@@ -151,6 +156,8 @@ const CreatePedido = () => {
       >
         <StepMateriales
           values={{
+            list: previewMateriales,
+            setLista: setPreviewMateriales,
             activeStep,
             handleBack,
             handleNext,
@@ -175,6 +182,8 @@ const CreatePedido = () => {
       >
         <StepReactivos
           values={{
+            list: previewReactivos,
+            setLista: setPreviewReactivos,
             activeStep,
             handleBack,
             handleNext,
