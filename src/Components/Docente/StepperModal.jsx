@@ -56,7 +56,7 @@ const StepperModal = ({ steps, title ,children }) => {
           {title}
         </Typography>
       </Box>
-      <Stepper alternativeLabel activeStep={activeStep} sx={{ height: "15vh" }}>
+      <Stepper alternativeLabel activeStep={activeStep} sx={{ height: "10vh" }}>
         {steps.map((label, index) => (
           <Step key={label} completed={completed[index]}>
             <StepLabel color="inherit" >

@@ -17,7 +17,7 @@ import {
   formatDate,
   esHoraValida,
 } from "../../Laboratorio/utils/formatDate";
-import { MobileTimePicker } from '@mui/x-date-pickers/MobileTimePicker';
+import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
 
 const Informacion = (props) => {
   const {
@@ -119,7 +119,7 @@ const Informacion = (props) => {
     } else {
       clearErrors("hora");
     }
-    setValue("hora_fin", value["$d"])
+    setValue("hora_fin", value["$d"]);
   };
   useEffect(() => {
     setValue("fecha_solicitud", new Date(Date.now()));
@@ -128,7 +128,9 @@ const Informacion = (props) => {
   return (
     <>
       <Box sx={{ display: "inline-block", width: "100%" }}>
-        <Typography sx={{ textAlign: "center" }}>Solicitud de Pedido N° {cantPedido}</Typography>
+        <Typography sx={{ textAlign: "center" }}>
+          Solicitud de Pedido N° {cantPedido}
+        </Typography>
       </Box>
       <Divider />
       <Box
@@ -143,7 +145,15 @@ const Informacion = (props) => {
       >
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={enGB}>
           <DemoContainer
-            sx={{ width: "20vw" }}
+            sx={{
+              display: "flex",
+              width: "20vw",
+              overflow: "hidden",
+              flexFlow: "column nowrap",
+              "& .css-141mudk-MuiInputBase-root-MuiOutlinedInput-root": {
+                width: "20vw",
+              },
+            }}
             components={["DatePicker", "DatePicker"]}
           >
             <DatePicker
@@ -158,7 +168,14 @@ const Informacion = (props) => {
         </LocalizationProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={enGB}>
           <DemoContainer
-            sx={{ display: "flex", flexFlow: "column nowrap", width: "20vw" }}
+            sx={{
+              display: "flex",
+              width: "20vw",
+              flexFlow: "column nowrap",
+              ".css-141mudk-MuiInputBase-root-MuiOutlinedInput-root": {
+                width: "20vw",
+              },
+            }}
             components={["DatePicker", "DatePicker"]}
           >
             <Box>
@@ -189,20 +206,29 @@ const Informacion = (props) => {
       >
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer
-            sx={{ display: "flex", flexFlow: "column nowrap", width: "20vw",'& .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input':{px:'5vh'}}}
+            sx={{
+              display: "flex",
+              flexFlow: "column nowrap",
+              width: "20vw",
+              "& .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input": {
+                pr: "10vw",
+              },
+            }}
             components={["TimePicker"]}
           >
             <Box>
-              <MobileTimePicker 
+              <MobileTimePicker
                 label="Hora de Inicio"
                 value={valueTime}
-                {...register("hora",{
-                  validate: validateTime(valueHora)
+                {...register("hora", {
+                  validate: validateTime(valueHora),
                 })}
-                onChange={(newValue) =>{
-                  setValueHoraFin(dayjs(newValue).hour(dayjs(newValue).hour() + 4)['$d'])
-                  handleTime(newValue)}
-                }
+                onChange={(newValue) => {
+                  setValueHoraFin(
+                    dayjs(newValue).hour(dayjs(newValue).hour() + 4)["$d"]
+                  );
+                  handleTime(newValue);
+                }}
                 error={!!errors.hora}
               />
               <FormError error={errors.hora} />
@@ -212,11 +238,19 @@ const Informacion = (props) => {
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer
-            sx={{ display: "flex", flexFlow: "column nowrap", width: "20vw",'& .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input':{px:'5vh'} }}
+            sx={{
+              display: "flex",
+              flexFlow: "column nowrap",
+              width: "20vw",
+              "& .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input": {
+                pr: "10vw",
+              },
+            }}
             components={["TimePicker"]}
           >
             <Box>
-              <MobileTimePicker 
+              <MobileTimePicker
+                fullWidth
                 label="Finaliza a la Hora"
                 disabled={!valueHora}
                 value={
@@ -238,7 +272,7 @@ const Informacion = (props) => {
           </DemoContainer>
         </LocalizationProvider>
       </Box>
-      <Divider sx={{my:2}}/>
+      <Divider sx={{ my: 2 }} />
       <Box
         sx={{
           display: "flex",
@@ -250,7 +284,7 @@ const Informacion = (props) => {
       >
         <Box sx={{ display: "flex", flexFlow: "column nowrap" }}>
           <TextField
-            sx={{  width: "20vw" }}
+            sx={{ width: "20vw" }}
             id="outlined-basic"
             name="alumnos"
             error={errors.alumnos}
@@ -265,7 +299,7 @@ const Informacion = (props) => {
         </Box>
         <Box sx={{ display: "flex", flexFlow: "column nowrap" }}>
           <TextField
-            sx={{  width: "20vw" }}
+            sx={{ width: "20vw" }}
             id="outlined-basic"
             name="cantidad_grupos"
             error={errors.cantidad_grupos}
@@ -295,7 +329,7 @@ const Informacion = (props) => {
           <Box sx={{ flex: "1 1 auto" }} />
           <Button
             onClick={() => {
-              trigger(["cantidad_grupos", "alumnos", "hora"]);            
+              trigger(["cantidad_grupos", "alumnos", "hora"]);
               watch(["cantidad_grupos", "alumnos"]).filter((e) => e == null)
                 .length == 0 &&
                 Object.keys(errors).length == 0 &&

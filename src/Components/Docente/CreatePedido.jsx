@@ -19,7 +19,7 @@ const CreatePedido = () => {
   const [listaEquipos, setListaEquipos] = useState([]);
   const [listaMateriales, setListaMateriales] = useState([]);
   const [listaReactivos, setListaReactivos] = useState([]);
-  const [previewEquipos, setPreviewEquipos] = useState([]);
+  const [previewEquipos, setPreviewEquipos] = useState([]); // las listas de mui, requieren si o si, id, el _id de mongo, no sirve, de paso lo usamos para preview
   const [previewMateriales, setPreviewMateriales] = useState([]);
   const [previewReactivos, setPreviewReactivos] = useState([]);
   const {

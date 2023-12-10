@@ -18,7 +18,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { DataGrid } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 const columns = [
-  { field: "descripcion", headerName: "Descripción", width: 150 },
+  { field: "descripcion", headerName: "Descripción", width: 200 },
   { field: "cas", headerName: "N° CAS", width: 100 },
   { field: "calidad", headerName: "Calidad", width: 100 },
   { field: "cantidad", headerName: "Cantidad", width: 100 },
@@ -29,7 +29,7 @@ const columns = [
   {
     field: "otro_disolvente_descripcion",
     headerName: "Otro Disolvente",
-    width: 200,
+    width: 250,
   },
 ];
 const calidades = {
@@ -161,7 +161,7 @@ const StepReactivos = (props) => {
         "otro_disolvente_descripcion",
       ]);
     }
-    console.log(list);
+
     if (Object.keys(errors).length == 0) {
       let array = [...getValues("lista_reactivos")];
       let listaMap = [...list];
@@ -228,7 +228,7 @@ const StepReactivos = (props) => {
           <FormControl fullWidth sx={{ display: "flex", ml: "8px" }}>
             <InputLabel
               id="Equipo"
-              sx={{ pr: "6px", pl: "1px", bgcolor: "white" }}
+              sx={{ pr: "6px", pl: "6px", bgcolor: "white" }}
             >
               Reactivo
             </InputLabel>

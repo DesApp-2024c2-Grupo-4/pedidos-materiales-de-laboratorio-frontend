@@ -17,7 +17,7 @@ import { formValidate } from "../../../utils/formValidator";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { DataGrid } from "@mui/x-data-grid";
 import { deleteSelected, handleItem, stockItem } from "./handles";
-import { v4 as uuidv4 } from "uuid";
+import DeleteIcon from "@mui/icons-material/Delete";
 const columns = [
   { field: "descripcion", headerName: "Descripción", width: 450 },
   { field: "clase", headerName: "Clase", width: 150 },
@@ -215,13 +215,22 @@ const StepEquipos = (props) => {
               }}
             />
             <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleDeleteSelected}
-              disabled={selectedRows.length === 0}
-            >
-              Eliminar seleccionados
-            </Button>
+             variant="outlined"
+             color="error"
+             sx={{
+               mt: 1,
+               "&:hover": { color: "red" },
+             }}
+             onClick={handleDeleteSelected}
+             disabled={selectedRows.length === 0}
+             startIcon={
+               <DeleteIcon
+                 sx={{ width: "10px", height: "10px", mt: "-5px" }}
+               />
+             }
+           >
+             Eliminar seleccionados
+           </Button>
           </div>
         )}
       </Box>
