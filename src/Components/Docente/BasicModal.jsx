@@ -15,7 +15,7 @@ const style = {
   background: "rgb(27,98,26)",
   background: "linear-gradient(180deg, rgba(27,98,26,1) 0%, rgba(27,98,26,1) 5%, rgba(255,255,255,1) 5%, rgba(255,255,255,1) 77%)",
   borderRadius:'40px', 
-  border: '2px solid #000',
+  border: '.5px solid #000',
   boxShadow: 24,
   p: 4,
 };

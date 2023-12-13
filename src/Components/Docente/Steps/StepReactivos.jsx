@@ -215,6 +215,8 @@ const StepReactivos = (props) => {
       <Box
         sx={{
           display: "flex",
+          
+          flexGrow: 1,
           my: "2vh !important",
         }}
         autoComplete="off"
@@ -225,7 +227,7 @@ const StepReactivos = (props) => {
             flexFlow: "row nowrap",
           }}
         >
-          <FormControl fullWidth sx={{ display: "flex", ml: "8px" }}>
+          <FormControl fullWidth sx={{ display: "flex" }}>
             <InputLabel
               id="Equipo"
               sx={{ pr: "6px", pl: "6px", bgcolor: "white" }}
@@ -736,10 +738,9 @@ const StepReactivos = (props) => {
         >
           <Box sx={{ flex: "1 1 auto" }} />
           <Button
-            type="submit"
-            // onClick={() => {
-            //   Object.keys(errors).length == 0 && handleNext();
-            // }}
+            onClick={() => {
+              Object.keys(errors).length == 0 && handleNext();
+            }}
             sx={{
               "&.MuiButtonBase-root": {
                 bgcolor: "#1B621A",

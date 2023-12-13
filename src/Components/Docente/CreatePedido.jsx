@@ -3,17 +3,22 @@ import React, { useContext } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { userContext } from "../../Context/LabProvider";
 import { getCantidadPedidos } from "../../Services/getPedidosService";
 import { getListaEquipos, getListaMateriales, getListaReactivos } from "../../Services/getService";
 import { StepperComponent } from "./StepperModal";
 import Informacion from "./Steps/Informacion";
 import StepEquipos from "./Steps/StepEquipos";
 import StepMateriales from "./Steps/StepMateriales";
+import StepPreview from "./Steps/StepPreview";
 import StepReactivos from "./Steps/StepReactivos";
 import StepReactivo from "./Steps/StepReactivos";
 
 const CreatePedido = () => {
   const { activeStep, handleNext, handleBack } = useContext(StepperComponent);
+  const {user, userInfo} = useContext(userContext)  
+  const [userData, setUserData] = useState({});
+
   const [cantPedido, setCantPedido] = useState(0);  
   const [valueHoraFin, setValueHoraFin] = useState(""); // react-hook-form no toma el DataPicker de mui, solo lo utilizo para errores
   const [listaEquipos, setListaEquipos] = useState([]);
@@ -34,6 +39,8 @@ const CreatePedido = () => {
     watch,
   } = useForm({
     defaultValues: {
+      descripcion: null,
+      Observaciones: null,
       fecha_solicitud: null,
       fecha_utilizacion: null,
       hora: null,
@@ -82,7 +89,10 @@ const CreatePedido = () => {
       setValue("numero_tp", cant + 1);
     }, 0);
   };
-  useEffect(() => {
+  useEffect(() => {    
+    userInfo(user._id).then((res)=> {
+      setUserData(res)
+    })
     cantPedidos();
     getListaEquipos().then((res) => {
       setListaEquipos(res);
@@ -99,8 +109,9 @@ const CreatePedido = () => {
       <Box
         sx={{
           display: activeStep === 0 ? "block" : "none",
-          height: "48vh",
+          height: "50vh",
           overflow: "auto",
+          
         }}
       >
         <Informacion
@@ -196,6 +207,33 @@ const CreatePedido = () => {
             clearErrors,
             setListaReactivos,
           }}
+        />
+      </Box>
+      <Box
+        sx={{
+          display: activeStep === 4 ? "block" : "none",
+          height: "55vh",
+          overflow: "auto",
+        }}
+      >
+        <StepPreview
+          values={{
+            user,
+            userData,
+            cantPedido,
+            valueHoraFin,
+            register,
+            setValue,
+            handleBack,
+            handleNext,
+            listaReactivos,
+            errors,
+            getValues,
+            setError,
+            clearErrors,
+            previewEquipos, // las listas de mui, requieren si o si, id, el _id de mongo, no sirve, de paso lo usamos para preview
+            previewMateriales,
+            previewReactivos,}}
         />
       </Box>
     </form>
