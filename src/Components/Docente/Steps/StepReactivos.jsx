@@ -166,7 +166,6 @@ const StepReactivos = (props) => {
       let array = [...getValues("lista_reactivos")];
       let listaMap = [...list];
       let listaGeneral = [...listaReactivos];
-      console.log(reactivo)
       let index = array.findIndex((e) => e.reactivo == reactivo.reactivo);
       let indexMap = listaMap.findIndex((e) => e._id == reactivo.reactivo);
       let find = {...listaGeneral.find((e) => e._id == reactivo.reactivo)}

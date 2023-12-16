@@ -43,8 +43,8 @@ const handleItem = (
   let find = lista.find((e) => e._id == id);
   // Verificar superposición con las reservas existentes
   let overlappingReservation =
-    find.enUso.lenght > 0 &&
-    find.enUso.find((reserva) => {
+    find.enUso.length > 0 &&
+    find.enUso.filter((reserva) => {
       return (
         (fecha_inicio >= new Date(reserva.fecha_inicio) &&
           fecha_inicio <= new Date(reserva.fecha_fin)) ||
@@ -57,18 +57,16 @@ const handleItem = (
       let newCantidad = overlappingReservation.reduce((prev, curr) =>{
         return curr.cantidad + prev
       },0)
-      newCantidad += cantidad || 0        
-
+      newCantidad += cantidad || 0
       // Ajustar las franjas horarias comprometidas
       let fecha_inicio_new = overlappingReservation.reduce((prev, curr) =>{
-        return prev < curr.fecha_inicio ? prev : curr.fecha_inicio;
-      },new Date()) 
-      fecha_inicio_new = Math.min(fecha_inicio_new, fecha_inicio);
-      let fecha_fin_new = overlappingReservation.reduce((prev, curr) =>{
-        return prev < curr.fecha_fin ? curr.fecha_fin : prev;
-      },new Date())
+        return prev < new Date(curr.fecha_inicio) ? prev : new Date(curr.fecha_inicio);
+      },fecha_inicio) 
 
-      fecha_fin_new = fecha_fin_new = Math.max(fecha_fin_new, fecha_fin);
+      let fecha_fin_new = overlappingReservation.reduce((prev, curr) =>{
+        return prev < new Date(curr.fecha_fin) ? new Date(curr.fecha_fin) : prev;
+      },fecha_fin)
+
       let reservation = {
         id: uuidv4(),
         fecha_inicio: fecha_inicio_new,
@@ -119,7 +117,7 @@ const deleteSelected = (
   listaGeneral = listaGeneral.map((e) => {
     if (selectedRows.find(i => i._id == e._id)) {
       let find = saveHistoric[e._id]
-      if(find.oldArray.lenght == 0){
+      if(find.oldArray.length == 0){
         e.enUso = e.enUso.filter(e => find.newReservation.id != e.id)
       }else{
         e.enUso = e.enUso.filter(e => find.newReservation.id != e.id)

@@ -45,16 +45,11 @@ const StepEquipos = (props) => {
   const [equipo, setEquipo] = useState({});
   const [selectedRows, setSelectedRows] = useState([]);
   const [saveHistoric, setSaveHistoric] = useState({});
-  const { enqueueSnackbar } = useSnackbar();
   const stock = () => {
     const fecha_inicio = getValues("fecha_utilizacion");
     const fecha_fin = valueHoraFin;
     return stockItem(fecha_inicio, fecha_fin, listaEquipos, equipo.equipo);
   };
-  const handleSnack = () => {
-    console.log("object");
-    return enqueueSnackbar("Debe completar la seleccion antes de continuar",{variant: "warning"})
-  }
   const handleEquipo = (e) => {
     if (stock() < getValues("cant_equipo")) {
       setError("cant_equipo", {
@@ -64,7 +59,6 @@ const StepEquipos = (props) => {
     } else {
       clearErrors("cant_equipo");
     }
-    console.log(stock());
     if(stock() != 0 && (getValues("cant_equipo") == "" || getValues("cant_equipo") == null)){
       setError("cant_equipo", {
         type: "manual",

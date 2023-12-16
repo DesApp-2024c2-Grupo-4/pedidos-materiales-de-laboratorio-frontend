@@ -224,7 +224,6 @@ const Informacion = (props) => {
             <Box>
               <MobileTimePicker
                 label="Hora de Inicio"
-                value={valueTime}
                 {...register("hora", {
                   validate: validateTime(valueHora),
                 })}
@@ -235,7 +234,12 @@ const Informacion = (props) => {
                   );
                   handleTime(value);
                 }}
-                error={!!errors.hora}
+                slotProps={{
+                  textField: {
+                    error: !!errors.hora,
+                  },
+                }}
+               
               />
               <FormError error={errors.hora} />
             </Box>
@@ -255,7 +259,6 @@ const Informacion = (props) => {
             components={["TimePicker"]}
           >
             <Box>
-              {console.log(valueHora)}
               <MobileTimePicker
                 fullWidth
                 label="Finaliza a la Hora"
@@ -295,7 +298,7 @@ const Informacion = (props) => {
             sx={{ width: "20vw" }}
             id="outlined-basic"
             name="alumnos"
-            error={errors.alumnos}
+            error={!!errors.alumnos}
             label="Cantidad de Alumnos"
             variant="outlined"
             {...register("alumnos", {
@@ -310,7 +313,7 @@ const Informacion = (props) => {
             sx={{ width: "20vw" }}
             id="outlined-basic"
             name="cantidad_grupos"
-            error={errors.cantidad_grupos}
+            error={!!errors.cantidad_grupos}
             label="Cantidad de Grupos"
             variant="outlined"
             {...register("cantidad_grupos", {
@@ -325,7 +328,7 @@ const Informacion = (props) => {
             sx={{ width: "20vw" }}
             id="outlined-basic"
             name="materia"
-            error={errors.materia}
+            error={!!errors.materia}
             label="Materia"
             variant="outlined"
             {...register("materia", {
