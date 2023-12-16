@@ -108,7 +108,6 @@ const CreatePedido = ({ handleClose }) => {
         reactivos_update: listaReactivos
       };
       postPedido(pedido);
-      console.log(pedido)
       setTimeout(() => {
         setUpdate(2)
         enqueueSnackbar("El pedido se realizo con éxito",{variant: "success"})
