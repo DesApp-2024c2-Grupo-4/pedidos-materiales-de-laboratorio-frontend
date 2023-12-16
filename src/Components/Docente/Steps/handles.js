@@ -7,10 +7,10 @@ const stockItem = (fecha_inicio, fecha_fin, lista, id) => {
     // Filtrar las reservas que se superponen con la fecha de interés
     const reservasEnFecha = reservas.filter((reserva) => {
       return (
-        (fecha_inicio >= reserva.fecha_inicio &&
-          fecha_inicio <= reserva.fecha_fin) ||
-        (fecha_fin >= reserva.fecha_inicio && fecha_fin <= reserva.fecha_fin) ||
-        (fecha_inicio <= reserva.fecha_inicio && fecha_fin >= reserva.fecha_fin)
+        (fecha_inicio >= new Date(reserva.fecha_inicio) &&
+          fecha_inicio <= new Date(reserva.fecha_fin)) ||
+        (fecha_fin >= new Date(reserva.fecha_inicio) && fecha_fin <= new Date(reserva.fecha_fin)) ||
+        (fecha_inicio <= new Date(reserva.fecha_inicio) && fecha_fin >= new Date(reserva.fecha_fin))
       );
     });
     // Sumar la cantidad de todas las reservas que se superponen
@@ -46,10 +46,10 @@ const handleItem = (
     find.enUso.lenght > 0 &&
     find.enUso.find((reserva) => {
       return (
-        (fecha_inicio >= reserva.fecha_inicio &&
-          fecha_inicio <= reserva.fecha_fin) ||
-        (fecha_fin >= reserva.fecha_inicio && fecha_fin <= reserva.fecha_fin) ||
-        (fecha_inicio <= reserva.fecha_inicio && fecha_fin >= reserva.fecha_fin)
+        (fecha_inicio >= new Date(reserva.fecha_inicio) &&
+          fecha_inicio <= new Date(reserva.fecha_fin)) ||
+        (fecha_fin >= new Date(reserva.fecha_inicio) && fecha_fin <= new Date(reserva.fecha_fin)) ||
+        (fecha_inicio <= new Date(reserva.fecha_inicio) && fecha_fin >= new Date(reserva.fecha_fin))
       );
     });
     if (overlappingReservation.length > 0) {
@@ -115,9 +115,9 @@ const deleteSelected = (
   let array = [...listaHook];
   let listaGeneral = [...lista];
   let listaMap = [...table];
-  array = array.filter((e) => !selectedRows.hasOwnProperty(e.equipo));
+  array = array.filter((e) => !selectedRows.find(i => i._id == e.equipo));
   listaGeneral = listaGeneral.map((e) => {
-    if (selectedRows.hasOwnProperty(e._id)) {
+    if (selectedRows.find(i => i._id == e._id)) {
       let find = saveHistoric[e._id]
       if(find.oldArray.lenght == 0){
         e.enUso = e.enUso.filter(e => find.newReservation.id != e.id)
@@ -128,7 +128,7 @@ const deleteSelected = (
     }
     return e;
   });
-  listaMap = listaMap.filter((e) => !selectedRows.hasOwnProperty(e._id));
+  listaMap = listaMap.filter((e) => !selectedRows.find(i => i._id == e._id));
   return { listaMap, array, listaGeneral };
 };
 export { deleteSelected, handleItem, stockItem };

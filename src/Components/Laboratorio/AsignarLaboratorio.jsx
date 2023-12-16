@@ -71,11 +71,11 @@ function AsignarLaboratorio(
       lista_materiales: lista_materiales,
     };
     updatePedido(pedido._id, pedidoModificado);
-    setUpdate(true)
+    setUpdate(1)
   };
 
   useEffect(() => {
-    setUpdate(false)
+    setUpdate(0)
 
     return () => {};
   }, [update, open]);
@@ -204,7 +204,7 @@ function AsignarLaboratorio(
             color={"primary"}
             onClick={() => {
               handleClose(false)
-              setUpdate(false)
+              setUpdate(0)
             }}
             className="boton-cerrar-pedido"
           >

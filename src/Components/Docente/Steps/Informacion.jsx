@@ -16,6 +16,7 @@ import {
   esFechaValida,
   formatDate,
   esHoraValida,
+  correctorFechaDayjs,
 } from "../../Laboratorio/utils/formatDate";
 import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
 
@@ -73,7 +74,7 @@ const Informacion = (props) => {
       .minute(dayjs(value).minute())
       .format();
     nuevaFechaFin = new Date(nuevaFechaFin);
-    if (valueHoraFin && !valueHora.isBefore(dayjs(valueHoraFin))) {
+    if (valueHoraFin && !valueHora?.isBefore(dayjs(valueHoraFin))) {
       setError("hora_fin", {
         type: "error hora_fin",
         message: "El horario debe ser mayor al de Inicio",
@@ -161,8 +162,11 @@ const Informacion = (props) => {
               disabled
               defaultValue={dayjs(fechaInicio)}
               format="DD/MM/YYYY"
-              value={valueTime}
-              onChange={(value) => guardar_inicio(value)}
+              //value={valueTime}
+              onChange={(value) => {
+                const newValue = dayjs(correctorFechaDayjs(value))
+                guardar_inicio(newValue)
+              }}
             />
           </DemoContainer>
         </LocalizationProvider>
@@ -186,8 +190,9 @@ const Informacion = (props) => {
                 {...register("fecha_utilizacion")}
                 value={dayjs(valueTime)}
                 onChange={(value) => {
-                  setValueTime(value);
-                  cambiarFechaFin(value);
+                  const newValue = dayjs(correctorFechaDayjs(value))
+                  setValueTime(newValue);
+                  cambiarFechaFin(newValue);
                 }}
               />
               <FormError error={errors.fecha_utilizacion} />
@@ -224,10 +229,11 @@ const Informacion = (props) => {
                   validate: validateTime(valueHora),
                 })}
                 onChange={(newValue) => {
+                  const value = dayjs(correctorFechaDayjs(newValue))
                   setValueHoraFin(
-                    dayjs(newValue).hour(dayjs(newValue).hour() + 4)["$d"]
+                    dayjs(value).hour(dayjs(value).hour() + 4)["$d"]
                   );
-                  handleTime(newValue);
+                  handleTime(value);
                 }}
                 error={!!errors.hora}
               />
@@ -249,6 +255,7 @@ const Informacion = (props) => {
             components={["TimePicker"]}
           >
             <Box>
+              {console.log(valueHora)}
               <MobileTimePicker
                 fullWidth
                 label="Finaliza a la Hora"
@@ -258,12 +265,13 @@ const Informacion = (props) => {
                     ? null
                     : dayjs(valueHora).hour() >= 18
                     ? dayjs(valueHora).hour(22).minute(0)
-                    : dayjs(valueHora).hour(dayjs(valueHora).hour() + 4)
+                    : dayjs(valueHora).hour(dayjs(valueHora).hour() + 7)
                 }
                 defaultValue={valueHora == "" && null}
                 {...register("hora_fin")}
                 onChange={(newValue) => {
-                  handleValueHoraFin(newValue);
+                  const value = dayjs(correctorFechaDayjs(newValue))
+                  handleValueHoraFin(value);
                 }}
                 error={!!errors.hora_fin}
               />
@@ -312,6 +320,20 @@ const Informacion = (props) => {
           />
           <FormError error={errors.cantidad_grupos} />
         </Box>
+        <Box sx={{ display: "flex", flexFlow: "column nowrap" }}>
+          <TextField
+            sx={{ width: "20vw" }}
+            id="outlined-basic"
+            name="materia"
+            error={errors.materia}
+            label="Materia"
+            variant="outlined"
+            {...register("materia", {
+              required,
+            })}
+          />
+          <FormError error={errors.materia} />
+        </Box>
       </Box>
 
       <Box>
@@ -329,8 +351,8 @@ const Informacion = (props) => {
           <Box sx={{ flex: "1 1 auto" }} />
           <Button
             onClick={() => {
-              trigger(["cantidad_grupos", "alumnos", "hora"]);
-              watch(["cantidad_grupos", "alumnos"]).filter((e) => e == null)
+              trigger(["cantidad_grupos", "alumnos", "hora", "materia"]);
+              watch(["cantidad_grupos", "alumnos", "materia"]).filter((e) => e == null)
                 .length == 0 &&
                 Object.keys(errors).length == 0 &&
                 handleNext();

@@ -2,20 +2,15 @@ import PedidoV1 from "./PedidoV1";
 import { getPedidosPorDni } from "../../Services/getPedidosPorDNIService";
 import Header from '../Header/Header'
 import React, { useEffect, useState } from 'react';
-import { experimentalStyled as styled } from '@mui/material/styles';
+import { experimentalStyled as styled} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-
-import BotonNPedido from "./BotonNuevoPedido";
 import NoEncontrados from "../Mensajes/NoEncontrados" 
-import Theme1 from '../Theme/Theme1';
-import { ThemeProvider } from '@mui/material/styles';
-
 import NuevoPedido from "./NuevoPedido";
 import { userContext } from "../../Context/LabProvider";
-import StepperModal from "./StepperModal";
-import BasicModal from "./BasicModal";
+import BasicModal from "../Laboratorio/utils/BasicModal";
+import { Fab } from "@mui/material";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -25,15 +20,13 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-
 function Pedidos() {
-
 
 
   // controlar si es adminitrador
   const [esAdmin, setEsAdmin] = useState(true)
-  const {user, userInfo} = React.useContext(userContext)
-
+  const {user, userInfo, update} = React.useContext(userContext)
+  
 
   const [nuevoPedido, setNuevoPedido] = useState(false);
   const [texto, setEncabezado] = useState("DOCENTE");
@@ -52,8 +45,8 @@ function Pedidos() {
         })
     })
     return () => mounted = false;
-  }, [])
-
+  }, [update])
+  
 
   return (
     <>
@@ -67,13 +60,13 @@ function Pedidos() {
       {!(nuevoPedido) ? (
 
         <Box sx={{ flexGrow: 0, m: 2 }}>
-          <BotonNPedido setNuevoPedido={setNuevoPedido}></BotonNPedido>
-          <BasicModal setNuevoPedido={setNuevoPedido}></BasicModal>
+          <Fab color="primary" aria-label="add" className='boton-nuevo' >
+            <BasicModal onClick={() => setNuevoPedido(true)} ></BasicModal>     
+          </Fab>
         </Box>
       ) : (<NuevoPedido></NuevoPedido>)}
       {/* opcion pantalla */}
-
-
+        
 
       {(listaPedidos.length < 1 && !(nuevoPedido)) ?
         (<Box sx={{ flexGrow: 1, md: 2 }}><NoEncontrados /></Box>)

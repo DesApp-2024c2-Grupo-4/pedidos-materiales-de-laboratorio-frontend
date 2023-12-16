@@ -2,26 +2,15 @@ import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
-  ButtonGroup,
   Card,
   CardContent,
-  Divider,
-  FormControl,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
   Stack,
-  TextField,
   Typography,
 } from "@mui/material";
 import FormError from "../../Mensajes/FormError";
-import { formValidate } from "../../../utils/formValidator";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { DataGrid } from "@mui/x-data-grid";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAutosize";
 import { styled, width } from "@mui/system";
+import { useRef } from "react";
 
 const StepPreview = (props) => {
   const {
@@ -30,14 +19,9 @@ const StepPreview = (props) => {
     cantPedido,
     valueHoraFin,
     register,
-    setValue,
     handleBack,
-    handleNext,
-    listaReactivos,
     errors,
     getValues,
-    setError,
-    clearErrors,
     previewEquipos,
     previewMateriales,
     previewReactivos,
@@ -106,6 +90,7 @@ const StepPreview = (props) => {
     }
   `
   );
+
   return (
     <Box>
       <Box display="flex" gap={5}>
@@ -116,7 +101,8 @@ const StepPreview = (props) => {
             color="#1B621A"
             sx={{ fontWeight: "bold !important" }}
           >
-            {user.nombre[0].toUpperCase() + user.nombre.slice(1)} {user.apellido[0].toUpperCase() + user.apellido.slice(1)}
+            {user.nombre[0].toUpperCase() + user.nombre.slice(1)}{" "}
+            {user.apellido[0].toUpperCase() + user.apellido.slice(1)}
           </Typography>
         </Typography>
         <Typography color="text.secondary">
@@ -173,7 +159,9 @@ const StepPreview = (props) => {
                 color="#1B621A"
                 sx={{ fontWeight: "bold !important" }}
               >
-                {getValues('fecha_solicitud')?.getDay()}/{getValues('fecha_solicitud')?.getMonth()}/{getValues('fecha_solicitud')?.getYear()}
+                {getValues("fecha_solicitud")?.getDay()}/
+                {getValues("fecha_solicitud")?.getMonth()}/
+                {getValues("fecha_solicitud")?.getYear()}
               </Typography>
             </Typography>
             <Typography color="text.secondary" sx={{ gap: 4 }}>
@@ -183,7 +171,9 @@ const StepPreview = (props) => {
                 color="#1B621A"
                 sx={{ fontWeight: "bold !important" }}
               >
-                {getValues('fecha_utilizacion')?.getDay()}/{getValues('fecha_utilizacion')?.getMonth()}/{getValues('fecha_utilizacion')?.getYear()}
+                {getValues("fecha_utilizacion")?.getDay()}/
+                {getValues("fecha_utilizacion")?.getMonth()}/
+                {getValues("fecha_utilizacion")?.getYear()}
               </Typography>
             </Typography>
           </Box>
@@ -195,7 +185,8 @@ const StepPreview = (props) => {
                 color="#1B621A"
                 sx={{ fontWeight: "bold !important" }}
               >
-                {getValues('fecha_utilizacion')?.getHours()}:{getValues('fecha_utilizacion')?.getMinutes()} hr
+                {getValues("fecha_utilizacion")?.getHours()}:
+                {getValues("fecha_utilizacion")?.getMinutes()} hr
               </Typography>
             </Typography>
             <Typography color="text.secondary" sx={{ gap: 4 }}>
@@ -205,7 +196,8 @@ const StepPreview = (props) => {
                 color="#1B621A"
                 sx={{ fontWeight: "bold !important" }}
               >
-                {valueHoraFin?.getHours()}:{valueHoraFin?.getMinutes()} hr
+                {valueHoraFin != "" && valueHoraFin?.getHours()}:
+                {valueHoraFin != "" && valueHoraFin?.getMinutes()} hr
               </Typography>
             </Typography>
           </Box>
@@ -217,7 +209,7 @@ const StepPreview = (props) => {
                 color="#1B621A"
                 sx={{ fontWeight: "bold !important" }}
               >
-                {getValues('cantidad_grupos')}
+                {getValues("cantidad_grupos")}
               </Typography>
             </Typography>
             <Typography color="text.secondary" sx={{ gap: 4 }}>
@@ -227,7 +219,7 @@ const StepPreview = (props) => {
                 color="#1B621A"
                 sx={{ fontWeight: "bold !important" }}
               >
-                {getValues('alumnos')}
+                {getValues("alumnos")}
               </Typography>
             </Typography>
           </Box>
@@ -270,6 +262,7 @@ const StepPreview = (props) => {
       <Box
         sx={{
           display: "flex",
+          flexFlow:'row wrap',
           pt: 1,
           gap: 3,
           "& .css-1lk7enj": {
@@ -288,9 +281,6 @@ const StepPreview = (props) => {
                 value: true,
                 message: "Debe detallar una descripción",
               },
-              onChange: (e) => {
-                console.log(e.target.value);
-              },
             })}
           />
           <FormError error={errors.descripcion} />
@@ -305,14 +295,10 @@ const StepPreview = (props) => {
                 value: true,
                 message: "Debe detallar una observación",
               },
-              onChange: (e) => {
-                console.log(e.target.value);
-              },
             })}
           />
           <FormError error={errors.observaciones} />
         </Box>
-        {console.log(getValues("observaciones"))}
       </Box>
       <Box sx={{ overflow: "auto", maxHeight: "33vh" }}>
         {previewEquipos.length > 0 && (
@@ -350,7 +336,7 @@ const StepPreview = (props) => {
                     }}
                   >
                     <Typography
-                      sx={{ fontSize: 14, px: 1 }}
+                      sx={{ fontSize: 14, px: 1, width:'100%'}}
                       color="text.secondary"
                       gutterBottom
                     >
@@ -421,7 +407,7 @@ const StepPreview = (props) => {
                     }}
                   >
                     <Typography
-                      sx={{ fontSize: 14, px: 1 }}
+                      sx={{ fontSize: 14, px: 1 ,  width:'100%'}}
                       color="text.secondary"
                       gutterBottom
                     >
@@ -492,7 +478,7 @@ const StepPreview = (props) => {
                     }}
                   >
                     <Typography
-                      sx={{ fontSize: 14, px: 1 }}
+                      sx={{ fontSize: 14, px: 1, width:'100%' }}
                       color="text.secondary"
                       gutterBottom
                     >
@@ -553,46 +539,47 @@ const StepPreview = (props) => {
                         {item.concentracion_tipo}
                       </Typography>
                     </Box>
-                    {item.concentracion_tipo !== 'Puro' &&
-                    <>
-                      <Box display="flex" pt={1}>
-                        <Typography
-                          color="#1B621A"
-                          sx={{ fontWeight: "bold !important", px: 1 }}
-                        >
-                          Med. Concen:
-                        </Typography>
-                        <Typography color="text.secondary">
-                          {item.concentracion_tipo}
-                        </Typography>
-                      </Box>
-                      {item.disolvente !== 'Otro' && 
-                      <Box display="flex" pt={1}>
-                        <Typography
-                          color="#1B621A"
-                          sx={{ fontWeight: "bold !important", px: 1 }}
-                        >
-                          Disolvente:
-                        </Typography>
-                        <Typography color="text.secondary">
-                          {item.disolvente}
-                        </Typography>
-                      </Box>}
-                      {item.disolvente == 'Otro' && 
-                       <Box display="flex" pt={1}>
-                       <Typography
-                         color="#1B621A"
-                         sx={{ fontWeight: "bold !important", px: 1 }}
-                       >
-                         Otro Disolvente:
-                       </Typography>
-                       <Typography color="text.secondary">
-                         {item.otro_disolvente_descripcion}
-                       </Typography>
-                     </Box>
-                      }
+                    {item.concentracion_tipo !== "Puro" && (
+                      <>
+                        <Box display="flex" pt={1}>
+                          <Typography
+                            color="#1B621A"
+                            sx={{ fontWeight: "bold !important", px: 1 }}
+                          >
+                            Med. Concen:
+                          </Typography>
+                          <Typography color="text.secondary">
+                            {item.concentracion_tipo}
+                          </Typography>
+                        </Box>
+                        {item.disolvente !== "Otro" && (
+                          <Box display="flex" pt={1}>
+                            <Typography
+                              color="#1B621A"
+                              sx={{ fontWeight: "bold !important", px: 1 }}
+                            >
+                              Disolvente:
+                            </Typography>
+                            <Typography color="text.secondary">
+                              {item.disolvente}
+                            </Typography>
+                          </Box>
+                        )}
+                        {item.disolvente == "Otro" && (
+                          <Box display="flex" pt={1}>
+                            <Typography
+                              color="#1B621A"
+                              sx={{ fontWeight: "bold !important", px: 1 }}
+                            >
+                              Otro Disolvente:
+                            </Typography>
+                            <Typography color="text.secondary">
+                              {item.otro_disolvente_descripcion}
+                            </Typography>
+                          </Box>
+                        )}
                       </>
-                    }
+                    )}
                   </CardContent>
                 </Card>
               ))}
@@ -614,9 +601,10 @@ const StepPreview = (props) => {
             <Box sx={{ flex: "1 1 auto" }} />
             <Button
               onClick={handleBack}
+              disabled={Object.keys(errors).length != 0}
               sx={{
                 "&.MuiButtonBase-root": {
-                  bgcolor: "#1B621A",
+                  bgcolor: Object.keys(errors).length == 0  ? "#1B621A" : "#DAE4D8",
                   borderRadius: "30px",
                   color: "white",
                 },

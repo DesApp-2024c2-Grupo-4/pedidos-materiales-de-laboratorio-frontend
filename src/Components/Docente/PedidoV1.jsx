@@ -87,7 +87,7 @@ function PedidoV1({ pedido, esAdmin }) {
             <CardHeader
               style={{ textAlign: "left" }}
               avatar={<img className="pedido-icon" src={pedidoicon} alt="" />}
-              title={`Pedido #${descripcion}`}
+              title={`Pedido #${numero_tp}`}
               // subheader={`Fecha : ${fecha_solicitud}`}
               subheader={`Fecha de Práctica: ${fecha_utilizar}`}
               action={

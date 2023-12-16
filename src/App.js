@@ -18,12 +18,14 @@ import Usuarios from './Components/Laboratorio/Usuarios';
 import Materiales from './Components/Laboratorio/Materiales'
 import Reactivos from './Components/Laboratorio/Reactivos'
 import LabProvider from './Context/LabProvider';
+import { SnackbarProvider } from 'notistack';
 import './navbar.css';
 import './pedidos.css';
 
 function App() {
   return (
     <BrowserRouter>
+      <SnackbarProvider maxSnack={3}>
       <LabProvider>
         <Routes>
           <Route path="/login" element={<RedirectLog />}>
@@ -47,6 +49,7 @@ function App() {
           </Route>
         </Routes>
       </LabProvider>
+      </SnackbarProvider>
     </BrowserRouter>
   );
 }

@@ -43,7 +43,7 @@ const StepMateriales = (props) => {
   } = props.values;
   const { validateStock } = formValidate();
   const [material, setMaterial] = useState({});
-  const [selectedRows, setSelectedRows] = useState({});
+  const [selectedRows, setSelectedRows] = useState([]);
   const [saveHistoric, setSaveHistoric] = useState({});
   const stock = () => {
     const fecha_inicio = getValues("fecha_utilizacion");
@@ -62,6 +62,14 @@ const StepMateriales = (props) => {
         message: "No puede superar el Stock",
       });
     } else {
+      clearErrors("cant_material");
+    }
+    if(stock() != 0 && (getValues("cant_material") == "" || getValues("cant_material") == null)){
+      setError("cant_material", {
+        type: "manual",
+        message: "Debe ingresar una cantidad",
+      });
+    }else {
       clearErrors("cant_material");
     }
     if (errors.cant_material == undefined) {
@@ -98,6 +106,10 @@ const StepMateriales = (props) => {
     setValue("lista_materiales", array);
     setListaMateriales(listaGeneral);
   };
+  useEffect(()=>{
+    const deletelist = listaMateriales.filter(e => saveHistoric.hasOwnProperty(e._id))
+    handleDeleteSelected(deletelist)
+  },[getValues('hora'), getValues('hora_fin'), getValues('fecha_utilizacion')])
   return (
     <>
       <Box
@@ -253,19 +265,20 @@ const StepMateriales = (props) => {
         >
           <Box sx={{ flex: "1 1 auto" }} />
           <Button
-            onClick={handleBack}
-            sx={{
-              "&.MuiButtonBase-root": {
-                bgcolor: "#1B621A",
-                borderRadius: "30px",
-                color: "white",
-              },
-              "&:hover": { bgcolor: "#60975E" },
-              mr: 1,
-            }}
-          >
-            Volver
-          </Button>
+              onClick={handleBack}
+              disabled={Object.keys(errors).length != 0}
+              sx={{
+                "&.MuiButtonBase-root": {
+                  bgcolor: Object.keys(errors).length == 0  ? "#1B621A" : "#DAE4D8",
+                  borderRadius: "30px",
+                  color: "white",
+                },
+                "&:hover": { bgcolor: "#60975E" },
+                mr: 1,
+              }}
+            >
+              Volver
+            </Button>
         </Box>
         <Box
           sx={{

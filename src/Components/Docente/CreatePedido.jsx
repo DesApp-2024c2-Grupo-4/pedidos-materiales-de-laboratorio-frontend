@@ -5,26 +5,33 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { userContext } from "../../Context/LabProvider";
 import { getCantidadPedidos } from "../../Services/getPedidosService";
-import { getListaEquipos, getListaMateriales, getListaReactivos } from "../../Services/getService";
-import { StepperComponent } from "./StepperModal";
+import {
+  getListaEquipos,
+  getListaMateriales,
+  getListaReactivos,
+} from "../../Services/getService";
+import { StepperComponent } from "../Laboratorio/utils/StepperModal";
 import Informacion from "./Steps/Informacion";
 import StepEquipos from "./Steps/StepEquipos";
 import StepMateriales from "./Steps/StepMateriales";
 import StepPreview from "./Steps/StepPreview";
 import StepReactivos from "./Steps/StepReactivos";
-import StepReactivo from "./Steps/StepReactivos";
+import { postPedido } from "../../Services/postPedidoService";
+import { useSnackbar } from "notistack";
 
-const CreatePedido = () => {
+const CreatePedido = ({ handleClose }) => {
   const { activeStep, handleNext, handleBack } = useContext(StepperComponent);
-  const {user, userInfo} = useContext(userContext)  
+  const { user, userInfo , setUpdate} = useContext(userContext);
+  const { enqueueSnackbar } = useSnackbar();
   const [userData, setUserData] = useState({});
-
-  const [cantPedido, setCantPedido] = useState(0);  
-  const [valueHoraFin, setValueHoraFin] = useState(""); // react-hook-form no toma el DataPicker de mui, solo lo utilizo para errores
+  const [cantPedido, setCantPedido] = useState(0);
+  const [valueHoraFin, setValueHoraFin] = useState("");
+  // react-hook-form no toma el DataPicker de mui, solo lo utilizo para errores
   const [listaEquipos, setListaEquipos] = useState([]);
   const [listaMateriales, setListaMateriales] = useState([]);
   const [listaReactivos, setListaReactivos] = useState([]);
-  const [previewEquipos, setPreviewEquipos] = useState([]); // las listas de mui, requieren si o si, id, el _id de mongo, no sirve, de paso lo usamos para preview
+  // las listas de mui, requieren si o si, id, el _id de mongo, no sirve, de paso lo usamos para preview
+  const [previewEquipos, setPreviewEquipos] = useState([]);
   const [previewMateriales, setPreviewMateriales] = useState([]);
   const [previewReactivos, setPreviewReactivos] = useState([]);
   const {
@@ -40,11 +47,12 @@ const CreatePedido = () => {
   } = useForm({
     defaultValues: {
       descripcion: null,
-      Observaciones: null,
+      observaciones: null,
       fecha_solicitud: null,
       fecha_utilizacion: null,
       hora: null,
       hora_fin: null,
+      materia: null,
       cantidad_grupos: null,
       alumnos: null,
       lista_equipos: [],
@@ -64,22 +72,51 @@ const CreatePedido = () => {
       otro_disolvente_descripcion: null,
     },
   });
-  const onSubmit = async ({
-    cantidad_grupos,
-    fecha_solicitud,
-    fecha_utilizacion,
-    lista_equipos,
-  }) => {
+  const onSubmit = async (data) => {
+    if (
+      data.lista_equipos.length +
+        data.lista_materiales.length +
+        data.lista_reactivos.length ==
+      0
+    ) {
+      return enqueueSnackbar("El pedido debe tener al menos 1 elemento",{variant: "warning"})
+    }
     try {
-      console.log(
-        cantidad_grupos,
-        fecha_solicitud,
-        fecha_utilizacion,
-        lista_equipos,
-        valueHoraFin,
-      );
+      const pedido = {
+        docente: {
+          nombre: user.nombre,
+          apellido: user.apellido,
+          dni: userData.dni,
+          matricula: userData.matricula,
+        },
+        numero_tp: data.numero_tp,
+        fecha_solicitud: data.fecha_solicitud,
+        fecha_utilizacion: data.fecha_utilizacion,
+        edificio: "",
+        numero_laboratorio: "",
+        tipo_pedido: "PEDIENTE",
+        alumnos: data.alumnos,
+        materia: data.materia,
+        cantidad_grupos: data.cantidad_grupos,
+        lista_equipos: data.lista_equipos,
+        lista_materiales: data.lista_materiales,
+        lista_reactivos: data.lista_reactivos,
+        Observaciones: data.observaciones,
+        descripcion: data.descripcion,        
+        equipos_update: listaEquipos,
+        materiales_update: listaMateriales,
+        reactivos_update: listaReactivos
+      };
+      postPedido(pedido);
+      console.log(pedido)
+      setTimeout(() => {
+        setUpdate(2)
+        enqueueSnackbar("El pedido se realizo con éxito",{variant: "success"})
+        handleClose();
+      }, 200);
     } catch (error) {
-      console.log({ error: true, message: "Usuario o Contraseña incorrectos" });
+      enqueueSnackbar("Ocurrio un Error al crear Pedido",{variant: "error"})
+      console.log({ error: true, message: "Ocurrio un Error al crear Pedido" });
     }
   };
   const cantPedidos = async () => {
@@ -89,10 +126,10 @@ const CreatePedido = () => {
       setValue("numero_tp", cant + 1);
     }, 0);
   };
-  useEffect(() => {    
-    userInfo(user._id).then((res)=> {
-      setUserData(res)
-    })
+  useEffect(() => {
+    userInfo(user._id).then((res) => {
+      setUserData(res);
+    });
     cantPedidos();
     getListaEquipos().then((res) => {
       setListaEquipos(res);
@@ -102,8 +139,9 @@ const CreatePedido = () => {
     });
     getListaReactivos().then((res) => {
       setListaReactivos(res);
-    });
+    });    
   }, []);
+  
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box
@@ -111,7 +149,6 @@ const CreatePedido = () => {
           display: activeStep === 0 ? "block" : "none",
           height: "50vh",
           overflow: "auto",
-          
         }}
       >
         <Informacion
@@ -233,7 +270,8 @@ const CreatePedido = () => {
             clearErrors,
             previewEquipos, // las listas de mui, requieren si o si, id, el _id de mongo, no sirve, de paso lo usamos para preview
             previewMateriales,
-            previewReactivos,}}
+            previewReactivos,
+          }}
         />
       </Box>
     </form>

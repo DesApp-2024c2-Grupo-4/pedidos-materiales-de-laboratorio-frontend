@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getListaPedidos } from './getPedidosService';
 import { token } from "./getToken";
 
 export async function postPedido(data) {
@@ -11,7 +12,7 @@ export async function postPedido(data) {
         "Content-Type": "application/json",
       },
     });
-    console.log(response.data);
+    await getListaPedidos()
   } catch (error) {
     console.log(error);
     throw error;

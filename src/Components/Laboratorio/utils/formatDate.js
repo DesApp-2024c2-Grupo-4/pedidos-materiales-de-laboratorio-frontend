@@ -24,3 +24,9 @@ export const esHoraValida = (fecha) => {
   }
   return true;
 };
+
+export const correctorFechaDayjs = (newValue) => {
+  const value = {...newValue}
+  const string = new Date(`${value['$y']}-${value['$M']+1}-${value['$D']}T${value['$H'] < 10 ? "0"+value['$H'] : value['$H']}:${value['$m'] < 10 ? "0"+value['$m'] : value['$m']}:00.000Z`)
+  return string;
+};

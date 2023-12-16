@@ -1,16 +1,9 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Stepper, { StepperContext } from "@mui/material/Stepper";
+import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
-import StepButton from "@mui/material/StepButton";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { StepLabel } from "@mui/material";
-import Informacion from "./Steps/Informacion";
-import { useForm } from "react-hook-form";
-import { useEffect } from "react";
-import { getCantidadPedidos } from "../../Services/getPedidosService";
-import StepEquipos from "./Steps/StepEquipos";
+import { Button, StepLabel } from "@mui/material";
 import { createContext } from "react";
 
 export const StepperComponent = createContext()

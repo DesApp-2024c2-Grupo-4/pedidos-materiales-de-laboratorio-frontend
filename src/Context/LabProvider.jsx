@@ -6,7 +6,7 @@ import { getAdmin, getUserInfo } from "../Services/getUsuarioService";
 
 export const userContext = createContext();
 const LabProvider = ({ children }) => {
-  const [update, setUpdate] = useState(false);
+  const [update, setUpdate] = useState(0);
   const [user, setUser] = useState(decryptAES(localStorage.getItem("usuario")) || "");
   const [token, setToken] = useState(localStorage.getItem("token") || {});
   const storeToken = (token) => {

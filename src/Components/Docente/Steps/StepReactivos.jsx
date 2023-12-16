@@ -84,8 +84,9 @@ const StepReactivos = (props) => {
   //   return total;
   // };
   const handleReactivo = (e) => {
+    clearErrors("id_reactivo")
     if (getValues("id_reactivo")) {
-      if (getValues("cant_reactivo") == null) {
+      if (getValues("cant_reactivo") == null  || getValues("cant_reactivo") === "") {
         setError("cant_reactivo", {
           type: "cant_reactivo",
           message: "Debe ingresar una Cantidad",
@@ -119,7 +120,7 @@ const StepReactivos = (props) => {
       }
       if (
         getValues("concentracion_tipo") != "puro" &&
-        getValues("concentracion_medida") == null
+        (getValues("concentracion_medida") == null  || getValues("concentracion_medida") === "")
       ) {
         setError("concentracion_medida", {
           type: "concentracion_medida",
@@ -141,7 +142,7 @@ const StepReactivos = (props) => {
       }
       if (
         getValues("disolvente") == "otro" &&
-        getValues("otro_disolvente_descripcion") == null
+        (getValues("otro_disolvente_descripcion") == null  || getValues("otro_disolvente_descripcion") === "")
       ) {
         setError("otro_disolvente_descripcion", {
           type: "otro_disolvente_descripcion",
@@ -161,13 +162,14 @@ const StepReactivos = (props) => {
         "otro_disolvente_descripcion",
       ]);
     }
-
     if (Object.keys(errors).length == 0) {
       let array = [...getValues("lista_reactivos")];
       let listaMap = [...list];
+      let listaGeneral = [...listaReactivos];
+      console.log(reactivo)
       let index = array.findIndex((e) => e.reactivo == reactivo.reactivo);
       let indexMap = listaMap.findIndex((e) => e._id == reactivo.reactivo);
-      let find = listaReactivos.find((e) => e._id == reactivo.reactivo);
+      let find = {...listaGeneral.find((e) => e._id == reactivo.reactivo)}
       //objto para guardar en bbdd
       let obj = {
         reactivo: reactivo.reactivo,
@@ -190,10 +192,8 @@ const StepReactivos = (props) => {
       find.disolvente = disolventes[reactivo?.disolvente] || "-";
       find.otro_disolvente_descripcion =
         reactivo?.otro_disolvente_descripcion || "-";
-
       index >= 0 ? (array[index] = obj) : array.push(obj);
       indexMap >= 0 ? (listaMap[indexMap] = find) : listaMap.push(find);
-
       setLista(listaMap);
       setValue("lista_reactivos", array);
 
@@ -260,7 +260,8 @@ const StepReactivos = (props) => {
                   {item.descripcion}
                 </MenuItem>
               ))}
-            </Select>
+            </Select>            
+            <FormError error={errors.id_reactivo} />
           </FormControl>
           {getValues("id_reactivo") && (
             <Box sx={{ display: "flex" }}>
@@ -711,19 +712,20 @@ const StepReactivos = (props) => {
         >
           <Box sx={{ flex: "1 1 auto" }} />
           <Button
-            onClick={handleBack}
-            sx={{
-              "&.MuiButtonBase-root": {
-                bgcolor: "#1B621A",
-                borderRadius: "30px",
-                color: "white",
-              },
-              "&:hover": { bgcolor: "#60975E" },
-              mr: 1,
-            }}
-          >
-            Volver
-          </Button>
+              onClick={handleBack}
+              disabled={Object.keys(errors).length != 0}
+              sx={{
+                "&.MuiButtonBase-root": {
+                  bgcolor: Object.keys(errors).length == 0  ? "#1B621A" : "#DAE4D8",
+                  borderRadius: "30px",
+                  color: "white",
+                },
+                "&:hover": { bgcolor: "#60975E" },
+                mr: 1,
+              }}
+            >
+              Volver
+            </Button>
         </Box>
         <Box
           sx={{
@@ -739,7 +741,13 @@ const StepReactivos = (props) => {
           <Box sx={{ flex: "1 1 auto" }} />
           <Button
             onClick={() => {
-              Object.keys(errors).length == 0 && handleNext();
+                if(getValues('id_reactivo') != null){
+                  setError("id_reactivo", {
+                    type: "finalizar",
+                    message: "Complete la seleccion por favor",
+                  });
+                }
+                getValues('id_reactivo') == null && Object.keys(errors).length == 0 && handleNext();
             }}
             sx={{
               "&.MuiButtonBase-root": {

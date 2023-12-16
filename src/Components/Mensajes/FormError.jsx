@@ -2,6 +2,7 @@ import { FormControl, FormHelperText } from '@mui/material'
 import React from 'react'
 
 const FormError = ({error}) => {
+  console.log(error)
   return (
     <FormControl error={error} >
         {error && 
