@@ -1,7 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 const stockItem = (fecha_inicio, fecha_fin, lista, id) => {
   const find = lista.find((e) => e._id == id);
-  if (find) {
+  console.log(find)
+  if (find && find.stock != -1) {
     // Calcular el stock disponible teniendo en cuenta las reservas
     const reservas = find.enUso || [];
     // Filtrar las reservas que se superponen con la fecha de interés
@@ -22,6 +23,8 @@ const stockItem = (fecha_inicio, fecha_fin, lista, id) => {
     const stockDisponible = stockTotal - (find.enReparacion || 0);
 
     return stockDisponible;
+  }else if(find && find.stock == -1){
+    return -1
   }
 };
 const handleItem = (

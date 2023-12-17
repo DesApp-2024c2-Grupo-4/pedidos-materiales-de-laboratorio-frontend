@@ -55,6 +55,7 @@ const Listar = ({
               <TableCell>Descripción</TableCell>
               <TableCell align="center">{type}</TableCell>
               <TableCell align="center">Stock</TableCell>
+              {type !== 'CAS' && <TableCell align="center">En reparación</TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -65,7 +66,8 @@ const Listar = ({
               >
                 <TableCell component="th" scope="row">{row.descripcion}{" "}</TableCell>
                 <TableCell align="center">{row.clase || row.cas}</TableCell>  
-                <TableCell align="center">{row.stock == 0 ? 'Consultar': row.stock}</TableCell>
+                <TableCell align="center">{row.stock == 0 ? 'Consultar': row.stock == -1 ? 'Suficiente': row.stock}</TableCell>
+                {type !== 'CAS' && <TableCell align="center">{row.enReparacion}</TableCell>}
                 <TableCell align="center">
                   <IconButton
                     variant={'primary.main'}

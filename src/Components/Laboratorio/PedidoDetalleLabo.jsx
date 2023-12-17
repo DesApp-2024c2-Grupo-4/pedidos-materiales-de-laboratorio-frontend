@@ -198,7 +198,7 @@ function PedidoDetalle({
                           columns={{ xs: 12 }}
                         >
                           <Grid item xs={6} container justifyContent="start">
-                            {row.equipo.descripcion}
+                            {row.equipo?.descripcion}
                           </Grid>
                           <Grid
                             item
@@ -206,7 +206,7 @@ function PedidoDetalle({
                             container
                             justifyContent="flex-start"
                           >
-                            {row.equipo.clase}
+                            {row.equipo?.clase}
                           </Grid>
                           <Grid item xs={3} container justifyContent="end">
                             {row.cantidad}
@@ -252,7 +252,7 @@ function PedidoDetalle({
                             columns={{ xs: 12 }}
                           >
                             <Grid item xs={6} container justifyContent="start">
-                              {row.material.descripcion}
+                              {row.material?.descripcion}
                             </Grid>
                             <Grid
                               item

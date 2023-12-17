@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-pascal-case */
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
@@ -28,7 +29,7 @@ function App() {
       <SnackbarProvider maxSnack={3}>
       <LabProvider>
         <Routes>
-          <Route path="/login" element={<RedirectLog />}>
+          <Route path="/" element={<RedirectLog />}>
             <Route path="/login" element={<Login />} />
           </Route>
 

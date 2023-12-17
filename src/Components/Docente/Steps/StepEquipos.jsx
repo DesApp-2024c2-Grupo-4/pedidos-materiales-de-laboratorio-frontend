@@ -51,21 +51,44 @@ const StepEquipos = (props) => {
     return stockItem(fecha_inicio, fecha_fin, listaEquipos, equipo.equipo);
   };
   const handleEquipo = (e) => {
-    if (stock() < getValues("cant_equipo")) {
-      setError("cant_equipo", {
-        type: "manual",
-        message: "No puede superar el Stock",
-      });
-    } else {
-      clearErrors("cant_equipo");
-    }
-    if(stock() != 0 && (getValues("cant_equipo") == "" || getValues("cant_equipo") == null)){
-      setError("cant_equipo", {
-        type: "manual",
-        message: "Debe ingresar una cantidad",
-      });
-    }else {
-      clearErrors("cant_equipo");
+    if(stock() != -1){
+      if (stock() < getValues("cant_equipo") && getValues("cant_equipo") == null) {
+        setError("cant_equipo", {
+          type: "manual",
+          message: "No puede superar el Stock",
+        });
+      } else 
+      if (getValues("cant_equipo") == "" || getValues("cant_equipo") == null) {
+        setError("cant_equipo", {
+          type: "manual",
+          message: "Debe ingresar una cantidad",
+        });
+      } else 
+      if (getValues("cant_equipo") < 0 && getValues("cant_equipo") == null) {
+        console.log(getValues("cant_equipo"))
+        setError("cant_equipo", {
+          type: "manual",
+          message: "Solo números positivos",
+        });
+      } else {
+        clearErrors("cant_equipo");
+      }
+    }else if(stock() == -1){
+      if (getValues("cant_equipo") == "" || getValues("cant_equipo") == null) {
+        setError("cant_equipo", {
+          type: "manual",
+          message: "Debe ingresar una cantidad",
+        });
+      } else 
+      if (getValues("cant_equipo") < 0 && getValues("cant_equipo") == null) {
+        console.log(getValues("cant_equipo"))
+        setError("cant_equipo", {
+          type: "manual",
+          message: "Solo números positivos",
+        });
+      } else {
+        clearErrors("cant_equipo");
+      }
     }
     if (errors.cant_equipo == undefined) {
       const fecha_inicio = getValues("fecha_utilizacion");
@@ -90,6 +113,7 @@ const StepEquipos = (props) => {
     }
   };
   const handleDeleteSelected = (deletelist) => {
+    deletelist = typeof deletelist == "object" ? false : deletelist;
     const { listaMap, array, listaGeneral } = deleteSelected(
       getValues("lista_equipos"),
       listaEquipos,
@@ -101,11 +125,17 @@ const StepEquipos = (props) => {
     setValue("lista_equipos", array);
     setListaEquipos(listaGeneral);
   };
-  
-  useEffect(()=>{
-    const deletelist = listaEquipos.filter(e => saveHistoric.hasOwnProperty(e._id))
-    handleDeleteSelected(deletelist)
-  },[getValues('hora'), getValues('hora_fin'), getValues('fecha_utilizacion')])
+
+  useEffect(() => {
+    const deletelist = listaEquipos.filter((e) =>
+      saveHistoric.hasOwnProperty(e._id)
+    );
+    handleDeleteSelected(deletelist);
+  }, [
+    getValues("hora"),
+    getValues("hora_fin"),
+    getValues("fecha_utilizacion"),
+  ]);
   return (
     <>
       <Box
@@ -147,7 +177,7 @@ const StepEquipos = (props) => {
             </Select>
           </FormControl>
         </Box>
-        {(stock() !== undefined || stock() > 0) && (
+        {(stock() != undefined && stock() != 0) && (
           <>
             <Box sx={{ display: "flex", flexFlow: "column nowrap" }}>
               <ButtonGroup
@@ -185,7 +215,10 @@ const StepEquipos = (props) => {
                       textAlign: "center",
                     }}
                   >
-                    {stock() != 0 ? `${stock()} en Stock` : "Consultar Stock"}
+                    {stock() > 0
+                      ? `${stock()} en Stock`
+                      : stock() == 0 && "Consultar Stock"}
+                    {stock() < 0 && "Cantidad Suficiente"}
                   </Box>
                 }
               </ButtonGroup>
@@ -223,7 +256,9 @@ const StepEquipos = (props) => {
               pageSizeOptions={[5, 10]}
               checkboxSelection
               onStateChange={(value) => {
-                let array = value.rowSelection.map(e => value.rows.dataRowIdToModelLookup[e])
+                let array = value.rowSelection.map(
+                  (e) => value.rows.dataRowIdToModelLookup[e]
+                );
                 setSelectedRows(array);
               }}
             />
@@ -261,20 +296,21 @@ const StepEquipos = (props) => {
         >
           <Box sx={{ flex: "1 1 auto" }} />
           <Button
-              onClick={handleBack}
-              disabled={Object.keys(errors).length != 0}
-              sx={{
-                "&.MuiButtonBase-root": {
-                  bgcolor: Object.keys(errors).length == 0  ? "#1B621A" : "#DAE4D8",
-                  borderRadius: "30px",
-                  color: "white",
-                },
-                "&:hover": { bgcolor: "#60975E" },
-                mr: 1,
-              }}
-            >
-              Volver
-            </Button>
+            onClick={handleBack}
+            disabled={Object.keys(errors).length != 0}
+            sx={{
+              "&.MuiButtonBase-root": {
+                bgcolor:
+                  Object.keys(errors).length == 0 ? "#1B621A" : "#DAE4D8",
+                borderRadius: "30px",
+                color: "white",
+              },
+              "&:hover": { bgcolor: "#60975E" },
+              mr: 1,
+            }}
+          >
+            Volver
+          </Button>
         </Box>
         <Box
           sx={{
@@ -290,7 +326,7 @@ const StepEquipos = (props) => {
           <Box sx={{ flex: "1 1 auto" }} />
           <Button
             onClick={() => {
-                Object.keys(errors).length == 0 && handleNext();
+              Object.keys(errors).length == 0 && handleNext();
             }}
             sx={{
               "&.MuiButtonBase-root": {

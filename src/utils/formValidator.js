@@ -23,6 +23,10 @@ export const formValidate = () => {
         if (numericValue > stock) {
           return "Supera el Stock disponible";
         }
+        console.log(value)
+        if (numericValue < stock) {
+          return "Solo números positivos";
+        }
         return true;
       }
     },

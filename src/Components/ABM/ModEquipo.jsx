@@ -15,7 +15,12 @@ import Typography from "@mui/material/Typography";
 // import moment from 'moment'
 import Grid from "@mui/material/Grid";
 import laboratorio from "../Image/biologia.png";
-import { TextField, ThemeProvider } from "@mui/material";
+import {
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  ThemeProvider,
+} from "@mui/material";
 import Button from "@mui/material/Button";
 import Theme1 from "../Theme/Theme1";
 
@@ -36,14 +41,15 @@ function ModEquipo({
   const [nuevaDescripcion, setNuevaDescripcion] = useState("");
   const [nuevaClase, setNuevaClase] = useState("");
   const [nuevoStock, setNuevoStock] = useState("");
+  const [enReparacion, setEnReparacion] = useState("");
   const [openMensaje, setOpenMensaje] = useState(false);
   const [mensajeSalida, setMensajeSalida] = useState("");
   const [titulo, setTitulo] = useState("");
   const [scroll, setScroll] = React.useState("paper");
+  const [enough, setEnough] = useState(false);
   const modDescripcion = (event) => {
     if (event.target.value !== null) {
       setNuevaDescripcion(event.target.value);
-      console.log("descripcion", event.target.value);
     }
   };
   const modClase = (event) => {
@@ -56,12 +62,18 @@ function ModEquipo({
       setNuevoStock(event.target.value);
     }
   };
+  const modReparar = (event) => {
+    if (event.target.value !== null) {
+      setEnReparacion(event.target.value);
+    }
+  };
   const modifEquipo = (event) => {
     event.preventDefault();
     const dato = {
       clase: nuevaClase,
       descripcion: nuevaDescripcion.toUpperCase(),
-      stock: parseInt(nuevoStock),
+      stock: !enough ? parseInt(nuevoStock) : -1,
+      enReparacion: !enough ? parseInt(enReparacion) : 0,
       unidadMedida: "UNI",
     };
 
@@ -88,9 +100,11 @@ function ModEquipo({
     setTitulo("Equipo eliminado");
   };
   useEffect(() => {
+    elegido.stock == -1 && setEnough(true);
     setNuevaDescripcion(elegido.descripcion);
     setNuevaClase(elegido.clase);
-    setNuevoStock(elegido.stock);
+    enough && setNuevoStock(elegido.stock);
+    setEnReparacion(elegido.enReparacion);
   }, [elegido]);
 
   return (
@@ -134,7 +148,7 @@ function ModEquipo({
         >
           <Grid item xs={10} alignItems="center" justifyContent="start">
             <TextField
-              sx={{ marginTop: 1, marginBottom: 1, marginLeft: 0 }}
+              sx={{ marginTop: 1, marginBottom: 1 }}
               fullWidth
               id="descripcion"
               label="Descripcion"
@@ -144,7 +158,8 @@ function ModEquipo({
               autoComplete="descripcion"
               autoFocus
               onChange={modDescripcion}
-              inputProps={{ minLength: 5, maxLength: 50 }}
+              inputProps={{ minLength: 5 }}
+              //inputProps={{ minLength: 5, maxLength: 50 }}
               required
             />
           </Grid>
@@ -155,7 +170,6 @@ function ModEquipo({
             direction="row"
             justifyContent="start"
             alignItems="center"
-            spacing={{ xs: 1, md: 1 }}
             columns={{ xs: 12 }}
           >
             <Grid
@@ -227,16 +241,38 @@ function ModEquipo({
                 </Select>
               </FormControl>
             </Grid>
-
-            <Grid item xs={3} container justifyContent="center">
+            <Grid item sx={{ width: "8vw" }} container justifyContent="center">
               <TextField
+                disabled={enough}
                 sx={{ marginTop: 1 }}
                 id="stock"
                 variant="outlined"
                 name="stock"
                 label="stock"
                 type="number"
-                value={nuevoStock}
+                value={enough ? null : nuevoStock}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                InputProps={{
+                  inputProps: {
+                    min: 0,
+                  },
+                }}
+                onChange={modStock}
+                required
+              />
+            </Grid>
+            <Grid item sx={{ width: "6vw" }} container justifyContent="center">
+              <TextField
+                disabled={enough}
+                sx={{ marginTop: 1, width: "100%" }}
+                id="en-reparación"
+                variant="outlined"
+                name="en-reparación"
+                label="En reparación"
+                type="number"
+                value={enough ? null : enReparacion}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -246,9 +282,17 @@ function ModEquipo({
                     min: 0,
                   },
                 }}
-                onChange={modStock}
+                onChange={modReparar}
               />
             </Grid>
+            <FormControlLabel
+              checked={enough}
+              control={<Checkbox />}
+              onChange={(e) => {
+                setEnough(e.target.checked);
+              }}
+              label="Cantidad Suficiente"
+            />
           </Grid>
         </Grid>
 
@@ -360,7 +404,7 @@ const EquipoModificado = (props) => {
         <strong>Clase: </strong> {equipo.clase}
       </p>
       <p>
-        <strong> Stock: </strong> {equipo.stock}
+        <strong> Stock: </strong> {equipo.stock == -1 ? 'Suficiente' : equipo.stock}
       </p>
     </div>
   );

@@ -56,7 +56,7 @@ const ListarUsers = ({listaUsuarios, setElegido, setVerEdicion, setResetPage, re
               </TableRow>
             </TableHead>
             <TableBody>
-              {displayedUsuarios.map((row, index) => (
+              {displayedUsuarios.map((row, index) => ( !row.admin &&
                 <TableRow
                   key={index}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

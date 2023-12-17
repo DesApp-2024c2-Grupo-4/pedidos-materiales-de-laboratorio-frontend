@@ -56,21 +56,44 @@ const StepMateriales = (props) => {
     );
   };
   const handleMaterial = (e) => {
-    if (stock() < getValues("cant_material")) {
-      setError("cant_material", {
-        type: "manual",
-        message: "No puede superar el Stock",
-      });
-    } else {
-      clearErrors("cant_material");
-    }
-    if(stock() != 0 && (getValues("cant_material") == "" || getValues("cant_material") == null)){
-      setError("cant_material", {
-        type: "manual",
-        message: "Debe ingresar una cantidad",
-      });
-    }else {
-      clearErrors("cant_material");
+    if(stock() != -1){
+      if (stock() < getValues("cant_material") && getValues("cant_material") == null) {
+        setError("cant_material", {
+          type: "manual",
+          message: "No puede superar el Stock",
+        });
+      } else 
+      if (getValues("cant_material") == "" || getValues("cant_material") == null) {
+        setError("cant_material", {
+          type: "manual",
+          message: "Debe ingresar una cantidad",
+        });
+      } else 
+      if (getValues("cant_material") < 0 && getValues("cant_material") == null) {
+        console.log(getValues("cant_material"))
+        setError("cant_material", {
+          type: "manual",
+          message: "Solo números positivos",
+        });
+      } else {
+        clearErrors("cant_material");
+      }
+    }else if(stock() == -1){
+      if (getValues("cant_material") == "" || getValues("cant_material") == null) {
+        setError("cant_material", {
+          type: "manual",
+          message: "Debe ingresar una cantidad",
+        });
+      } else 
+      if (getValues("cant_material") < 0 && getValues("cant_material") == null) {
+        console.log(getValues("cant_material"))
+        setError("cant_material", {
+          type: "manual",
+          message: "Solo números positivos",
+        });
+      } else {
+        clearErrors("cant_material");
+      }
     }
     if (errors.cant_material == undefined) {
       const fecha_inicio = getValues("fecha_utilizacion");
@@ -94,12 +117,13 @@ const StepMateriales = (props) => {
       setValue("cant_material", null);
     }
   };
-  const handleDeleteSelected = () => {
+  const handleDeleteSelected = (deletelist) => {
+    deletelist = typeof deletelist == 'object' ? false : deletelist
     const { listaMap, array, listaGeneral } = deleteSelected(
       getValues("lista_materiales"),
       listaMateriales,
       list,
-      selectedRows,
+      (deletelist || selectedRows),
       saveHistoric
     );
     setLista(listaMap);
@@ -151,7 +175,7 @@ const StepMateriales = (props) => {
             </Select>
           </FormControl>
         </Box>
-        {(stock() !== undefined || stock() > 0) && (
+        {(stock() !== undefined && stock() > 0) && (
           <>
             <Box sx={{ display: "flex", flexFlow: "column nowrap" }}>
               <ButtonGroup
@@ -191,6 +215,7 @@ const StepMateriales = (props) => {
                     }}
                   >
                     {stock() != 0 ? `${stock()} en Stock` : "Consultar Stock"}
+                    {stock() < 0 && "Cantidad Suficiente"}
                   </Box>
                 }
               </ButtonGroup>
@@ -228,7 +253,10 @@ const StepMateriales = (props) => {
               pageSizeOptions={[5, 10]}
               checkboxSelection
               onStateChange={(value) => {
-                setSelectedRows(value.rows.dataRowIdToModelLookup);
+                let array = value.rowSelection.map(
+                  (e) => value.rows.dataRowIdToModelLookup[e]
+                );
+                setSelectedRows(array);
               }}
             />
             <Button
