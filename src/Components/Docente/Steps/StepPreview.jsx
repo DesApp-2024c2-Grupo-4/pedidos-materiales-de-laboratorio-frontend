@@ -159,9 +159,10 @@ const StepPreview = (props) => {
                 color="#1B621A"
                 sx={{ fontWeight: "bold !important" }}
               >
-                {getValues("fecha_solicitud")?.getDay()}/
-                {getValues("fecha_solicitud")?.getMonth()}/
-                {getValues("fecha_solicitud")?.getYear()}
+                {console.log(getValues("fecha_solicitud"))}
+                {getValues("fecha_solicitud")?.getDate()}/
+                {getValues("fecha_solicitud")?.getMonth()+1}/
+                {getValues("fecha_solicitud")?.getFullYear()}
               </Typography>
             </Typography>
             <Typography color="text.secondary" sx={{ gap: 4 }}>
@@ -171,9 +172,9 @@ const StepPreview = (props) => {
                 color="#1B621A"
                 sx={{ fontWeight: "bold !important" }}
               >
-                {getValues("fecha_utilizacion")?.getDay()}/
-                {getValues("fecha_utilizacion")?.getMonth()}/
-                {getValues("fecha_utilizacion")?.getYear()}
+                {getValues("fecha_utilizacion")?.getDate()}/
+                {getValues("fecha_utilizacion")?.getMonth()+1}/
+                {getValues("fecha_utilizacion")?.getFullYear()}
               </Typography>
             </Typography>
           </Box>

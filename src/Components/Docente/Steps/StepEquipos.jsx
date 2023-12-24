@@ -40,6 +40,7 @@ const StepEquipos = (props) => {
     handleNext,
     setListaEquipos,
     getValues,
+    watch,
   } = props.values;
   const { validateStock } = formValidate();
   const [equipo, setEquipo] = useState({});
@@ -51,7 +52,7 @@ const StepEquipos = (props) => {
     return stockItem(fecha_inicio, fecha_fin, listaEquipos, equipo.equipo);
   };
   const handleEquipo = (e) => {
-    if(stock() != -1){
+    if(stock() > 0){
       if (stock() < getValues("cant_equipo") && getValues("cant_equipo") == null) {
         setError("cant_equipo", {
           type: "manual",
@@ -71,7 +72,7 @@ const StepEquipos = (props) => {
           message: "Solo números positivos",
         });
       } else {
-        clearErrors("cant_equipo");
+        clearErrors(["cant_equipo", 'id_equipo']);
       }
     }else if(stock() == -1){
       if (getValues("cant_equipo") == "" || getValues("cant_equipo") == null) {
@@ -87,7 +88,7 @@ const StepEquipos = (props) => {
           message: "Solo números positivos",
         });
       } else {
-        clearErrors("cant_equipo");
+        clearErrors(["cant_equipo", 'id_equipo']);
       }
     }
     if (errors.cant_equipo == undefined) {
@@ -101,7 +102,8 @@ const StepEquipos = (props) => {
         list,
         equipo.equipo,
         equipo.cantidad,
-        setSaveHistoric
+        setSaveHistoric,
+        'equipo'
       );
       setLista(listaMap);
       setValue("lista_equipos", array);
@@ -113,13 +115,14 @@ const StepEquipos = (props) => {
     }
   };
   const handleDeleteSelected = (deletelist) => {
-    deletelist = typeof deletelist == "object" ? false : deletelist;
+    deletelist = Array.isArray(deletelist) ? deletelist : false;
     const { listaMap, array, listaGeneral } = deleteSelected(
       getValues("lista_equipos"),
       listaEquipos,
       list,
       (deletelist || selectedRows),
-      saveHistoric
+      saveHistoric,
+      'equipo'
     );
     setLista(listaMap);
     setValue("lista_equipos", array);
@@ -135,6 +138,7 @@ const StepEquipos = (props) => {
     getValues("hora"),
     getValues("hora_fin"),
     getValues("fecha_utilizacion"),
+    getValues("fecha_solicitud")
   ]);
   return (
     <>
@@ -176,15 +180,16 @@ const StepEquipos = (props) => {
               ))}
             </Select>
           </FormControl>
+          <FormError error={errors.id_equipo} />
         </Box>
-        {(stock() != undefined && stock() != 0) && (
+        {(stock() != undefined && Number.isInteger(stock())) && (
           <>
             <Box sx={{ display: "flex", flexFlow: "column nowrap" }}>
               <ButtonGroup
                 variant="outlined"
                 aria-label="outlined button group"
               >
-                {stock() != 0 && (
+                {(stock() == -1 || stock() > 0) && (
                   <TextField
                     sx={{ ml: "8px", width: "20vw" }}
                     id="outlined-basic"
@@ -194,7 +199,7 @@ const StepEquipos = (props) => {
                     variant="outlined"
                     {...register("cant_equipo", {
                       required: {
-                        value: stock() != 0 && getValues("id_equipo") && true,
+                        value: getValues("id_equipo") && true,
                         message: "Debe ingresar una Cantidad",
                       },
                       validate: validateStock(stock()),
@@ -215,9 +220,7 @@ const StepEquipos = (props) => {
                       textAlign: "center",
                     }}
                   >
-                    {stock() > 0
-                      ? `${stock()} en Stock`
-                      : stock() == 0 && "Consultar Stock"}
+                    {stock() > 0 ? `${stock()} en Stock` : stock() > -1 && stock() == 0 && "Consultar Stock"}
                     {stock() < 0 && "Cantidad Suficiente"}
                   </Box>
                 }
@@ -325,8 +328,15 @@ const StepEquipos = (props) => {
         >
           <Box sx={{ flex: "1 1 auto" }} />
           <Button
-            onClick={() => {
-              Object.keys(errors).length == 0 && handleNext();
+            onClick={() => { 
+              if(watch('id_equipo') == null){
+                Object.keys(errors).length == 0 && handleNext();
+              }else{
+                setError('id_equipo',{
+                  type: "completar",
+                  message: "Debe completar la seleccion antes de continuar",
+                })
+              }              
             }}
             sx={{
               "&.MuiButtonBase-root": {

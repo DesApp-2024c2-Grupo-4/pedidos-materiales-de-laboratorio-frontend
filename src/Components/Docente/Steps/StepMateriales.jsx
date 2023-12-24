@@ -40,6 +40,7 @@ const StepMateriales = (props) => {
     handleBack,
     setListaMateriales,
     getValues,
+    watch
   } = props.values;
   const { validateStock } = formValidate();
   const [material, setMaterial] = useState({});
@@ -56,7 +57,7 @@ const StepMateriales = (props) => {
     );
   };
   const handleMaterial = (e) => {
-    if(stock() != -1){
+    if(stock() > 0){
       if (stock() < getValues("cant_material") && getValues("cant_material") == null) {
         setError("cant_material", {
           type: "manual",
@@ -76,9 +77,9 @@ const StepMateriales = (props) => {
           message: "Solo números positivos",
         });
       } else {
-        clearErrors("cant_material");
+        clearErrors(["cant_material", "id_material"]);
       }
-    }else if(stock() == -1){
+    }else if(stock() == -1){      
       if (getValues("cant_material") == "" || getValues("cant_material") == null) {
         setError("cant_material", {
           type: "manual",
@@ -92,7 +93,7 @@ const StepMateriales = (props) => {
           message: "Solo números positivos",
         });
       } else {
-        clearErrors("cant_material");
+        clearErrors(["cant_material", "id_material"]);
       }
     }
     if (errors.cant_material == undefined) {
@@ -106,7 +107,8 @@ const StepMateriales = (props) => {
         list,
         material.material,
         material.cantidad,
-        setSaveHistoric
+        setSaveHistoric,
+        'material'
       );
       setLista(listaMap);
       setValue("lista_materiales", array);
@@ -118,13 +120,14 @@ const StepMateriales = (props) => {
     }
   };
   const handleDeleteSelected = (deletelist) => {
-    deletelist = typeof deletelist == 'object' ? false : deletelist
+    deletelist = Array.isArray(deletelist) ? deletelist : false;
     const { listaMap, array, listaGeneral } = deleteSelected(
       getValues("lista_materiales"),
       listaMateriales,
       list,
       (deletelist || selectedRows),
-      saveHistoric
+      saveHistoric,
+      'material'
     );
     setLista(listaMap);
     setValue("lista_materiales", array);
@@ -174,15 +177,16 @@ const StepMateriales = (props) => {
               ))}
             </Select>
           </FormControl>
+          <FormError error={errors.id_material} />
         </Box>
-        {(stock() !== undefined && stock() > 0) && (
+        {(stock() !== undefined && Number.isInteger(stock())) && (
           <>
             <Box sx={{ display: "flex", flexFlow: "column nowrap" }}>
               <ButtonGroup
                 variant="outlined"
                 aria-label="outlined button group"
               >
-                {stock() != 0 && (
+                {(stock() == -1 || stock() > 0) && (
                   <TextField
                     sx={{ ml: "8px", width: "20vw" }}
                     id="outlined-basic"
@@ -214,7 +218,7 @@ const StepMateriales = (props) => {
                       textAlign: "center",
                     }}
                   >
-                    {stock() != 0 ? `${stock()} en Stock` : "Consultar Stock"}
+                    {stock() > 0 ? `${stock()} en Stock` : stock() > -1 && stock() == 0 && "Consultar Stock"}
                     {stock() < 0 && "Cantidad Suficiente"}
                   </Box>
                 }
@@ -321,9 +325,16 @@ const StepMateriales = (props) => {
         >
           <Box sx={{ flex: "1 1 auto" }} />
           <Button
-            onClick={() => {
+           onClick={() => {              
+            if(watch('id_material') == null){
               Object.keys(errors).length == 0 && handleNext();
-            }}
+            }else{
+              setError('id_material',{
+                type: "completar",
+                message: "Debe completar la seleccion antes de continuar",
+              })
+            }              
+          }}
             sx={{
               "&.MuiButtonBase-root": {
                 bgcolor: "#1B621A",

@@ -1,7 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 const stockItem = (fecha_inicio, fecha_fin, lista, id) => {
   const find = lista.find((e) => e._id == id);
-  console.log(find)
   if (find && find.stock != -1) {
     // Calcular el stock disponible teniendo en cuenta las reservas
     const reservas = find.enUso || [];
@@ -21,7 +20,6 @@ const stockItem = (fecha_inicio, fecha_fin, lista, id) => {
     );
     const stockTotal = find.stock - cantidadEnFecha;
     const stockDisponible = stockTotal - (find.enReparacion || 0);
-
     return stockDisponible;
   }else if(find && find.stock == -1){
     return -1
@@ -35,7 +33,8 @@ const handleItem = (
   table,
   id,
   cantidad,
-  setSaveHistoric
+  setSaveHistoric,
+  type
 ) => {
   let array = [...listaHook];
   let listaGeneral = [...lista];
@@ -101,7 +100,7 @@ const handleItem = (
     find.id = id;
     find.cantidad = cantidad || find.cantidad;
 
-    let obj = { equipo: id, cantidad: cantidad || 0 };
+    let obj = { [type]: id, cantidad: cantidad || 0 };
     index >= 0 ? (array[index] = obj) : array.push(obj);
     indexMap >= 0 ? (listaMap[indexMap] = find) : listaMap.push(find);
   return { listaMap, array, listaGeneral };
@@ -111,12 +110,13 @@ const deleteSelected = (
   lista,
   table,
   selectedRows,
-  saveHistoric
+  saveHistoric,
+  type,
 ) => {
   let array = [...listaHook];
   let listaGeneral = [...lista];
   let listaMap = [...table];
-  array = array.filter((e) => !selectedRows.find(i => i._id == e.equipo));
+  array = array.filter((e) => !selectedRows.find(i => i._id == e[type]));
   listaGeneral = listaGeneral.map((e) => {
     if (selectedRows.find(i => i._id == e._id)) {
       let find = saveHistoric[e._id]

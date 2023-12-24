@@ -204,8 +204,8 @@ const StepReactivos = (props) => {
   const handleDeleteSelected = () => {
     let array = [...getValues("lista_reactivos")];
     let listaMap = [...list];
-    array = array.filter((e) => !selectedRows.hasOwnProperty(e.reactivo));
-    listaMap = listaMap.filter((e) => !selectedRows.hasOwnProperty(e._id));
+    array = array.filter((e) => !selectedRows.find(i => i._id == e.reactivo));
+    listaMap = listaMap.filter((e) => !selectedRows.find(i => i._id == e._id));
     setLista(listaMap);
     setValue("lista_reactivos", array);
   };
@@ -674,7 +674,10 @@ const StepReactivos = (props) => {
               pageSizeOptions={[5, 10]}
               checkboxSelection
               onStateChange={(value) => {
-                setSelectedRows(value.rows.dataRowIdToModelLookup);
+                let array = value.rowSelection.map(
+                  (e) => value.rows.dataRowIdToModelLookup[e]
+                );
+                setSelectedRows(array);
               }}
             />
             <Button

@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import enGB from "date-fns/locale/en-GB";
 import { Box, Button, Divider, TextField, Typography } from "@mui/material";
-import { TimePicker } from "@mui/x-date-pickers";
-import { useForm } from "react-hook-form";
 import FormError from "../../Mensajes/FormError";
 import { formValidate } from "../../../utils/formValidator";
 import {
@@ -19,6 +17,9 @@ import {
   correctorFechaDayjs,
 } from "../../Laboratorio/utils/formatDate";
 import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
+import timezone from 'dayjs/plugin/timezone';
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const Informacion = (props) => {
   const {
@@ -35,16 +36,11 @@ const Informacion = (props) => {
     trigger,
     watch,
   } = props.values;
-  const { required, validateNumber, validateTime, validateHoraFin } =
-    formValidate();
+  const { required, validateNumber, validateTime } = formValidate();
   const fechaInicio = formatDate(Date.now());
-  const fechaFin = formatDate(Date.now());
   const [valueTime, setValueTime] = useState();
   const [valueHora, setValueHora] = useState("");
   const guardar_inicio = (value) => {
-    cambiarFechaInicio(value);
-  };
-  const cambiarFechaInicio = (value) => {
     setValue("fecha_solicitud", value["$d"]);
   };
   const cambiarFechaFin = (value) => {
@@ -68,12 +64,8 @@ const Informacion = (props) => {
   const handleTime = (value) => {
     setValueHora(value);
     let fecha_utilizacion = getValues("fecha_utilizacion");
-    fecha_utilizacion = dayjs(fecha_utilizacion);
-    let nuevaFechaFin = fecha_utilizacion
-      .hour(dayjs(value).hour())
-      .minute(dayjs(value).minute())
-      .format();
-    nuevaFechaFin = new Date(nuevaFechaFin);
+    let newDate = fecha_utilizacion.setHours(value['$d'].getHours(), value['$d'].getMinutes())
+    newDate = new Date(newDate);
     if (valueHoraFin && !valueHora?.isBefore(dayjs(valueHoraFin))) {
       setError("hora_fin", {
         type: "error hora_fin",
@@ -87,7 +79,7 @@ const Informacion = (props) => {
     } else {
       clearErrors("hora_fin");
     }
-    if (!esHoraValida(nuevaFechaFin)) {
+    if (!esHoraValida(newDate)) {
       setError("hora", {
         type: "error hora",
         message: "Horarios desde 7AM hasta 10PM",
@@ -95,7 +87,7 @@ const Informacion = (props) => {
     } else {
       clearErrors(["hora", "hora_fin"]);
     }
-    setValue("fecha_utilizacion", nuevaFechaFin);
+    setValue("fecha_utilizacion", newDate);
   };
   const handleValueHoraFin = (value) => {
     setValueHoraFin(value["$d"]);
@@ -123,8 +115,13 @@ const Informacion = (props) => {
     setValue("hora_fin", value["$d"]);
   };
   useEffect(() => {
-    setValue("fecha_solicitud", new Date(Date.now()));
-    setValue("fecha_utilizacion", new Date(Date.now()));
+    const fechaUTC = new Date(Date.now());
+    // Obtener la diferencia horaria en minutos para GMT-3
+    const offsetGMTm3 = -180; 
+    const offsetMillis = offsetGMTm3 * 60 * 1000;
+    const fechaConOffset = new Date(fechaUTC.getTime() + offsetMillis);
+    setValue("fecha_solicitud", fechaConOffset);
+    setValue("fecha_utilizacion", fechaConOffset);
   }, []);
   return (
     <>
@@ -144,7 +141,7 @@ const Informacion = (props) => {
           flexGrow: 1,
         }}
       >
-        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={enGB}>
+        <LocalizationProvider dateAdapter={AdapterDayjs} >
           <DemoContainer
             sx={{
               display: "flex",
@@ -160,17 +157,18 @@ const Informacion = (props) => {
             <DatePicker
               label="Fecha solicitud"
               disabled
+              timezone='America/Argentina/Buenos_Aires'
               defaultValue={dayjs(fechaInicio)}
               format="DD/MM/YYYY"
               //value={valueTime}
               onChange={(value) => {
-                const newValue = dayjs(correctorFechaDayjs(value))
-                guardar_inicio(newValue)
+                const newValue = dayjs(correctorFechaDayjs(value));
+                guardar_inicio(newValue);
               }}
             />
           </DemoContainer>
         </LocalizationProvider>
-        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={enGB}>
+        <LocalizationProvider dateAdapter={AdapterDayjs} >
           <DemoContainer
             sx={{
               display: "flex",
@@ -186,11 +184,20 @@ const Informacion = (props) => {
               <DatePicker
                 label="Fecha de utilización"
                 format="DD/MM/YYYY"
+                timezone='America/Argentina/Buenos_Aires'
                 error={!!errors.fecha_utilizacion}
                 {...register("fecha_utilizacion")}
                 value={dayjs(valueTime)}
-                onChange={(value) => {
-                  const newValue = dayjs(correctorFechaDayjs(value))
+                onChange={(value) => {                  
+                  let newValue = correctorFechaDayjs(value);
+                  if(valueHora){
+                    newValue.setHours(valueHora['$d'].getHours(), valueHora['$d'].getMinutes())
+                    newValue = dayjs(newValue)
+                  }else{
+                    newValue.setHours(0, 0, 0)
+                    newValue = dayjs(newValue)
+                  }
+                  setValue("fecha_utilizacion", newValue["$d"]);
                   setValueTime(newValue);
                   cambiarFechaFin(newValue);
                 }}
@@ -224,14 +231,15 @@ const Informacion = (props) => {
             <Box>
               <MobileTimePicker
                 label="Hora de Inicio"
+                timezone='America/Argentina/Buenos_Aires'
                 {...register("hora", {
                   validate: validateTime(valueHora),
                 })}
                 onChange={(newValue) => {
-                  const value = dayjs(correctorFechaDayjs(newValue))
-                  setValueHoraFin(
-                    dayjs(value).hour(dayjs(value).hour() + 4)["$d"]
-                  );
+                  const value = dayjs(correctorFechaDayjs(newValue));
+                  let hour = correctorFechaDayjs(newValue).getHours() + 4
+                  const fin = correctorFechaDayjs(newValue).setHours(hour <= 19 ? hour : 19)
+                  setValueHoraFin(new Date(fin));
                   handleTime(value);
                 }}
                 slotProps={{
@@ -239,7 +247,6 @@ const Informacion = (props) => {
                     error: !!errors.hora,
                   },
                 }}
-               
               />
               <FormError error={errors.hora} />
             </Box>
@@ -263,17 +270,18 @@ const Informacion = (props) => {
                 fullWidth
                 label="Finaliza a la Hora"
                 disabled={!valueHora}
+                timezone='America/Argentina/Buenos_Aires'
                 value={
-                  valueHora == ""
+                  valueHoraFin == ""
                     ? null
-                    : dayjs(valueHora).hour() >= 18
-                    ? dayjs(valueHora).hour(22).minute(0)
-                    : dayjs(valueHora).hour(dayjs(valueHora).hour() + 7)
+                    : dayjs(valueHoraFin).hour() >= 18
+                    ? dayjs(valueHoraFin).hour(22).minute(0)
+                    : dayjs(valueHoraFin).hour(dayjs(valueHoraFin).hour() + 7)
                 }
                 defaultValue={valueHora == "" && null}
                 {...register("hora_fin")}
                 onChange={(newValue) => {
-                  const value = dayjs(correctorFechaDayjs(newValue))
+                  const value = dayjs(correctorFechaDayjs(newValue));
                   handleValueHoraFin(value);
                 }}
                 error={!!errors.hora_fin}
@@ -355,8 +363,9 @@ const Informacion = (props) => {
           <Button
             onClick={() => {
               trigger(["cantidad_grupos", "alumnos", "hora", "materia"]);
-              watch(["cantidad_grupos", "alumnos", "materia"]).filter((e) => e == null)
-                .length == 0 &&
+              watch(["cantidad_grupos", "alumnos", "materia"]).filter(
+                (e) => e == null
+              ).length == 0 &&
                 Object.keys(errors).length == 0 &&
                 handleNext();
             }}
