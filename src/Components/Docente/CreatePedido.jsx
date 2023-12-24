@@ -107,8 +107,6 @@ const CreatePedido = ({ handleClose }) => {
         materiales_update: listaMateriales,
         reactivos_update: listaReactivos
       };
-      console.log(data.fecha_solicitud)
-      console.log(data.fecha_utilizacion)
       postPedido(pedido);
       setTimeout(() => {
         setUpdate(2)
