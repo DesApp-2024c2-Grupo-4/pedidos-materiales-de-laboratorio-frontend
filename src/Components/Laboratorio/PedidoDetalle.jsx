@@ -1,5 +1,5 @@
 import React from "react";
-import {  makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
@@ -13,7 +13,7 @@ import Grid from "@mui/material/Grid";
 import pedidoicon from "../Image/pedido-icon.png";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { Button } from "@material-ui/core";
-import { Badge, Tooltip } from "@mui/material";
+import { Badge, TableCell, TableHead, TableRow, Tooltip } from "@mui/material";
 import MailIcon from "@mui/icons-material/Mail";
 import ChatOnline from "../chat-online/chat-online";
 import Modal from "@mui/material/Modal";
@@ -32,15 +32,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function PedidoDetalle({
-  open,
-  setOpen,
-  scroll,
-  handleClose,
-  pedido,
-}) {
- 
-
+function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
   const {
     numero_tp,
     fecha_solicitud,
@@ -65,22 +57,28 @@ function PedidoDetalle({
   const handleCloseButton = () => setOpenButton(false);
   const [cant, setCant] = useState(0);
   const [read, setRead] = useState(false);
-  
+
   useEffect(() => {
     getMensajes(pedido._id).then((res) => {
-      if(res.data != null){
-        const ultimoElemento = res.data.list_mensajes[res.data.list_mensajes.length - 1];     
-        //setRead(res.data.list_mensajes) 
+      if (res.data != null) {
+        const ultimoElemento =
+          res.data.list_mensajes[res.data.list_mensajes.length - 1];
+        //setRead(res.data.list_mensajes)
         if (ultimoElemento.nombre === "LAB") {
-          const mensajesNoLeidos = res?.data?.list_mensajes.reduce((count, mensaje) => {
-            return count + (mensaje.read ? 0 : 1);
-          }, 0);
-          setCant((prevCant) => (prevCant !== mensajesNoLeidos ? mensajesNoLeidos : prevCant));
+          const mensajesNoLeidos = res?.data?.list_mensajes.reduce(
+            (count, mensaje) => {
+              return count + (mensaje.read ? 0 : 1);
+            },
+            0
+          );
+          setCant((prevCant) =>
+            prevCant !== mensajesNoLeidos ? mensajesNoLeidos : prevCant
+          );
         }
-        setRead(ultimoElemento.read)
+        setRead(ultimoElemento.read);
       }
     });
-  },[read, cant, pedido._id, open])
+  }, [read, cant, pedido._id, open]);
   return (
     <div>
       <Dialog
@@ -105,8 +103,8 @@ function PedidoDetalle({
             </label>
           </div>
           <div className="pedido-grupo pedido-grupo-iconos">
-            <Tooltip title="Mensajes" >
-              <Badge badgeContent={cant} color="secondary" >
+            <Tooltip title="Mensajes">
+              <Badge badgeContent={cant} color="secondary">
                 <MailIcon onClick={handleOpen} sx={{ color: "whitesmoke" }} />
               </Badge>
               <Modal
@@ -177,223 +175,213 @@ function PedidoDetalle({
             <div id="card-info-detalle" className="card-info-prof">
               {/* LISTA EQUIPOS */}
               <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                  <h4 className="pedido-categoria-detalle">Equipos</h4>
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="start"
-                    className="requerimientos-header"
-                    alignItems="center"
-                    spacing={{ xs: 2, md: 2 }}
-                    columns={{ xs: 12 }}
-                  >
-                    <Grid item xs={6} container justifyContent="flex-start">
-                      Descripción
-                    </Grid>
-                    <Grid item xs={2} container justifyContent="flex-start">
-                      Tipo
-                    </Grid>
-                    <Grid item xs={3} container justifyContent="flex-end">
-                      Cantidad
-                    </Grid>
-                  </Grid>
+                {lista_equipos.length > 0 && (
+                  <>
+                    <h4 className="pedido-categoria-detalle">Equipos</h4>
 
-                  {lista_equipos.length > 0 ? (
-                    <div>
-                      {lista_equipos.map((row, index) => (
-                        //key={row._id}
-                        // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-
-                        <Grid
-                          key={index}
-                          container
-                          direction="row"
-                          alignItems="center"
-                          spacing={{ xs: 2, md: 2 }}
-                          columns={{ xs: 12 }}
-                        >
-                          <Grid item xs={6} container justifyContent="start">
-                            {row.equipo?.descripcion}
-                          </Grid>
-                          <Grid
-                            item
-                            xs={2}
-                            container
-                            justifyContent="flex-start"
-                          >
-                            {row.equipo?.clase}
-                          </Grid>
-                          <Grid item xs={3} container justifyContent="end">
-                            {row?.cantidad}
-                          </Grid>
-                        </Grid>
-                      ))}
-                    </div>
-                  ) : (
-                    <div></div>
-                  )}
-                </Table>
-
-                {/* LISTA MATERIALES */}
-                <h4 className="pedido-categoria-detalle">Materiales</h4>
-
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="Start"
-                    className="requerimientos-header"
-                    alignItems="center"
-                    spacing={{ xs: 2, md: 2 }}
-                    columns={{ xs: 12 }}
-                  >
-                    <Grid item xs={6} container justifyContent="flex-start">
-                      Descripción
-                    </Grid>
-                    <Grid item xs={5} container justifyContent="flex-end">
-                      Cantidad
-                    </Grid>
-                  </Grid>
-                  <TableBody>
-                    {lista_materiales.length > 0 ? (
-                      <div>
-                        {lista_materiales.map((row, index) => (
-                          <Grid
-                            key={index}
-                            container
-                            direction="row"
-                            alignItems="center"
-                            spacing={{ xs: 2, md: 2 }}
-                            columns={{ xs: 12 }}
-                          >
-                            <Grid item xs={6} container justifyContent="start">
-                              {row.material?.descripcion}
-                            </Grid>
-                            <Grid
-                              item
-                              xs={5}
-                              container
-                              justifyContent="flex-end"
+                    <Box>
+                      <Table
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableHead>
+                          <TableRow sx={{ borderBottom: "2px solid white" }}>
+                            <TableCell
+                              sx={{ color: "white", py: "0 !important" }}
                             >
-                              {row.cantidad}
-                            </Grid>
-                          </Grid>
-                        ))}
-                      </div>
-                    ) : (
-                      <div></div>
-                    )}
-                  </TableBody>
-                </Table>
+                              Descripción
+                            </TableCell>
+                            <TableCell
+                              sx={{ color: "white", py: "0 !important" }}
+                            >
+                              Tipo
+                            </TableCell>
+                            <TableCell
+                              sx={{ color: "white", py: "0 !important" }}
+                            >
+                              Cantidad
+                            </TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {lista_equipos.map((row, index) => (
+                            <TableRow key={index}>
+                              <TableCell
+                                sx={{ color: "white", py: "5px !important" }}
+                              >
+                                {row.equipo?.descripcion}
+                              </TableCell>
+                              <TableCell
+                                sx={{ color: "white", py: "5px !important" }}
+                              >
+                                {row.equipo?.clase}
+                              </TableCell>
+                              <TableCell
+                                sx={{ color: "white", py: "5px !important" }}
+                              >
+                                {row?.cantidad}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </Box>
+                  </>
+                )}
+                {/* LISTA MATERIALES */}
+                {lista_materiales.length > 0 && (
+                  <>
+                    <h4 className="pedido-categoria-detalle">Materiales</h4>
 
+                    <Box>
+                      <Table
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableHead>
+                          <TableRow sx={{ borderBottom: "2px solid white" }}>
+                            <TableCell
+                              sx={{ color: "white", py: "0 !important" }}
+                            >
+                              Descripción
+                            </TableCell>
+                            <TableCell
+                              sx={{ color: "white", py: "0 !important" }}
+                            >
+                              Cas
+                            </TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {lista_materiales.map((row, index) => (
+                            <TableRow key={index}>
+                              <TableCell
+                                sx={{ color: "white", py: "5px !important" }}
+                              >
+                                {row.material?.descripcion}
+                              </TableCell>
+                              <TableCell
+                                sx={{ color: "white", py: "5px !important" }}
+                              >
+                                {row?.cantidad}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </Box>
+                  </>
+                )}
                 {/* LISTA REACTIVOS */}
-
-                <h4 className="pedido-categoria-detalle">Reactivos</h4>
-
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="flex-start"
-                    className="requerimientos-header"
-                    alignItems="center"
-                    marginBottom={1}
-                    spacing={{ xs: 1, md: 1 }}
-                    columns={{ xs: 12 }}
-                  >
-                    <Grid item xs={2} container justifyContent="center">
-                      Descripción
-                    </Grid>
-                    <Grid item xs={2} container justifyContent="center">
-                      Cas
-                    </Grid>
-                    <Grid item xs={1} container justifyContent="center">
-                      Calidad
-                    </Grid>
-                    <Grid item xs={2} container justifyContent="center">
-                      Cant Total
-                    </Grid>
-                    <Grid item xs={1} container justifyContent="center">
-                      U. de Medida
-                    </Grid>
-                    <Grid item xs={1} container justifyContent="center">
-                      Tipo Conc.
-                    </Grid>
-                    <Grid item xs={1} container justifyContent="center">
-                      Medida Conc.
-                    </Grid>
-                    <Grid item xs={2} container justifyContent="center">
-                      Disolvente
-                    </Grid>
-                    {/* <Grid item xs={1} container justifyContent="center" >
-                                        Cant Total
-                                    </Grid>
-                                    <Grid item xs={1} container justifyContent="center" >
-                                        U. Med
-                                    </Grid> */}
-                  </Grid>
-
-                  {lista_reactivos.length > 0 ? (
-                    <div>
-                      {lista_reactivos.map((row, index) => (
-                        <Grid
-                          key={index}
-                          container
-                          direction="row"
-                          justifyContent="start"
-                          alignItems="center"
-                          spacing={{ xs: 1, md: 1 }}
-                          columns={{ xs: 12 }}
-                        >
-                          <Grid item xs={2} container justifyContent="center">
-                            {row.reactivo.descripcion}
-                          </Grid>
-                          <Grid item xs={2} container justifyContent="center">
-                            {row.reactivo.cas}
-                          </Grid>
-                          <Grid item xs={1} container justifyContent="center">
-                            {row.calidad}
-                          </Grid>
-                          <Grid item xs={2} container justifyContent="center">
-                            {row.cantidad}
-                          </Grid>
-                          <Grid item xs={1} container justifyContent="center">
-                            {row.un_medida}
-                          </Grid>
-                          <Grid item xs={1} container justifyContent="center">
-                            {row.concentracion_tipo}
-                          </Grid>
-                          <Grid
-                            item
-                            xs={1}
-                            container
-                            justifyContent="center"
-                            alignItems="center"
-                          >
-                            {row.concentracion_medida}
-                          </Grid>
-                          <Grid item xs={2} container justifyContent="center">
-                            {row.disolvente === "otro" ? (
-                              <div>{row.otro_disolvente_descripcion}</div>
-                            ) : (
-                              <div>{row.disolvente} </div>
-                            )}
-                            {/* {row.disolvente} */}
-                          </Grid>
-                          {/* <Grid item xs={1} container justifyContent="center" >
-                                                    {row.cantidad}
-                                                </Grid> */}
-                          {/* <Grid item xs={1} container justifyContent="center" alignItems="center">
-                                                    {row.concentracion_medida}
-                                                </Grid> */}
-                        </Grid>
-                      ))}
-                    </div>
-                  ) : (
-                    <div></div>
-                  )}
-                </Table>
+                {lista_reactivos.length > 0 && (
+                  <>
+                    <h4 className="pedido-categoria-detalle">Reactivos</h4>
+                    <Box>
+                      <Table
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableHead>
+                          <TableRow sx={{ borderBottom: "2px solid white" }}>
+                            <TableCell
+                              sx={{ color: "white", py: "0 !important" }}
+                            >
+                              Descripción
+                            </TableCell>
+                            <TableCell
+                              sx={{ color: "white", py: "0 !important" }}
+                            >
+                              Cas
+                            </TableCell>
+                            <TableCell
+                              sx={{ color: "white", py: "0 !important" }}
+                            >
+                              Calidad
+                            </TableCell>
+                            <TableCell
+                              sx={{ color: "white", py: "0 !important" }}
+                            >
+                              Cant Total
+                            </TableCell>
+                            <TableCell
+                              sx={{ color: "white", py: "0 !important" }}
+                            >
+                              U. de Medida
+                            </TableCell>
+                            <TableCell
+                              sx={{ color: "white", py: "0 !important" }}
+                            >
+                              Tipo Conc.
+                            </TableCell>
+                            <TableCell
+                              sx={{ color: "white", py: "0 !important" }}
+                            >
+                              Medida Conc.
+                            </TableCell>
+                            <TableCell
+                              sx={{ color: "white", py: "0 !important" }}
+                            >
+                              Disolvente
+                            </TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {lista_reactivos.map((row, index) => (
+                            <TableRow key={index}>
+                              <TableCell
+                                sx={{ color: "white", py: "5px !important" }}
+                              >
+                                {row.reactivo.descripcion}
+                              </TableCell>
+                              <TableCell
+                                sx={{ color: "white", py: "5px !important" }}
+                              >
+                                {row.reactivo.cas}
+                              </TableCell>
+                              <TableCell
+                                sx={{ color: "white", py: "5px !important" }}
+                              >
+                                {row.calidad}
+                              </TableCell>
+                              <TableCell
+                                sx={{ color: "white", py: "5px !important" }}
+                              >
+                                {row.cantidad}
+                              </TableCell>
+                              <TableCell
+                                sx={{ color: "white", py: "5px !important" }}
+                              >
+                                {row.un_medida}
+                              </TableCell>
+                              <TableCell
+                                sx={{ color: "white", py: "5px !important" }}
+                              >
+                                {row.concentracion_tipo}
+                              </TableCell>
+                              <TableCell
+                                sx={{ color: "white", py: "5px !important" }}
+                              >
+                                {row.concentracion_medida}
+                              </TableCell>
+                              <TableCell
+                                sx={{ color: "white", py: "5px !important" }}
+                              >
+                                {row.disolvente === "otro" ? (
+                                  <>{row.otro_disolvente_descripcion}</>
+                                ) : (
+                                  <>{row.disolvente}</>
+                                )}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </Box>
+                  </>
+                )}
               </TableContainer>
             </div>
 
@@ -404,7 +392,7 @@ function PedidoDetalle({
               bgcolor={"secondary"}
               color={"primary"}
               onClick={() => {
-                handleClose(false)
+                handleClose(false);
               }}
               className="boton-cerrar-pedido boton-cerrar-pedido-prof"
             >

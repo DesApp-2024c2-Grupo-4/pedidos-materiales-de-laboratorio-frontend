@@ -107,7 +107,7 @@ const CreatePedido = ({ handleClose }) => {
         materiales_update: listaMateriales,
         reactivos_update: listaReactivos
       };
-      postPedido(pedido);
+      await postPedido(pedido);
       setTimeout(() => {
         setUpdate(2)
         enqueueSnackbar("El pedido se realizo con éxito",{variant: "success"})

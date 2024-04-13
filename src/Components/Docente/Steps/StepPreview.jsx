@@ -5,6 +5,7 @@ import {
   Card,
   CardContent,
   Stack,
+  TextField,
   Typography,
 } from "@mui/material";
 import FormError from "../../Mensajes/FormError";
@@ -159,7 +160,6 @@ const StepPreview = (props) => {
                 color="#1B621A"
                 sx={{ fontWeight: "bold !important" }}
               >
-                {console.log(getValues("fecha_solicitud"))}
                 {getValues("fecha_solicitud")?.getDate()}/
                 {getValues("fecha_solicitud")?.getMonth()+1}/
                 {getValues("fecha_solicitud")?.getFullYear()}
@@ -272,9 +272,12 @@ const StepPreview = (props) => {
           },
         }}
       >
-        <Box sx={{ minWidth: "100%" }}>
-          <TextareaAutosize
-            aria-label="empty textarea"
+        <Box sx={{ minWidth: "100%"}}>
+          <TextField
+            label="Descripción"
+            fullWidth 
+            multiline
+            minRows={2}
             placeholder="Descripción"
             error={!!errors.descripcion}
             {...register("descripcion", {
@@ -287,8 +290,11 @@ const StepPreview = (props) => {
           <FormError error={errors.descripcion} />
         </Box>
         <Box sx={{ minWidth: "100%" }}>
-          <TextareaAutosize
-            aria-label="empty textarea"
+        <TextField
+            label="Observaciones"
+            fullWidth 
+            multiline
+            minRows={2}
             placeholder="Observaciones"
             error={!!errors.observaciones}
             {...register("observaciones", {

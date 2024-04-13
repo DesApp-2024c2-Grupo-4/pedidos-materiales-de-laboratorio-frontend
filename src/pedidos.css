@@ -309,7 +309,7 @@
     background-color: rgba(27, 98, 26, 1) !important;
     color: white;
     padding-left: 20px;
-    margin: 2vh 0px;
+    margin: 1vh 0px;
     height: 46px;
     line-height: 40px;
     border-radius: 15px;
@@ -345,10 +345,10 @@
 .requerimientos-header {
     background-color: #1D2F58;
     color: white;
-    padding-bottom: 3px;
+    padding-bottom: 3px !important;
     border-bottom: 2px solid white !important;
     padding-top: 10px !important;
-    margin-bottom: 3px !important;
+    margin-bottom: 15px !important;
 }
 
 .css-quj9j6-MuiTable-root {

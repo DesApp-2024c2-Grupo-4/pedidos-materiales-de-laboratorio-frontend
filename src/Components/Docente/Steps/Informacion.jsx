@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -15,11 +15,19 @@ import {
   formatDate,
   esHoraValida,
   correctorFechaDayjs,
+  estaEnHorario,
 } from "../../Laboratorio/utils/formatDate";
 import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
-import timezone from 'dayjs/plugin/timezone';
+import timezone from "dayjs/plugin/timezone";
+import "dayjs/locale/es"; // Importa el locale que desees utilizar
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
+// Establece la zona horaria por defecto
+dayjs.tz.setDefault("America/Argentina/Buenos_Aires");
+
+// Configura el locale por defecto
+dayjs.locale("es");
 
 const Informacion = (props) => {
   const {
@@ -45,7 +53,7 @@ const Informacion = (props) => {
   };
   const cambiarFechaFin = (value) => {
     const date = value["$d"];
-    if (date < Date.now()) {
+    if (date < new Date().setHours(0,0,0)) {
       return setError("fecha_utilizacion", {
         type: "error fecha",
         message: "La fecha debe ser mayor a la actual",
@@ -61,11 +69,25 @@ const Informacion = (props) => {
     const fecha = formatDate(value["$d"]);
     fecha !== "NaN-NaN-NaN" && setValue("fecha_utilizacion", value["$d"]);
   };
+
   const handleTime = (value) => {
     setValueHora(value);
+
     let fecha_utilizacion = getValues("fecha_utilizacion");
-    let newDate = fecha_utilizacion.setHours(value['$d'].getHours(), value['$d'].getMinutes())
+    let newDate = fecha_utilizacion.setHours(
+      value["$d"].getHours(),
+      value["$d"].getMinutes()
+    );
     newDate = new Date(newDate);
+
+    if (!estaEnHorario(newDate)) {
+      setError("hora", {
+        type: "error hora actual",
+        message: "Este Horario es pasado",
+      });
+    } else {
+      clearErrors("hora");
+    }
     if (valueHoraFin && !valueHora?.isBefore(dayjs(valueHoraFin))) {
       setError("hora_fin", {
         type: "error hora_fin",
@@ -79,7 +101,12 @@ const Informacion = (props) => {
     } else {
       clearErrors("hora_fin");
     }
-    if (!esHoraValida(newDate)) {
+    if (!estaEnHorario(newDate)) {
+      setError("hora", {
+        type: "error hora",
+        message: "Este Horario ya paso",
+      });
+    } else if (!esHoraValida(newDate)) {
       setError("hora", {
         type: "error hora",
         message: "Horarios desde 7AM hasta 10PM",
@@ -89,8 +116,10 @@ const Informacion = (props) => {
     }
     setValue("fecha_utilizacion", newDate);
   };
+
   const handleValueHoraFin = (value) => {
     setValueHoraFin(value["$d"]);
+
     if (!valueHora.isBefore(value["$d"])) {
       setError("hora_fin", {
         type: "error hora_fin",
@@ -117,12 +146,14 @@ const Informacion = (props) => {
   useEffect(() => {
     const fechaUTC = new Date(Date.now());
     // Obtener la diferencia horaria en minutos para GMT-3
-    const offsetGMTm3 = -180; 
+    const offsetGMTm3 = -180;
     const offsetMillis = offsetGMTm3 * 60 * 1000;
     const fechaConOffset = new Date(fechaUTC.getTime() + offsetMillis);
     setValue("fecha_solicitud", fechaConOffset);
     setValue("fecha_utilizacion", fechaConOffset);
+    setValueTime(dayjs(fechaInicio));
   }, []);
+
   return (
     <>
       <Box sx={{ display: "inline-block", width: "100%" }}>
@@ -141,7 +172,7 @@ const Informacion = (props) => {
           flexGrow: 1,
         }}
       >
-        <LocalizationProvider dateAdapter={AdapterDayjs} >
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer
             sx={{
               display: "flex",
@@ -157,7 +188,7 @@ const Informacion = (props) => {
             <DatePicker
               label="Fecha solicitud"
               disabled
-              timezone='America/Argentina/Buenos_Aires'
+              timezone="America/Argentina/Buenos_Aires"
               defaultValue={dayjs(fechaInicio)}
               format="DD/MM/YYYY"
               //value={valueTime}
@@ -168,7 +199,7 @@ const Informacion = (props) => {
             />
           </DemoContainer>
         </LocalizationProvider>
-        <LocalizationProvider dateAdapter={AdapterDayjs} >
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer
             sx={{
               display: "flex",
@@ -184,19 +215,24 @@ const Informacion = (props) => {
               <DatePicker
                 label="Fecha de utilización"
                 format="DD/MM/YYYY"
-                timezone='America/Argentina/Buenos_Aires'
+                timezone="America/Argentina/Buenos_Aires"
                 error={!!errors.fecha_utilizacion}
                 {...register("fecha_utilizacion")}
                 value={dayjs(valueTime)}
-                onChange={(value) => {                  
+                onChange={(value) => {
                   let newValue = correctorFechaDayjs(value);
-                  if(valueHora){
-                    newValue.setHours(valueHora['$d'].getHours(), valueHora['$d'].getMinutes())
-                    newValue = dayjs(newValue)
-                  }else{
-                    newValue.setHours(0, 0, 0)
-                    newValue = dayjs(newValue)
-                  }
+                  let mes = newValue.getMonth();
+                  newValue.setMonth(mes + 1);
+                  if (valueHora) {
+                    newValue.setHours(
+                      valueHora["$d"].getHours(),
+                      valueHora["$d"].getMinutes()
+                    );
+                    newValue = dayjs(newValue);
+                  } else {
+                    newValue = dayjs(newValue);
+                  }                  
+                  clearErrors("fecha_utilizacion");
                   setValue("fecha_utilizacion", newValue["$d"]);
                   setValueTime(newValue);
                   cambiarFechaFin(newValue);
@@ -231,14 +267,16 @@ const Informacion = (props) => {
             <Box>
               <MobileTimePicker
                 label="Hora de Inicio"
-                timezone='America/Argentina/Buenos_Aires'
+                timezone="America/Argentina/Buenos_Aires"
                 {...register("hora", {
                   validate: validateTime(valueHora),
                 })}
                 onChange={(newValue) => {
                   const value = dayjs(correctorFechaDayjs(newValue));
-                  let hour = correctorFechaDayjs(newValue).getHours() + 4
-                  const fin = correctorFechaDayjs(newValue).setHours(hour <= 19 ? hour : 19)
+                  let hour = correctorFechaDayjs(newValue).getHours() + 4;
+                  const fin = correctorFechaDayjs(newValue).setHours(
+                    hour <= 19 ? hour : 19
+                  );
                   setValueHoraFin(new Date(fin));
                   handleTime(value);
                 }}
@@ -270,13 +308,13 @@ const Informacion = (props) => {
                 fullWidth
                 label="Finaliza a la Hora"
                 disabled={!valueHora}
-                timezone='America/Argentina/Buenos_Aires'
+                timezone="America/Argentina/Buenos_Aires"
                 value={
                   valueHoraFin == ""
                     ? null
-                    : dayjs(valueHoraFin).hour() >= 18
+                    : dayjs(valueHoraFin).hour() + 3 >= 18
                     ? dayjs(valueHoraFin).hour(22).minute(0)
-                    : dayjs(valueHoraFin).hour(dayjs(valueHoraFin).hour() + 7)
+                    : dayjs(valueHoraFin).hour(dayjs(valueHoraFin).hour() + 3)
                 }
                 defaultValue={valueHora == "" && null}
                 {...register("hora_fin")}
