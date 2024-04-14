@@ -218,7 +218,7 @@ const Informacion = (props) => {
                 timezone="America/Argentina/Buenos_Aires"
                 error={!!errors.fecha_utilizacion}
                 {...register("fecha_utilizacion")}
-                value={dayjs(valueTime)}
+                //value={valueTime}
                 onChange={(value) => {
                   let newValue = correctorFechaDayjs(value);
                   let mes = newValue.getMonth();
@@ -231,7 +231,7 @@ const Informacion = (props) => {
                     newValue = dayjs(newValue);
                   } else {
                     newValue = dayjs(newValue);
-                  }                  
+                  }
                   clearErrors("fecha_utilizacion");
                   setValue("fecha_utilizacion", newValue["$d"]);
                   setValueTime(newValue);
