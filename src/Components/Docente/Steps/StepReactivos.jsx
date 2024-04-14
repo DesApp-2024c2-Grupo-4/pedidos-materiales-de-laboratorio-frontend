@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  Autocomplete,
   Box,
   Button,
   ButtonGroup,
@@ -84,9 +85,12 @@ const StepReactivos = (props) => {
   //   return total;
   // };
   const handleReactivo = (e) => {
-    clearErrors("id_reactivo")
+    clearErrors("id_reactivo");
     if (getValues("id_reactivo")) {
-      if (getValues("cant_reactivo") == null  || getValues("cant_reactivo") === "") {
+      if (
+        getValues("cant_reactivo") == null ||
+        getValues("cant_reactivo") === ""
+      ) {
         setError("cant_reactivo", {
           type: "cant_reactivo",
           message: "Debe ingresar una Cantidad",
@@ -120,7 +124,8 @@ const StepReactivos = (props) => {
       }
       if (
         getValues("concentracion_tipo") != "puro" &&
-        (getValues("concentracion_medida") == null  || getValues("concentracion_medida") === "")
+        (getValues("concentracion_medida") == null ||
+          getValues("concentracion_medida") === "")
       ) {
         setError("concentracion_medida", {
           type: "concentracion_medida",
@@ -142,7 +147,8 @@ const StepReactivos = (props) => {
       }
       if (
         getValues("disolvente") == "otro" &&
-        (getValues("otro_disolvente_descripcion") == null  || getValues("otro_disolvente_descripcion") === "")
+        (getValues("otro_disolvente_descripcion") == null ||
+          getValues("otro_disolvente_descripcion") === "")
       ) {
         setError("otro_disolvente_descripcion", {
           type: "otro_disolvente_descripcion",
@@ -168,7 +174,7 @@ const StepReactivos = (props) => {
       let listaGeneral = [...listaReactivos];
       let index = array.findIndex((e) => e.reactivo == reactivo.reactivo);
       let indexMap = listaMap.findIndex((e) => e._id == reactivo.reactivo);
-      let find = {...listaGeneral.find((e) => e._id == reactivo.reactivo)}
+      let find = { ...listaGeneral.find((e) => e._id == reactivo.reactivo) };
       //objto para guardar en bbdd
       let obj = {
         reactivo: reactivo.reactivo,
@@ -204,8 +210,10 @@ const StepReactivos = (props) => {
   const handleDeleteSelected = () => {
     let array = [...getValues("lista_reactivos")];
     let listaMap = [...list];
-    array = array.filter((e) => !selectedRows.find(i => i._id == e.reactivo));
-    listaMap = listaMap.filter((e) => !selectedRows.find(i => i._id == e._id));
+    array = array.filter((e) => !selectedRows.find((i) => i._id == e.reactivo));
+    listaMap = listaMap.filter(
+      (e) => !selectedRows.find((i) => i._id == e._id)
+    );
     setLista(listaMap);
     setValue("lista_reactivos", array);
   };
@@ -214,9 +222,11 @@ const StepReactivos = (props) => {
       <Box
         sx={{
           display: "flex",
-          
           flexGrow: 1,
-          my: "2vh !important",
+          gap: 1,
+          flexFlow: "row wrap",
+          mb: !reactivo.hasOwnProperty('reactivo') ? "3vh !important" :"0vh !important",
+          mt: "2vh !important",
         }}
         autoComplete="off"
       >
@@ -226,7 +236,36 @@ const StepReactivos = (props) => {
             flexFlow: "row nowrap",
           }}
         >
-          <FormControl fullWidth sx={{ display: "flex" }}>
+          <Box sx={{ width: 300, display:'flex', flexFlow:'column nowrap' }}>
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options={listaReactivos}
+              inputValue={reactivo.reactivo || undefined}
+              getOptionLabel={(option) => option.descripcion}
+              {...register("id_reactivo")}
+              onChange={(event, newValue) => {
+                if (newValue) {
+                  setValue("id_reactivo", newValue._id);
+                  setReactivo((old) => ({ ...old, reactivo: newValue._id }));
+                } else {
+                  setValue("id_reactivo", null);
+                  setReactivo({});
+                }
+                clearErrors("cant_equipo");
+              }}
+              sx={{
+                width: 300,
+                height: "4vh !important",
+                "& .MuiButtonBase-root": {
+                  padding: "0 !important",
+                },
+              }}
+              renderInput={(params) => <TextField {...params} label="Reactivo" />}
+            />
+            <FormError error={errors.id_reactivo} />
+          </Box>
+          {/* <FormControl fullWidth sx={{ display: "flex" }}>
             <InputLabel
               id="Equipo"
               sx={{ pr: "6px", pl: "6px", bgcolor: "white" }}
@@ -259,9 +298,9 @@ const StepReactivos = (props) => {
                   {item.descripcion}
                 </MenuItem>
               ))}
-            </Select>            
-            <FormError error={errors.id_reactivo} />
-          </FormControl>
+            </Select>
+          </FormControl> */}
+          
           {getValues("id_reactivo") && (
             <Box sx={{ display: "flex" }}>
               <TextField
@@ -714,20 +753,21 @@ const StepReactivos = (props) => {
         >
           <Box sx={{ flex: "1 1 auto" }} />
           <Button
-              onClick={handleBack}
-              disabled={Object.keys(errors).length != 0}
-              sx={{
-                "&.MuiButtonBase-root": {
-                  bgcolor: Object.keys(errors).length == 0  ? "#1B621A" : "#DAE4D8",
-                  borderRadius: "30px",
-                  color: "white",
-                },
-                "&:hover": { bgcolor: "#60975E" },
-                mr: 1,
-              }}
-            >
-              Volver
-            </Button>
+            onClick={handleBack}
+            disabled={Object.keys(errors).length != 0}
+            sx={{
+              "&.MuiButtonBase-root": {
+                bgcolor:
+                  Object.keys(errors).length == 0 ? "#1B621A" : "#DAE4D8",
+                borderRadius: "30px",
+                color: "white",
+              },
+              "&:hover": { bgcolor: "#60975E" },
+              mr: 1,
+            }}
+          >
+            Volver
+          </Button>
         </Box>
         <Box
           sx={{
@@ -743,13 +783,15 @@ const StepReactivos = (props) => {
           <Box sx={{ flex: "1 1 auto" }} />
           <Button
             onClick={() => {
-                if(getValues('id_reactivo') != null){
-                  setError("id_reactivo", {
-                    type: "finalizar",
-                    message: "Complete la seleccion por favor",
-                  });
-                }
-                getValues('id_reactivo') == null && Object.keys(errors).length == 0 && handleNext();
+              if (getValues("id_reactivo") != null) {
+                setError("id_reactivo", {
+                  type: "finalizar",
+                  message: "Complete la seleccion por favor",
+                });
+              }
+              getValues("id_reactivo") == null &&
+                Object.keys(errors).length == 0 &&
+                handleNext();
             }}
             sx={{
               "&.MuiButtonBase-root": {

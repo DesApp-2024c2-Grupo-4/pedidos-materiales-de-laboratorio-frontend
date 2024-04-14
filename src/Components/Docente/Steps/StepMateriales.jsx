@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  Autocomplete,
   Box,
   Button,
   ButtonGroup,
@@ -143,12 +144,43 @@ const StepMateriales = (props) => {
         sx={{
           display: "flex",
           flexGrow: 1,
-          my: "2vh !important",
+          gap: 1,
+          flexFlow: "row wrap",
+          mb: "0vh !important",
+          mt: "2vh !important",
         }}
         autoComplete="off"
       >
         <Box sx={{ minWidth: 120 }}>
-          <FormControl fullWidth>
+          <Box sx={{ width: 300 }}>
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={listaMateriales}
+                inputValue={material.material || undefined}
+                getOptionLabel={(option) => option.descripcion}
+                {...register("id_material")}
+                onChange={(event, newValue) => {
+                  if (newValue) {
+                    setValue("id_material", newValue._id);
+                    setMaterial((old) => ({ ...old, material: newValue._id }));
+                  } else {
+                    setValue("id_material", null);
+                    setMaterial({});
+                  }
+                  clearErrors("cant_material");
+                }}
+                sx={{
+                  width: 300,
+                  height: "4vh !important",
+                  "& .MuiButtonBase-root": {
+                    padding: "0 !important",
+                  },
+                }}
+                renderInput={(params) => <TextField {...params} label="Material" />}
+              />
+          </Box>
+          {/* <FormControl fullWidth>
             <InputLabel id="Equipo">Material</InputLabel>
             <Select
               labelId="Equipo"
@@ -176,16 +208,19 @@ const StepMateriales = (props) => {
                 </MenuItem>
               ))}
             </Select>
-          </FormControl>
+          </FormControl> */}
           <FormError error={errors.id_material} />
         </Box>
         {(stock() !== undefined && Number.isInteger(stock())) && (
           <>
-            <Box sx={{ display: "flex", flexFlow: "column nowrap" }}>
-              <ButtonGroup
-                variant="outlined"
-                aria-label="outlined button group"
-              >
+            <Box
+              sx={{
+                display: "flex",
+                flexFlow: "column nowrap",
+                justifyContent: "center",
+                p: 0,
+              }}
+            >
                 {(stock() == -1 || stock() > 0) && (
                   <TextField
                     sx={{ ml: "8px", width: "20vw" }}
@@ -222,17 +257,18 @@ const StepMateriales = (props) => {
                     {stock() < 0 && "Cantidad Suficiente"}
                   </Box>
                 }
-              </ButtonGroup>
               <FormError error={errors.cant_material} />
             </Box>
+            <Box>
             <IconButton
-              sx={{ maxHeight: "8vh", width: "6vw" }}
+              sx={{ mt: "5px !important" }}
               aria-label="delete"
               size="small"
               onClick={handleMaterial}
             >
               <AddCircleIcon color="success" />
             </IconButton>
+            </Box>
           </>
         )}
       </Box>
