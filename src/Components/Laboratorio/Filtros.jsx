@@ -13,31 +13,32 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import ar from "date-fns/locale/ar";
-import ClearIcon from '@mui/icons-material/Clear';
+import ClearIcon from "@mui/icons-material/Clear";
 import { correctionDate, dateFormat } from "./utils/formatDate";
 import { useEffect } from "react";
 import timezone from "dayjs/plugin/timezone";
-dayjs.extend(utc)
-dayjs.extend(timezone)
+import FormError from "../Mensajes/FormError";
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export default function Filtros(props) {
   const fechaInicio = props.fecha_inicio;
   const fechaFin = props.fecha_fin;
-  const [value, setValue] = React.useState('');
-  const now = correctionDate(new Date())
+  const [value, setValue] = React.useState("");
+  const now = correctionDate(new Date());
   const guardar_inicio = (value) => {
     cambiarFechaInicio(value);
   };
   const cambiarFechaInicio = (value) => {
     const fecha = dateFormat(value["$d"]);
     props.set_fecha_inicio(fecha);
-    setValue(fecha)
+    setValue(fecha);
   };
 
   const cambiarFechaFin = (value) => {
     const fecha = dateFormat(value["$d"]);
-    console.log(fecha)
-    
+    console.log(fecha);
+
     fecha !== "NaN-NaN-NaN" && props.set_fecha_fin(fecha);
   };
   const edificio_elegido = (event) => {
@@ -48,14 +49,13 @@ export default function Filtros(props) {
     return () => {};
   }, [props.fecha_inicio]);
 
-  
-  useEffect(()=> {
-    if(fechaInicio != ''){
-      setValue(dateFormat(new Date(fechaInicio)))
-    }else{
-      setValue('')  
+  useEffect(() => {
+    if (fechaInicio != "") {
+      setValue(dateFormat(new Date(fechaInicio)));
+    } else {
+      setValue("");
     }
-  }, [])
+  }, []);
   return (
     <Box sx={{ flexGrow: 1, mb: 6 }}>
       <Box
@@ -157,7 +157,7 @@ export default function Filtros(props) {
                     height: "100%",
                   }}
                   // variant="outlined"
-                  size='large'
+                  size="large"
                   color="error"
                   startIcon={
                     <ClearIcon
@@ -177,28 +177,48 @@ export default function Filtros(props) {
               </Stack>
             </Box>
             <Box sx={{ display: "flex" }}>
-              <LocalizationProvider
-                dateAdapter={AdapterDayjs}
-                adapterLocale={ar}
-              >
-                <DemoContainer components={["DatePicker", "DatePicker"]}>
-                  <DatePicker
-                    label="Desde"
-                    format="DD/MM/YYYY"
-                    value={fechaInicio ? dayjs(value) : null}
-                    onChange={(value) => guardar_inicio(value)}
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <LocalizationProvider
+                  dateAdapter={AdapterDayjs}
+                  adapterLocale={ar}
+                >
+                  <DemoContainer components={["DatePicker", "DatePicker"]}>
+                    <DatePicker
+                      label="Desde"
+                      format="DD/MM/YYYY"
+                      value={fechaInicio ? dayjs(value) : null}
+                      onChange={(value) => guardar_inicio(value)}
+                      slotProps={{
+                        textField: {
+                          error:
+                            props.alert &&
+                            '"Desde" no puede ser mayor a "Hasta"',
+                        },
+                      }}
+                    />
+                    <DatePicker
+                      label="Hasta"
+                      format="DD/MM/YYYY"
+                      value={dayjs(fechaFin)}
+                      onChange={(value) => {
+                        cambiarFechaFin(value);
+                      }}
+                      slotProps={{
+                        textField: {
+                          error:
+                            props.alert &&
+                            '"Desde" no puede ser mayor a "Hasta"',
+                        },
+                      }}
+                    />
+                  </DemoContainer>
+                </LocalizationProvider>
+                {props.alert && (
+                  <FormError
+                    error={{ message: '"Desde" no puede ser mayor a "Hasta"' }}
                   />
-                  <DatePicker
-                    label="Hasta"
-                    format="DD/MM/YYYY"
-                    value={dayjs(fechaFin)}
-                    onChange={(value) => {
-                      console.log(value)
-                      cambiarFechaFin(value)
-                    }}
-                  />
-                </DemoContainer>
-              </LocalizationProvider>
+                )}
+              </Box>
               <Stack
                 item
                 xs={2}
@@ -232,7 +252,7 @@ export default function Filtros(props) {
                   onClick={() => {
                     props.set_fecha_inicio("");
                     props.set_fecha_fin(now);
-                    setValue('')
+                    setValue("");
                   }}
                 ></Button>
               </Stack>

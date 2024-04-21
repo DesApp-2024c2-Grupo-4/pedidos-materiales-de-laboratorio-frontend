@@ -10,7 +10,7 @@ import Filtros from "./Filtros";
 import { axiosGetPedido } from "../../Services/getPedidosService";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { userContext } from "../../Context/LabProvider";
-import { correctionDate } from "./utils/formatDate";
+import { correctionDate, dateFormat } from "./utils/formatDate";
 
 const useStyles = makeStyles(() => ({
   marginTop: {
@@ -39,6 +39,7 @@ function Pedidos() {
   // *******************************
   const [open, setOpen] = React.useState("");
   const [scroll, setScroll] = React.useState("paper");
+  const [alert, setAlert] = useState(false)
  
 
   const handleClickOpen = (scrollType) => () => {
@@ -63,14 +64,18 @@ function Pedidos() {
  function cargarNuevosPedidos() {
     // if(tipo_pedido==="TODOS"){ guardarEstadoPedido("")}
     // if(edificio==="TODOS"){set_edificio("")}
-    console.log(new Date(fecha_inicio) , new Date(fecha_fin))
+    console.log(dateFormat(fecha_fin))
+    if (new Date(fecha_inicio) > new Date(dateFormat(fecha_fin))){
+      return setAlert(true)
+    }
+    setAlert(false)
     axiosGetPedido(
       tipo_pedido,
       fecha_inicio,
       fecha_fin,
       edificio
     ).then((item) => {
-      setListaPedidos(item);
+      setListaPedidos(item.reverse());
     });
   }
   const count = useMemo(()=>{
@@ -84,7 +89,7 @@ function Pedidos() {
     setEsAdmin(user.rol);
     getListaPedidos().then((items) => {
       if (items) {
-        setListaPedidos(items);
+        setListaPedidos(items.reverse());
       }
     });
   }, [open, update, tipo_pedido, fecha_fin, fecha_inicio, edificio]);
@@ -129,6 +134,8 @@ function Pedidos() {
         setOpen={setOpen}
         handleClose={handleClose}
         scroll={scroll}
+        alert={alert}
+        setAlert={setAlert}
       />
 
       {listaPedidos && listaPedidos.length < 1 ? (
@@ -150,7 +157,7 @@ function Pedidos() {
             spacing={{ xs: 2, md: 3 }}
             columns={{ sm: 6, lg: 12 }}
           >
-            {listaPedidos?.reverse().map((pedido) => (
+            {listaPedidos?.map((pedido) => (
               <Grid item xs={3} key={pedido._id}>
                 <PedidoV1
                   key={pedido._id}
