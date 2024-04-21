@@ -3,11 +3,28 @@ export function formatDate(date) {
     month = "" + (d.getMonth() + 1),
     day = "" + d.getDate(),
     year = d.getFullYear();
+  const options = { timeZone: "America/Argentina/Buenos_Aires" };
+  const fechaLocal = date.toLocaleDateString("es-AR", options);
   if (month.length < 2) month = "0" + month;
   if (day.length < 2) day = "0" + day;
+  console.log(fechaLocal.replace(/\//g, "-"));
   return [year, month, day].join("-");
 }
 
+export function dateFormat(date) {
+  const options = { timeZone: "America/Argentina/Buenos_Aires" };
+  const fechaLocal = date
+    .toLocaleDateString("es-ES", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      ...options,
+    })
+    .split("/")
+    .reverse()
+    .join("-");
+  return fechaLocal;
+}
 export const esFechaValida = (fecha) => {
   const diaSemana = fecha.getDay();
   if (diaSemana === 5) {
@@ -27,11 +44,11 @@ export const esHoraValida = (fecha) => {
 export const correctorFechaDayjs = (newValue) => {
   const value = { ...newValue };
   const string = new Date(
-    `${value["$y"]}-`+
-  `${value["$M"] < 10 ? "0" + Math.max(value["$M"], 1) : value["$M"]}-`+
-  `${value["$D"] < 10 ? "0" + value["$D"]  : value["$D"] }T`+
-  `${value["$H"] < 10 ? "0" + value["$H"] : value["$H"]}:`+
-  `${value["$m"] < 10 ? "0" + value["$m"] : value["$m"]}:00.000Z`
+    `${value["$y"]}-` +
+      `${value["$M"] < 10 ? "0" + Math.max(value["$M"], 1) : value["$M"]}-` +
+      `${value["$D"] < 10 ? "0" + value["$D"] : value["$D"]}T` +
+      `${value["$H"] < 10 ? "0" + value["$H"] : value["$H"]}:` +
+      `${value["$m"] < 10 ? "0" + value["$m"] : value["$m"]}:00.000Z`
   );
   return string;
 };
@@ -41,5 +58,5 @@ export const correctionDate = (date) => {
 };
 
 export const estaEnHorario = (fecha) => {
-  return fecha > correctionDate(new Date())
-}
+  return fecha > correctionDate(new Date());
+};

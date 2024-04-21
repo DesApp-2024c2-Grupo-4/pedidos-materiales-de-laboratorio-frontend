@@ -10,6 +10,7 @@ import Filtros from "./Filtros";
 import { axiosGetPedido } from "../../Services/getPedidosService";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { userContext } from "../../Context/LabProvider";
+import { correctionDate } from "./utils/formatDate";
 
 const useStyles = makeStyles(() => ({
   marginTop: {
@@ -28,16 +29,17 @@ function Pedidos() {
   const [edicionActiva, setEdicionActiva] = useState(false);
 
   /********************************************** */
-
+  const now = correctionDate(new Date())
   const [tipo_pedido, setTipoPedido] = React.useState("TODOS");
   const [fecha_utilizacion, set_fecha_utilizacion] = React.useState("");
   const [fecha_inicio, set_fecha_inicio] = React.useState("");
-  const [fecha_fin, set_fecha_fin] = React.useState("");
+  const [fecha_fin, set_fecha_fin] = React.useState(now);
   const [edificio, set_edificio] = React.useState("TODOS");
 
   // *******************************
   const [open, setOpen] = React.useState("");
   const [scroll, setScroll] = React.useState("paper");
+ 
 
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
@@ -59,9 +61,9 @@ function Pedidos() {
   };
 
  function cargarNuevosPedidos() {
-    console.log("se guarda algo en el estado", tipo_pedido);
     // if(tipo_pedido==="TODOS"){ guardarEstadoPedido("")}
     // if(edificio==="TODOS"){set_edificio("")}
+    console.log(new Date(fecha_inicio) , new Date(fecha_fin))
     axiosGetPedido(
       tipo_pedido,
       fecha_inicio,
@@ -77,7 +79,7 @@ function Pedidos() {
   useEffect(() => {
     cargarNuevosPedidos();
   }, [count, tipo_pedido, fecha_fin, fecha_inicio, edificio]);
-
+  
   useEffect(() => {
     setEsAdmin(user.rol);
     getListaPedidos().then((items) => {

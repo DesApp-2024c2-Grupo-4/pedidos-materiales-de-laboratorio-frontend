@@ -7,28 +7,37 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import EventRepeatIcon from "@mui/icons-material/EventRepeat";
-import dayjs from "dayjs";
+import dayjs, { utc } from "dayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import enGB from "date-fns/locale/en-GB";
+import ar from "date-fns/locale/ar";
 import ClearIcon from '@mui/icons-material/Clear';
-import { formatDate } from "./utils/formatDate";
+import { correctionDate, dateFormat } from "./utils/formatDate";
+import { useEffect } from "react";
+import timezone from "dayjs/plugin/timezone";
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 export default function Filtros(props) {
   const fechaInicio = props.fecha_inicio;
   const fechaFin = props.fecha_fin;
+  const [value, setValue] = React.useState('');
+  const now = correctionDate(new Date())
   const guardar_inicio = (value) => {
     cambiarFechaInicio(value);
   };
   const cambiarFechaInicio = (value) => {
-    const fecha = formatDate(value["$d"]);
+    const fecha = dateFormat(value["$d"]);
     props.set_fecha_inicio(fecha);
+    setValue(fecha)
   };
 
   const cambiarFechaFin = (value) => {
-    const fecha = formatDate(value["$d"]);
+    const fecha = dateFormat(value["$d"]);
+    console.log(fecha)
+    
     fecha !== "NaN-NaN-NaN" && props.set_fecha_fin(fecha);
   };
   const edificio_elegido = (event) => {
@@ -39,8 +48,14 @@ export default function Filtros(props) {
     return () => {};
   }, [props.fecha_inicio]);
 
-  const [value, setValue] = React.useState(dayjs("2022-04-17"));
-
+  
+  useEffect(()=> {
+    if(fechaInicio != ''){
+      setValue(dateFormat(new Date(fechaInicio)))
+    }else{
+      setValue('')  
+    }
+  }, [])
   return (
     <Box sx={{ flexGrow: 1, mb: 6 }}>
       <Box
@@ -164,21 +179,23 @@ export default function Filtros(props) {
             <Box sx={{ display: "flex" }}>
               <LocalizationProvider
                 dateAdapter={AdapterDayjs}
-                adapterLocale={enGB}
+                adapterLocale={ar}
               >
                 <DemoContainer components={["DatePicker", "DatePicker"]}>
                   <DatePicker
                     label="Desde"
-                    defaultValue={dayjs(fechaInicio)}
                     format="DD/MM/YYYY"
-                    value={value}
+                    value={fechaInicio ? dayjs(value) : null}
                     onChange={(value) => guardar_inicio(value)}
                   />
                   <DatePicker
                     label="Hasta"
                     format="DD/MM/YYYY"
                     value={dayjs(fechaFin)}
-                    onChange={(value) => cambiarFechaFin(value)}
+                    onChange={(value) => {
+                      console.log(value)
+                      cambiarFechaFin(value)
+                    }}
                   />
                 </DemoContainer>
               </LocalizationProvider>
@@ -214,7 +231,8 @@ export default function Filtros(props) {
                   }
                   onClick={() => {
                     props.set_fecha_inicio("");
-                    props.set_fecha_fin("");
+                    props.set_fecha_fin(now);
+                    setValue('')
                   }}
                 ></Button>
               </Stack>
