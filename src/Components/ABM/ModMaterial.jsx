@@ -99,7 +99,7 @@ function ModMaterial({
     elegido.stock == -1 && setEnough(true);
     setNuevaDescripcion(elegido.descripcion);
     setNuevaClase(elegido.clase);
-    enough && setNuevoStock(elegido.stock);
+    !enough && setNuevoStock(elegido.stock);
     setEnReparacion(elegido.enReparacion);
   }, [elegido]);
 
@@ -211,7 +211,7 @@ function ModMaterial({
                 name="stock"
                 label="stock"
                 type="number"
-                value={enough ? null : nuevoStock}
+                value={enough ? undefined : nuevoStock}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -233,7 +233,7 @@ function ModMaterial({
                 name="en-reparación"
                 label="En reparación"
                 type="number"
-                value={enough ? null : enReparacion}
+                value={enough ? undefined : enReparacion}
                 InputLabelProps={{
                   shrink: true,
                 }}

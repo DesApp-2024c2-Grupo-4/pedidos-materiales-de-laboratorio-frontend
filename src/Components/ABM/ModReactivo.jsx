@@ -91,7 +91,7 @@ function ModReactivo({
     elegido.stock == -1 && setEnough(true);
     setNuevaDescripcion(elegido.descripcion);
     setNuevoCAS(elegido.cas);
-    enough && setNuevoStock(elegido.stock);
+    !enough && setNuevoStock(elegido.stock);
   }, [elegido]);
 
   return (
