@@ -47,6 +47,7 @@ const StepEquipos = (props) => {
   const [equipo, setEquipo] = useState({});
   const [selectedRows, setSelectedRows] = useState([]);
   const [saveHistoric, setSaveHistoric] = useState({});
+  
   const stock = () => {
     const fecha_inicio = getValues("fecha_utilizacion");
     const fecha_fin = valueHoraFin;

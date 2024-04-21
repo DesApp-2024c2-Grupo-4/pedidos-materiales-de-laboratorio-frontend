@@ -79,6 +79,13 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
       }
     });
   }, [read, cant, pedido._id, open]);
+
+  const tipo = {
+    PENDIENTE: "pedido-estado-yellow",
+    RECHAZADO: "pedido-estado-red",
+    ACEPTADO: "pedido-estado-green",
+    INACTIVO: "pedido-estado-gray",
+  };
   return (
     <div>
       <Dialog
@@ -123,13 +130,7 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
               </Modal>
             </Tooltip>
             <div
-              className={`pedido-estado pedido-estado-detalle pedido-estado-fix ${
-                tipo_pedido === "PENDIENTE"
-                  ? "pedido-estado-yellow"
-                  : tipo_pedido === "RECHAZADO"
-                  ? "pedido-estado-red"
-                  : "pedido-estado-green"
-              }`}
+              className={`pedido-estado pedido-estado-detalle pedido-estado-fix ${tipo[tipo_pedido]}`}
             ></div>
             <MoreVertIcon style={{ color: "#fff" }} />
           </div>

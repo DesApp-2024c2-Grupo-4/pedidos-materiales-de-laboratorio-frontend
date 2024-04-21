@@ -148,7 +148,7 @@ function Pedidos() {
             spacing={{ xs: 2, md: 3 }}
             columns={{ sm: 6, lg: 12 }}
           >
-            {listaPedidos?.map((pedido) => (
+            {listaPedidos?.reverse().map((pedido) => (
               <Grid item xs={3} key={pedido._id}>
                 <PedidoV1
                   key={pedido._id}

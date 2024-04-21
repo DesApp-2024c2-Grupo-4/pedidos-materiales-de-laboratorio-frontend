@@ -18,13 +18,7 @@ import ChatOnline from "../chat-online/chat-online";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { getMensajes } from "../../Services/chat-service";
-function PedidoDetalle({
-  open,
-  setOpen,
-  scroll,
-  handleClose,
-  pedido ,
-}) {
+function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
   const {
     numero_tp,
     fecha_solicitud,
@@ -53,18 +47,31 @@ function PedidoDetalle({
   const [read, setRead] = useState(false);
   useEffect(() => {
     getMensajes(pedido._id).then((res) => {
-      if(res.data != null){
-        const ultimoElemento = res.data.list_mensajes[res.data.list_mensajes.length - 1];
+      if (res.data != null) {
+        const ultimoElemento =
+          res.data.list_mensajes[res.data.list_mensajes.length - 1];
         if (ultimoElemento.nombre !== "LAB") {
-          const mensajesNoLeidos = res?.data?.list_mensajes.reduce((count, mensaje) => {
-            return count + (mensaje.read ? 0 : 1);
-          }, 0);
-          setCant((prevCant) => (prevCant !== mensajesNoLeidos ? mensajesNoLeidos : prevCant));
+          const mensajesNoLeidos = res?.data?.list_mensajes.reduce(
+            (count, mensaje) => {
+              return count + (mensaje.read ? 0 : 1);
+            },
+            0
+          );
+          setCant((prevCant) =>
+            prevCant !== mensajesNoLeidos ? mensajesNoLeidos : prevCant
+          );
         }
-        setRead(ultimoElemento.read)
+        setRead(ultimoElemento.read);
       }
     });
-  },[read, cant, pedido._id, open])
+  }, [read, cant, pedido._id, open]);
+
+  const tipo = {
+    PENDIENTE: "pedido-estado-yellow",
+    RECHAZADO: "pedido-estado-red",
+    ACEPTADO: "pedido-estado-green",
+    INACTIVO: "pedido-estado-gray"
+  }
   return (
     <div>
       <Dialog
@@ -109,13 +116,7 @@ function PedidoDetalle({
               </Modal>
             </Tooltip>
             <div
-              className={`pedido-estado pedido-estado-detalle pedido-estado-fix ${
-                tipo_pedido === "PENDIENTE"
-                  ? "pedido-estado-yellow"
-                  : tipo_pedido === "RECHAZADO"
-                  ? "pedido-estado-red"
-                  : "pedido-estado-green"
-              }`}
+              className={`pedido-estado pedido-estado-detalle pedido-estado-fix ${tipo[tipo_pedido]}`}
             ></div>
             <MoreVertIcon style={{ color: "#fff" }} />
           </div>

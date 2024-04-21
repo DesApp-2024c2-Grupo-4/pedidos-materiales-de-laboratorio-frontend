@@ -10,7 +10,7 @@ export function formatDate(date) {
 
 export const esFechaValida = (fecha) => {
   const diaSemana = fecha.getDay();
-  if (diaSemana === 0) {
+  if (diaSemana === 5) {
     return false;
   }
   return true;
@@ -28,15 +28,15 @@ export const correctorFechaDayjs = (newValue) => {
   const value = { ...newValue };
   const string = new Date(
     `${value["$y"]}-`+
-  `${value["$M"] < 10 ? "0" + value["$M"] : value["$M"]}-`+
-  `${value["$D"] < 10 ? "0" + value["$D"] : value["$D"]}T`+
+  `${value["$M"] < 10 ? "0" + Math.max(value["$M"], 1) : value["$M"]}-`+
+  `${value["$D"] < 10 ? "0" + value["$D"]  : value["$D"] }T`+
   `${value["$H"] < 10 ? "0" + value["$H"] : value["$H"]}:`+
   `${value["$m"] < 10 ? "0" + value["$m"] : value["$m"]}:00.000Z`
   );
   return string;
 };
 
-const correctionDate = (date) => {
+export const correctionDate = (date) => {
   return new Date(date.setMinutes(date.getMinutes() - 180));
 };
 

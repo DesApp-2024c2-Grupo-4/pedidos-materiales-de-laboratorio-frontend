@@ -2,7 +2,7 @@ export const formValidate = () => {
   return {
     required: {
       value: true,
-      message: "campo obligatorio",
+      message: "Campo obligatorio",
     },
     validateNumber: {
       number: (v) => !isNaN(Number(v)) || "Ingrese números solamente",
@@ -36,6 +36,9 @@ export const formValidate = () => {
     validateHoraFin(valueHora, valueHoraFin) {
       return (v) => valueHoraFin || "Ingrese un Horario";
     },
+    validateGroup(value) {
+      return (v) => v < value || "No puede haber mas grupos que alumnos";
+    },
     patternEmail: {
       value: /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/,
       message: "Formato de e-mail no valido",
@@ -46,11 +49,11 @@ export const formValidate = () => {
     },
     minLength: {
       value: 6,
-      message: "minimo 6 caracteres",
+      message: "Minimo 6 caracteres",
     },
-    validateTrim: { trim: (v) => v.trim() !== "" || "no ingrese espacios" },
+    validateTrim: { trim: (v) => v.trim() !== "" || "No ingrese espacios" },
     validateEqualsPassword(getValues) {
-      return (v) => v === getValues("password") || "no coincide la password";
+      return (v) => v === getValues("password") || "No coincide la password";
     },
   };
 };

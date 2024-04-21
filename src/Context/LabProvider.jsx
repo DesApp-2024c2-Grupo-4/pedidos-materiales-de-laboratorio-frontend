@@ -13,7 +13,7 @@ const LabProvider = ({ children }) => {
     localStorage.setItem("token", token.token);
     setToken(token.token || localStorage.getItem("token"));
   };
-
+  
   const storeUser = (user) => {
     const encryptedUser = encryptAES(user);
     localStorage.setItem("usuario", encryptedUser);

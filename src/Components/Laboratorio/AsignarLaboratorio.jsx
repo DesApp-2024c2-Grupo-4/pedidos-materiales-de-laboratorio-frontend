@@ -142,7 +142,7 @@ function AsignarLaboratorio(
               label="Edificio"
               onChange={edificio_elegido}
               variant="outlined"
-              sx={{color:'white'}}
+              sx={{color:'white !important'}}
             >
               <MenuItem sx={{ width: 100, fontSize: 10 }} value={"Sin Asignar"}>
                 Sin Asignar

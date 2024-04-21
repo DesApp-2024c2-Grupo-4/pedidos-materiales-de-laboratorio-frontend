@@ -44,7 +44,8 @@ const Informacion = (props) => {
     trigger,
     watch,
   } = props.values;
-  const { required, validateNumber, validateTime } = formValidate();
+  const { required, validateNumber, validateGroup, validateTime } =
+    formValidate();
   const fechaInicio = formatDate(Date.now());
   const [valueTime, setValueTime] = useState();
   const [valueHora, setValueHora] = useState("");
@@ -53,7 +54,7 @@ const Informacion = (props) => {
   };
   const cambiarFechaFin = (value) => {
     const date = value["$d"];
-    if (date < new Date().setHours(0,0,0)) {
+    if (date < new Date(new Date().setHours(-3, 0, -1))) {
       return setError("fecha_utilizacion", {
         type: "error fecha",
         message: "La fecha debe ser mayor a la actual",
@@ -74,12 +75,18 @@ const Informacion = (props) => {
     setValueHora(value);
 
     let fecha_utilizacion = getValues("fecha_utilizacion");
+    let day =
+      fecha_utilizacion.getHours() == 21
+        ? fecha_utilizacion.getDate() + 1
+        : fecha_utilizacion.getDate();
     let newDate = fecha_utilizacion.setHours(
       value["$d"].getHours(),
       value["$d"].getMinutes()
     );
-    newDate = new Date(newDate);
-
+    newDate = new Date(new Date(newDate).setDate(day));
+    let fin = new Date(newDate);
+    fin = new Date(fin.setHours(fin.getHours() + 4));
+    setValueHoraFin(fin);
     if (!estaEnHorario(newDate)) {
       setError("hora", {
         type: "error hora actual",
@@ -88,12 +95,12 @@ const Informacion = (props) => {
     } else {
       clearErrors("hora");
     }
-    if (valueHoraFin && !valueHora?.isBefore(dayjs(valueHoraFin))) {
+    if (getValues("fecha_utilizacion") >= newDate) {
       setError("hora_fin", {
         type: "error hora_fin",
         message: "El horario debe ser mayor al de Inicio",
       });
-    } else if (valueHoraFin && !esHoraValida(value["$d"])) {
+    } else if (fin && !esHoraValida(newDate)) {
       setError("hora_fin", {
         type: "error hora",
         message: "Horarios desde 7AM hasta 10PM",
@@ -118,28 +125,29 @@ const Informacion = (props) => {
   };
 
   const handleValueHoraFin = (value) => {
-    setValueHoraFin(value["$d"]);
-
-    if (!valueHora.isBefore(value["$d"])) {
+    let fecha_utilizacion = new Date(getValues("fecha_utilizacion"));
+    let day =
+      fecha_utilizacion.getHours() == 21
+        ? fecha_utilizacion.getDate() + 1
+        : fecha_utilizacion.getDate();
+    let newDate = fecha_utilizacion.setHours(
+      value["$d"].getHours(),
+      value["$d"].getMinutes()
+    );
+    newDate = new Date(new Date(newDate).setDate(day));
+    setValueHoraFin(newDate);
+    if (getValues("fecha_utilizacion") >= newDate) {
       setError("hora_fin", {
         type: "error hora_fin",
         message: "El horario debe ser mayor al de Inicio",
       });
-    } else if (!esHoraValida(value["$d"])) {
+    } else if (!esHoraValida(newDate)) {
       setError("hora_fin", {
         type: "error hora",
         message: "Horarios desde 7AM hasta 10PM",
       });
     } else {
       clearErrors("hora_fin");
-    }
-    if (!esHoraValida(valueHora["$d"])) {
-      setError("hora", {
-        type: "error hora",
-        message: "Horarios desde 7AM hasta 10PM",
-      });
-    } else {
-      clearErrors("hora");
     }
     setValue("hora_fin", value["$d"]);
   };
@@ -151,7 +159,7 @@ const Informacion = (props) => {
     const fechaConOffset = new Date(fechaUTC.getTime() + offsetMillis);
     setValue("fecha_solicitud", fechaConOffset);
     setValue("fecha_utilizacion", fechaConOffset);
-    setValueTime(dayjs(fechaInicio));
+    //setValueTime(dayjs(fechaInicio));
   }, []);
 
   return (
@@ -191,7 +199,6 @@ const Informacion = (props) => {
               timezone="America/Argentina/Buenos_Aires"
               defaultValue={dayjs(fechaInicio)}
               format="DD/MM/YYYY"
-              //value={valueTime}
               onChange={(value) => {
                 const newValue = dayjs(correctorFechaDayjs(value));
                 guardar_inicio(newValue);
@@ -218,24 +225,33 @@ const Informacion = (props) => {
                 timezone="America/Argentina/Buenos_Aires"
                 error={!!errors.fecha_utilizacion}
                 {...register("fecha_utilizacion")}
-                //value={valueTime}
                 onChange={(value) => {
                   let newValue = correctorFechaDayjs(value);
                   let mes = newValue.getMonth();
                   newValue.setMonth(mes + 1);
                   if (valueHora) {
+                    let day =
+                      newValue.getHours() == 21
+                        ? newValue.getDate() + 1
+                        : newValue.getDate();
                     newValue.setHours(
                       valueHora["$d"].getHours(),
                       valueHora["$d"].getMinutes()
                     );
+                    newValue = new Date(new Date(newValue).setDate(day));
                     newValue = dayjs(newValue);
                   } else {
                     newValue = dayjs(newValue);
                   }
-                  clearErrors("fecha_utilizacion");
+                  clearErrors(["fecha_utilizacion", "hora", "hora_fin"]);
                   setValue("fecha_utilizacion", newValue["$d"]);
                   setValueTime(newValue);
                   cambiarFechaFin(newValue);
+                }}
+                slotProps={{
+                  textField: {
+                    error: !!errors.fecha_utilizacion,
+                  },
                 }}
               />
               <FormError error={errors.fecha_utilizacion} />
@@ -273,11 +289,7 @@ const Informacion = (props) => {
                 })}
                 onChange={(newValue) => {
                   const value = dayjs(correctorFechaDayjs(newValue));
-                  let hour = correctorFechaDayjs(newValue).getHours() + 4;
-                  const fin = correctorFechaDayjs(newValue).setHours(
-                    hour <= 19 ? hour : 19
-                  );
-                  setValueHoraFin(new Date(fin));
+                  clearErrors(["fecha_utilizacion", "hora", "hora_fin"]);
                   handleTime(value);
                 }}
                 slotProps={{
@@ -312,7 +324,7 @@ const Informacion = (props) => {
                 value={
                   valueHoraFin == ""
                     ? null
-                    : dayjs(valueHoraFin).hour() + 3 >= 18
+                    : dayjs(valueHoraFin).hour() + 3 >= 22
                     ? dayjs(valueHoraFin).hour(22).minute(0)
                     : dayjs(valueHoraFin).hour(dayjs(valueHoraFin).hour() + 3)
                 }
@@ -320,6 +332,7 @@ const Informacion = (props) => {
                 {...register("hora_fin")}
                 onChange={(newValue) => {
                   const value = dayjs(correctorFechaDayjs(newValue));
+                  clearErrors(["fecha_utilizacion", "hora", "hora_fin"]);
                   handleValueHoraFin(value);
                 }}
                 error={!!errors.hora_fin}
@@ -364,7 +377,7 @@ const Informacion = (props) => {
             variant="outlined"
             {...register("cantidad_grupos", {
               required,
-              validate: validateNumber,
+              validate: validateGroup(getValues("alumnos")),
             })}
           />
           <FormError error={errors.cantidad_grupos} />
@@ -400,6 +413,12 @@ const Informacion = (props) => {
           <Box sx={{ flex: "1 1 auto" }} />
           <Button
             onClick={() => {
+              if (valueTime == undefined) {
+                setError("fecha_utilizacion", {
+                  type: "input date",
+                  message: "Ingrese una fecha",
+                });
+              }
               trigger(["cantidad_grupos", "alumnos", "hora", "materia"]);
               watch(["cantidad_grupos", "alumnos", "materia"]).filter(
                 (e) => e == null

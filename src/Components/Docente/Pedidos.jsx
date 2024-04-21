@@ -46,7 +46,6 @@ function Pedidos() {
     })
     return () => mounted = false;
   }, [update])
-  
 
   return (
     <>
@@ -67,7 +66,6 @@ function Pedidos() {
       ) : (<NuevoPedido></NuevoPedido>)}
       {/* opcion pantalla */}
         
-
       {(listaPedidos.length < 1 && !(nuevoPedido)) ?
         (<Box sx={{ flexGrow: 1, md: 2 }}><NoEncontrados /></Box>)
         : ((listaPedidos.length >= 1) && !(nuevoPedido)) ? (
@@ -81,7 +79,7 @@ function Pedidos() {
               }}
               alignItems="space-between"
               spacing={{ xs: 2, md: 2 }} columns={{ xs: 3, sm: 6, md: 12 }} >
-              {listaPedidos.map((pedido) => (
+              {listaPedidos.reverse().map((pedido) => (
                 <Grid item xs={3} sm={3} md={3}  key={pedido._id}>
                   <PedidoV1 key={pedido._id} pedido={pedido} esAdmin={esAdmin} />
                 </Grid>

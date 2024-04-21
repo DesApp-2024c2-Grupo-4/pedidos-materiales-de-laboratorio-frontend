@@ -70,7 +70,12 @@ function PedidoV1({ pedido, esAdmin }) {
   // if((fecha_utilizacion<=formatManiana)&& (tipo_pedido==="PENDIENTE")){
   //   setEstaPendiente('red')
   // };
-
+  const tipo = {
+    PENDIENTE: "pedido-estado-yellow",
+    RECHAZADO: "pedido-estado-red",
+    ACEPTADO: "pedido-estado-green",
+    INACTIVO: "pedido-estado-gray"
+  }
   return (
     <>
       <Box
@@ -93,13 +98,7 @@ function PedidoV1({ pedido, esAdmin }) {
               action={
                 <IconButton  >
                   <div
-                    className={
-                      tipo_pedido === "PENDIENTE"
-                        ? "pedido-estado-yellow"
-                        : tipo_pedido === "RECHAZADO"
-                        ? "pedido-estado-red"
-                        : "pedido-estado-green"
-                    }
+                    className={tipo[tipo_pedido]}
                   ></div>
                   <MoreVertIcon style={{color:'#fff'}} />
                 </IconButton>
