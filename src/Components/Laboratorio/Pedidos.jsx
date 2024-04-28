@@ -75,7 +75,7 @@ function Pedidos() {
       fecha_fin,
       edificio
     ).then((item) => {
-      setListaPedidos(item.reverse());
+      setListaPedidos(item);
     });
   }
   const count = useMemo(()=>{
@@ -89,11 +89,11 @@ function Pedidos() {
     setEsAdmin(user.rol);
     getListaPedidos().then((items) => {
       if (items) {
-        setListaPedidos(items.reverse());
+        setListaPedidos(items);
       }
     });
-  }, [open, update, tipo_pedido, fecha_fin, fecha_inicio, edificio]);
-
+  }, [open, update]);
+  
   return (
     <Box>
       <Box sx={{ flexGrow: 1, m: 2 }}>

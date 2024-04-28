@@ -98,7 +98,7 @@ function PedidoV1({ pedido, esAdmin }) {
               action={
                 <IconButton  >
                   <div
-                    className={tipo[tipo_pedido]}
+                    className={pedido.vigente ? tipo[tipo_pedido] : tipo['INACTIVO']}
                   ></div>
                   <MoreVertIcon style={{color:'#fff'}} />
                 </IconButton>
@@ -132,7 +132,7 @@ function PedidoV1({ pedido, esAdmin }) {
                   <p className="pedido-item">
                     <strong className="pedido-categoria">
                       Estado: </strong>
-                      {tipo_pedido}
+                      {pedido.vigente ? tipo_pedido : 'INACTIVO'}
                   </p>
                 </Typography>
               ) : (

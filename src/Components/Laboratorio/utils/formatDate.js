@@ -4,7 +4,7 @@ export function formatDate(date) {
     day = "" + d.getDate(),
     year = d.getFullYear();
   const options = { timeZone: "America/Argentina/Buenos_Aires" };
-  const fechaLocal = date.toLocaleDateString("es-AR", options);
+  const fechaLocal = new Date(date).toLocaleDateString("es-AR", options);
   if (month.length < 2) month = "0" + month;
   if (day.length < 2) day = "0" + day;
   console.log(fechaLocal.replace(/\//g, "-"));

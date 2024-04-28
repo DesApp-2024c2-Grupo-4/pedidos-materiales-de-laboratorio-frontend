@@ -40,7 +40,7 @@ function Pedidos() {
       getPedidosPorDni(res.dni)
         .then(items => {
           if (mounted) {
-            setListaPedidos(items.reverse())
+            setListaPedidos(items)
           }
         })
     })
