@@ -18,6 +18,9 @@ import { correctionDate, dateFormat } from "./utils/formatDate";
 import { useEffect } from "react";
 import timezone from "dayjs/plugin/timezone";
 import FormError from "../Mensajes/FormError";
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -78,6 +81,12 @@ export default function Filtros(props) {
             alignItems="center"
             spacing={{ xs: 1, md: 1 }}
           >
+              <Box>
+                <FormControl>
+                  <p className="inactivo-label">Excluir inactivos</p>
+                  <FormControlLabel control={<Checkbox defaultChecked />} className="inactivo-check"/>
+                </FormControl>
+              </Box>
             <Box sx={{ display: "flex", pt: 1 }}>
               <Box sx={{ pr: 2 }}>
                 <FormControl sx={{ minWidth: 200 }}>

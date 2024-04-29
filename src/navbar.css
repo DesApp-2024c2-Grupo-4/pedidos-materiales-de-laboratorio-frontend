@@ -59,6 +59,20 @@ header {
     justify-content: center !important;
 }
 
+.inactivo-label {
+    text-align: center !important;
+    font-size: 13px !important;
+    position: relative !important;
+    top: 12px;
+}
+
+.inactivo-check {
+    margin: 0 auto !important;
+    padding: 0px !important;
+    position: relative !important;
+    top: 2px;
+}
+
 @media (width < 900px){
     .css-1gg7olp {
         display: flex !important;

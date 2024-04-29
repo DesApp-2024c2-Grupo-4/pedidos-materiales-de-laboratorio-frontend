@@ -406,6 +406,28 @@
     flex-direction: row !important;
 }
 
+
+.css-19obuss-MuiGrid-root {
+
+}
+
+@media (max-width: 1200px) {
+    /* .css-19obuss-MuiGrid-root {
+        display: grid !important;
+    }  */
+
+    .css-ohltuk-MuiStack-root {
+        height: 60px !important;
+    }
+}
+
+@media (max-width: 400px) {
+    .css-87adg5 {
+        flex-direction: column !important;
+    }
+} 
+
+
 .css-1emkr9y-MuiGrid-root {
     flex-basis: 70px !important;
     width: 10px !important;
