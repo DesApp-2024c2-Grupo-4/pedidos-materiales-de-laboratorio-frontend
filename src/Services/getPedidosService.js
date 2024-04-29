@@ -26,7 +26,7 @@ export async function getCantidadPedidos() {
           "Content-Type": "application/json",
         },
       });
-      return response;
+      return response.data.count;
     } catch (error) {
       console.error(error);
       throw error; 
