@@ -2,7 +2,6 @@ import * as React from "react";
 import FormControl from "@mui/material/FormControl";
 
 import { Button, Grid, Box, Stack } from "@mui/material";
-
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
@@ -48,6 +47,10 @@ export default function Filtros(props) {
     props.set_edificio(event.target.value);
   };
 
+  const toggleFiltros = () => {
+    document.querySelector('.filtros').classList.toggle("mostrar");
+  };
+
   React.useEffect(() => {
     return () => {};
   }, [props.fecha_inicio]);
@@ -60,7 +63,11 @@ export default function Filtros(props) {
     }
   }, []);
   return (
-    <Box sx={{ flexGrow: 1, mb: 6 }}>
+    <Box className="filtros-div">
+      <Box>
+        <Button className="btn-filtrar" onClick={toggleFiltros}>Filtrar</Button>
+      </Box>
+    <Box sx={{ flexGrow: 1, mb: 6 }} className="filtros">
       <Box
         className="filtros-grupo"
         onClose={props.handleClose}
@@ -115,7 +122,6 @@ export default function Filtros(props) {
                   </Select>
                 </FormControl>
               </Box>
-
               <Box>
                 <FormControl sx={{ minWidth: 200 }}>
                   <InputLabel id="estado" sx={{ fontSize: 14 }}>
@@ -269,6 +275,7 @@ export default function Filtros(props) {
           </Grid>
         </Box>
       </Box>
+    </Box>
     </Box>
   );
 }

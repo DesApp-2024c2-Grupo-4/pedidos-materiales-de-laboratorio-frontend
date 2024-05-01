@@ -73,10 +73,42 @@ header {
     top: 2px;
 }
 
-@media (width < 900px){
-    .css-1gg7olp {
-        display: flex !important;
-        justify-content: center !important;
+.css-heg063-MuiTabs-flexContainer {
+    justify-content: center !important;
+}
+
+.btn-filtrar {
+    background-color: #223a71 !important;
+    color: white !important;
+    display: block !important;
+    margin: 0 auto !important;
+    letter-spacing: 4px !important;
+    width: 200px;
+}
+
+@media (width < 1200px){
+    .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input, 
+    .css-iynj5c-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root, 
+    .css-1x36n8,
+    .css-dru9rs-MuiFormControl-root {
+        width: 150px !important;
+        min-width: 1px !important;
+    }
+}
+
+@media (width > 835px){
+    .btn-filtrar {
+        display: none !important;
+    }
+
+}
+
+@media (width < 835px){
+    .filtros {
+        display: none !important;
+    }
+    .mostrar {
+        display: block !important;
     }
 }
 
