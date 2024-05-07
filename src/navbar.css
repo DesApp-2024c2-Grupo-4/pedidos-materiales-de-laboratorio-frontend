@@ -84,7 +84,14 @@ header {
     margin: 0 auto !important;
     letter-spacing: 4px !important;
     width: 200px;
+    transition: 300ms;
 }
+
+.btn-filtrar:hover {
+    background-color: #2b4d9b !important;
+    font-weight: bold !important;
+}
+
 
 @media (width < 1200px){
     .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input, 
@@ -110,6 +117,22 @@ header {
     .mostrar {
         display: block !important;
     }
+
+    .css-19obuss-MuiGrid-root {
+        margin-left: 0px !important;
+        width: 80% !important;
+        margin: 0 auto !important;
+        padding: 20px !important;
+        border: 2px solid lightgray;
+        position: relative !important;
+        bottom: 20px !important;
+        z-index: 2 !important;
+        background-color: rgb(255, 254, 254) !important;
+        border-radius: 20px !important;
+        box-shadow: 2px 2px 2px 0px rgba(143, 143, 143, 0.75);
+        margin-top: 30px !important;
+        margin-bottom: -303px !important;
+    }
 }
 
 @media (width < 768px){
@@ -128,6 +151,22 @@ header {
 
     .css-ewljzv-MuiButtonBase-root-MuiTab-root {
         font-size: 13px !important;
+    }
+}
+
+@media (width < 550px){
+    .css-87adg5 {
+        flex-direction: column !important;
+        place-items: center !important;
+        gap: 10px !important;
+        padding: 8px 10px !important;
+    }
+    .css-1x36n8t {
+        padding-right: 0px !important;
+    }
+
+    .css-19obuss-MuiGrid-root {
+        margin-bottom: -423px !important;
     }
 }
 
@@ -176,6 +215,10 @@ header {
         content: "Usu";
         font-size: 15px !important;
     }
+
+    .css-19obuss-MuiGrid-root {
+        margin-bottom: -403px !important;
+    }
 }
 
 @media (width < 400px){
@@ -192,6 +235,30 @@ header {
 
     .css-hyum1k-MuiToolbar-root {
         padding-left: 0px !important;
+    }
+
+    .css-ohltuk-MuiStack-root {
+        width: 70px !important;
+        margin: 0 auto !important;
+        margin-top: 10px !important;
+    }
+
+    .css-ohltuk-MuiStack-root {
+    }
+
+    .css-k008qs {
+        flex-direction: column !important;
+    }
+    .css-19obuss-MuiGrid-root {
+        margin-bottom: -513px !important;
+    }
+
+    .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input, 
+    .css-iynj5c-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root, 
+    .css-1x36n8,
+    .css-dru9rs-MuiFormControl-root {
+        min-width: 186px !important;
+        margin: 0 auto !important;
     }
 }
 /* .test{
