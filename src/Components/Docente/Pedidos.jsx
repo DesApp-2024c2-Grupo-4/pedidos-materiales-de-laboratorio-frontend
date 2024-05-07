@@ -11,6 +11,7 @@ import NuevoPedido from "./NuevoPedido";
 import { userContext } from "../../Context/LabProvider";
 import BasicModal from "../Laboratorio/utils/BasicModal";
 import { Fab } from "@mui/material";
+import Filtros from "../Laboratorio/Filtros";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -50,7 +51,6 @@ function Pedidos() {
 
   return (
     <>
-
       <Box sx={{ flexGrow: 1, m: 2 }}>
 
         <Header texto={texto} ></Header>
@@ -67,7 +67,7 @@ function Pedidos() {
       ) : (<NuevoPedido></NuevoPedido>)}
       {/* opcion pantalla */}
         
-
+      
       {(listaPedidos.length < 1 && !(nuevoPedido)) ?
         (<Box sx={{ flexGrow: 1, md: 2 }}><NoEncontrados /></Box>)
         : ((listaPedidos.length >= 1) && !(nuevoPedido)) ? (

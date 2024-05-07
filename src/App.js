@@ -49,6 +49,7 @@ function App() {
             <Route path="/ABM/AltaEquipo" element={<Alta_Equipo />} />
           </Route>
         </Routes>
+        
       </LabProvider>
       </SnackbarProvider>
     </BrowserRouter>

@@ -40,6 +40,7 @@ function Pedidos() {
   const [fecha_inicio, set_fecha_inicio] = React.useState("");
   const [fecha_fin, set_fecha_fin] = React.useState(now);
   const [edificio, set_edificio] = React.useState("TODOS");
+  const [checked, setChecked] = React.useState("TODOS");
 
   // *******************************
   const [open, setOpen] = React.useState("");
@@ -78,7 +79,8 @@ function Pedidos() {
       tipo_pedido,
       fecha_inicio,
       fecha_fin,
-      edificio
+      edificio,
+      checked
     ).then((item) => {
       setListaPedidos(item.data);
       setTotalLength(item.totalCount)
@@ -96,7 +98,7 @@ function Pedidos() {
   },[page])
   useEffect(() => {
     cargarNuevosPedidos();
-  }, [count, tipo_pedido, fecha_fin, fecha_inicio, edificio]);
+  }, [count, tipo_pedido, fecha_fin, fecha_inicio, edificio, checked]);
   
   useEffect(() => {
     setEsAdmin(user.rol);
@@ -131,6 +133,8 @@ function Pedidos() {
       <Filtros
         cargarEstado={cargarEstado}
         setTipoPedido={setTipoPedido}
+        checked={checked}
+        setChecked={setChecked}
         fecha_fin={fecha_fin}
         set_fecha_fin={set_fecha_fin}
         set_fecha_inicio={set_fecha_inicio}
@@ -191,3 +195,5 @@ function Pedidos() {
 }
 
 export default Pedidos;
+
+
