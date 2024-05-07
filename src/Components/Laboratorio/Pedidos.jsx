@@ -11,6 +11,8 @@ import { axiosGetPedido } from "../../Services/getPedidosService";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { userContext } from "../../Context/LabProvider";
 import { correctionDate, dateFormat } from "./utils/formatDate";
+import InfiniteScroll from 'react-infinite-scroll-component';
+
 
 const useStyles = makeStyles(() => ({
   marginTop: {
@@ -27,6 +29,9 @@ function Pedidos() {
   const [esAdmin, setEsAdmin] = useState("");
   const { update,  user } = useContext(userContext);
   const [edicionActiva, setEdicionActiva] = useState(false);
+  const [page, setPage] = useState(1);
+  const [dataLength, setTotalLength] = useState(0);
+  const [pageLength, setPageLength] = useState(0);
 
   /********************************************** */
   const now = correctionDate(new Date())
@@ -75,23 +80,26 @@ function Pedidos() {
       fecha_fin,
       edificio
     ).then((item) => {
-      setListaPedidos(item);
+      setListaPedidos(item.data);
+      setTotalLength(item.totalCount)
+      setPageLength(item.perPage)
+      setPage(item.currentPage || 0)
     });
   }
+
   const count = useMemo(()=>{
     return listaPedidos.length
   }, [listaPedidos])
+
+  useEffect(()=> {
+
+  },[page])
   useEffect(() => {
     cargarNuevosPedidos();
   }, [count, tipo_pedido, fecha_fin, fecha_inicio, edificio]);
   
   useEffect(() => {
     setEsAdmin(user.rol);
-    getListaPedidos().then((items) => {
-      if (items) {
-        setListaPedidos(items);
-      }
-    });
   }, [open, update]);
   
   return (
@@ -143,6 +151,12 @@ function Pedidos() {
           <NoEncontrados />
         </Box>
       ) : (
+        <InfiniteScroll
+          dataLength={10} //This is important field to render the next data
+          //next={}
+          hasMore={true}
+          loader={<h4>Loading...</h4>}
+        >
         <Box className="main-wrap" sx={{ flexGrow: 1, md: 2 }}>
           <Grid
             container
@@ -170,6 +184,7 @@ function Pedidos() {
             ))}
           </Grid>
         </Box>
+        </InfiniteScroll>
       )}
     </Box>
   );
