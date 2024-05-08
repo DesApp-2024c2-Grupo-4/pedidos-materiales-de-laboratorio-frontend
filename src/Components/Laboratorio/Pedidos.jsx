@@ -36,6 +36,7 @@ function Pedidos() {
   const [page, setPage] = useState(1);
   const [totalLength, setTotalLength] = useState(0);
   const [pageLength, setPageLength] = useState(0);
+  const [reset, setReset] = useState(false)
 
   /********************************************** */
   const now = correctionDate(new Date());
@@ -51,11 +52,6 @@ function Pedidos() {
   const [scroll, setScroll] = React.useState("paper");
   const [alert, setAlert] = useState(false);
 
-  const handleClickOpen = (scrollType) => () => {
-    setOpen(true);
-    setScroll(scrollType);
-  };
-
   const handleClose = () => {
     setOpen(false);
   };
@@ -70,7 +66,7 @@ function Pedidos() {
     setTipoPedido(event);
   };
 
-  async function cargarNuevosPedidos() {
+  async function cargarNuevosPedidos(page, list) {
     // if(tipo_pedido==="TODOS"){ guardarEstadoPedido("")}
     // if(edificio==="TODOS"){set_edificio("")}
     if (new Date(fecha_inicio) > new Date(dateFormat(fecha_fin))) {
@@ -85,38 +81,25 @@ function Pedidos() {
       checked,
       page
     ).then((item) => {
-      let newArray = [...listaPedidos, ...item.data];
-      setListaPedidos(newArray);
-      setTotalLength(item.totalCount);
-      setPageLength(item.totalPages);
-      setPage(item.currentPage || 0);
-    });
+        let newArray = [...list, ...item.data];
+        setListaPedidos(newArray);
+        setTotalLength(item.totalCount);
+        setPageLength(item.totalPages);
+    })
   }
   const count = useMemo(() => {
-    return listaPedidos.length;
-  }, [listaPedidos]);
+    setPage(1);
+    setListaPedidos([]);    
+    cargarNuevosPedidos(1, [])
+  }, [tipo_pedido, fecha_fin, fecha_inicio, edificio, checked]);
 
   const nextPage = () => {
-    setTimeout(async () => {
-      if (page < pageLength) {
-        let newPage = page + 1;
-        setPage(newPage);
-      } 
-    }, 500);
+    if (page < pageLength) {
+      setPage(page + 1);      
+      cargarNuevosPedidos(page + 1, listaPedidos)
+    } 
   };
 
-  useEffect(() => {
-    nextPage();
-  }, [page]);
-
-  useEffect(() => {
-    cargarNuevosPedidos();
-  }, [page, tipo_pedido, fecha_fin, fecha_inicio, edificio, checked]);
-  
-  useEffect(() => {
-    setListaPedidos([])
-    setPage(1)
-  }, [tipo_pedido, fecha_fin, fecha_inicio, edificio, checked]);
 
   useEffect(() => {
     setEsAdmin(user.rol);
