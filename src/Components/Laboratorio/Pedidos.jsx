@@ -1,4 +1,9 @@
-import { Card, CardActionArea, makeStyles } from "@material-ui/core";
+import {
+  Card,
+  CardActionArea,
+  CircularProgress,
+  makeStyles,
+} from "@material-ui/core";
 import PedidoV1 from "../Docente/PedidoV1";
 import { getListaPedidos } from "../../Services/getPedidosService";
 import React, { useContext, useEffect, useMemo, useState } from "react";
@@ -11,8 +16,7 @@ import { axiosGetPedido } from "../../Services/getPedidosService";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { userContext } from "../../Context/LabProvider";
 import { correctionDate, dateFormat } from "./utils/formatDate";
-import InfiniteScroll from 'react-infinite-scroll-component';
-
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const useStyles = makeStyles(() => ({
   marginTop: {
@@ -27,26 +31,25 @@ function Pedidos() {
   const [listaPedidos, setListaPedidos] = useState([]);
   const [texto, setEncabezado] = useState("Laboratorio");
   const [esAdmin, setEsAdmin] = useState("");
-  const { update,  user } = useContext(userContext);
+  const { update, user } = useContext(userContext);
   const [edicionActiva, setEdicionActiva] = useState(false);
   const [page, setPage] = useState(1);
-  const [dataLength, setTotalLength] = useState(0);
+  const [totalLength, setTotalLength] = useState(0);
   const [pageLength, setPageLength] = useState(0);
 
   /********************************************** */
-  const now = correctionDate(new Date())
+  const now = correctionDate(new Date());
   const [tipo_pedido, setTipoPedido] = React.useState("TODOS");
   const [fecha_utilizacion, set_fecha_utilizacion] = React.useState("");
   const [fecha_inicio, set_fecha_inicio] = React.useState("");
   const [fecha_fin, set_fecha_fin] = React.useState(now);
   const [edificio, set_edificio] = React.useState("TODOS");
-  const [checked, setChecked] = React.useState("TODOS");
+  const [checked, setChecked] = React.useState(false);
 
   // *******************************
   const [open, setOpen] = React.useState("");
   const [scroll, setScroll] = React.useState("paper");
-  const [alert, setAlert] = useState(false)
- 
+  const [alert, setAlert] = useState(false);
 
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
@@ -67,43 +70,58 @@ function Pedidos() {
     setTipoPedido(event);
   };
 
- function cargarNuevosPedidos() {
+  async function cargarNuevosPedidos() {
     // if(tipo_pedido==="TODOS"){ guardarEstadoPedido("")}
     // if(edificio==="TODOS"){set_edificio("")}
-    console.log(dateFormat(fecha_fin))
-    if (new Date(fecha_inicio) > new Date(dateFormat(fecha_fin))){
-      return setAlert(true)
+    if (new Date(fecha_inicio) > new Date(dateFormat(fecha_fin))) {
+      return setAlert(true);
     }
-    setAlert(false)
-    axiosGetPedido(
+    setAlert(false);
+    await axiosGetPedido(
       tipo_pedido,
       fecha_inicio,
       fecha_fin,
       edificio,
-      checked
+      checked,
+      page
     ).then((item) => {
-      setListaPedidos(item.data);
-      setTotalLength(item.totalCount)
-      setPageLength(item.perPage)
-      setPage(item.currentPage || 0)
+      let newArray = [...listaPedidos, ...item.data];
+      setListaPedidos(newArray);
+      setTotalLength(item.totalCount);
+      setPageLength(item.totalPages);
+      setPage(item.currentPage || 0);
     });
   }
+  const count = useMemo(() => {
+    return listaPedidos.length;
+  }, [listaPedidos]);
 
-  const count = useMemo(()=>{
-    return listaPedidos.length
-  }, [listaPedidos])
+  const nextPage = () => {
+    setTimeout(async () => {
+      if (page < pageLength) {
+        let newPage = page + 1;
+        setPage(newPage);
+      } 
+    }, 500);
+  };
 
-  useEffect(()=> {
+  useEffect(() => {
+    nextPage();
+  }, [page]);
 
-  },[page])
   useEffect(() => {
     cargarNuevosPedidos();
-  }, [count, tipo_pedido, fecha_fin, fecha_inicio, edificio, checked]);
+  }, [page, tipo_pedido, fecha_fin, fecha_inicio, edificio, checked]);
   
+  useEffect(() => {
+    setListaPedidos([])
+    setPage(1)
+  }, [tipo_pedido, fecha_fin, fecha_inicio, edificio, checked]);
+
   useEffect(() => {
     setEsAdmin(user.rol);
   }, [open, update]);
-  
+
   return (
     <Box>
       <Box sx={{ flexGrow: 1, m: 2 }}>
@@ -156,38 +174,43 @@ function Pedidos() {
         </Box>
       ) : (
         <InfiniteScroll
-          dataLength={10} //This is important field to render the next data
-          //next={}
-          hasMore={true}
-          loader={<h4>Loading...</h4>}
+          dataLength={totalLength}
+          next={() => nextPage()}
+          hasMore={pageLength > page}
+          style={{ overflow: "hidden" }} // Evita el desplazamiento lateral
+          loader={
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <CircularProgress /> {/* Establece el ancho automáticamente */}
+            </div>
+          }
         >
-        <Box className="main-wrap" sx={{ flexGrow: 1, md: 2 }}>
-          <Grid
-            container
-            direction="row"
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              p: 0,
-              m: 0,
-            }}
-            alignItems="space-between"
-            spacing={{ xs: 2, md: 3 }}
-            columns={{ sm: 6, lg: 12 }}
-          >
-            {listaPedidos?.map((pedido) => (
-              <Grid item xs={3} key={pedido._id}>
-                <PedidoV1
-                  key={pedido._id}
-                  pedido={pedido}
-                  esAdmin={"lab"}
-                  edicionActiva={edicionActiva}
-                  setEdicionActiva={setEdicionActiva}
-                />
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
+          <Box className="main-wrap" sx={{ flexGrow: 1, md: 2 }}>
+            <Grid
+              container
+              direction="row"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                p: 0,
+                m: 0,
+              }}
+              alignItems="space-between"
+              spacing={{ xs: 2, md: 3 }}
+              columns={{ sm: 6, lg: 12 }}
+            >
+              {listaPedidos?.map((pedido) => (
+                <Grid item xs={3} key={pedido._id}>
+                  <PedidoV1
+                    key={pedido._id}
+                    pedido={pedido}
+                    esAdmin={"lab"}
+                    edicionActiva={edicionActiva}
+                    setEdicionActiva={setEdicionActiva}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
         </InfiniteScroll>
       )}
     </Box>
@@ -195,5 +218,3 @@ function Pedidos() {
 }
 
 export default Pedidos;
-
-

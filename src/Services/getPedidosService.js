@@ -36,7 +36,7 @@ export async function getCantidadPedidos() {
 
 
 
-export async function axiosGetPedido( tipo_pedido, fecha_inicio, fecha_fin, edificio, checked)  {
+export async function axiosGetPedido( tipo_pedido, fecha_inicio, fecha_fin, edificio, checked, page)  {
     var params={}    
     try {
         if (tipo_pedido && tipo_pedido !== "TODOS") {
@@ -49,7 +49,8 @@ export async function axiosGetPedido( tipo_pedido, fecha_inicio, fecha_fin, edif
             params.fecha_inicio = fecha_inicio;
             params.fecha_fin = fecha_fin;
         }
-        params.validsOnly = checked
+        //params.validsOnly = checked
+        params.page = page
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/pedido/`, {
             params,
             headers: {        
