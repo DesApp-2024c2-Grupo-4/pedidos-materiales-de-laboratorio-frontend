@@ -38,7 +38,7 @@ function Pedidos() {
     let mounted = true;
     setEsAdmin(user.rol === 'lab')
     userInfo(user._id).then((res) => {
-      getPedidosPorDni(res.dni)
+      getPedidosPorDni(res.dni,)
         .then(items => {
           if (mounted) {
             setListaPedidos(items)

@@ -100,7 +100,6 @@ function Pedidos() {
     } 
   };
 
-
   useEffect(() => {
     setEsAdmin(user.rol);
   }, [open, update]);
