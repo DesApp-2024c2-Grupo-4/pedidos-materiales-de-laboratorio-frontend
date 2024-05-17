@@ -27,8 +27,8 @@ export async function getPedidosPorDni(
   try {
     const response = await axios.get(
       `${process.env.REACT_APP_API_URL}/api/pedido/getAllByDni/`,
-      params,
       {
+        params,
         headers: {
           Authorization: `Bearer ${token()}`,
           Accept: "application/json",

@@ -36,7 +36,7 @@ function Pedidos() {
   const [page, setPage] = useState(1);
   const [totalLength, setTotalLength] = useState(0);
   const [pageLength, setPageLength] = useState(0);
-  const [reset, setReset] = useState(false)
+  const [reset, setReset] = useState(false);
 
   /********************************************** */
   const now = correctionDate(new Date());
@@ -81,23 +81,23 @@ function Pedidos() {
       checked,
       page
     ).then((item) => {
-        let newArray = [...list, ...item.data];
-        setListaPedidos(newArray);
-        setTotalLength(item.totalCount);
-        setPageLength(item.totalPages);
-    })
+      let newArray = [...list, ...item.data];
+      setListaPedidos(newArray);
+      setTotalLength(item.totalCount);
+      setPageLength(item.totalPages);
+    });
   }
   const count = useMemo(() => {
     setPage(1);
-    setListaPedidos([]);    
-    cargarNuevosPedidos(1, [])
+    setListaPedidos([]);
+    cargarNuevosPedidos(1, []);
   }, [tipo_pedido, fecha_fin, fecha_inicio, edificio, checked]);
 
   const nextPage = () => {
     if (page < pageLength) {
-      setPage(page + 1);      
-      cargarNuevosPedidos(page + 1, listaPedidos)
-    } 
+      setPage(page + 1);
+      cargarNuevosPedidos(page + 1, listaPedidos);
+    }
   };
 
   useEffect(() => {
