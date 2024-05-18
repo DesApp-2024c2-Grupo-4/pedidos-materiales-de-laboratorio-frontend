@@ -81,7 +81,6 @@ function PedidoV1({ pedido, esAdmin }) {
       <Box
         sx={{ m: 10 }}
         styles={{
-          display: "flex",
           margin: "8px",
           height: "240px",
         }}

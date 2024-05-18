@@ -11,12 +11,9 @@ import InputLabel from "@mui/material/InputLabel";
 // import DialogContentText from '@mui/material/DialogContentText';
 import updatePedido from "../../Services/updatePedido";
 import { userContext } from "../../Context/LabProvider";
+import { Box } from "@mui/material";
 
-function AsignarLaboratorio(
- { pedido,
-  handleClose, 
-  open,
-}) {
+function AsignarLaboratorio({ pedido, handleClose, open }) {
   const {
     numero_tp,
     fecha_solicitud,
@@ -30,11 +27,12 @@ function AsignarLaboratorio(
     lista_reactivos,
     descripcion,
     tipo_pedido,
-    materia} = pedido
+    materia,
+  } = pedido;
   const [edificioElegido, setEdificioElegido] = useState(edificio || "");
   const [laboAsignado, setLaboAsignado] = useState(numero_laboratorio || "");
   const [estado_ped, setEstadoPed] = useState(tipo_pedido || undefined);
-  const {update, setUpdate} = useContext(userContext)
+  const { update, setUpdate } = useContext(userContext);
   const edificio_elegido = (event) => {
     if (event.target.value !== null) {
       setEdificioElegido(event.target.value);
@@ -54,7 +52,7 @@ function AsignarLaboratorio(
   };
 
   const modificarEncabezado = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     const pedidoModificado = {
       docente: docente,
       descripcion: descripcion,
@@ -71,50 +69,42 @@ function AsignarLaboratorio(
       lista_materiales: lista_materiales,
     };
     updatePedido(pedido._id, pedidoModificado);
-    setUpdate(1)
+    setUpdate(1);
   };
 
   useEffect(() => {
-    setUpdate(0)
+    setUpdate(0);
 
     return () => {};
   }, [update, open]);
 
   return (
-    <Grid
-      container
-      direction="row"
-      component="form"
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "space-around",
+        alignItems: "center",
+        flexFlow: "row wrap",
+      }}
       onSubmit={modificarEncabezado}
       // sx={{ marginTop: 4 }}
     >
-      <Grid
-        container
-        // component="form" noValidate
-        direction="row"
-        justifyContent="space-around"
-        alignItems="center"
-        spacing={{ xs: 1, md: 1 }}
-        columns={{ xs: 12 }}
-      >
-        <Grid
-          item
-          xs={2}
-          container
-          //  justifyContent="start"
+      <Box>
+        <FormControl
+          sx={{
+            "& .MuiFormLabel-root": {
+              color: "white",
+            },
+            width: "30ch !important",
+          }}
         >
-          <InputLabel id="laboratorio_label">Laboratorio</InputLabel>
           <TextField
-            fullWidth
-            // sx={{ marginTop: 1 }}
+            label="Laboratorio N°"
             onChange={laboEleg}
             id="laboratorio"
             variant="outlined"
             name="laboratorio"
             type="number"
-            InputLabelProps={{
-              shrink: true,
-            }}
             InputProps={{
               inputProps: {
                 max: 100,
@@ -123,79 +113,87 @@ function AsignarLaboratorio(
             }}
             value={laboAsignado}
           />
-        </Grid>
-        <Grid
-          item
-          xs={4}
-          container
-          //  justifyContent="start"
+        </FormControl>
+      </Box>
+      <Box>
+        <FormControl
+          sx={{
+            "& .MuiFormLabel-root": {
+              color: "white",
+            },
+            width: "30ch !important",
+          }}
         >
-          <FormControl fullWidth>
-            <InputLabel id="edificio_label">Edificio</InputLabel>
-            <Select
-              InputLabelProps={{
-                shrink: true,
-              }}
-              labelId="edificio"
-              id="edificio"
-              value={edificioElegido}
-              label="Edificio"
-              onChange={edificio_elegido}
-              variant="outlined"
-              sx={{color:'white !important'}}
-            >
-              <MenuItem sx={{ width: 100, fontSize: 10 }} value={"Sin Asignar"}>
-                Sin Asignar
-              </MenuItem>
-              <MenuItem sx={{ width: 100, fontSize: 10 }} value={"Malvinas"}>
-                MALVINAS
-              </MenuItem>
-              <MenuItem sx={{ width: 100, fontSize: 10 }} value={"Origone-A"}>
-                ORIGONE - A
-              </MenuItem>
-              <MenuItem sx={{ width: 100, fontSize: 10 }} value={"Origone-B"}>
-                ORIGONE - B
-              </MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={4} container>
-          <FormControl fullWidth>
-            <InputLabel id="tipo_pedido_label">Estado Pedido</InputLabel>
-            <Select
-              InputLabelProps={{
-                shrink: true,
-              }}
-              labelId="tipo_pedido"
-              id="tipo_pedido"
-              value={estado_ped}
-              label="Estado Pedido"
-              onChange={estado_pedido}
-              variant="outlined"
-            >
-              <MenuItem sx={{ width: 100, fontSize: 10 }} value={"PENDIENTE"}>
-                PENDIENTE
-              </MenuItem>
-              <MenuItem sx={{ width: 100, fontSize: 10 }} value={"ACEPTADO"}>
-                ACEPTADO
-              </MenuItem>
-              <MenuItem sx={{ width: 100, fontSize: 10 }} value={"RECHAZADO"}>
-                RECHAZADO
-              </MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-      </Grid>
+          <InputLabel id="edificio_label">Edificio</InputLabel>
+          <Select
+            InputLabelProps={{
+              shrink: true,
+            }}
+            labelId="edificio"
+            id="edificio"
+            value={edificioElegido}
+            label="Edificio"
+            onChange={edificio_elegido}
+            variant="outlined"
+            sx={{ color: "white !important" }}
+          >
+            <MenuItem sx={{ width: 100, fontSize: 10 }} value={"Sin Asignar"}>
+              Sin Asignar
+            </MenuItem>
+            <MenuItem sx={{ width: 100, fontSize: 10 }} value={"Malvinas"}>
+              MALVINAS
+            </MenuItem>
+            <MenuItem sx={{ width: 100, fontSize: 10 }} value={"Origone-A"}>
+              ORIGONE - A
+            </MenuItem>
+            <MenuItem sx={{ width: 100, fontSize: 10 }} value={"Origone-B"}>
+              ORIGONE - B
+            </MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
+      <Box>
+        <FormControl
+          sx={{
+            "& .MuiFormLabel-root": {
+              color: "white",
+            },
+            width: "30ch !important",
+          }}
+        >
+          <InputLabel id="tipo_pedido_label">Estado Pedido</InputLabel>
+          <Select
+            InputLabelProps={{
+              shrink: true,
+            }}
+            sx={{ width: "30ch !important" }}
+            labelId="tipo_pedido"
+            id="tipo_pedido"
+            value={estado_ped}
+            label="Estado Pedido"
+            onChange={estado_pedido}
+            variant="outlined"
+          >
+            <MenuItem sx={{ width: 100, fontSize: 10 }} value={"PENDIENTE"}>
+              PENDIENTE
+            </MenuItem>
+            <MenuItem sx={{ width: 100, fontSize: 10 }} value={"ACEPTADO"}>
+              ACEPTADO
+            </MenuItem>
+            <MenuItem sx={{ width: 100, fontSize: 10 }} value={"RECHAZADO"}>
+              RECHAZADO
+            </MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
 
-      <Grid
-        container
+      <Box
         direction="row"
         spacing={{ xs: 1, md: 1 }}
         columns={{ xs: 12 }}
-        sx={{}}
-        justifyContent="flex-end"
+        justifyContent="center"
       >
-        <Grid item xs={12} className="grid-botones">
+        <Grid className="grid-botones">
           <Button
             fullWidth
             margin="normal"
@@ -203,8 +201,8 @@ function AsignarLaboratorio(
             bgcolor={"secondary"}
             color={"primary"}
             onClick={() => {
-              handleClose(false)
-              setUpdate(0)
+              handleClose(false);
+              setUpdate(0);
             }}
             className="boton-cerrar-pedido"
           >
@@ -223,8 +221,8 @@ function AsignarLaboratorio(
             Editar
           </Button>
         </Grid>
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   );
 }
 

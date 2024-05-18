@@ -44,7 +44,7 @@ function Pedidos() {
   const [fecha_inicio, set_fecha_inicio] = React.useState("");
   const [fecha_fin, set_fecha_fin] = React.useState(now);
   const [edificio, set_edificio] = React.useState("TODOS");
-  const [checked, setChecked] = React.useState(false);
+  const [checked, setChecked] = React.useState(true);
 
   const [open, setOpen] = React.useState("");
   const [scroll, setScroll] = React.useState("paper");

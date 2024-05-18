@@ -45,7 +45,7 @@ function Pedidos() {
   const [fecha_inicio, set_fecha_inicio] = React.useState("");
   const [fecha_fin, set_fecha_fin] = React.useState(now);
   const [edificio, set_edificio] = React.useState("TODOS");
-  const [checked, setChecked] = React.useState(false);
+  const [checked, setChecked] = React.useState(true);
 
   // *******************************
   const [open, setOpen] = React.useState("");
@@ -87,7 +87,7 @@ function Pedidos() {
       setPageLength(item.totalPages);
     });
   }
-  const count = useMemo(() => {
+  useEffect(() => {
     setPage(1);
     setListaPedidos([]);
     cargarNuevosPedidos(1, []);
@@ -110,26 +110,6 @@ function Pedidos() {
         <Header texto={texto} isUserAdmin={esAdmin}></Header>
       </Box>
 
-      <Box sx={{ flexGrow: 1, m: 0 }}>
-        <Grid
-          container
-          columns={12}
-          justifyContent="flex-end"
-          direction="row"
-          alignItems="flex-start"
-        >
-          <Grid item xs={1} align="center">
-            <Card
-
-            // style={{ color: "#b4e0bc", borderRadius: 15 }}
-            >
-              {/* <CardActionArea onClick={handleClickOpen('body')}>
-                <FilterListIcon fontSize="large" style={{ color: "#b4e0bc" }} />
-              </CardActionArea> */}
-            </Card>
-          </Grid>
-        </Grid>
-      </Box>
       <Filtros
         cargarEstado={cargarEstado}
         setTipoPedido={setTipoPedido}
