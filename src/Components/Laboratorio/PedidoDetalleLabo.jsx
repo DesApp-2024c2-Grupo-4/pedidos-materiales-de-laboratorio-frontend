@@ -19,6 +19,9 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { getMensajes } from "../../Services/chat-service";
 import Paper from "@mui/material/Paper";
+import { IconButton } from "@material-ui/core";
+import DownloadIcon from "@mui/icons-material/Download";
+
 function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
   const {
     numero_tp,
@@ -66,13 +69,17 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
       }
     });
   }, [read, cant, pedido._id, open]);
-
+  const handleDownload = (e, pedido) => {
+    e.stopPropagation();
+    e.preventDefault();
+    console.log(pedido);
+  };
   const tipo = {
     PENDIENTE: "pedido-estado-yellow",
     RECHAZADO: "pedido-estado-red",
     ACEPTADO: "pedido-estado-green",
-    INACTIVO: "pedido-estado-gray"
-  }
+    INACTIVO: "pedido-estado-gray",
+  };
   return (
     <div>
       <Dialog
@@ -119,7 +126,11 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
             <div
               className={`pedido-estado pedido-estado-detalle pedido-estado-fix ${tipo[tipo_pedido]}`}
             ></div>
-            <MoreVertIcon style={{ color: "#fff" }} />
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <IconButton onClick={(e) => handleDownload(e, pedido)}>
+                <DownloadIcon style={{ color: "#fff" }} />
+              </IconButton>
+            </Box>
           </div>
         </div>
         <DialogContent dividers={scroll === "paper"}>

@@ -20,6 +20,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import PedidoDetalle from "../Laboratorio/PedidoDetalle";
 import PedidoDetalleLabo from "../Laboratorio/PedidoDetalleLabo";
 import { Typography } from "@mui/material";
+import DownloadIcon from "@mui/icons-material/Download";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -70,12 +71,17 @@ function PedidoV1({ pedido, esAdmin }) {
   // if((fecha_utilizacion<=formatManiana)&& (tipo_pedido==="PENDIENTE")){
   //   setEstaPendiente('red')
   // };
+  const handleDownload = (e, pedido) => {
+    e.stopPropagation();
+    e.preventDefault();
+    console.log(pedido);
+  };
   const tipo = {
     PENDIENTE: "pedido-estado-yellow",
     RECHAZADO: "pedido-estado-red",
     ACEPTADO: "pedido-estado-green",
-    INACTIVO: "pedido-estado-gray"
-  }
+    INACTIVO: "pedido-estado-gray",
+  };
   return (
     <>
       <Box
@@ -86,8 +92,8 @@ function PedidoV1({ pedido, esAdmin }) {
         }}
         padding="2px"
       >
-        <Card  className="card">
-          <CardActionArea  onClick={handleClickOpen("body")}>
+        <Card className="card">
+          <CardActionArea onClick={handleClickOpen("body")}>
             <CardHeader
               style={{ textAlign: "left" }}
               avatar={<img className="pedido-icon" src={pedidoicon} alt="" />}
@@ -95,12 +101,17 @@ function PedidoV1({ pedido, esAdmin }) {
               // subheader={`Fecha : ${fecha_solicitud}`}
               subheader={`Fecha de Práctica: ${fecha_utilizar}`}
               action={
-                <IconButton  >
-                  <div
-                    className={pedido.vigente ? tipo[tipo_pedido] : tipo['INACTIVO']}
-                  ></div>
-                  <MoreVertIcon style={{color:'#fff'}} />
-                </IconButton>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Box
+                    sx={{ mt: "-5px !important" }}
+                    className={
+                      pedido.vigente ? tipo[tipo_pedido] : tipo["INACTIVO"]
+                    }
+                  ></Box>
+                  <IconButton onClick={(e) => handleDownload(e, pedido)}>
+                    <DownloadIcon style={{ color: "#fff" }} />
+                  </IconButton>
+                </Box>
               }
             />
             <CardMedia
@@ -129,13 +140,12 @@ function PedidoV1({ pedido, esAdmin }) {
               tipo_pedido === "PENDIENTE" ? (
                 <Typography sx={{ color: "white" }}>
                   <p className="pedido-item">
-                    <strong className="pedido-categoria">
-                      Estado: </strong>
-                      {pedido.vigente ? tipo_pedido : 'INACTIVO'}
+                    <strong className="pedido-categoria">Estado: </strong>
+                    {pedido.vigente ? tipo_pedido : "INACTIVO"}
                   </p>
                 </Typography>
               ) : (
-                <Typography >
+                <Typography>
                   <p className="pedido-item">
                     <strong className="pedido-categoria">Estado: </strong>
                     {tipo_pedido}

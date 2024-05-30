@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core";
+import { IconButton, makeStyles } from "@material-ui/core";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
@@ -20,6 +20,7 @@ import Modal from "@mui/material/Modal";
 import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { getMensajes } from "../../Services/chat-service";
+import DownloadIcon from "@mui/icons-material/Download";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -80,6 +81,12 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
     });
   }, [read, cant, pedido._id, open]);
 
+  const handleDownload = (e, pedido) => {
+    e.stopPropagation();
+    e.preventDefault();
+    console.log(pedido);
+  };
+
   const tipo = {
     PENDIENTE: "pedido-estado-yellow",
     RECHAZADO: "pedido-estado-red",
@@ -132,7 +139,11 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
             <div
               className={`pedido-estado pedido-estado-detalle pedido-estado-fix ${tipo[tipo_pedido]}`}
             ></div>
-            <MoreVertIcon style={{ color: "#fff" }} />
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <IconButton onClick={(e) => handleDownload(e, pedido)}>
+                <DownloadIcon style={{ color: "#fff" }} />
+              </IconButton>
+            </Box>
           </div>
         </div>
         <DialogContent dividers={scroll === "paper"}>
