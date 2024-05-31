@@ -62,7 +62,7 @@ export async function axiosGetPedido(
     params.validsOnly = checked;
     params.page = page;
     const response = await axios.get(
-      `${process.env.REACT_APP_API_URL}/api/pedido/`,
+      `${process.env.REACT_APP_API_URL}/api/pedido`,
       {
         params,
         headers: {

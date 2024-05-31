@@ -4,6 +4,7 @@ import { Icon, makeStyles } from "@material-ui/core";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import Theme1 from "../Theme/Theme1";
 import { ThemeProvider } from "@mui/material/styles";
+import jsPDF from "jspdf";
 // import { getUsuario } from '../../Services/getUsuarioService';
 import moment from "moment";
 import {
@@ -74,7 +75,48 @@ function PedidoV1({ pedido, esAdmin }) {
   const handleDownload = (e, pedido) => {
     e.stopPropagation();
     e.preventDefault();
-    console.log(pedido);
+    var doc = new jsPDF();
+    doc.text(`Pedido #${pedido.descripcion} del docente  ${pedido.docente.nombre} ${pedido.docente.apellido}`, 10,10);
+    doc.text(`Tipo de pedido: ${pedido.tipo_pedido}`, 10,20);
+    doc.text(`número de laboratorio: ${pedido.numero_laboratorio != null?pedido.numero_laboratorio :'sin asignar'}`, 10,30);
+    doc.text(`Materia: ${pedido.materia}`, 10,40);
+    doc.text(`Fecha de solicitud: ${pedido.fecha_solicitud.split('T')[0]}`, 10, 50);
+    doc.text(`Fecha de utilización ${pedido.fecha_utilizacion.split('T')[0]} a la hora ${pedido.fecha_utilizacion.split('T')[1].split('.')[0].split(',')[0]}`, 10, 60);
+    doc.text(`Cantidad de alumnos: ${pedido.alumnos}`, 10, 70);
+    doc.text(`Edificio: ${pedido.edificio != ''?pedido.edificio:'sin asignar'}`, 10, 80);
+    doc.text(`lista de equipos:`, 10, 90);
+    let number_content = 90;
+    pedido.lista_equipos.map(resp=>{
+      number_content = number_content+ 10
+      doc.text(`clase: ${resp.equipo.clase}`, 10, number_content);
+      number_content = number_content+ 10
+      doc.text(`Descripción: ${resp.equipo.descripcion}`, 10, number_content);
+      number_content = number_content+ 10
+      doc.text(`Cantidad: ${resp.cantidad}`, 10, number_content);
+    })
+    number_content = number_content+ 10
+    doc.text(`Lista de materiales:`, 10, number_content);
+    pedido.lista_materiales.map(resp=>{
+      number_content = number_content+ 10
+      doc.text(`clase: ${resp.equipo.clase}`, 10, number_content);
+      number_content = number_content+ 10
+      doc.text(`Descripción: ${resp.equipo.descripcion}`, 10, number_content);
+      number_content = number_content+ 10
+      doc.text(`Cantidad: ${resp.cantidad}`, 10, number_content);
+      number_content = number_content+ 10
+      doc.text(`Medida: ${resp.equipo.unidadMedida}`, 10, number_content);
+    })
+    number_content = number_content+ 10
+    doc.text(`Lista de reactivos:`, 10, number_content);
+    pedido.lista_reactivos.map(resp=>{
+      number_content = number_content+ 10
+      doc.text(`cas: ${resp.equipo.clase}`, 10, number_content);
+      number_content = number_content+ 10
+      doc.text(`Descripción: ${resp.equipo.descripcion}`, 10, number_content);
+      number_content = number_content+ 10
+      doc.text(`Cantidad: ${resp.cantidad}`, 10, number_content);
+    })
+    doc.save(`pedido_${pedido.descripcion}.pdf`);
   };
   const tipo = {
     PENDIENTE: "pedido-estado-yellow",
