@@ -179,17 +179,18 @@ export const handleDownload = (e, pedido) => {
   );
   doc.text(`Materia: ${pedido.materia}`, 10, 35);
   // Textos a la derecha
+  let solicitud = pedido.fecha_solicitud.split("T")[0].split("-");
+  solicitud = `${solicitud[2]}-${solicitud[1]}-${solicitud[0]}`;
+  let utilización = pedido.fecha_utilizacion.split("T")[0].split("-");
+  utilización = `${utilización[2]}-${utilización[1]}-${utilización[0]}`;
+  let time = pedido.fecha_utilizacion
+    .split("T")[1]
+    .split(".")[0]
+    .substring(0, 5);
+
+  doc.text(`Fecha de solicitud: ${solicitud}`, docWidth - 100, 25);
   doc.text(
-    `Fecha de solicitud: ${pedido.fecha_solicitud.split("T")[0]}`,
-    docWidth - 100,
-    25
-  );
-  doc.text(
-    `Fecha de utilización: ${
-      pedido.fecha_utilizacion.split("T")[0]
-    } a la hora ${
-      pedido.fecha_utilizacion.split("T")[1].split(".")[0].split(",")[0]
-    }`,
+    `Fecha de utilización: ${utilización} a la hora ${time}`,
     docWidth - 100,
     30
   );
