@@ -16,7 +16,13 @@ import Grid from "@mui/material/Grid";
 
 import quimica from "../Image/quimica.png";
 import laboratorio from "../Image/biologia.png";
-import { Autocomplete, Checkbox, FormControlLabel, TextField, ThemeProvider } from "@mui/material";
+import {
+  Autocomplete,
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  ThemeProvider,
+} from "@mui/material";
 import Button from "@mui/material/Button";
 import Theme1 from "../Theme/Theme1";
 import postReactivo from "../../Services/postReactivo";
@@ -37,6 +43,8 @@ function AltaReactivo({
   const [openMensaje, setOpenMensaje] = useState(false);
   const [mensajeSalida, setMensajeSalida] = useState("");
   const [enough, setEnough] = useState(false);
+  const [notAvailable, setNotAvailable] = useState(false);
+
   const cargaReactivo = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -52,6 +60,7 @@ function AltaReactivo({
         cas: data.get("cas"),
         descripcion: data.get("descripcion"),
         stock: !enough ? parseInt(data.get("stock")) : -1,
+        disponible: !notAvailable,
       };
 
       postReactivo(dato);
@@ -207,6 +216,14 @@ function AltaReactivo({
                 }}
                 label="Cantidad Suficiente"
               />
+              <FormControlLabel
+                checked={notAvailable}
+                control={<Checkbox />}
+                onChange={(e) => {
+                  setNotAvailable(e.target.checked);
+                }}
+                label="No disponible"
+              />
             </Grid>
 
             <Grid
@@ -291,7 +308,8 @@ const ReactivoDadoAlta = ({ reactivo }) => {
         <strong>CAS: </strong> {reactivo.cas}
       </p>
       <p>
-        <strong>Stock: </strong> {reactivo.stock == -1 ? 'Suficiente' : reactivo.stock}
+        <strong>Stock: </strong>{" "}
+        {reactivo.stock == -1 ? "Suficiente" : reactivo.stock}
       </p>
     </div>
   );

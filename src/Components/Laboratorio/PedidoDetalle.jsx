@@ -22,6 +22,7 @@ import Box from "@mui/material/Box";
 import { getMensajes } from "../../Services/chat-service";
 import DownloadIcon from "@mui/icons-material/Download";
 import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -86,47 +87,96 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
     e.stopPropagation();
     e.preventDefault();
     var doc = new jsPDF();
-    doc.text(`Pedido #${pedido.descripcion} del docente  ${pedido.docente.nombre} ${pedido.docente.apellido}`, 10,10);
-    doc.text(`Tipo de pedido: ${pedido.tipo_pedido}`, 10,20);
-    doc.text(`número de laboratorio: ${pedido.numero_laboratorio != null?pedido.numero_laboratorio :'sin asignar'}`, 10,30);
-    doc.text(`Materia: ${pedido.materia}`, 10,40);
-    doc.text(`Fecha de solicitud: ${pedido.fecha_solicitud.split('T')[0]}`, 10, 50);
-    doc.text(`Fecha de utilización ${pedido.fecha_utilizacion.split('T')[0]} a la hora ${pedido.fecha_utilizacion.split('T')[1].split('.')[0].split(',')[0]}`, 10, 60);
-    doc.text(`Cantidad de alumnos: ${pedido.alumnos}`, 10, 70);
-    doc.text(`Edificio: ${pedido.edificio != ''?pedido.edificio:'sin asignar'}`, 10, 80);
-    doc.text(`lista de equipos:`, 10, 90);
-    let number_content = 90;
-    pedido.lista_equipos.map(resp=>{
-      number_content = number_content+ 10
-      doc.text(`clase: ${resp.equipo.clase}`, 10, number_content);
-      number_content = number_content+ 10
-      doc.text(`Descripción: ${resp.equipo.descripcion}`, 10, number_content);
-      number_content = number_content+ 10
-      doc.text(`Cantidad: ${resp.cantidad}`, 10, number_content);
-    })
-    number_content = number_content+ 10
-    doc.text(`Lista de materiales:`, 10, number_content);
-    pedido.lista_materiales.map(resp=>{
-      number_content = number_content+ 10
-      doc.text(`clase: ${resp.equipo.clase}`, 10, number_content);
-      number_content = number_content+ 10
-      doc.text(`Descripción: ${resp.equipo.descripcion}`, 10, number_content);
-      number_content = number_content+ 10
-      doc.text(`Cantidad: ${resp.cantidad}`, 10, number_content);
-      number_content = number_content+ 10
-      doc.text(`Medida: ${resp.equipo.unidadMedida}`, 10, number_content);
-    })
-    number_content = number_content+ 10
-    doc.text(`Lista de reactivos:`, 10, number_content);
-    pedido.lista_reactivos.map(resp=>{
-      number_content = number_content+ 10
-      doc.text(`cas: ${resp.equipo.clase}`, 10, number_content);
-      number_content = number_content+ 10
-      doc.text(`Descripción: ${resp.equipo.descripcion}`, 10, number_content);
-      number_content = number_content+ 10
-      doc.text(`Cantidad: ${resp.cantidad}`, 10, number_content);
-    })
-    doc.save(`pedido_${pedido.descripcion}.pdf`);
+
+    const docWidth = doc.internal.pageSize.getWidth();
+
+    doc.setFontSize(10);
+    // Textos a la izquierda
+    doc.text(`Pedido #${pedido.numero_tp}`, 10, 10);
+    doc.text(`Docente: ${pedido.docente.nombre} ${pedido.docente.apellido}`, 10, 15);
+    doc.text(`Número de laboratorio: ${pedido.numero_laboratorio != null ? pedido.numero_laboratorio : "sin asignar"}`, 10, 25);
+    doc.text(`Edificio: ${pedido.edificio != "" ? pedido.edificio : "sin asignar"}`, 10, 30);
+    doc.text(`Materia: ${pedido.materia}`, 10, 35);
+    // Textos a la derecha
+    doc.text(`Fecha de solicitud: ${pedido.fecha_solicitud.split("T")[0]}`, docWidth - 100, 25);
+    doc.text(`Fecha de utilización: ${pedido.fecha_utilizacion.split("T")[0]} a la hora ${pedido.fecha_utilizacion.split("T")[1].split(".")[0].split(",")[0]}`, docWidth - 100, 30);
+    doc.text(`Cantidad de alumnos: ${pedido.alumnos}`, docWidth - 100, 35);
+    // Textos abajo
+    doc.text(`Descripción: ${pedido.descripcion != "" ? pedido.descripcion : "sin asignar"}`, 10, 45);
+    doc.text(`Observación: ${pedido.observaciones != "" ? pedido.observaciones : "sin asignar"}`, 10, 50);
+
+    let number_content = 60;
+    if (pedido.lista_materiales.length > 0) {
+      doc.text(`Lista de equipos:`, 10, number_content);
+      number_content += 5
+      doc.autoTable({
+        startY: number_content,
+        theme: "striped", // Aplica estilo de línea de cebra
+        headStyles: { fillColor: [41, 128, 185], textColor: [255, 255, 255] },
+        head: [["Clase", "Descripción", "Cantidad"]],
+        body: pedido.lista_equipos.map((row) => [
+          row.equipo.clase,
+          row.equipo.descripcion,
+          row.cantidad,
+        ]),
+      });
+      number_content = doc.previousAutoTable.finalY + 5;
+    }
+
+    if (pedido.lista_materiales.length > 0) {
+      number_content = number_content + 10;
+      doc.text(`Lista de materiales:`, 10, number_content);
+      number_content += 5
+      doc.autoTable({
+        startY: number_content,
+        theme: "striped", // Aplica estilo de línea de cebra
+        headStyles: { fillColor: [41, 128, 185], textColor: [255, 255, 255] },
+        head: [["Clase", "Descripción", "Cantidad"]],
+        body: pedido.lista_materiales.map((row) => [
+          row.material.clase,
+          row.material.descripcion,
+          row.cantidad,
+        ]),
+      });
+      number_content = doc.previousAutoTable.finalY + 5;
+    }
+
+    if (pedido.lista_reactivos.length > 0) {
+      number_content = number_content + 10;
+      doc.text(`Lista de reactivos:`, 10, number_content);
+      number_content += 5
+      doc.autoTable({
+        startY: number_content,
+        theme: "striped", // Aplica estilo de línea de cebra
+        headStyles: { fillColor: [41, 128, 185], textColor: [255, 255, 255] },
+        head: [
+          [
+            "Descripción",
+            "CAS",
+            "Calidad",
+            "Cant Total",
+            "U. de Medida",
+            "Tipo. Conc.",
+            "Medida Conc.",
+            "Disolvente",
+            "Otro. Disol.",
+          ],
+        ],
+        body: pedido.lista_reactivos.map((row) => [
+          row.reactivo.descripcion,
+          row.reactivo.cas,
+          row.calidad,
+          row.cantidad,
+          row.un_medida,
+          row.concentracion_tipo,
+          row.concentracion_medida,
+          row.disolvente,
+          row.otro_disolvente_descripcion,
+        ]),
+      });
+    }
+
+    doc.save(`pedido_${pedido.numero_tp}.pdf`);
   };
 
   const tipo = {

@@ -47,7 +47,7 @@ const StepEquipos = (props) => {
   const [equipo, setEquipo] = useState({});
   const [selectedRows, setSelectedRows] = useState([]);
   const [saveHistoric, setSaveHistoric] = useState({});
-  
+  console.log(equipo, list);
   const stock = () => {
     const fecha_inicio = getValues("fecha_utilizacion");
     const fecha_fin = valueHoraFin;
@@ -372,6 +372,7 @@ const StepEquipos = (props) => {
           }}
         >
           <Box sx={{ flex: "1 1 auto" }} />
+          {console.log(errors)}
           <Button
             onClick={() => {
               if (watch("id_equipo") == null) {

@@ -37,7 +37,7 @@ export const formValidate = () => {
       return (v) => valueHoraFin || "Ingrese un Horario";
     },
     validateGroup(value) {
-      return (v) => v < value || "No puede haber mas grupos que alumnos";
+      return (v) => parseInt(v) < parseInt(value) || "No puede haber mas grupos que alumnos"
     },
     patternEmail: {
       value: /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/,

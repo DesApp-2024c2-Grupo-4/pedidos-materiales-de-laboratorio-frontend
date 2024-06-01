@@ -18,10 +18,11 @@ import StepPreview from "./Steps/StepPreview";
 import StepReactivos from "./Steps/StepReactivos";
 import { postPedido } from "../../Services/postPedidoService";
 import { useSnackbar } from "notistack";
+import { getPedidosPorDni } from "../../Services/getPedidosPorDNIService";
 
 const CreatePedido = ({ handleClose }) => {
   const { activeStep, handleNext, handleBack } = useContext(StepperComponent);
-  const { user, userInfo , setUpdate} = useContext(userContext);
+  const { user, userInfo, setUpdate } = useContext(userContext);
   const { enqueueSnackbar } = useSnackbar();
   const [userData, setUserData] = useState({});
   const [cantPedido, setCantPedido] = useState(0);
@@ -79,7 +80,9 @@ const CreatePedido = ({ handleClose }) => {
         data.lista_reactivos.length ==
       0
     ) {
-      return enqueueSnackbar("El pedido debe tener al menos 1 elemento",{variant: "warning"})
+      return enqueueSnackbar("El pedido debe tener al menos 1 elemento", {
+        variant: "warning",
+      });
     }
     try {
       const pedido = {
@@ -102,19 +105,22 @@ const CreatePedido = ({ handleClose }) => {
         lista_materiales: data.lista_materiales,
         lista_reactivos: data.lista_reactivos,
         observaciones: data.observaciones,
-        descripcion: data.descripcion,        
+        descripcion: data.descripcion,
         equipos_update: listaEquipos,
         materiales_update: listaMateriales,
-        reactivos_update: listaReactivos
+        reactivos_update: listaReactivos,
       };
       await postPedido(pedido);
+      await getPedidosPorDni(userData.dni, "TODOS", "", "", "TODOS", true, 1);
       setTimeout(() => {
-        setUpdate(2)
-        enqueueSnackbar("El pedido se realizo con éxito",{variant: "success"})
+        setUpdate(2);
+        enqueueSnackbar("El pedido se realizo con éxito", {
+          variant: "success",
+        });
         handleClose();
       }, 200);
     } catch (error) {
-      enqueueSnackbar("Ocurrio un Error al crear Pedido",{variant: "error"})
+      enqueueSnackbar("Ocurrio un Error al crear Pedido", { variant: "error" });
       console.log({ error: true, message: "Ocurrio un Error al crear Pedido" });
     }
   };
@@ -138,9 +144,9 @@ const CreatePedido = ({ handleClose }) => {
     });
     getListaReactivos().then((res) => {
       setListaReactivos(res);
-    });    
+    });
   }, []);
-  
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box
@@ -149,7 +155,7 @@ const CreatePedido = ({ handleClose }) => {
           height: "50vh",
           overflow: "auto",
         }}
-      >        
+      >
         <Informacion
           values={{
             cantPedido,

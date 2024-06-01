@@ -6,7 +6,13 @@ import SendIcon from "@mui/icons-material/Send";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import pipeta from "../Image/pipeta.png";
-import { Autocomplete, Checkbox, FormControlLabel, TextField, ThemeProvider } from "@mui/material";
+import {
+  Autocomplete,
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  ThemeProvider,
+} from "@mui/material";
 import Button from "@mui/material/Button";
 import Theme1 from "../Theme/Theme1";
 import postMaterial from "../../Services/postMaterial";
@@ -26,7 +32,9 @@ function AltaMaterial({
   const [error, setError] = useState("none");
   const [openMensaje, setOpenMensaje] = useState(false);
   const [mensajeSalida, setMensajeSalida] = useState("");
-  const [enough , setEnough] = useState(false);
+  const [enough, setEnough] = useState(false);
+  const [notAvailable, setNotAvailable] = useState(false);
+
   const cargaMaterial = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -43,6 +51,7 @@ function AltaMaterial({
         descripcion: data.get("descripcion"),
         stock: !enough ? parseInt(data.get("stock")) : -1,
         unidadMedida: "UNI",
+        disponible: !notAvailable
       };
 
       postMaterial(dato);
@@ -200,12 +209,20 @@ function AltaMaterial({
                 </Grid>
               </Grid>
               <FormControlLabel
-              checked={enough}
+                checked={enough}
                 control={<Checkbox />}
                 onChange={(e) => {
                   setEnough(e.target.checked);
                 }}
                 label="Cantidad Suficiente"
+              />
+              <FormControlLabel
+                checked={notAvailable}
+                control={<Checkbox />}
+                onChange={(e) => {
+                  setNotAvailable(e.target.checked);
+                }}
+                label="No disponible"
               />
             </Grid>
 
@@ -290,7 +307,8 @@ const MaterialDadoAlta = ({ material }) => {
         <strong>Clase: </strong> {material.clase}
       </p>
       <p>
-        <strong>Stock: </strong> {material.stock == -1 ? 'Suficiente' : material.stock}
+        <strong>Stock: </strong>{" "}
+        {material.stock == -1 ? "Suficiente" : material.stock}
       </p>
     </div>
   );

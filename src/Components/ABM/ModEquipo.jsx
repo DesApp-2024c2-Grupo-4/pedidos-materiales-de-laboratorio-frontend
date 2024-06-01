@@ -76,6 +76,7 @@ function ModEquipo({
       stock: !enough ? parseInt(nuevoStock) : -1,
       enReparacion: !enough ? parseInt(enReparacion) : 0,
       unidadMedida: "UNI",
+      disponible: !notAvailable,
     };
 
     updateEquipo(elegido._id, dato);
@@ -106,8 +107,9 @@ function ModEquipo({
     setNuevaClase(elegido.clase);
     !enough && setNuevoStock(elegido.stock);
     setEnReparacion(elegido.enReparacion);
+    setNotAvailable(!elegido.disponible);
   }, [elegido]);
-
+  
   return (
     <>
       <Grid

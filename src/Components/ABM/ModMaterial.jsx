@@ -49,6 +49,7 @@ function ModMaterial({
   const [titulo, setTitulo] = useState("");
   const [scroll, setScroll] = React.useState("paper");
   const [enough, setEnough] = useState(false);
+  const [notAvailable, setNotAvailable] = useState(false);
 
   const modDescripcion = (event) => {
     if (event.target.value !== null) {
@@ -78,6 +79,7 @@ function ModMaterial({
       stock: !enough ? parseInt(nuevoStock) : -1,
       enReparacion: !enough ? parseInt(enReparacion) : 0,
       unidadMedida: "UNI",
+      disponible: !notAvailable,
     };
 
     updateMaterial(elegido._id, dato);
@@ -101,6 +103,7 @@ function ModMaterial({
     setNuevaClase(elegido.clase);
     !enough && setNuevoStock(elegido.stock);
     setEnReparacion(elegido.enReparacion);
+    setNotAvailable(!elegido.disponible);
   }, [elegido]);
 
   return (
@@ -254,6 +257,14 @@ function ModMaterial({
               }}
               label="Cantidad Suficiente"
             />
+            <FormControlLabel
+              checked={notAvailable}
+              control={<Checkbox />}
+              onChange={(e) => {
+                setNotAvailable(e.target.checked);
+              }}
+              label="No disponible"
+            />
           </Grid>
         </Grid>
 
@@ -363,7 +374,8 @@ const MaterialModificado = ({ material }) => {
         <strong>Clase: </strong> {material.clase}
       </p>
       <p>
-        <strong>Stock: </strong> {material.stock == -1 ? 'Suficiente' : material.stock}
+        <strong>Stock: </strong>{" "}
+        {material.stock == -1 ? "Suficiente" : material.stock}
       </p>
     </div>
   );

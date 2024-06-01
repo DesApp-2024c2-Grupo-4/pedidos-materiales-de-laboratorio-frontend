@@ -1,4 +1,5 @@
 import {
+  Box,
   Container,
   IconButton,
   Table,
@@ -8,10 +9,13 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  Tooltip,
+  Typography,
 } from "@mui/material";
 import React from "react";
 import { useState } from "react";
 import EditIcon from "@material-ui/icons/Edit";
+import DoNotDisturbOnIcon from "@mui/icons-material/DoNotDisturbOn";
 
 const Listar = ({
   lista,
@@ -55,22 +59,77 @@ const Listar = ({
               <TableCell>Descripción</TableCell>
               <TableCell align="center">{type}</TableCell>
               <TableCell align="center">Stock</TableCell>
-              {type !== 'CAS' && <TableCell align="center">En reparación</TableCell>}
+              {type !== "CAS" && (
+                <TableCell align="center">En reparación</TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
             {listaFiltrada.map((row, index) => (
               <TableRow
                 key={index}
-                sx={{ "&:last-child td, &:last-child th": { border: '0 solid transparent' } }}
+                sx={{
+                  "&:last-child td, &:last-child th": {
+                    border: "0 solid transparent",
+                  },
+                }}
               >
-                <TableCell component="th" scope="row">{row.descripcion}{" "}</TableCell>
-                <TableCell align="center">{row.clase || row.cas}</TableCell>  
-                <TableCell align="center">{row.stock == 0 ? 'Consultar': row.stock == -1 ? 'Suficiente': row.stock}</TableCell>
-                {type !== 'CAS' && <TableCell align="center">{row.enReparacion}</TableCell>}
+                <TableCell component="th" scope="row">
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    {!row.disponible && (
+                      <Tooltip title="No disponible">
+                        <DoNotDisturbOnIcon sx={{ color: "gray" }} />
+                      </Tooltip>
+                    )}
+                    <Typography
+                      sx={{
+                        fontSize: "13px",
+                        color: row.disponible ? "black" : "gray",
+                      }}
+                    >
+                      {row.descripcion}
+                    </Typography>
+                  </Box>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography
+                    sx={{
+                      fontSize: "13px",
+                      color: row.disponible ? "black" : "gray",
+                    }}
+                  >
+                    {row.clase || row.cas}
+                  </Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography
+                    sx={{
+                      fontSize: "13px",
+                      color: row.disponible ? "black" : "gray",
+                    }}
+                  >
+                    {row.stock == 0
+                      ? "Consultar"
+                      : row.stock == -1
+                      ? "Suficiente"
+                      : row.stock}
+                  </Typography>
+                </TableCell>
+                {type !== "CAS" && (
+                  <TableCell align="center">
+                    <Typography
+                      sx={{
+                        fontSize: "13px",
+                        color: row.disponible ? "black" : "gray",
+                      }}
+                    >
+                      {row.enReparacion}
+                    </Typography>
+                  </TableCell>
+                )}
                 <TableCell align="center">
                   <IconButton
-                    variant={'primary.main'}
+                    variant={"primary.main"}
                     aria-label="editar"
                     onClick={() => handleEditar(row)}
                   >

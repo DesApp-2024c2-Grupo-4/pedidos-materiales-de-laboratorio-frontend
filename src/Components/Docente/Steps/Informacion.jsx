@@ -52,6 +52,27 @@ const Informacion = (props) => {
   const guardar_inicio = (value) => {
     setValue("fecha_solicitud", value["$d"]);
   };
+
+  const validarNext = () => {
+    if (valueTime == undefined) {
+      setError("fecha_utilizacion", {
+        type: "input date",
+        message: "Ingrese una fecha",
+      });
+    }
+    setTimeout(()=> {
+      trigger(["cantidad_grupos", "alumnos", "hora", "materia"]);
+
+    },100)
+    setTimeout(()=>{
+      watch(["cantidad_grupos", "alumnos", "materia"]).filter(
+        (e) => e == null
+      ).length == 0 &&
+        Object.keys(errors).length == 0 &&
+        handleNext();
+
+    },100)
+  }
   const cambiarFechaFin = (value) => {
     const date = value["$d"];
     if (date < new Date(new Date().setHours(-3, 0, -1))) {
@@ -377,7 +398,9 @@ const Informacion = (props) => {
             variant="outlined"
             {...register("cantidad_grupos", {
               required,
-              validate: validateGroup(getValues("alumnos")),
+              validate: (v) =>
+                  parseInt(v) < parseInt(getValues("alumnos")) ||
+                  "No puede haber mas grupos que alumnos",
             })}
           />
           <FormError error={errors.cantidad_grupos} />
@@ -413,18 +436,7 @@ const Informacion = (props) => {
           <Box sx={{ flex: "1 1 auto" }} />
           <Button
             onClick={() => {
-              if (valueTime == undefined) {
-                setError("fecha_utilizacion", {
-                  type: "input date",
-                  message: "Ingrese una fecha",
-                });
-              }
-              trigger(["cantidad_grupos", "alumnos", "hora", "materia"]);
-              watch(["cantidad_grupos", "alumnos", "materia"]).filter(
-                (e) => e == null
-              ).length == 0 &&
-                Object.keys(errors).length == 0 &&
-                handleNext();
+              validarNext()
             }}
             sx={{
               "&.MuiButtonBase-root": {

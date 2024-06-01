@@ -35,7 +35,8 @@ function AltaEquipo({
   const [openMensaje, setOpenMensaje] = useState(false);
   const [mensajeSalida, setMensajeSalida] = useState("");
   const [error, setError] = useState("none");
-  const [enough , setEnough] = useState(false);
+  const [enough, setEnough] = useState(false);
+  const [notAvailable, setNotAvailable] = useState(false);
   const cargaEquipo = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -52,6 +53,7 @@ function AltaEquipo({
         descripcion: data.get("descripcion"),
         stock: !enough ? parseInt(data.get("stock")) : -1,
         unidadMedida: "UNI",
+        disponible: !notAvailable
       };
 
       postEquipo(dato);
@@ -253,9 +255,17 @@ function AltaEquipo({
                 checked={enough}
                 control={<Checkbox />}
                 onChange={(e) => {
-                    setEnough(e.target.checked);
+                  setEnough(e.target.checked);
                 }}
                 label="Cantidad Suficiente"
+              />
+              <FormControlLabel
+                checked={notAvailable}
+                control={<Checkbox />}
+                onChange={(e) => {
+                  setNotAvailable(e.target.checked);
+                }}
+                label="No disponible"
               />
             </Grid>
 
@@ -342,7 +352,8 @@ const EquipoDadoAlta = (props) => {
         <strong>Clase: </strong> {equipo.clase}
       </p>
       <p>
-        <strong> Stock: </strong> {equipo.stock == -1 ? 'Suficiente' : equipo.stock}
+        <strong> Stock: </strong>{" "}
+        {equipo.stock == -1 ? "Suficiente" : equipo.stock}
       </p>
     </div>
   );

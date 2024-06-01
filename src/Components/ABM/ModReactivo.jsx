@@ -15,7 +15,12 @@ import Typography from "@mui/material/Typography";
 // import moment from 'moment'
 import Grid from "@mui/material/Grid";
 // import laboratorio from '../Image/biologia.png';
-import { Checkbox, FormControlLabel, TextField, ThemeProvider } from "@mui/material";
+import {
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  ThemeProvider,
+} from "@mui/material";
 import Button from "@mui/material/Button";
 import Theme1 from "../Theme/Theme1";
 
@@ -42,6 +47,7 @@ function ModReactivo({
   const [titulo, setTitulo] = useState("");
   const [scroll, setScroll] = React.useState("paper");
   const [enough, setEnough] = useState(false);
+  const [notAvailable, setNotAvailable] = useState(false);
 
   const modDescripcion = (event) => {
     if (event.target.value !== null) {
@@ -79,6 +85,7 @@ function ModReactivo({
       cas: elegido.cas,
       descripcion: elegido.descripcion,
       stock: elegido.stock,
+      disponible: !notAvailable,
     };
     deleteReactivo(elegido._id);
     setVerEdicion("none");
@@ -92,6 +99,7 @@ function ModReactivo({
     setNuevaDescripcion(elegido.descripcion);
     setNuevoCAS(elegido.cas);
     !enough && setNuevoStock(elegido.stock);
+    setNotAvailable(!elegido.disponible);
   }, [elegido]);
 
   return (
@@ -210,6 +218,14 @@ function ModReactivo({
               }}
               label="Cantidad Suficiente"
             />
+            <FormControlLabel
+              checked={notAvailable}
+              control={<Checkbox />}
+              onChange={(e) => {
+                setNotAvailable(e.target.checked);
+              }}
+              label="No disponible"
+            />
           </Grid>
         </Grid>
 
@@ -320,7 +336,8 @@ const ReactivoModificado = ({ reactivo }) => {
         <strong>CAS: </strong> {reactivo.cas}
       </p>
       <p>
-        <strong>Stock: </strong> {reactivo.stock == -1 ? 'Suficiente' : reactivo.stock}
+        <strong>Stock: </strong>{" "}
+        {reactivo.stock == -1 ? "Suficiente" : reactivo.stock}
       </p>
     </div>
   );
