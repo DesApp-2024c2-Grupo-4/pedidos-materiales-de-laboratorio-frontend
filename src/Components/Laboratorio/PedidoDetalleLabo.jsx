@@ -22,6 +22,7 @@ import Paper from "@mui/material/Paper";
 import { IconButton } from "@material-ui/core";
 import DownloadIcon from "@mui/icons-material/Download";
 import "jspdf-autotable";
+import { handleDownload } from "../Docente/Steps/handles";
 
 function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
   const {
@@ -70,101 +71,7 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
       }
     });
   }, [read, cant, pedido._id, open]);
-  const handleDownload = (e, pedido) => {
-    e.stopPropagation();
-    e.preventDefault();
-    var doc = new jsPDF();
 
-    const docWidth = doc.internal.pageSize.getWidth();
-
-    doc.setFontSize(10);
-    // Textos a la izquierda
-    doc.text(`Pedido #${pedido.numero_tp}`, 10, 10);
-    doc.text(`Docente: ${pedido.docente.nombre} ${pedido.docente.apellido}`, 10, 15);
-    doc.text(`Número de laboratorio: ${pedido.numero_laboratorio != null ? pedido.numero_laboratorio : "sin asignar"}`, 10, 25);
-    doc.text(`Edificio: ${pedido.edificio != "" ? pedido.edificio : "sin asignar"}`, 10, 30);
-    doc.text(`Materia: ${pedido.materia}`, 10, 35);
-    // Textos a la derecha
-    doc.text(`Fecha de solicitud: ${pedido.fecha_solicitud.split("T")[0]}`, docWidth - 100, 25);
-    doc.text(`Fecha de utilización: ${pedido.fecha_utilizacion.split("T")[0]} a la hora ${pedido.fecha_utilizacion.split("T")[1].split(".")[0].split(",")[0]}`, docWidth - 100, 30);
-    doc.text(`Cantidad de alumnos: ${pedido.alumnos}`, docWidth - 100, 35);
-    // Textos abajo
-    doc.text(`Descripción: ${pedido.descripcion != "" ? pedido.descripcion : "sin asignar"}`, 10, 45);
-    doc.text(`Observación: ${pedido.observaciones != "" ? pedido.observaciones : "sin asignar"}`, 10, 50);
-
-    let number_content = 60;
-    if (pedido.lista_materiales.length > 0) {
-      doc.text(`Lista de equipos:`, 10, number_content);
-      number_content += 5
-      doc.autoTable({
-        startY: number_content,
-        theme: "striped", // Aplica estilo de línea de cebra
-        headStyles: { fillColor: [41, 128, 185], textColor: [255, 255, 255] },
-        head: [["Clase", "Descripción", "Cantidad"]],
-        body: pedido.lista_equipos.map((row) => [
-          row.equipo.clase,
-          row.equipo.descripcion,
-          row.cantidad,
-        ]),
-      });
-      number_content = doc.previousAutoTable.finalY + 5;
-    }
-
-    if (pedido.lista_materiales.length > 0) {
-      number_content = number_content + 10;
-      doc.text(`Lista de materiales:`, 10, number_content);
-      number_content += 5
-      doc.autoTable({
-        startY: number_content,
-        theme: "striped", // Aplica estilo de línea de cebra
-        headStyles: { fillColor: [41, 128, 185], textColor: [255, 255, 255] },
-        head: [["Clase", "Descripción", "Cantidad"]],
-        body: pedido.lista_materiales.map((row) => [
-          row.material.clase,
-          row.material.descripcion,
-          row.cantidad,
-        ]),
-      });
-      number_content = doc.previousAutoTable.finalY + 5;
-    }
-
-    if (pedido.lista_reactivos.length > 0) {
-      number_content = number_content + 10;
-      doc.text(`Lista de reactivos:`, 10, number_content);
-      number_content += 5
-      doc.autoTable({
-        startY: number_content,
-        theme: "striped", // Aplica estilo de línea de cebra
-        headStyles: { fillColor: [41, 128, 185], textColor: [255, 255, 255] },
-        head: [
-          [
-            "Descripción",
-            "CAS",
-            "Calidad",
-            "Cant Total",
-            "U. de Medida",
-            "Tipo. Conc.",
-            "Medida Conc.",
-            "Disolvente",
-            "Otro. Disol.",
-          ],
-        ],
-        body: pedido.lista_reactivos.map((row) => [
-          row.reactivo.descripcion,
-          row.reactivo.cas,
-          row.calidad,
-          row.cantidad,
-          row.un_medida,
-          row.concentracion_tipo,
-          row.concentracion_medida,
-          row.disolvente,
-          row.otro_disolvente_descripcion,
-        ]),
-      });
-    }
-
-    doc.save(`pedido_${pedido.numero_tp}.pdf`);
-  };
   const tipo = {
     PENDIENTE: "pedido-estado-yellow",
     RECHAZADO: "pedido-estado-red",
