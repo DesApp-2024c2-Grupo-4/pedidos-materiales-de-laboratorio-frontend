@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getPedidosPorDni } from './getPedidosPorDNIService';
 import { getListaPedidos } from './getPedidosService';
 import { token } from "./getToken";
 
@@ -11,8 +12,8 @@ export async function postPedido(data) {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-    });
-    await getListaPedidos()
+    });    
+    await getPedidosPorDni(data.docente.dni, "TODOS", "", "", "TODOS", true, 1);
   } catch (error) {
     console.log(error);
     throw error;

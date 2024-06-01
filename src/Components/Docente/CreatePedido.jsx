@@ -111,8 +111,7 @@ const CreatePedido = ({ handleClose }) => {
         reactivos_update: listaReactivos,
       };
       await postPedido(pedido);
-      await getPedidosPorDni(userData.dni, "TODOS", "", "", "TODOS", true, 1);
-      setTimeout(() => {
+      setTimeout(async () => {
         setUpdate(2);
         enqueueSnackbar("El pedido se realizo con éxito", {
           variant: "success",
