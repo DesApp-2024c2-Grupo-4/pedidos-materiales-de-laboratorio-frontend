@@ -27,7 +27,7 @@ dayjs.extend(timezone);
 dayjs.tz.setDefault("America/Argentina/Buenos_Aires");
 
 // Configura el locale por defecto
-dayjs.locale("es");
+dayjs.locale("es-AR");
 
 const Informacion = (props) => {
   const {
@@ -47,6 +47,7 @@ const Informacion = (props) => {
   const { required, validateNumber, validateGroup, validateTime } =
     formValidate();
   const fechaInicio = formatDate(Date.now());
+  //const fechaInicio = dayjs().tz("America/Argentina/Buenos_Aires").format("YYYY-MM-DD"); opcion directa
   const [valueTime, setValueTime] = useState();
   const [valueHora, setValueHora] = useState("");
   const guardar_inicio = (value) => {
@@ -60,19 +61,16 @@ const Informacion = (props) => {
         message: "Ingrese una fecha",
       });
     }
-    setTimeout(()=> {
+    setTimeout(() => {
       trigger(["cantidad_grupos", "alumnos", "hora", "materia"]);
-
-    },100)
-    setTimeout(()=>{
-      watch(["cantidad_grupos", "alumnos", "materia"]).filter(
-        (e) => e == null
-      ).length == 0 &&
+    }, 100);
+    setTimeout(() => {
+      watch(["cantidad_grupos", "alumnos", "materia"]).filter((e) => e == null)
+        .length == 0 &&
         Object.keys(errors).length == 0 &&
         handleNext();
-
-    },100)
-  }
+    }, 100);
+  };
   const cambiarFechaFin = (value) => {
     const date = value["$d"];
     if (date < new Date(new Date().setHours(-3, 0, -1))) {
@@ -201,7 +199,7 @@ const Informacion = (props) => {
           flexGrow: 1,
         }}
       >
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es-AR">
           <DemoContainer
             sx={{
               display: "flex",
@@ -227,7 +225,7 @@ const Informacion = (props) => {
             />
           </DemoContainer>
         </LocalizationProvider>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es-AR">
           <DemoContainer
             sx={{
               display: "flex",
@@ -248,8 +246,7 @@ const Informacion = (props) => {
                 {...register("fecha_utilizacion")}
                 onChange={(value) => {
                   let newValue = correctorFechaDayjs(value);
-                  let mes = newValue.getMonth();
-                  newValue.setMonth(mes + 1);
+                  let mes = newValue.getMonth() + 1;
                   if (valueHora) {
                     let day =
                       newValue.getHours() == 21
@@ -289,7 +286,7 @@ const Informacion = (props) => {
           flexGrow: 1,
         }}
       >
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es-AR">
           <DemoContainer
             sx={{
               display: "flex",
@@ -324,7 +321,7 @@ const Informacion = (props) => {
           </DemoContainer>
         </LocalizationProvider>
 
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es-AR">
           <DemoContainer
             sx={{
               display: "flex",
@@ -399,8 +396,8 @@ const Informacion = (props) => {
             {...register("cantidad_grupos", {
               required,
               validate: (v) =>
-                  parseInt(v) < parseInt(getValues("alumnos")) ||
-                  "No puede haber mas grupos que alumnos",
+                parseInt(v) < parseInt(getValues("alumnos")) ||
+                "No puede haber mas grupos que alumnos",
             })}
           />
           <FormError error={errors.cantidad_grupos} />
@@ -436,7 +433,7 @@ const Informacion = (props) => {
           <Box sx={{ flex: "1 1 auto" }} />
           <Button
             onClick={() => {
-              validarNext()
+              validarNext();
             }}
             sx={{
               "&.MuiButtonBase-root": {

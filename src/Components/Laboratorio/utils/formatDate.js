@@ -7,7 +7,6 @@ export function formatDate(date) {
   const fechaLocal = new Date(date).toLocaleDateString("es-AR", options);
   if (month.length < 2) month = "0" + month;
   if (day.length < 2) day = "0" + day;
-  console.log(fechaLocal.replace(/\//g, "-"));
   return [year, month, day].join("-");
 }
 
@@ -45,7 +44,7 @@ export const correctorFechaDayjs = (newValue) => {
   const value = { ...newValue };
   const string = new Date(
     `${value["$y"]}-` +
-      `${value["$M"] < 10 ? "0" + Math.max(value["$M"], 1) : value["$M"]}-` +
+      `${value["$M"] < 10 ? "0" + (value["$M"]+1) : (value["$M"]+1)}-` +
       `${value["$D"] < 10 ? "0" + value["$D"] : value["$D"]}T` +
       `${value["$H"] < 10 ? "0" + value["$H"] : value["$H"]}:` +
       `${value["$m"] < 10 ? "0" + value["$m"] : value["$m"]}:00.000Z`

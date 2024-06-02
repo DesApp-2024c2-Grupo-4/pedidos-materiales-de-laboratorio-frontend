@@ -123,6 +123,7 @@ const CreatePedido = ({ handleClose }) => {
       console.log({ error: true, message: "Ocurrio un Error al crear Pedido" });
     }
   };
+  
   const cantPedidos = async () => {
     let cant = await getCantidadPedidos();
     setTimeout(() => {
