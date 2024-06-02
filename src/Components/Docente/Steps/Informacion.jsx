@@ -396,7 +396,7 @@ const Informacion = (props) => {
             {...register("cantidad_grupos", {
               required,
               validate: (v) =>
-                parseInt(v) < parseInt(getValues("alumnos")) ||
+                parseInt(v) <= parseInt(getValues("alumnos")) ||
                 "No puede haber mas grupos que alumnos",
             })}
           />
