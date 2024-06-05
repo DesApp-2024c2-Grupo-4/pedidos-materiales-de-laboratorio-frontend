@@ -26,7 +26,7 @@ export function dateFormat(date) {
 }
 export const esFechaValida = (fecha) => {
   const diaSemana = fecha.getDay();
-  if (diaSemana === 5) {
+  if (diaSemana === 6) {
     return false;
   }
   return true;

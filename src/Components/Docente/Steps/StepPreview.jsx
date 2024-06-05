@@ -52,7 +52,7 @@ const StepPreview = (props) => {
   const styleCard = {
     background: "rgb(29,47,88)",
     background:
-      "linear-gradient(90deg, rgba(29,47,88,1) 0%, rgba(29,47,88,1) 6%, rgba(255,255,255,1) 6%, rgba(255,255,255,1) 100%)",
+      "linear-gradient(90deg, rgba(29,47,88,1) 0%, rgba(29,47,88,1) 4%, rgba(255,255,255,1) 4%, rgba(255,255,255,1) 100%)",
   };
 
   const TextareaAutosize = styled(BaseTextareaAutosize)(
@@ -107,7 +107,7 @@ const StepPreview = (props) => {
           </Typography>
         </Typography>
         <Typography color="text.secondary">
-          userData{" "}
+          DNI{" "}
           <Typography
             component="span"
             color="#1B621A"
