@@ -105,7 +105,7 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
           <div className="pedido-grupo">
             <img className="pedido-icon-detalle" src={pedidoicon} alt="" />
             <DialogTitle className="pedido-numero" id="scroll-dialog-title">
-              Pedido #{descripcion}
+              Pedido #{numero_tp}
             </DialogTitle>
           </div>
           <div className="pedido-grupo">
