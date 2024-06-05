@@ -20,7 +20,7 @@ import {
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import PedidoDetalle from "../Laboratorio/PedidoDetalle";
 import PedidoDetalleLabo from "../Laboratorio/PedidoDetalleLabo";
-import { Typography } from "@mui/material";
+import { Tooltip, Typography } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import "jspdf-autotable";
 import { handleDownload } from "./Steps/handles";
@@ -74,7 +74,7 @@ function PedidoV1({ pedido, esAdmin }) {
   // if((fecha_utilizacion<=formatManiana)&& (tipo_pedido==="PENDIENTE")){
   //   setEstaPendiente('red')
   // };
-  
+
   const tipo = {
     PENDIENTE: "pedido-estado-yellow",
     RECHAZADO: "pedido-estado-red",
@@ -107,9 +107,11 @@ function PedidoV1({ pedido, esAdmin }) {
                       pedido.vigente ? tipo[tipo_pedido] : tipo["INACTIVO"]
                     }
                   ></Box>
-                  <IconButton onClick={(e) => handleDownload(e, pedido)}>
-                    <DownloadIcon style={{ color: "#fff" }} />
-                  </IconButton>
+                  <Tooltip title="Descargas">
+                    <IconButton onClick={(e) => handleDownload(e, pedido)}>
+                      <DownloadIcon style={{ color: "#fff" }} />
+                    </IconButton>
+                  </Tooltip>
                 </Box>
               }
             />

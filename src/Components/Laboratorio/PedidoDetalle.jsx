@@ -84,7 +84,6 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
     });
   }, [read, cant, pedido._id, open]);
 
-  
   const tipo = {
     PENDIENTE: "pedido-estado-yellow",
     RECHAZADO: "pedido-estado-red",
@@ -119,28 +118,30 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
               <Badge badgeContent={cant} color="secondary">
                 <MailIcon onClick={handleOpen} sx={{ color: "whitesmoke" }} />
               </Badge>
-              <Modal
-                open={openButton}
-                onClose={handleCloseButton}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-              >
-                <Box>
-                  <ChatOnline
-                    setRead={setRead}
-                    pedido={pedido}
-                    onClose={handleCloseButton}
-                  ></ChatOnline>
-                </Box>
-              </Modal>
             </Tooltip>
+            <Modal
+              open={openButton}
+              onClose={handleCloseButton}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box>
+                <ChatOnline
+                  setRead={setRead}
+                  pedido={pedido}
+                  onClose={handleCloseButton}
+                ></ChatOnline>
+              </Box>
+            </Modal>
             <div
               className={`pedido-estado pedido-estado-detalle pedido-estado-fix ${tipo[tipo_pedido]}`}
             ></div>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <IconButton onClick={(e) => handleDownload(e, pedido)}>
-                <DownloadIcon style={{ color: "#fff" }} />
-              </IconButton>
+              <Tooltip title="Descarga">
+                <IconButton onClick={(e) => handleDownload(e, pedido)}>
+                  <DownloadIcon style={{ color: "#fff" }} />
+                </IconButton>
+              </Tooltip>
             </Box>
           </div>
         </div>
