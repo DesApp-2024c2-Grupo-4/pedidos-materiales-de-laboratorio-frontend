@@ -91,7 +91,7 @@ function Pedidos() {
     setPage(1);
     setListaPedidos([]);
     cargarNuevosPedidos(1, []);
-  }, [tipo_pedido, fecha_fin, fecha_inicio, edificio, checked]);
+  }, [tipo_pedido, fecha_fin, fecha_inicio, edificio, checked, update]);
 
   const nextPage = () => {
     if (page < pageLength) {

@@ -70,6 +70,7 @@ function AsignarLaboratorio({ pedido, handleClose, open }) {
     };
     updatePedido(pedido._id, pedidoModificado);
     setUpdate(1);
+    handleClose(false);
   };
 
   useEffect(() => {
@@ -214,8 +215,8 @@ function AsignarLaboratorio({ pedido, handleClose, open }) {
             variant="outlined"
             bgcolor={"secondary"}
             color={"primary"}
-            //onClick={modificarEncabezado}
-            type="submit"
+            onClick={modificarEncabezado}
+            //type="submit"
             className="boton-modificar-pedido"
           >
             Editar
