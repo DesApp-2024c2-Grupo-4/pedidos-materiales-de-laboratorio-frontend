@@ -32,7 +32,7 @@ const closeButtonStyle = {
   color: "white !important",
 };
 
-export default function BasicModal() {
+export default function BasicModal({recharger}) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -72,7 +72,7 @@ export default function BasicModal() {
               "Preview",
             ]}
           >
-            <CreatePedido handleClose={handleClose} />
+            <CreatePedido handleClose={handleClose} recharger={recharger}/>
           </StepperModal>
         </Box>
       </Modal>

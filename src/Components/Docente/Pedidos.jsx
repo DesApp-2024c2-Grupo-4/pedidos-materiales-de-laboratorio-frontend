@@ -33,12 +33,12 @@ function Pedidos() {
   const [pageLength, setPageLength] = useState(0);
 
   const [nuevoPedido, setNuevoPedido] = useState(false);
-  const [texto, setEncabezado] = useState("DOCENTE");
+  const [isClose, setIsClose] = useState(false);
 
   const [listaPedidos, setListaPedidos] = useState([]);
 
   const now = correctionDate(new Date());
-  const [dni, setDni] = React.useState("")
+  const [dni, setDni] = React.useState("");
   const [tipo_pedido, setTipoPedido] = React.useState("TODOS");
   const [fecha_utilizacion, set_fecha_utilizacion] = React.useState("");
   const [fecha_inicio, set_fecha_inicio] = React.useState("");
@@ -70,7 +70,7 @@ function Pedidos() {
       return setAlert(true);
     }
     setAlert(false);
-    if(dni){
+    if (dni) {
       await getPedidosPorDni(
         dni,
         tipo_pedido,
@@ -91,19 +91,22 @@ function Pedidos() {
     let mounted = true;
     setEsAdmin(user.rol === "lab");
     userInfo(user._id).then((res) => {
-          setDni(res.dni);
+      setDni(res.dni);
     });
     return () => (mounted = false);
   }, [update]);
 
-  const count = useMemo(() => {
-    if(dni){
+  useEffect(() => {
+    if (dni) {
       setPage(1);
       setListaPedidos([]);
       cargarNuevosPedidos(1, []);
+      setIsClose(false)
     }
-  }, [dni, tipo_pedido, fecha_fin, fecha_inicio, edificio, checked]);
-
+  }, [dni, tipo_pedido, fecha_fin, fecha_inicio, edificio, checked, isClose]);
+  const recharger = () => {
+    setIsClose(true )
+  }
   const nextPage = () => {
     if (page < pageLength) {
       setPage(page + 1);
@@ -114,13 +117,16 @@ function Pedidos() {
   return (
     <>
       <Box sx={{ flexGrow: 1, m: 2 }}>
-        <Header texto={texto}></Header>
+        <Header></Header>
       </Box>
 
       {!nuevoPedido ? (
         <Box sx={{ flexGrow: 0, m: 2 }}>
           <Fab color="primary" aria-label="add" className="boton-nuevo">
-            <BasicModal onClick={() => setNuevoPedido(true)}></BasicModal>
+            <BasicModal
+              recharger={recharger}
+              onClick={() => setNuevoPedido(true)}
+            ></BasicModal>
           </Fab>
         </Box>
       ) : (
@@ -178,11 +184,7 @@ function Pedidos() {
             >
               {listaPedidos.map((pedido) => (
                 <Grid item xs={3} sm={3} md={3} key={pedido._id}>
-                  <PedidoV1
-                    key={pedido._id}
-                    pedido={pedido}
-                    esAdmin={true}
-                  />
+                  <PedidoV1 key={pedido._id} pedido={pedido} esAdmin={true} />
                 </Grid>
               ))}
             </Grid>

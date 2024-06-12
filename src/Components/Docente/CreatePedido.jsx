@@ -20,7 +20,7 @@ import { postPedido } from "../../Services/postPedidoService";
 import { useSnackbar } from "notistack";
 import { getPedidosPorDni } from "../../Services/getPedidosPorDNIService";
 
-const CreatePedido = ({ handleClose }) => {
+const CreatePedido = ({ handleClose, recharger }) => {
   const { activeStep, handleNext, handleBack } = useContext(StepperComponent);
   const { user, userInfo, setUpdate } = useContext(userContext);
   const { enqueueSnackbar } = useSnackbar();
@@ -110,13 +110,14 @@ const CreatePedido = ({ handleClose }) => {
         materiales_update: listaMateriales,
         reactivos_update: listaReactivos,
       };
-      await postPedido(pedido);
+      //await postPedido(pedido);
       setTimeout(async () => {
         setUpdate(2);
         enqueueSnackbar("El pedido se realizo con éxito", {
           variant: "success",
         });
         handleClose();
+        recharger()
       }, 200);
     } catch (error) {
       enqueueSnackbar("Ocurrio un Error al crear Pedido", { variant: "error" });

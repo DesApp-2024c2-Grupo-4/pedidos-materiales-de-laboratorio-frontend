@@ -13,7 +13,7 @@ export async function postPedido(data) {
         "Content-Type": "application/json",
       },
     });    
-    await getPedidosPorDni(data.docente.dni, "TODOS", "", "", "TODOS", true, 1);
+    //await getPedidosPorDni(data.docente.dni, "TODOS", "", "", "TODOS", true, 1);
   } catch (error) {
     console.log(error);
     throw error;
