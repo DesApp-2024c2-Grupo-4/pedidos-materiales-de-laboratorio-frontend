@@ -185,7 +185,7 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
             </div>
             <div id="card-info-detalle" className="card-info-prof">
               {/* LISTA EQUIPOS */}
-              <TableContainer component={Paper} sx={{ maxHeight: 130 }}>
+              <TableContainer component={Paper} sx={{ maxHeight: 400 }}>
                 {lista_equipos.length > 0 && (
                   <>
                     <h4 className="pedido-categoria-detalle">Equipos</h4>
@@ -241,9 +241,7 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
                     </Box>
                   </>
                 )}
-              </TableContainer>
               {/* LISTA MATERIALES */}
-              <TableContainer component={Paper} sx={{ maxHeight: 130 }}>
                 {lista_materiales.length > 0 && (
                   <>
                     <h4 className="pedido-categoria-detalle">Materiales</h4>
@@ -288,8 +286,6 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
                     </Box>
                   </>
                 )}
-              </TableContainer>
-              <TableContainer component={Paper} sx={{ maxHeight: 130 }}>
                 {/* LISTA REACTIVOS */}
                 {lista_reactivos.length > 0 && (
                   <>
