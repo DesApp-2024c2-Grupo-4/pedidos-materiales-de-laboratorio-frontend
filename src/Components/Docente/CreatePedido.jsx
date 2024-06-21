@@ -73,6 +73,7 @@ const CreatePedido = ({ handleClose, recharger }) => {
       otro_disolvente_descripcion: null,
     },
   });
+
   const onSubmit = async (data) => {
     if (
       data.lista_equipos.length +
@@ -87,6 +88,7 @@ const CreatePedido = ({ handleClose, recharger }) => {
     try {
       const pedido = {
         docente: {
+          user: user._id,
           nombre: user.nombre,
           apellido: user.apellido,
           dni: userData.dni,
@@ -110,7 +112,7 @@ const CreatePedido = ({ handleClose, recharger }) => {
         materiales_update: listaMateriales,
         reactivos_update: listaReactivos,
       };
-      //await postPedido(pedido);
+      await postPedido(pedido);
       setTimeout(async () => {
         setUpdate(2);
         enqueueSnackbar("El pedido se realizo con éxito", {
