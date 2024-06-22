@@ -16,12 +16,9 @@ export default function Login() {
   const [error, setError] = useState(null)
   const { required, minLength, validateTrim } = formValidate();
   const {register, handleSubmit, formState: { errors }} = useForm({
-    //BORRAR
     defaultValues: {
-      user: "Admin01",
-      password: "123123",
-    //   user: "",
-    //   password: "",
+      user: "",
+      password: "",
     },
   });
 
