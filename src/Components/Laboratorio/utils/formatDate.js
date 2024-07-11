@@ -4,7 +4,7 @@ export function formatDate(date) {
     day = "" + d.getDate(),
     year = d.getFullYear();
   const options = { timeZone: "America/Argentina/Buenos_Aires" };
-  const fechaLocal = new Date(date).toLocaleDateString("es-AR", options);
+  const fechaLocal = new Date(date)?.toLocaleDateString("es-AR", options);
   if (month.length < 2) month = "0" + month;
   if (day.length < 2) day = "0" + day;
   return [year, month, day].join("-");
@@ -12,8 +12,8 @@ export function formatDate(date) {
 
 export function dateFormat(date) {
   const options = { timeZone: "America/Argentina/Buenos_Aires" };
-  const fechaLocal = date
-    .toLocaleDateString("es-ES", {
+  console.log(date)
+  const fechaLocal = date && new Date(date)?.toLocaleDateString("es-ES", {
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
@@ -21,8 +21,8 @@ export function dateFormat(date) {
     })
     .split("/")
     .reverse()
-    .join("-");
-  return fechaLocal;
+    .join("-"); 
+  return fechaLocal || "";
 }
 export const esFechaValida = (fecha) => {
   const diaSemana = fecha.getDay();
