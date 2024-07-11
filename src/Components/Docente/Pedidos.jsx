@@ -101,12 +101,12 @@ function Pedidos() {
       setPage(1);
       setListaPedidos([]);
       cargarNuevosPedidos(1, []);
-      setIsClose(false)
+      setIsClose(false);
     }
   }, [dni, tipo_pedido, fecha_fin, fecha_inicio, edificio, checked, isClose]);
   const recharger = () => {
-    setIsClose(true )
-  }
+    setIsClose(true);
+  };
   const nextPage = () => {
     if (page < pageLength) {
       setPage(page + 1);
@@ -153,9 +153,9 @@ function Pedidos() {
         setAlert={setAlert}
       />
       {listaPedidos.length < 1 && !nuevoPedido ? (
-        <Box sx={{ flexGrow: 1, md: 2 }}>
-          <NoEncontrados />
-        </Box>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <CircularProgress /> {/* Establece el ancho automáticamente */}
+        </div>
       ) : listaPedidos.length >= 1 && !nuevoPedido ? (
         <InfiniteScroll
           dataLength={totalLength}
