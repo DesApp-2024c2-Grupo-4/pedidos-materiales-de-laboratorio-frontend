@@ -46,7 +46,7 @@ function Pedidos() {
   const [fecha_fin, set_fecha_fin] = React.useState(now);
   const [edificio, set_edificio] = React.useState("TODOS");
   const [checked, setChecked] = React.useState(true);
-
+  const [loading, setLoading] = React.useState(false);
   // *******************************
   const [open, setOpen] = React.useState("");
   const [scroll, setScroll] = React.useState("paper");
@@ -73,19 +73,25 @@ function Pedidos() {
       return setAlert(true);
     }
     setAlert(false);
-    await axiosGetPedido(
-      tipo_pedido,
-      fecha_inicio,
-      fecha_fin,
-      edificio,
-      checked,
-      page
-    ).then((item) => {
-      let newArray = [...list, ...item.data];
-      setListaPedidos(newArray);
-      setTotalLength(item.totalCount);
-      setPageLength(item.totalPages);
-    });
+    try {
+      setLoading(true);
+      await axiosGetPedido(
+        tipo_pedido,
+        fecha_inicio,
+        fecha_fin,
+        edificio,
+        checked,
+        page
+      ).then((item) => {
+        let newArray = [...list, ...item.data];
+        setListaPedidos(newArray);
+        setTotalLength(item.totalCount);
+        setPageLength(item.totalPages);
+      });
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   }
   useEffect(() => {
     setPage(1);
@@ -131,9 +137,9 @@ function Pedidos() {
       />
 
       {listaPedidos && listaPedidos.length < 1 ? (
-        <Box sx={{ flexGrow: 1, md: 2 }}>
-          <NoEncontrados />
-        </Box>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <CircularProgress /> 
+        </div>
       ) : (
         <InfiniteScroll
           dataLength={totalLength}

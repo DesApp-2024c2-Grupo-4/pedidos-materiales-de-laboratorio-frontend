@@ -219,7 +219,7 @@ function AsignarLaboratorio({ pedido, handleClose, open }) {
             //type="submit"
             className="boton-modificar-pedido"
           >
-            Editar
+            Guardar
           </Button>
         </Grid>
       </Box>
