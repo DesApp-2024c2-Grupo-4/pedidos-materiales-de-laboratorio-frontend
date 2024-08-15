@@ -15,7 +15,10 @@ const LabProvider = ({ children }) => {
   };
   
   const storeUser = (user) => {
+    console.log(`in storeUser, about to encript this object`);
+    console.log(user);
     const encryptedUser = encryptAES(user);
+    console.log('encrypted')
     localStorage.setItem("usuario", encryptedUser);
     setUser(user);
   };

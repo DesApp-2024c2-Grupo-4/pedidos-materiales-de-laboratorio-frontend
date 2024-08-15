@@ -1,30 +1,17 @@
 import {
-  Card,
-  CardActionArea,
   CircularProgress,
-  makeStyles,
-} from "@material-ui/core";
+} from "@mui/material";
 import PedidoV1 from "../Docente/PedidoV1";
-import { getListaPedidos } from "../../Services/getPedidosService";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import Header from "../Header/Header";
 import Grid from "@mui/material/Grid";
-import NoEncontrados from "../Mensajes/NoEncontrados";
 import Filtros from "./Filtros";
 import { axiosGetPedido } from "../../Services/getPedidosService";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import { userContext } from "../../Context/LabProvider";
 import { correctionDate, dateFormat } from "./utils/formatDate";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-const useStyles = makeStyles(() => ({
-  marginTop: {
-    display: "flex",
-    flexDirection: "row",
-    textAlign: "center",
-  },
-}));
 
 function Pedidos() {
   // const { marginTop } = useStyles();

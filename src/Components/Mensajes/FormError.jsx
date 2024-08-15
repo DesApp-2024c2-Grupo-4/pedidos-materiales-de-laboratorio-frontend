@@ -3,7 +3,7 @@ import React from 'react'
 
 const FormError = ({error}) => {
   return (
-    <FormControl error={error} >
+    <FormControl error={!!error} >
         {error && 
           <FormHelperText sx={{ fontSize:'14px'}}>
            {error.message}</FormHelperText>

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Grid, TextField } from "@material-ui/core";
+import { Button, Grid, TextField } from "@mui/material";
 
 // import Box from '@mui/material/Box';
 import FormControl from "@mui/material/FormControl";
@@ -197,9 +197,7 @@ function AsignarLaboratorio({ pedido, handleClose, open }) {
         <Grid className="grid-botones">
           <Button
             fullWidth
-            margin="normal"
             variant="outlined"
-            bgcolor={"secondary"}
             color={"primary"}
             onClick={() => {
               handleClose(false);
@@ -211,9 +209,7 @@ function AsignarLaboratorio({ pedido, handleClose, open }) {
           </Button>
           <Button
             fullWidth
-            margin="normal"
             variant="outlined"
-            bgcolor={"secondary"}
             color={"primary"}
             onClick={modificarEncabezado}
             //type="submit"

@@ -1,37 +1,21 @@
 import React from "react";
 import pedidoicon from "../Image/pedido-icon.png";
-import { Icon, makeStyles } from "@material-ui/core";
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import Theme1 from "../Theme/Theme1";
-import { ThemeProvider } from "@mui/material/styles";
-import jsPDF from "jspdf";
-// import { getUsuario } from '../../Services/getUsuarioService';
 import moment from "moment";
 import {
   Box,
   Card,
   CardContent,
-  Avatar,
   CardHeader,
   IconButton,
   CardMedia,
   CardActionArea,
-} from "@material-ui/core";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+} from "@mui/material";
 import PedidoDetalle from "../Laboratorio/PedidoDetalle";
 import PedidoDetalleLabo from "../Laboratorio/PedidoDetalleLabo";
 import { Tooltip, Typography } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import "jspdf-autotable";
 import { handleDownload } from "./Steps/handles";
-
-const useStyles = makeStyles(() => ({
-  root: {
-    display: "flex",
-    margin: "8px",
-    minHeight: "240px",
-  },
-}));
 
 function PedidoV1({ pedido, esAdmin }) {
   // const { root } = useStyles();

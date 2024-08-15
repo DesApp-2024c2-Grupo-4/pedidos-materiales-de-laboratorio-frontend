@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useState } from "react";
-import EditIcon from "@material-ui/icons/Edit";
+import EditIcon from "@mui/icons-material/Edit";
 import DoNotDisturbOnIcon from "@mui/icons-material/DoNotDisturbOn";
 
 const Listar = ({

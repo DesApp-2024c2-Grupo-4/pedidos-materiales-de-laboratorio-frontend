@@ -24,19 +24,27 @@ export default function Login() {
 
   const onSubmit = async ({ user, password }) => {
     try {
+        console.log({ user, password });
         const hashPass = btoa(password)
+        console.log(hashPass);
         const value = await getUsuario(user, hashPass);
+        console.log(value);
         if(value.data) {    
             storeUser(value.data)
+            console.log('after storeUser');
             storeToken({token: value.token, expireIn: value.expireIn})
-            const rol = value.data.rol
+            console.log('after storeToken');
+            const rol = value.data.rol;
+            console.log(`obtained rol ${rol}`);
             if(rol === "docente") navigate("/Docente/Pedidos");
             else if (rol === "lab") navigate("/Laboratorio/Pedidos")
             else navigate("/login")            
         }else{
+          console.log('no data')
           throw new Error
         }
     } catch (error) {
+      console.log(error);
         setError({error: true ,message: 'Usuario o Contraseña incorrectos'})
     }
   };

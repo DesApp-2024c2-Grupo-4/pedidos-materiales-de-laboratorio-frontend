@@ -1,5 +1,5 @@
 import React from "react";
-import { IconButton, makeStyles } from "@material-ui/core";
+import { IconButton } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
@@ -9,10 +9,8 @@ import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import moment from "moment";
-import Grid from "@mui/material/Grid";
 import pedidoicon from "../Image/pedido-icon.png";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 import { Badge, TableCell, TableHead, TableRow, Tooltip } from "@mui/material";
 import MailIcon from "@mui/icons-material/Mail";
 import ChatOnline from "../chat-online/chat-online";
@@ -21,20 +19,8 @@ import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { getMensajes } from "../../Services/chat-service";
 import DownloadIcon from "@mui/icons-material/Download";
-import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { handleDownload } from "../Docente/Steps/handles";
-
-const useStyles = makeStyles(() => ({
-  root: {
-    display: "flex",
-    flexWrap: "wrap",
-    "& > *": {
-      margin: "8px",
-      height: "240px",
-    },
-  },
-}));
 
 function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
   const {
@@ -399,9 +385,7 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
 
             <Button
               fullWidth
-              margin="normal"
               variant="outlined"
-              bgcolor={"secondary"}
               color={"primary"}
               onClick={() => {
                 handleClose(false);

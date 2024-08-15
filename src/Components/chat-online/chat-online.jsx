@@ -1,7 +1,7 @@
 import * as React from "react";
-import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { Grid, Box } from "@mui/material";
-import CloseIcon from "@material-ui/icons/Close";
+import CloseIcon from "@mui/icons-material/Close";
 import "./chat-online.css";
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";

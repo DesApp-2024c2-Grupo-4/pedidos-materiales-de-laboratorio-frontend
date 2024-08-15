@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import Paper from '@mui/material/Paper';
-import { makeStyles } from '@material-ui/core/styles';
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
-import Ok from '../Image/ok.jpg'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 

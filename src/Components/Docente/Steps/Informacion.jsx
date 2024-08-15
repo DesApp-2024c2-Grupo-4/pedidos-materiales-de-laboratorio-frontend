@@ -87,6 +87,8 @@ const Informacion = (props) => {
       clearErrors("fecha_utilizacion");
     }
     const fecha = formatDate(value["$d"]);
+    console.log('in cambiarFechaFin - almost at the end');
+    console.log({ date, fecha });
     fecha !== "NaN-NaN-NaN" && setValue("fecha_utilizacion", value["$d"]);
   };
 
@@ -140,6 +142,8 @@ const Informacion = (props) => {
     } else {
       clearErrors(["hora", "hora_fin"]);
     }
+    console.log('ending handleTime');
+    console.log(newDate);
     setValue("fecha_utilizacion", newDate);
   };
 
@@ -258,8 +262,12 @@ const Informacion = (props) => {
                     );
                     newValue = new Date(new Date(newValue).setDate(day));
                     newValue = dayjs(newValue);
+                    console.log('in onChange fecha de utilizacion - con hora');
+                    console.log(newValue);
                   } else {
                     newValue = dayjs(newValue);
+                    console.log('in onChange fecha de utilizacion - sin hora');
+                    console.log(newValue);
                   }
                   clearErrors(["fecha_utilizacion", "hora", "hora_fin"]);
                   setValue("fecha_utilizacion", newValue["$d"]);
