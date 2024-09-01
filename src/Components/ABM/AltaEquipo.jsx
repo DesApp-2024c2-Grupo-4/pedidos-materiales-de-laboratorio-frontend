@@ -6,12 +6,7 @@ import SendIcon from "@mui/icons-material/Send";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 //import laboratorio from "../Image/biologia.png";
-import {
-  Autocomplete,
-  FormControlLabel,
-  TextField,
-  ThemeProvider,
-} from "@mui/material";
+import { Autocomplete, FormControlLabel, TextField, ThemeProvider } from "@mui/material";
 import Button from "@mui/material/Button";
 import postEquipo from "../../Services/postEquipo";
 import FormControl from "@mui/material/FormControl";
@@ -21,12 +16,7 @@ import InputLabel from "@mui/material/InputLabel";
 import Checkbox from "@mui/material/Checkbox";
 import PopUp from "./PopUp";
 
-function AltaEquipo({
-  open = { open },
-  setOpen = { setOpen },
-  scroll = { scroll },
-  handleClose = { handleClose },
-}) {
+function AltaEquipo({ open = { open }, setOpen = { setOpen }, scroll = { scroll }, handleClose = { handleClose } }) {
   const [openMensaje, setOpenMensaje] = useState(false);
   const [mensajeSalida, setMensajeSalida] = useState("");
   const [error, setError] = useState("none");
@@ -36,11 +26,7 @@ function AltaEquipo({
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    if (
-      data.get("clase") !== "" &&
-      data.get("descripcion") !== "" &&
-      data.get("stock") !== ""
-    ) {
+    if (data.get("clase") !== "" && data.get("descripcion") !== "" && data.get("stock") !== "") {
       setError("none");
 
       const dato = {
@@ -74,10 +60,7 @@ function AltaEquipo({
           padding: 2,
         }}
       >
-        <DialogContent
-          dividers={scroll === "paper"}
-          sx={{ padding: 2, margin: 3 }}
-        >
+        <DialogContent dividers={scroll === "paper"} sx={{ padding: 2, margin: 3 }}>
           <Grid
             container
             direction="row"
@@ -103,13 +86,7 @@ function AltaEquipo({
                   Equipo
                 </Typography>
               </Grid>
-              <Grid
-                item
-                xs={6}
-                display={error}
-                container
-                justifyContent="start"
-              >
+              <Grid item xs={6} display={error} container justifyContent="start">
                 <Typography sx={{ fontSize: 20 }} color="error">
                   FALTAN CARGAR DATOS
                 </Typography>
@@ -149,14 +126,7 @@ function AltaEquipo({
                 spacing={{ xs: 1, md: 1 }}
                 columns={{ xs: 12 }}
               >
-                <Grid
-                  item
-                  xs={8}
-                  container
-                  justifyContent="center"
-                  marginTop={1}
-                  marginLeft={1}
-                >
+                <Grid item xs={8} container justifyContent="center" marginTop={1} marginLeft={1}>
                   <FormControl fullWidth>
                     <InputLabel id="clase"> Clase </InputLabel>
                     <Select
@@ -172,10 +142,7 @@ function AltaEquipo({
                       <MenuItem sx={{ fontSize: 12 }} value={" "}>
                         {" "}
                       </MenuItem>
-                      <MenuItem
-                        sx={{ fontSize: 12 }}
-                        value={"AGITADORES-CENTRIFUGAS"}
-                      >
+                      <MenuItem sx={{ fontSize: 12 }} value={"AGITADORES-CENTRIFUGAS"}>
                         AGITADORES Y CENTRIFUGAS
                       </MenuItem>
                       <MenuItem sx={{ fontSize: 12 }} value={"BAÑOS"}>
@@ -190,37 +157,22 @@ function AltaEquipo({
                       <MenuItem sx={{ fontSize: 12 }} value={"ESTERILIZACION"}>
                         ESTERILIZACION
                       </MenuItem>
-                      <MenuItem
-                        sx={{ fontSize: 12 }}
-                        value={"ESTUFAS,INCUBADORAS Y MUFLAS"}
-                      >
+                      <MenuItem sx={{ fontSize: 12 }} value={"ESTUFAS,INCUBADORAS Y MUFLAS"}>
                         ESTUFAS,INCUBADORAS Y MUFLAS
                       </MenuItem>
-                      <MenuItem
-                        sx={{ fontSize: 12 }}
-                        value={"MEDIDORES-SONDAS-PHMTS"}
-                      >
+                      <MenuItem sx={{ fontSize: 12 }} value={"MEDIDORES-SONDAS-PHMTS"}>
                         MEDIDORES,SONDAS Y PHmetros
                       </MenuItem>
                       <MenuItem sx={{ fontSize: 12 }} value={"OPTICA"}>
                         OPTICA
                       </MenuItem>
-                      <MenuItem
-                        sx={{ fontSize: 12 }}
-                        value={"QUIMICA-ANALITICA"}
-                      >
+                      <MenuItem sx={{ fontSize: 12 }} value={"QUIMICA-ANALITICA"}>
                         QUÍMICA ANALÍTICA
                       </MenuItem>
-                      <MenuItem
-                        sx={{ fontSize: 12 }}
-                        value={"SALIDA-CAMPO-ANALISIS-AGUA"}
-                      >
+                      <MenuItem sx={{ fontSize: 12 }} value={"SALIDA-CAMPO-ANALISIS-AGUA"}>
                         SALIDA DE CAMPO Y ANÁLISIS DE AGUA
                       </MenuItem>
-                      <MenuItem
-                        sx={{ fontSize: 12 }}
-                        value={"SISTEMAS-MEDICION"}
-                      >
+                      <MenuItem sx={{ fontSize: 12 }} value={"SISTEMAS-MEDICION"}>
                         SISTEMAS DE MEDICION
                       </MenuItem>
                     </Select>
@@ -264,20 +216,8 @@ function AltaEquipo({
               />
             </Grid>
 
-            <Grid
-              container
-              direction="row"
-              justifyContent="space-around"
-              columns={{ xs: 12 }}
-            >
-              <Grid
-                item
-                xs={4}
-                height={50}
-                bgcolor={"error"}
-                borderRadius={2}
-                sx={{ mt: 3, mb: 2 }}
-              >
+            <Grid container direction="row" justifyContent="space-around" columns={{ xs: 12 }}>
+              <Grid item xs={4} height={50} bgcolor={"error"} borderRadius={2} sx={{ mt: 3, mb: 2 }}>
                 <Button
                   fullWidth
                   margin="normal"
@@ -296,14 +236,7 @@ function AltaEquipo({
                 </Button>
               </Grid>
 
-              <Grid
-                item
-                xs={4}
-                height={50}
-                bgcolor={"primary.main"}
-                borderRadius={2}
-                sx={{ mt: 3, mb: 2 }}
-              >
+              <Grid item xs={4} height={50} bgcolor={"primary.main"} borderRadius={2} sx={{ mt: 3, mb: 2 }}>
                 <Button
                   fullWidth
                   style={{ height: 50, borderRadius: 8 }}
@@ -347,8 +280,7 @@ const EquipoDadoAlta = (props) => {
         <strong>Clase: </strong> {equipo.clase}
       </p>
       <p>
-        <strong> Stock: </strong>{" "}
-        {equipo.stock == -1 ? "Suficiente" : equipo.stock}
+        <strong> Stock: </strong> {equipo.stock == -1 ? "Suficiente" : equipo.stock}
       </p>
     </div>
   );
