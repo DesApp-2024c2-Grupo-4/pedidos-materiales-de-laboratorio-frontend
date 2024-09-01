@@ -14,7 +14,6 @@ import Typography from "@mui/material/Typography";
 // import Paper from '@mui/material/Paper';
 // import moment from 'moment'
 import Grid from "@mui/material/Grid";
-import laboratorio from "../Image/biologia.png";
 import {
   Checkbox,
   FormControlLabel,
@@ -109,7 +108,7 @@ function ModEquipo({
     setEnReparacion(elegido.enReparacion);
     setNotAvailable(!elegido.disponible);
   }, [elegido]);
-  
+
   return (
     <>
       <Grid
@@ -415,7 +414,8 @@ const EquipoModificado = (props) => {
         <strong>Clase: </strong> {equipo.clase}
       </p>
       <p>
-        <strong> Stock: </strong> {equipo.stock == -1 ? 'Suficiente' : equipo.stock}
+        <strong> Stock: </strong>{" "}
+        {equipo.stock == -1 ? "Suficiente" : equipo.stock}
       </p>
     </div>
   );

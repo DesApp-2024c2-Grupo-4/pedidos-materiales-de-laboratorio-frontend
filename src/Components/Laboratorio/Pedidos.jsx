@@ -1,7 +1,5 @@
-import {
-  CircularProgress,
-} from "@mui/material";
-import PedidoV1 from "../Docente/PedidoV1";
+import { CircularProgress } from "@mui/material";
+//import PedidoV1 from "../Docente/PedidoV1";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import Header from "../Header/Header";
@@ -11,7 +9,6 @@ import { axiosGetPedido } from "../../Services/getPedidosService";
 import { userContext } from "../../Context/LabProvider";
 import { correctionDate, dateFormat } from "./utils/formatDate";
 import InfiniteScroll from "react-infinite-scroll-component";
-
 
 function Pedidos() {
   // const { marginTop } = useStyles();
@@ -125,7 +122,7 @@ function Pedidos() {
 
       {listaPedidos && listaPedidos.length < 1 ? (
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <CircularProgress /> 
+          <CircularProgress />
         </div>
       ) : (
         <InfiniteScroll
@@ -153,7 +150,7 @@ function Pedidos() {
               spacing={{ xs: 2, md: 3 }}
               columns={{ sm: 6, lg: 12 }}
             >
-              {listaPedidos?.map((pedido) => (
+              {/* {listaPedidos?.map((pedido) => (
                 <Grid item xs={3} key={pedido._id}>
                   <PedidoV1
                     key={pedido._id}
@@ -163,7 +160,7 @@ function Pedidos() {
                     setEdicionActiva={setEdicionActiva}
                   />
                 </Grid>
-              ))}
+              ))} */}
             </Grid>
           </Box>
         </InfiniteScroll>

@@ -1,4 +1,3 @@
-import PedidoV1 from "./PedidoV1";
 import { getPedidosPorDni } from "../../Services/getPedidosPorDNIService";
 import Header from "../Header/Header";
 import React, { useEffect, useMemo, useState } from "react";
@@ -182,11 +181,11 @@ function Pedidos() {
               spacing={{ xs: 2, md: 2 }}
               columns={{ xs: 3, sm: 6, md: 12 }}
             >
-              {listaPedidos.map((pedido) => (
+              {/* {listaPedidos.map((pedido) => (
                 <Grid item xs={3} sm={3} md={3} key={pedido._id}>
                   <PedidoV1 key={pedido._id} pedido={pedido} esAdmin={true} />
                 </Grid>
-              ))}
+              ))} */}
             </Grid>
           </Box>
         </InfiniteScroll>

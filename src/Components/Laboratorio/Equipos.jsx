@@ -7,7 +7,7 @@ import Container from "@mui/material/Container";
 import { ThemeProvider } from "@mui/material/styles";
 import Theme1 from "../Theme/Theme1";
 import { getListaEquiposFiltrada } from "../../Services/getService";
-import laboratorio from "../Image/biologia.png";
+//import laboratorio from "../Image/biologia.png";
 import Buscador from "./Buscador";
 import AltaEquipo from "../ABM/AltaEquipo";
 import Button from "@mui/material/Button";
@@ -49,7 +49,7 @@ export default function Equipos() {
   return (
     <>
       <Box sx={{ flexGrow: 1, m: 2 }}>
-        <Header texto={"Laboratorio"} isUserAdmin={'lab'}></Header>
+        <Header texto={"Laboratorio"} isUserAdmin={"lab"}></Header>
       </Box>
       <Container component="main" color="primary" sx={{ marginTop: 5 }}>
         <Grid
@@ -77,7 +77,7 @@ export default function Equipos() {
             alignItems="center"
           >
             <Grid item xs={1} container justifyContent="center">
-              <img width={30} alt="" heigth={30} src={laboratorio} />
+              <img width={30} alt="" heigth={30} src={""} />
             </Grid>
             <Grid item xs={3} container justifyContent="start">
               <Typography sx={{ fontSize: 30 }} color="text.secondary">

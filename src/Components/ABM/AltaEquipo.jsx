@@ -2,14 +2,10 @@ import React, { useState } from "react";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
 import SendIcon from "@mui/icons-material/Send";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import laboratorio from "../Image/biologia.png";
+//import laboratorio from "../Image/biologia.png";
 import {
   Autocomplete,
   FormControlLabel,
@@ -17,7 +13,6 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import Button from "@mui/material/Button";
-import Theme1 from "../Theme/Theme1";
 import postEquipo from "../../Services/postEquipo";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
@@ -53,7 +48,7 @@ function AltaEquipo({
         descripcion: data.get("descripcion"),
         stock: !enough ? parseInt(data.get("stock")) : -1,
         unidadMedida: "UNI",
-        disponible: !notAvailable
+        disponible: !notAvailable,
       };
 
       postEquipo(dato);
@@ -101,7 +96,7 @@ function AltaEquipo({
               columns={{ xs: 12 }}
             >
               <Grid item xs={1} container justifyContent="center">
-                <img width={30} alt="" heigth={30} src={laboratorio} />
+                <img width={30} alt="" heigth={30} src={""} />
               </Grid>
               <Grid item xs={4} container justifyContent="start">
                 <Typography sx={{ fontSize: 30 }} color="text.secondary">

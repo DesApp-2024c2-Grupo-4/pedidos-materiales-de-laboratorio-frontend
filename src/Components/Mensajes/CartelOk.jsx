@@ -1,40 +1,30 @@
-import React, { useEffect, useState } from 'react'
-import Popover from '@mui/material/Popover';
-import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
+import React, { useEffect, useState } from "react";
+import Popover from "@mui/material/Popover";
+import Typography from "@mui/material/Typography";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 
-import ok_simbolo from '../Image/ok_simbolo.jpg'
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import errorM from '../Image/errorM.jpg';
-import CardMedia from '@mui/material/CardMedia';
-
+//import ok_simbolo from "../Image/ok_simbolo.jpg";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+//import errorM from '../Image/errorM.jpg';
+import CardMedia from "@mui/material/CardMedia";
 
 const CartelOk = (props) => {
-
-
   const [anchorEl, setAnchorEl] = useState("");
 
-
-
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? "simple-popover" : undefined;
 
   const handleError = () => {
-    props.setAnchorE2(null)
-  }
+    props.setAnchorE2(null);
+  };
 
   useEffect(() => {
-    setAnchorEl(props.anchorE2)
+    setAnchorEl(props.anchorE2);
 
-    return () => {
-
-    }
-  }, [props.anchorE2])
-
-
-
+    return () => {};
+  }, [props.anchorE2]);
 
   return (
     <div>
@@ -43,92 +33,99 @@ const CartelOk = (props) => {
         open={Boolean(open)}
         anchorEl={anchorEl}
         onClose={props.handleClose2}
-
         anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
+          vertical: "top",
+          horizontal: "center",
         }}
-
-
       >
-        {(props.pedidoIncompleto) ? (
-          <Card sx={{
-            display: 'flex', p: 2,
-            height: 180,
-            fontWeight: 700,
-            width: 500, border: 2, borderColor: 'red', color: 'red', textAlign: 'center', borderRadius: 2
-          }} >
-
+        {props.pedidoIncompleto ? (
+          <Card
+            sx={{
+              display: "flex",
+              p: 2,
+              height: 180,
+              fontWeight: 700,
+              width: 500,
+              border: 2,
+              borderColor: "red",
+              color: "red",
+              textAlign: "center",
+              borderRadius: 2,
+            }}
+          >
             <CardMedia
               component="img"
-              sx={{ width: 151, height: 150, }}
-              image={errorM}
+              sx={{ width: 151, height: 150 }}
+              image={""}
               alt="error"
             />
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-
-              <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
-                <Typography variant="h5" sx={{ fontWeight: 700, p: 1 }}>PEDIDO INCOMPLETO </Typography>
-                <Typography variant="h5" sx={{ fontWeight: 700, p: 1 }}> FALTA INFORMACIÓN   </Typography>
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <CardContent sx={{ display: "flex", flexDirection: "column" }}>
+                <Typography variant="h5" sx={{ fontWeight: 700, p: 1 }}>
+                  PEDIDO INCOMPLETO{" "}
+                </Typography>
+                <Typography variant="h5" sx={{ fontWeight: 700, p: 1 }}>
+                  FALTA INFORMACIÓN
+                </Typography>
 
                 <Button
                   margin="normal"
                   variant="outlined"
-                  type='text'
-
+                  type="text"
                   onClick={handleError}
-                  sx={{ color: 'red' }}
+                  sx={{ color: "red" }}
                 >
                   Click para continuar
                 </Button>
               </CardContent>
             </Box>
-
-
           </Card>
         ) : (
-          <Card sx={{
-            display: 'flex', p: 2,
-            height: 180,
-            fontWeight: 700,
-            width: 500, border: 2, borderColor: 'secondary.oscuro', color: 'secondary.oscuro', textAlign: 'center', borderRadius: 2
-          }} >
-
+          <Card
+            sx={{
+              display: "flex",
+              p: 2,
+              height: 180,
+              fontWeight: 700,
+              width: 500,
+              border: 2,
+              borderColor: "secondary.oscuro",
+              color: "secondary.oscuro",
+              textAlign: "center",
+              borderRadius: 2,
+            }}
+          >
             <CardMedia
               component="img"
-              sx={{ width: 151, height: 150, }}
-              image={ok_simbolo}
+              sx={{ width: 151, height: 150 }}
+              image={""}
               alt="ok"
             />
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-
-
-
-              <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
-                <Typography variant="h5" sx={{ fontWeight: 700, p: 1 }}>EL PEDIDO SE CARGÓ </Typography>
-                <Typography variant="h5" sx={{ fontWeight: 700, p: 1 }}> EXITOSAMENTE     </Typography>
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <CardContent sx={{ display: "flex", flexDirection: "column" }}>
+                <Typography variant="h5" sx={{ fontWeight: 700, p: 1 }}>
+                  EL PEDIDO SE CARGÓ
+                </Typography>
+                <Typography variant="h5" sx={{ fontWeight: 700, p: 1 }}>
+                  EXITOSAMENTE
+                </Typography>
 
                 <Button
                   margin="normal"
                   variant="contained"
-                  type='text'
-
+                  type="text"
                   onClick={props.handleClose2}
-                  sx={{ color: 'secondary' }}
+                  sx={{ color: "secondary" }}
                 >
                   Click para continuar
                 </Button>
               </CardContent>
             </Box>
-
-
-          </Card>)}
-
-
-
+          </Card>
+        )}
       </Popover>
     </div>
-  )
-}
+  );
+};
 
-export default CartelOk
+export default CartelOk;

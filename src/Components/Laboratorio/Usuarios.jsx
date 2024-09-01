@@ -5,9 +5,8 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { getListaUsuariosFiltrada } from "../../Services/getUsuarioService";
-import laboratorio from "../Image/laboratorio_personal.jpeg";
+//import laboratorio from "../Image/laboratorio_personal.jpeg";
 import Buscador from "./Buscador";
-
 import Button from "@mui/material/Button";
 import AltaUsuario from "../ABM/AltaUsuario";
 import ModUsuario from "../ABM/ModUsuario";
@@ -106,7 +105,7 @@ export default function Usuarios() {
               alignItems="center"
             >
               <Grid item xs={1} container justifyContent="center">
-                <img width={30} alt="" heigth={30} src={laboratorio} />
+                <img width={30} alt="" heigth={30} src={""} />
               </Grid>
               <Grid item xs={3} container justifyContent="start">
                 <Typography sx={{ fontSize: 30 }} color="text.secondary">

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import pedidoicon from "../Image/pedido-icon.png";
+//import pedidoicon from "../Image/pedido-icon.png";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
@@ -88,7 +88,7 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
       >
         <div className="pedido-flex">
           <div className="pedido-grupo">
-            <img className="pedido-icon-detalle" src={pedidoicon} alt="" />
+            <img className="pedido-icon-detalle" src={""} alt="" />
             <DialogTitle className="pedido-numero" id="scroll-dialog-title">
               Pedido #{numero_tp}
             </DialogTitle>
@@ -227,7 +227,7 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
                     </Box>
                   </>
                 )}
-              {/* LISTA MATERIALES */}
+                {/* LISTA MATERIALES */}
                 {lista_materiales.length > 0 && (
                   <>
                     <h4 className="pedido-categoria-detalle">Materiales</h4>
