@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { userContext } from "../../Context/LabProvider";
 import FormError from "../Mensajes/FormError";
 import { useState } from "react";
+import logoUniversidad from "../../../public/image/logo-universidad.png";
+
 
 export default function Login() {
   const { storeUser, storeToken } = React.useContext(userContext);
@@ -60,7 +62,7 @@ export default function Login() {
         <Grid item xs={0} md={4}></Grid>
         <Grid item xs={12} md={4}>
           <Box className="container-login">
-            <img src={""} alt="logo-universidad" />
+            <img src={logoUniversidad} alt="logo-universidad" />
           </Box>
           <Box className="containter-form-login">
             <Box>

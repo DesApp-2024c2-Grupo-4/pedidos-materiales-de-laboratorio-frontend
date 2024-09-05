@@ -17,7 +17,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-//import pipeta from '../Image/pipeta.png';
+import pipeta from "../../../public/image/pipeta.png";
 import CartelAlerta from "../Mensajes/CartelAlerta";
 const PedidoMaterial = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -76,7 +76,7 @@ const PedidoMaterial = (props) => {
         alignItems="center"
       >
         <Grid item xs={1} container justifyContent="center">
-          <img width={30} alt="" heigth={30} src={""} />
+          <img width={30} alt="" heigth={30} src={pipeta} />
         </Grid>
         <Grid item xs={3} container justifyContent="start">
           <Typography sx={{ fontSize: 30 }} color="text.secondary">

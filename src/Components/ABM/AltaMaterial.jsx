@@ -5,7 +5,7 @@ import DialogContent from "@mui/material/DialogContent";
 import SendIcon from "@mui/icons-material/Send";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-//import pipeta from "../Image/pipeta.png";
+import pipeta from "../../../public/image/pipeta.png";
 import {
   Autocomplete,
   Checkbox,
@@ -101,7 +101,7 @@ function AltaMaterial({
               columns={{ xs: 12 }}
             >
               <Grid item xs={1} container justifyContent="center">
-                <img width={30} alt="" heigth={30} src={""} />
+                <img width={30} alt="" heigth={30} src={pipeta} />
               </Grid>
               <Grid item xs={4} container justifyContent="start">
                 <Typography sx={{ fontSize: 30 }} color="text.secondary">

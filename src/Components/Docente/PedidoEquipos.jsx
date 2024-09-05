@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
-//import laboratorio from '../Image/biologia.png';
+import laboratorio from "../../../public/image/biologia.png";
 import {
   Button,
   Autocomplete,
@@ -72,7 +72,7 @@ const PedidoEquipos = (props) => {
         alignItems="center"
       >
         <Grid item xs={1} container justifyContent="center">
-          <img width={30} alt="" heigth={30} src={""} />
+          <img width={30} alt="" heigth={30} src={laboratorio} />
         </Grid>
         <Grid item xs={3} container justifyContent="start">
           <Typography sx={{ fontSize: 30 }} color="text.secondary">

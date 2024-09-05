@@ -7,7 +7,7 @@ import Container from "@mui/material/Container";
 import { ThemeProvider } from "@mui/material/styles";
 import Theme1 from "../Theme/Theme1";
 import { getListaReactivosFiltrada } from "../../Services/getService";
-//import quimica from '../Image/quimica.png'
+import quimica from "../../../public/image/quimica.png";
 import Buscador from "./Buscador";
 
 import Button from "@mui/material/Button";
@@ -77,7 +77,7 @@ export default function Reactivos() {
             alignItems="center"
           >
             <Grid item xs={1} container justifyContent="center">
-              <img width={30} alt="" heigth={30} src={""} />
+              <img width={30} alt="laboratorio" heigth={30} src={quimica} />
             </Grid>
             <Grid item xs={3} container justifyContent="start">
               <Typography sx={{ fontSize: 30 }} color="text.secondary">

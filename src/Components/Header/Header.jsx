@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-//import logo from "../Image/logo uni-01.png";
+import logo from "../../../public/Image/logo-uni-01.png";
 import { useNavigate } from "react-router-dom";
 import LaboratorioNav from "./LaboratorioNav";
 import { Button } from "@mui/material";
@@ -39,7 +39,7 @@ export default function Header(props) {
           maxwidth="lg"
         >
           <Toolbar>
-            <img className="logo" width={450} heigth={90} src={""} alt="logo" />
+            <img className="logo" width={450} heigth={90} src={logo} alt="logo" />
             {props.isNotLogin && user && (
               <div>
                 <Button

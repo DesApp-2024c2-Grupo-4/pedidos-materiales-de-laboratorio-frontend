@@ -7,7 +7,7 @@ import Container from "@mui/material/Container";
 import { ThemeProvider } from "@mui/material/styles";
 import Theme1 from "../Theme/Theme1";
 import { getListaMaterialesFiltrada } from "../../Services/getService";
-//import pipeta from '../Image/pipeta.png';
+import pipeta from "../../../public/image/pipeta.png";
 import Buscador from "./Buscador";
 import AltaMaterial from "../ABM/AltaMaterial";
 import Button from "@mui/material/Button";
@@ -77,7 +77,7 @@ export default function Materiales() {
             alignItems="center"
           >
             <Grid item xs={1} container justifyContent="center">
-              <img width={30} alt="" heigth={30} src={""} />
+              <img width={30} alt="" heigth={30} src={pipeta} />
             </Grid>
             <Grid item xs={3} container justifyContent="start">
               <Typography sx={{ fontSize: 30 }} color="text.secondary">

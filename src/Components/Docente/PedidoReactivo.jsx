@@ -13,7 +13,7 @@ import InputLabel from "@mui/material/InputLabel";
 import Avatar from "@mui/material/Avatar";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-//import quimica from '../Image/quimica.png'
+import quimica from "../../../public/image/quimica.png";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -80,7 +80,7 @@ const PedidoReactivo = (props) => {
         mb={2}
       >
         <Grid item xs={1} container justifyContent="center">
-          <img width={30} alt="" heigth={30} src={""} />
+          <img width={30} alt="" heigth={30} src={quimica} />
         </Grid>
         <Grid item xs={3} container justifyContent="start">
           <Typography sx={{ fontSize: 30 }} color="text.secondary">

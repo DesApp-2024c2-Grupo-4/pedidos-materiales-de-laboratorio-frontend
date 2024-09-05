@@ -7,7 +7,7 @@ import Container from "@mui/material/Container";
 import { ThemeProvider } from "@mui/material/styles";
 import Theme1 from "../Theme/Theme1";
 import { getListaEquiposFiltrada } from "../../Services/getService";
-//import laboratorio from "../Image/biologia.png";
+import laboratorio from "../../../public/image/biologia.png";
 import Buscador from "./Buscador";
 import AltaEquipo from "../ABM/AltaEquipo";
 import Button from "@mui/material/Button";
@@ -77,7 +77,7 @@ export default function Equipos() {
             alignItems="center"
           >
             <Grid item xs={1} container justifyContent="center">
-              <img width={30} alt="" heigth={30} src={""} />
+              <img width={30} alt="labo" heigth={30} src={laboratorio} />
             </Grid>
             <Grid item xs={3} container justifyContent="start">
               <Typography sx={{ fontSize: 30 }} color="text.secondary">

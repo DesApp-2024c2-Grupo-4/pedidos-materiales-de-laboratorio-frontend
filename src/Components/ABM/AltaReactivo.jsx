@@ -14,7 +14,7 @@ import Paper from "@mui/material/Paper";
 import moment from "moment";
 import Grid from "@mui/material/Grid";
 
-//import quimica from "../Image/quimica.png";
+import quimica from "../../../public/image/quimica.png";
 import {
   Autocomplete,
   Checkbox,
@@ -113,7 +113,7 @@ function AltaReactivo({
               columns={{ xs: 12 }}
             >
               <Grid item xs={1} container justifyContent="center">
-                <img width={30} alt="" heigth={30} src={""} />
+                <img width={30} alt="" heigth={30} src={quimica} />
               </Grid>
               <Grid item xs={4} container justifyContent="start">
                 <Typography sx={{ fontSize: 30 }} color="text.secondary">

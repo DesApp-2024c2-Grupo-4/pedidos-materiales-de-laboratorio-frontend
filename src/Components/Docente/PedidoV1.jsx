@@ -1,5 +1,5 @@
 import React from "react";
-//import pedidoicon from "../Image/pedido-icon.png";
+import pedidoIcon from "../../../public/image/pedido-icon.png";
 import moment from "moment";
 import {
   Box,
@@ -79,7 +79,7 @@ function PedidoV1({ pedido, esAdmin }) {
           <CardActionArea onClick={handleClickOpen("body")}>
             <CardHeader
               style={{ textAlign: "left" }}
-              avatar={<img className="pedido-icon" src={""} alt="" />}
+              avatar={<img className="pedido-icon" src={pedidoIcon} alt="" />}
               title={`Pedido #${numero_tp}`}
               // subheader={`Fecha : ${fecha_solicitud}`}
               subheader={`Fecha de Práctica: ${fecha_utilizar}`}

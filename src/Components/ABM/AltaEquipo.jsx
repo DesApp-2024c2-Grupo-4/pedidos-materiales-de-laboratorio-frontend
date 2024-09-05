@@ -5,7 +5,7 @@ import DialogContent from "@mui/material/DialogContent";
 import SendIcon from "@mui/icons-material/Send";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-//import laboratorio from "../Image/biologia.png";
+import laboratorio from "../../../public/image/biologia.png";
 import { Autocomplete, FormControlLabel, TextField, ThemeProvider } from "@mui/material";
 import Button from "@mui/material/Button";
 import postEquipo from "../../Services/postEquipo";
@@ -79,7 +79,7 @@ function AltaEquipo({ open = { open }, setOpen = { setOpen }, scroll = { scroll 
               columns={{ xs: 12 }}
             >
               <Grid item xs={1} container justifyContent="center">
-                <img width={30} alt="" heigth={30} src={""} />
+                <img width={30} alt="" heigth={30} src={laboratorio} />
               </Grid>
               <Grid item xs={4} container justifyContent="start">
                 <Typography sx={{ fontSize: 30 }} color="text.secondary">

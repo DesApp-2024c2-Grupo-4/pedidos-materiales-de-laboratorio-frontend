@@ -9,7 +9,7 @@ import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import moment from "moment";
-//import pedidoicon from "../Image/pedido-icon.png";
+import pedidoIcon from "../../../public/image/pedido-icon.png";
 import { Button } from "@mui/material";
 import { Badge, TableCell, TableHead, TableRow, Tooltip } from "@mui/material";
 import MailIcon from "@mui/icons-material/Mail";
@@ -88,7 +88,7 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
       >
         <div className="pedido-flex">
           <div className="pedido-grupo">
-            <img className="pedido-icon-detalle" src={""} alt="" />
+            <img className="pedido-icon-detalle" src={pedidoIcon} alt="ícono de pedido" />
             <DialogTitle className="pedido-numero" id="scroll-dialog-title">
               Pedido #{numero_tp}
             </DialogTitle>
