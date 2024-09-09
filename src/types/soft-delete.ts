@@ -1,3 +1,3 @@
 export type SoftDelete = {
-  isSoftDeleted: boolean;
-}
+  isSoftDeleted?: boolean;
+};
