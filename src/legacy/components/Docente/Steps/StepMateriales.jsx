@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { TimePicker } from "@mui/x-date-pickers";
 import FormError from "../../Mensajes/FormError";
-import { formValidate } from "../../../../src/utils/formValidator";
+import { formValidate } from "../../../../utils/formValidator";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { DataGrid } from "@mui/x-data-grid";
 import { deleteSelected, handleItem, stockItem } from "./handles";

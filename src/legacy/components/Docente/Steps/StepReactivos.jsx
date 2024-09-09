@@ -14,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import FormError from "../../Mensajes/FormError";
-import { formValidate } from "../../../../src/utils/formValidator";
+import { formValidate } from "../../../../utils/formValidator";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { DataGrid } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";

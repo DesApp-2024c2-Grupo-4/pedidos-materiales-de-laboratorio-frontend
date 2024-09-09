@@ -9,7 +9,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { Box, Button, Divider, TextField, Typography } from "@mui/material";
 import FormError from "../../Mensajes/FormError";
-import { formValidate } from "../../../../src/utils/formValidator";
+import { formValidate } from "../../../../utils/formValidator";
 import {
   esFechaValida,
   formatDate,
