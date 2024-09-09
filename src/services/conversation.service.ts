@@ -1,6 +1,6 @@
-import useAxios from "./axios.config";
+import useAxios from "../hooks/axios.hook";
 import handlePromise from "../utils/promise";
-import { Conversation } from "../models/conversation";
+import { Conversation } from "../types/conversation";
 import { AxiosRequestConfig } from "axios";
 
 const useConversationService = () => {

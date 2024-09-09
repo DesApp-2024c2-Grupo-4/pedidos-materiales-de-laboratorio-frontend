@@ -6,16 +6,19 @@ import Template from "./views/template";
 import Login from "./views/login";
 
 /* Styles */
-import "./navbar.css";
-import "./pedidos.css";
 import "./App.scss";
+import PrivateRoute from "./components/private-route";
+import Home from "./views/home";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Template />}>
+        <Route element={<Template />}>
           <Route index path="/login" element={<Login />} />
+          <Route element={<PrivateRoute />}>
+            <Route index path="/home" element={<Home />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

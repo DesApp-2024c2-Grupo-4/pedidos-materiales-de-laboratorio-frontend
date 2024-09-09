@@ -1,6 +1,6 @@
-import useAxios from "./axios.config";
+import useAxios from "../hooks/axios.hook";
 import handlePromise from "../utils/promise";
-import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
 type AccessTokenResponse = {
   accessToken: string;
@@ -19,10 +19,13 @@ const useAuthService = () => {
       },
     };
 
-    const [response, err] = await handlePromise<AxiosResponse<AccessTokenResponse>, unknown>(axiosInstance(config));
+    const [response, err] = await handlePromise<AxiosResponse<AccessTokenResponse>, AxiosError<any>>(
+      axiosInstance(config),
+    );
 
     if (err) {
-      Promise.reject(err);
+      const msg = err.response?.data?.message || "Unknown error";
+      return Promise.reject(msg);
     }
 
     if (!response) {
