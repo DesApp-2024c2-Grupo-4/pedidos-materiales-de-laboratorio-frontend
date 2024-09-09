@@ -1,4 +1,4 @@
-import { InUse } from "./in-use.schema";
+import { InUse } from "./in-use";
 import { SoftDelete } from "./soft-delete";
 
 export type Equipment = SoftDelete & {
@@ -10,4 +10,4 @@ export type Equipment = SoftDelete & {
   inUse: InUse[];
   inRepair?: number;
   available: boolean;
-}
+};

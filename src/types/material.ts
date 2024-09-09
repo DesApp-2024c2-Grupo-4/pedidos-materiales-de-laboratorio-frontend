@@ -1,7 +1,7 @@
-import { InUse } from "./in-use.schema";
+import { InUse } from "./in-use";
 import { SoftDelete } from "./soft-delete";
 
-export type Material =  SoftDelete & {
+export type Material = SoftDelete & {
   description: string;
   unitMeasure: string;
   type: string;
@@ -9,4 +9,4 @@ export type Material =  SoftDelete & {
   inUse: InUse[];
   inRepair?: number;
   isAvailable: boolean;
-}
+};
