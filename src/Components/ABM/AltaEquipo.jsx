@@ -8,7 +8,7 @@ import Grid from "@mui/material/Grid";
 import laboratorio from "../../../public/image/biologia.png";
 import { Autocomplete, FormControlLabel, TextField, ThemeProvider } from "@mui/material";
 import Button from "@mui/material/Button";
-import postEquipo from "../../Services/postEquipo";
+import postEquipo from "../../services/legacy/postEquipo";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";

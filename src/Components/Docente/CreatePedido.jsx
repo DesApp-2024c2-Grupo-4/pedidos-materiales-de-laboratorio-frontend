@@ -3,22 +3,18 @@ import React, { useContext } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { userContext } from "../../Context/LabProvider";
-import { getCantidadPedidos } from "../../Services/getPedidosService";
-import {
-  getListaEquipos,
-  getListaMateriales,
-  getListaReactivos,
-} from "../../Services/getService";
+import { userContext } from "../../context/LabProvider";
+import { getCantidadPedidos } from "../../services/legacy/getPedidosService";
+import { getListaEquipos, getListaMateriales, getListaReactivos } from "../../services/legacy/getService";
 import { StepperComponent } from "../Laboratorio/utils/StepperModal";
 import Informacion from "./Steps/Informacion";
 import StepEquipos from "./Steps/StepEquipos";
 import StepMateriales from "./Steps/StepMateriales";
 import StepPreview from "./Steps/StepPreview";
 import StepReactivos from "./Steps/StepReactivos";
-import { postPedido } from "../../Services/postPedidoService";
+import { postPedido } from "../../services/legacy/postPedidoService";
 import { useSnackbar } from "notistack";
-import { getPedidosPorDni } from "../../Services/getPedidosPorDNIService";
+import { getPedidosPorDni } from "../../services/legacy/getPedidosPorDNIService";
 
 const CreatePedido = ({ handleClose, recharger }) => {
   const { activeStep, handleNext, handleBack } = useContext(StepperComponent);
@@ -75,12 +71,7 @@ const CreatePedido = ({ handleClose, recharger }) => {
   });
 
   const onSubmit = async (data) => {
-    if (
-      data.lista_equipos.length +
-        data.lista_materiales.length +
-        data.lista_reactivos.length ==
-      0
-    ) {
+    if (data.lista_equipos.length + data.lista_materiales.length + data.lista_reactivos.length == 0) {
       return enqueueSnackbar("El pedido debe tener al menos 1 elemento", {
         variant: "warning",
       });
@@ -119,14 +110,14 @@ const CreatePedido = ({ handleClose, recharger }) => {
           variant: "success",
         });
         handleClose();
-        recharger()
+        recharger();
       }, 200);
     } catch (error) {
       enqueueSnackbar("Ocurrio un Error al crear Pedido", { variant: "error" });
       console.log({ error: true, message: "Ocurrio un Error al crear Pedido" });
     }
   };
-  
+
   const cantPedidos = async () => {
     let cant = await getCantidadPedidos();
     setTimeout(() => {

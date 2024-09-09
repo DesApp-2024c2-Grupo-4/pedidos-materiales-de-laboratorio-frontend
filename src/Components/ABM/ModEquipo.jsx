@@ -14,12 +14,7 @@ import Typography from "@mui/material/Typography";
 // import Paper from '@mui/material/Paper';
 // import moment from 'moment'
 import Grid from "@mui/material/Grid";
-import {
-  Checkbox,
-  FormControlLabel,
-  TextField,
-  ThemeProvider,
-} from "@mui/material";
+import { Checkbox, FormControlLabel, TextField, ThemeProvider } from "@mui/material";
 import Button from "@mui/material/Button";
 import Theme1 from "../Theme/Theme1";
 
@@ -28,15 +23,11 @@ import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
-import updateEquipo from "../../Services/updateEquipo";
-import deleteEquipo from "../../Services/deleteEquipo";
+import updateEquipo from "../../services/legacy/updateEquipo";
+import deleteEquipo from "../../services/legacy/deleteEquipo";
 import PopUp from "./PopUp";
 
-function ModEquipo({
-  setVerEdicion = { setVerEdicion },
-  elegido = { elegido },
-  setElegido = { setElegido },
-}) {
+function ModEquipo({ setVerEdicion = { setVerEdicion }, elegido = { elegido }, setElegido = { setElegido } }) {
   const [nuevaDescripcion, setNuevaDescripcion] = useState("");
   const [nuevaClase, setNuevaClase] = useState("");
   const [nuevoStock, setNuevoStock] = useState("");
@@ -166,22 +157,8 @@ function ModEquipo({
             />
           </Grid>
 
-          <Grid
-            container
-            noValidate
-            direction="row"
-            justifyContent="start"
-            alignItems="center"
-            columns={{ xs: 12 }}
-          >
-            <Grid
-              item
-              xs={8}
-              container
-              justifyContent="center"
-              marginTop={1}
-              marginLeft={1}
-            >
+          <Grid container noValidate direction="row" justifyContent="start" alignItems="center" columns={{ xs: 12 }}>
+            <Grid item xs={8} container justifyContent="center" marginTop={1} marginLeft={1}>
               <FormControl fullWidth>
                 <InputLabel id="clase"> Clase </InputLabel>
                 <Select
@@ -195,10 +172,7 @@ function ModEquipo({
                   value={nuevaClase}
                   onChange={modClase}
                 >
-                  <MenuItem
-                    sx={{ fontSize: 12 }}
-                    value={"AGITADORES-CENTRIFUGAS"}
-                  >
+                  <MenuItem sx={{ fontSize: 12 }} value={"AGITADORES-CENTRIFUGAS"}>
                     AGITADORES Y CENTRIFUGAS
                   </MenuItem>
                   <MenuItem sx={{ fontSize: 12 }} value={"BAÑOS"}>
@@ -213,16 +187,10 @@ function ModEquipo({
                   <MenuItem sx={{ fontSize: 12 }} value={"ESTERILIZACION"}>
                     ESTERILIZACION
                   </MenuItem>
-                  <MenuItem
-                    sx={{ fontSize: 12 }}
-                    value={"ESTUFAS,INCUBADORAS Y MUFLAS"}
-                  >
+                  <MenuItem sx={{ fontSize: 12 }} value={"ESTUFAS,INCUBADORAS Y MUFLAS"}>
                     ESTUFAS,INCUBADORAS Y MUFLAS
                   </MenuItem>
-                  <MenuItem
-                    sx={{ fontSize: 12 }}
-                    value={"MEDIDORES-SONDAS-PHMTS"}
-                  >
+                  <MenuItem sx={{ fontSize: 12 }} value={"MEDIDORES-SONDAS-PHMTS"}>
                     MEDIDORES,SONDAS Y PHmetros
                   </MenuItem>
                   <MenuItem sx={{ fontSize: 12 }} value={"OPTICA"}>
@@ -231,10 +199,7 @@ function ModEquipo({
                   <MenuItem sx={{ fontSize: 12 }} value={"QUIMICA-ANALITICA"}>
                     QUÍMICA ANALÍTICA
                   </MenuItem>
-                  <MenuItem
-                    sx={{ fontSize: 12 }}
-                    value={"SALIDA-CAMPO-ANALISIS-AGUA"}
-                  >
+                  <MenuItem sx={{ fontSize: 12 }} value={"SALIDA-CAMPO-ANALISIS-AGUA"}>
                     SALIDA DE CAMPO Y ANÁLISIS DE AGUA
                   </MenuItem>
                   <MenuItem sx={{ fontSize: 12 }} value={"SISTEMAS-MEDICION"}>
@@ -306,20 +271,8 @@ function ModEquipo({
           </Grid>
         </Grid>
 
-        <Grid
-          container
-          direction="row"
-          justifyContent="end"
-          columns={{ xs: 12 }}
-        >
-          <Grid
-            item
-            xs={2}
-            height={30}
-            bgcolor={"error"}
-            borderRadius={2}
-            sx={{ mt: 3, mb: 2, mr: 2 }}
-          >
+        <Grid container direction="row" justifyContent="end" columns={{ xs: 12 }}>
+          <Grid item xs={2} height={30} bgcolor={"error"} borderRadius={2} sx={{ mt: 3, mb: 2, mr: 2 }}>
             <Button
               fullWidth
               margin="normal"
@@ -335,14 +288,7 @@ function ModEquipo({
               ELIMINAR
             </Button>
           </Grid>
-          <Grid
-            item
-            xs={2}
-            height={30}
-            bgcolor={"error"}
-            borderRadius={2}
-            sx={{ mt: 3, mb: 2 }}
-          >
+          <Grid item xs={2} height={30} bgcolor={"error"} borderRadius={2} sx={{ mt: 3, mb: 2 }}>
             <Button
               fullWidth
               margin="normal"
@@ -361,14 +307,7 @@ function ModEquipo({
             </Button>
           </Grid>
 
-          <Grid
-            item
-            xs={2}
-            height={30}
-            bgcolor={"primary.main"}
-            borderRadius={2}
-            sx={{ mt: 3, mb: 2, marginLeft: 2 }}
-          >
+          <Grid item xs={2} height={30} bgcolor={"primary.main"} borderRadius={2} sx={{ mt: 3, mb: 2, marginLeft: 2 }}>
             <Button
               fullWidth
               style={{ height: 50, borderRadius: 8 }}
@@ -414,8 +353,7 @@ const EquipoModificado = (props) => {
         <strong>Clase: </strong> {equipo.clase}
       </p>
       <p>
-        <strong> Stock: </strong>{" "}
-        {equipo.stock == -1 ? "Suficiente" : equipo.stock}
+        <strong> Stock: </strong> {equipo.stock == -1 ? "Suficiente" : equipo.stock}
       </p>
     </div>
   );

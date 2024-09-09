@@ -9,8 +9,8 @@ import InputLabel from "@mui/material/InputLabel";
 // import Avatar from '@mui/material/Avatar';
 // import AddCircleIcon from '@mui/icons-material/AddCircle';
 // import DialogContentText from '@mui/material/DialogContentText';
-import updatePedido from "../../Services/updatePedido";
-import { userContext } from "../../Context/LabProvider";
+import updatePedido from "../../services/legacy/updatePedido";
+import { userContext } from "../../context/LabProvider";
 import { Box } from "@mui/material";
 
 function AsignarLaboratorio({ pedido, handleClose, open }) {
@@ -188,12 +188,7 @@ function AsignarLaboratorio({ pedido, handleClose, open }) {
         </FormControl>
       </Box>
 
-      <Box
-        direction="row"
-        spacing={{ xs: 1, md: 1 }}
-        columns={{ xs: 12 }}
-        justifyContent="center"
-      >
+      <Box direction="row" spacing={{ xs: 1, md: 1 }} columns={{ xs: 12 }} justifyContent="center">
         <Grid className="grid-botones">
           <Button
             fullWidth

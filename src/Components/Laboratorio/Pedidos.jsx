@@ -5,8 +5,8 @@ import Box from "@mui/material/Box";
 import Header from "../Header/Header";
 import Grid from "@mui/material/Grid";
 import Filtros from "./Filtros";
-import { axiosGetPedido } from "../../Services/getPedidosService";
-import { userContext } from "../../Context/LabProvider";
+import { axiosGetPedido } from "../../services/legacy/getPedidosService";
+import { userContext } from "../../context/LabProvider";
 import { correctionDate, dateFormat } from "./utils/formatDate";
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -59,14 +59,7 @@ function Pedidos() {
     setAlert(false);
     try {
       setLoading(true);
-      await axiosGetPedido(
-        tipo_pedido,
-        fecha_inicio,
-        fecha_fin,
-        edificio,
-        checked,
-        page
-      ).then((item) => {
+      await axiosGetPedido(tipo_pedido, fecha_inicio, fecha_fin, edificio, checked, page).then((item) => {
         let newArray = [...list, ...item.data];
         setListaPedidos(newArray);
         setTotalLength(item.totalCount);

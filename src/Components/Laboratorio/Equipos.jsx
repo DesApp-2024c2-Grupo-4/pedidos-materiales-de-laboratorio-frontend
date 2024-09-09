@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { ThemeProvider } from "@mui/material/styles";
 import Theme1 from "../Theme/Theme1";
-import { getListaEquiposFiltrada } from "../../Services/getService";
+import { getListaEquiposFiltrada } from "../../services/legacy/getService";
 import laboratorio from "../../../public/image/biologia.png";
 import Buscador from "./Buscador";
 import AltaEquipo from "../ABM/AltaEquipo";
@@ -70,12 +70,7 @@ export default function Equipos() {
           spacing={{ xs: 1, md: 1 }}
           columns={{ xs: 12 }}
         >
-          <Grid
-            container
-            direction="row"
-            justifyContent="start"
-            alignItems="center"
-          >
+          <Grid container direction="row" justifyContent="start" alignItems="center">
             <Grid item xs={1} container justifyContent="center">
               <img width={30} alt="labo" heigth={30} src={laboratorio} />
             </Grid>
@@ -85,10 +80,7 @@ export default function Equipos() {
               </Typography>
             </Grid>
             <Grid item xs={3} container justifyContent="center">
-              <Buscador
-                onBuscar={handleBuscar}
-                placeholder={"Buscar por descripción"}
-              ></Buscador>
+              <Buscador onBuscar={handleBuscar} placeholder={"Buscar por descripción"}></Buscador>
             </Grid>
             <Grid item xs={4} container justifyContent="flex-end">
               <NuevoEquipo
@@ -100,18 +92,8 @@ export default function Equipos() {
               />
             </Grid>
           </Grid>
-          <Grid
-            container
-            direction="row"
-            justifyContent="start"
-            alignItems="center"
-            display={verEdicion}
-          >
-            <ModEquipo
-              setVerEdicion={setVerEdicion}
-              elegido={elegido}
-              setElegido={setElegido}
-            />
+          <Grid container direction="row" justifyContent="start" alignItems="center" display={verEdicion}>
+            <ModEquipo setVerEdicion={setVerEdicion} elegido={elegido} setElegido={setElegido} />
           </Grid>
           <Listar
             lista={listaEquipos}

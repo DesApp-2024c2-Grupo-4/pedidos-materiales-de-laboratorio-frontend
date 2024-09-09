@@ -6,16 +6,10 @@ import SendIcon from "@mui/icons-material/Send";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import pipeta from "../../../public/image/pipeta.png";
-import {
-  Autocomplete,
-  Checkbox,
-  FormControlLabel,
-  TextField,
-  ThemeProvider,
-} from "@mui/material";
+import { Autocomplete, Checkbox, FormControlLabel, TextField, ThemeProvider } from "@mui/material";
 import Button from "@mui/material/Button";
 import Theme1 from "../Theme/Theme1";
-import postMaterial from "../../Services/postMaterial";
+import postMaterial from "../../services/legacy/postMaterial";
 import { useEffect } from "react";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
@@ -23,12 +17,7 @@ import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import PopUp from "./PopUp";
 
-function AltaMaterial({
-  open = { open },
-  setOpen = { setOpen },
-  scroll = { scroll },
-  handleClose = { handleClose },
-}) {
+function AltaMaterial({ open = { open }, setOpen = { setOpen }, scroll = { scroll }, handleClose = { handleClose } }) {
   const [error, setError] = useState("none");
   const [openMensaje, setOpenMensaje] = useState(false);
   const [mensajeSalida, setMensajeSalida] = useState("");
@@ -39,11 +28,7 @@ function AltaMaterial({
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    if (
-      data.get("clase") !== "" &&
-      data.get("descripcion") !== "" &&
-      data.get("stock") !== ""
-    ) {
+    if (data.get("clase") !== "" && data.get("descripcion") !== "" && data.get("stock") !== "") {
       setError("none");
 
       const dato = {
@@ -108,13 +93,7 @@ function AltaMaterial({
                   Material
                 </Typography>
               </Grid>
-              <Grid
-                item
-                xs={6}
-                display={error}
-                container
-                justifyContent="start"
-              >
+              <Grid item xs={6} display={error} container justifyContent="start">
                 <Typography sx={{ fontSize: 20 }} color="error">
                   FALTAN CARGAR DATOS
                 </Typography>
@@ -155,14 +134,7 @@ function AltaMaterial({
                 spacing={{ xs: 1, md: 1 }}
                 columns={{ xs: 12 }}
               >
-                <Grid
-                  item
-                  xs={8}
-                  container
-                  justifyContent="center"
-                  marginTop={1}
-                  marginLeft={1}
-                >
+                <Grid item xs={8} container justifyContent="center" marginTop={1} marginLeft={1}>
                   <FormControl fullWidth>
                     <InputLabel id="clase"> Clase </InputLabel>
                     <Select
@@ -226,20 +198,8 @@ function AltaMaterial({
               />
             </Grid>
 
-            <Grid
-              container
-              direction="row"
-              justifyContent="space-around"
-              columns={{ xs: 12 }}
-            >
-              <Grid
-                item
-                xs={4}
-                height={50}
-                bgcolor={"error"}
-                borderRadius={2}
-                sx={{ mt: 3, mb: 2 }}
-              >
+            <Grid container direction="row" justifyContent="space-around" columns={{ xs: 12 }}>
+              <Grid item xs={4} height={50} bgcolor={"error"} borderRadius={2} sx={{ mt: 3, mb: 2 }}>
                 <Button
                   fullWidth
                   margin="normal"
@@ -258,14 +218,7 @@ function AltaMaterial({
                 </Button>
               </Grid>
 
-              <Grid
-                item
-                xs={4}
-                height={50}
-                bgcolor={"primary.main"}
-                borderRadius={2}
-                sx={{ mt: 3, mb: 2 }}
-              >
+              <Grid item xs={4} height={50} bgcolor={"primary.main"} borderRadius={2} sx={{ mt: 3, mb: 2 }}>
                 <Button
                   fullWidth
                   style={{ height: 50, borderRadius: 8 }}
@@ -307,8 +260,7 @@ const MaterialDadoAlta = ({ material }) => {
         <strong>Clase: </strong> {material.clase}
       </p>
       <p>
-        <strong>Stock: </strong>{" "}
-        {material.stock == -1 ? "Suficiente" : material.stock}
+        <strong>Stock: </strong> {material.stock == -1 ? "Suficiente" : material.stock}
       </p>
     </div>
   );

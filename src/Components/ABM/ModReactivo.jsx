@@ -15,12 +15,7 @@ import Typography from "@mui/material/Typography";
 // import moment from 'moment'
 import Grid from "@mui/material/Grid";
 // import laboratorio from '../Image/biologia.png';
-import {
-  Checkbox,
-  FormControlLabel,
-  TextField,
-  ThemeProvider,
-} from "@mui/material";
+import { Checkbox, FormControlLabel, TextField, ThemeProvider } from "@mui/material";
 import Button from "@mui/material/Button";
 import Theme1 from "../Theme/Theme1";
 
@@ -31,14 +26,10 @@ import { useEffect } from "react";
 // import InputLabel from '@mui/material/InputLabel';
 import PopUp from "./PopUp";
 
-import updateReactivo from "../../Services/updateReactivos";
-import deleteReactivo from "../../Services/deleteReactivo";
+import updateReactivo from "../../services/legacy/updateReactivos";
+import deleteReactivo from "../../services/legacy/deleteReactivo";
 
-function ModReactivo({
-  setVerEdicion = { setVerEdicion },
-  elegido = { elegido },
-  setElegido = { setElegido },
-}) {
+function ModReactivo({ setVerEdicion = { setVerEdicion }, elegido = { elegido }, setElegido = { setElegido } }) {
   const [nuevaDescripcion, setNuevaDescripcion] = useState("");
   const [nuevoCAS, setNuevoCAS] = useState("");
   const [nuevoStock, setNuevoStock] = useState("");
@@ -168,14 +159,7 @@ function ModReactivo({
             spacing={{ xs: 1, md: 1 }}
             columns={{ xs: 12 }}
           >
-            <Grid
-              item
-              xs={8}
-              container
-              justifyContent="center"
-              marginTop={1}
-              marginLeft={1}
-            >
+            <Grid item xs={8} container justifyContent="center" marginTop={1} marginLeft={1}>
               <TextField
                 sx={{ marginTop: 1, marginBottom: 1, marginLeft: 0 }}
                 fullWidth
@@ -229,20 +213,8 @@ function ModReactivo({
           </Grid>
         </Grid>
 
-        <Grid
-          container
-          direction="row"
-          justifyContent="end"
-          columns={{ xs: 12 }}
-        >
-          <Grid
-            item
-            xs={2}
-            height={30}
-            bgcolor={"error"}
-            borderRadius={2}
-            sx={{ mt: 3, mb: 2, mr: 2 }}
-          >
+        <Grid container direction="row" justifyContent="end" columns={{ xs: 12 }}>
+          <Grid item xs={2} height={30} bgcolor={"error"} borderRadius={2} sx={{ mt: 3, mb: 2, mr: 2 }}>
             <Button
               fullWidth
               margin="normal"
@@ -258,14 +230,7 @@ function ModReactivo({
               ELIMINAR
             </Button>
           </Grid>
-          <Grid
-            item
-            xs={2}
-            height={30}
-            bgcolor={"error"}
-            borderRadius={2}
-            sx={{ mt: 3, mb: 2 }}
-          >
+          <Grid item xs={2} height={30} bgcolor={"error"} borderRadius={2} sx={{ mt: 3, mb: 2 }}>
             <Button
               fullWidth
               margin="normal"
@@ -284,14 +249,7 @@ function ModReactivo({
             </Button>
           </Grid>
 
-          <Grid
-            item
-            xs={2}
-            height={30}
-            bgcolor={"primary.main"}
-            borderRadius={2}
-            sx={{ mt: 3, mb: 2, marginLeft: 2 }}
-          >
+          <Grid item xs={2} height={30} bgcolor={"primary.main"} borderRadius={2} sx={{ mt: 3, mb: 2, marginLeft: 2 }}>
             <Button
               fullWidth
               style={{ height: 50, borderRadius: 8 }}
@@ -336,8 +294,7 @@ const ReactivoModificado = ({ reactivo }) => {
         <strong>CAS: </strong> {reactivo.cas}
       </p>
       <p>
-        <strong>Stock: </strong>{" "}
-        {reactivo.stock == -1 ? "Suficiente" : reactivo.stock}
+        <strong>Stock: </strong> {reactivo.stock == -1 ? "Suficiente" : reactivo.stock}
       </p>
     </div>
   );

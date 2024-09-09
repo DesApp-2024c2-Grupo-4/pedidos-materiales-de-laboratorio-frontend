@@ -15,7 +15,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import ChatOnline from "../chat-online/chat-online";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { getMensajes } from "../../Services/chat-service";
+import { getMensajes } from "../../services/legacy/chat-service";
 import Paper from "@mui/material/Paper";
 import { IconButton } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
@@ -52,18 +52,12 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
   useEffect(() => {
     getMensajes(pedido._id).then((res) => {
       if (res.data != null) {
-        const ultimoElemento =
-          res.data.list_mensajes[res.data.list_mensajes.length - 1];
+        const ultimoElemento = res.data.list_mensajes[res.data.list_mensajes.length - 1];
         if (ultimoElemento.nombre !== "LAB") {
-          const mensajesNoLeidos = res?.data?.list_mensajes.reduce(
-            (count, mensaje) => {
-              return count + (mensaje.read ? 0 : 1);
-            },
-            0
-          );
-          setCant((prevCant) =>
-            prevCant !== mensajesNoLeidos ? mensajesNoLeidos : prevCant
-          );
+          const mensajesNoLeidos = res?.data?.list_mensajes.reduce((count, mensaje) => {
+            return count + (mensaje.read ? 0 : 1);
+          }, 0);
+          setCant((prevCant) => (prevCant !== mensajesNoLeidos ? mensajesNoLeidos : prevCant));
         }
         setRead(ultimoElemento.read);
       }
@@ -112,16 +106,10 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
               aria-describedby="modal-modal-description"
             >
               <Box>
-                <ChatOnline
-                  setRead={setRead}
-                  pedido={pedido}
-                  onClose={handleCloseButton}
-                ></ChatOnline>
+                <ChatOnline setRead={setRead} pedido={pedido} onClose={handleCloseButton}></ChatOnline>
               </Box>
             </Modal>
-            <div
-              className={`pedido-estado pedido-estado-detalle pedido-estado-fix ${tipo[tipo_pedido]}`}
-            ></div>
+            <div className={`pedido-estado pedido-estado-detalle pedido-estado-fix ${tipo[tipo_pedido]}`}></div>
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Tooltip title="Descarga">
                 <IconButton onClick={(e) => handleDownload(e, pedido)}>
@@ -132,19 +120,12 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
           </div>
         </div>
         <DialogContent dividers={scroll === "paper"}>
-          <DialogContentText
-            id="scroll-dialog-description"
-            ref={descriptionElementRef}
-            tabIndex={-1}
-          >
+          <DialogContentText id="scroll-dialog-description" ref={descriptionElementRef} tabIndex={-1}>
             <div className="pedido-info">
               <fieldset className="pedido-info-fieldset">
                 <label htmlFor="laboratorio" id="label_laboratorio">
                   {" "}
-                  <strong>Laboratorio:</strong>{" "}
-                  {numero_laboratorio !== 0
-                    ? numero_laboratorio
-                    : "Sin Asignar"}
+                  <strong>Laboratorio:</strong> {numero_laboratorio !== 0 ? numero_laboratorio : "Sin Asignar"}
                 </label>
                 <label id="label_alumno">
                   {" "}
@@ -164,8 +145,7 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
                 </label>
                 <label id="label_docente">
                   {" "}
-                  <strong>Docente:</strong>{" "}
-                  {`${docente.nombre}  ${docente.apellido}`}
+                  <strong>Docente:</strong> {`${docente.nombre}  ${docente.apellido}`}
                 </label>
               </fieldset>
             </div>
@@ -185,41 +165,19 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
                       >
                         <TableHead>
                           <TableRow sx={{ borderBottom: "2px solid white" }}>
-                            <TableCell
-                              sx={{ color: "white", py: "0 !important" }}
-                            >
-                              Descripción
-                            </TableCell>
-                            <TableCell
-                              sx={{ color: "white", py: "0 !important" }}
-                            >
-                              Tipo
-                            </TableCell>
-                            <TableCell
-                              sx={{ color: "white", py: "0 !important" }}
-                            >
-                              Cantidad
-                            </TableCell>
+                            <TableCell sx={{ color: "white", py: "0 !important" }}>Descripción</TableCell>
+                            <TableCell sx={{ color: "white", py: "0 !important" }}>Tipo</TableCell>
+                            <TableCell sx={{ color: "white", py: "0 !important" }}>Cantidad</TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
                           {lista_equipos.map((row, index) => (
                             <TableRow key={index}>
-                              <TableCell
-                                sx={{ color: "white", py: "5px !important" }}
-                              >
+                              <TableCell sx={{ color: "white", py: "5px !important" }}>
                                 {row.equipo?.descripcion}
                               </TableCell>
-                              <TableCell
-                                sx={{ color: "white", py: "5px !important" }}
-                              >
-                                {row.equipo?.clase}
-                              </TableCell>
-                              <TableCell
-                                sx={{ color: "white", py: "5px !important" }}
-                              >
-                                {row?.cantidad}
-                              </TableCell>
+                              <TableCell sx={{ color: "white", py: "5px !important" }}>{row.equipo?.clase}</TableCell>
+                              <TableCell sx={{ color: "white", py: "5px !important" }}>{row?.cantidad}</TableCell>
                             </TableRow>
                           ))}
                         </TableBody>
@@ -240,31 +198,17 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
                       >
                         <TableHead>
                           <TableRow sx={{ borderBottom: "2px solid white" }}>
-                            <TableCell
-                              sx={{ color: "white", py: "0 !important" }}
-                            >
-                              Descripción
-                            </TableCell>
-                            <TableCell
-                              sx={{ color: "white", py: "0 !important" }}
-                            >
-                              Cas
-                            </TableCell>
+                            <TableCell sx={{ color: "white", py: "0 !important" }}>Descripción</TableCell>
+                            <TableCell sx={{ color: "white", py: "0 !important" }}>Cas</TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
                           {lista_materiales.map((row, index) => (
                             <TableRow key={index}>
-                              <TableCell
-                                sx={{ color: "white", py: "5px !important" }}
-                              >
+                              <TableCell sx={{ color: "white", py: "5px !important" }}>
                                 {row.material?.descripcion}
                               </TableCell>
-                              <TableCell
-                                sx={{ color: "white", py: "5px !important" }}
-                              >
-                                {row?.cantidad}
-                              </TableCell>
+                              <TableCell sx={{ color: "white", py: "5px !important" }}>{row?.cantidad}</TableCell>
                             </TableRow>
                           ))}
                         </TableBody>
@@ -284,89 +228,33 @@ function PedidoDetalle({ open, setOpen, scroll, handleClose, pedido }) {
                       >
                         <TableHead>
                           <TableRow sx={{ borderBottom: "2px solid white" }}>
-                            <TableCell
-                              sx={{ color: "white", py: "0 !important" }}
-                            >
-                              Descripción
-                            </TableCell>
-                            <TableCell
-                              sx={{ color: "white", py: "0 !important" }}
-                            >
-                              Cas
-                            </TableCell>
-                            <TableCell
-                              sx={{ color: "white", py: "0 !important" }}
-                            >
-                              Calidad
-                            </TableCell>
-                            <TableCell
-                              sx={{ color: "white", py: "0 !important" }}
-                            >
-                              Cant Total
-                            </TableCell>
-                            <TableCell
-                              sx={{ color: "white", py: "0 !important" }}
-                            >
-                              U. de Medida
-                            </TableCell>
-                            <TableCell
-                              sx={{ color: "white", py: "0 !important" }}
-                            >
-                              Tipo Conc.
-                            </TableCell>
-                            <TableCell
-                              sx={{ color: "white", py: "0 !important" }}
-                            >
-                              Medida Conc.
-                            </TableCell>
-                            <TableCell
-                              sx={{ color: "white", py: "0 !important" }}
-                            >
-                              Disolvente
-                            </TableCell>
+                            <TableCell sx={{ color: "white", py: "0 !important" }}>Descripción</TableCell>
+                            <TableCell sx={{ color: "white", py: "0 !important" }}>Cas</TableCell>
+                            <TableCell sx={{ color: "white", py: "0 !important" }}>Calidad</TableCell>
+                            <TableCell sx={{ color: "white", py: "0 !important" }}>Cant Total</TableCell>
+                            <TableCell sx={{ color: "white", py: "0 !important" }}>U. de Medida</TableCell>
+                            <TableCell sx={{ color: "white", py: "0 !important" }}>Tipo Conc.</TableCell>
+                            <TableCell sx={{ color: "white", py: "0 !important" }}>Medida Conc.</TableCell>
+                            <TableCell sx={{ color: "white", py: "0 !important" }}>Disolvente</TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
                           {lista_reactivos.map((row, index) => (
                             <TableRow key={index}>
-                              <TableCell
-                                sx={{ color: "white", py: "5px !important" }}
-                              >
+                              <TableCell sx={{ color: "white", py: "5px !important" }}>
                                 {row.reactivo.descripcion}
                               </TableCell>
-                              <TableCell
-                                sx={{ color: "white", py: "5px !important" }}
-                              >
-                                {row.reactivo.cas}
-                              </TableCell>
-                              <TableCell
-                                sx={{ color: "white", py: "5px !important" }}
-                              >
-                                {row.calidad}
-                              </TableCell>
-                              <TableCell
-                                sx={{ color: "white", py: "5px !important" }}
-                              >
-                                {row.cantidad}
-                              </TableCell>
-                              <TableCell
-                                sx={{ color: "white", py: "5px !important" }}
-                              >
-                                {row.un_medida}
-                              </TableCell>
-                              <TableCell
-                                sx={{ color: "white", py: "5px !important" }}
-                              >
+                              <TableCell sx={{ color: "white", py: "5px !important" }}>{row.reactivo.cas}</TableCell>
+                              <TableCell sx={{ color: "white", py: "5px !important" }}>{row.calidad}</TableCell>
+                              <TableCell sx={{ color: "white", py: "5px !important" }}>{row.cantidad}</TableCell>
+                              <TableCell sx={{ color: "white", py: "5px !important" }}>{row.un_medida}</TableCell>
+                              <TableCell sx={{ color: "white", py: "5px !important" }}>
                                 {row.concentracion_tipo}
                               </TableCell>
-                              <TableCell
-                                sx={{ color: "white", py: "5px !important" }}
-                              >
+                              <TableCell sx={{ color: "white", py: "5px !important" }}>
                                 {row.concentracion_medida}
                               </TableCell>
-                              <TableCell
-                                sx={{ color: "white", py: "5px !important" }}
-                              >
+                              <TableCell sx={{ color: "white", py: "5px !important" }}>
                                 {row.disolvente === "otro" ? (
                                   <>{row.otro_disolvente_descripcion}</>
                                 ) : (

@@ -4,11 +4,10 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import logo from "../../../public/Image/logo-uni-01.png";
 import { useNavigate } from "react-router-dom";
 import LaboratorioNav from "./LaboratorioNav";
 import { Button } from "@mui/material";
-import { userContext } from "../../Context/LabProvider";
+import { userContext } from "../../context/LabProvider";
 
 Header.defaultProps = {
   isNotLogin: true,
@@ -33,19 +32,12 @@ export default function Header(props) {
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar
-          style={{ backgroundColor: "#1D2F58" }}
-          position="static"
-          maxwidth="lg"
-        >
+        <AppBar style={{ backgroundColor: "#1D2F58" }} position="static" maxwidth="lg">
           <Toolbar>
             <img className="logo" width={450} heigth={90} src={logo} alt="logo" />
             {props.isNotLogin && user && (
               <div>
-                <Button
-                  onClick={handleMenu}
-                  className={`user_name ${Boolean(anchorEl) ? "flipped" : ""}`}
-                >
+                <Button onClick={handleMenu} className={`user_name ${Boolean(anchorEl) ? "flipped" : ""}`}>
                   {user.nombre} {user.apellido}
                 </Button>
 

@@ -1,8 +1,8 @@
 import React, { createContext, useState } from "react";
 import { useEffect } from "react";
 import { useMemo } from "react";
-import { decryptAES, encryptAES } from "../Services/getToken";
-import { getAdmin, getUserInfo } from "../Services/getUsuarioService";
+import { decryptAES, encryptAES } from "../services/legacy/getToken";
+import { getAdmin, getUserInfo } from "../services/legacy/getUsuarioService";
 
 export const userContext = createContext();
 const LabProvider = ({ children }) => {
@@ -13,12 +13,12 @@ const LabProvider = ({ children }) => {
     localStorage.setItem("token", token.token);
     setToken(token.token || localStorage.getItem("token"));
   };
-  
+
   const storeUser = (user) => {
     console.log(`in storeUser, about to encript this object`);
     console.log(user);
     const encryptedUser = encryptAES(user);
-    console.log('encrypted')
+    console.log("encrypted");
     localStorage.setItem("usuario", encryptedUser);
     setUser(user);
   };

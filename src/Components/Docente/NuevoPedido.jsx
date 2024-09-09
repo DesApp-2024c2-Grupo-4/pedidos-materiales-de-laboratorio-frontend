@@ -7,13 +7,9 @@ import Header from "../Header/Header";
 import Theme1 from "../Theme/Theme1";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
-import { postPedido } from "../../Services/postPedidoService";
-import {
-  getListaMateriales,
-  getListaEquipos,
-  getListaReactivos,
-} from "../../Services/getService";
-import { getCantidadPedidos } from "../../Services/getPedidosService";
+import { postPedido } from "../../services/legacy/postPedidoService";
+import { getListaMateriales, getListaEquipos, getListaReactivos } from "../../services/legacy/getService";
+import { getCantidadPedidos } from "../../services/legacy/getPedidosService";
 import SendIcon from "@mui/icons-material/Send";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import PedidoEquipos from "./PedidoEquipos";
@@ -21,13 +17,12 @@ import PedidoCabecera from "./PedidoCabecera";
 import PedidoMaterial from "./PedidoMaterial";
 import PedidoReactivo from "./PedidoReactivo";
 import CartelOk from "../Mensajes/CartelOk";
-import { userContext } from "../../Context/LabProvider";
+import { userContext } from "../../context/LabProvider";
 
 export default function NuevoPedido() {
   //PRUEBA CODIGO
   const { user, userInfo } = React.useContext(userContext);
   const [userData, setUserData] = useState({});
-
 
   const [pedidoEquipos, setPedidoEquipos] = useState([]);
   const [listaEquipos, setListaEquipos] = useState([]);
@@ -48,12 +43,10 @@ export default function NuevoPedido() {
   const verManiana = moment(manana).format("DD-MM-YYYY").toString();
   const formatManiana = moment(manana).format("YYYY-MM-DD").toString();
   var topeFecha = new Date();
-  const nTope = topeFecha.setTime(
-    topeFecha.getTime() + 60 * 24 * 60 * 60 * 1000
-  );
+  const nTope = topeFecha.setTime(topeFecha.getTime() + 60 * 24 * 60 * 60 * 1000);
   const verTope = moment(nTope).format("DD-MM-YYYY").toString();
   const [mensajeAlerta, setMensajeAlerta] = useState(
-    "Fecha invalida , debe estar entre " + verManiana + " y " + verTope
+    "Fecha invalida , debe estar entre " + verManiana + " y " + verTope,
   );
 
   const [pedidoMateriales, setPedidoMateriales] = useState([]);
@@ -93,16 +86,10 @@ export default function NuevoPedido() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const fecha = new Date();
-    const fecha_utilizacion = new Date(
-      `${data.get("fecha_utilizacion")}T${data.get("hora")}:00.000Z`
-    );
+    const fecha_utilizacion = new Date(`${data.get("fecha_utilizacion")}T${data.get("hora")}:00.000Z`);
     const nro_pedido = cantidadPedidos + 1;
 
-    if (
-      fecha_utilizacion !== "" &&
-      data.get("cantidad_alumnos").length > 0 &&
-      data.get("cantidad_grupos").length > 0
-    ) {
+    if (fecha_utilizacion !== "" && data.get("cantidad_alumnos").length > 0 && data.get("cantidad_grupos").length > 0) {
       setConfirCabecera("block");
 
       setEncabezadoPedido({
@@ -128,20 +115,14 @@ export default function NuevoPedido() {
   const cargaEquipo = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    if (
-      equipoElegido === "" ||
-      data.get("cant_equipo").length === 0 ||
-      parseInt(data.get("cant_equipo")) === 0
-    ) {
+    if (equipoElegido === "" || data.get("cant_equipo").length === 0 || parseInt(data.get("cant_equipo")) === 0) {
       setAnchorEle(event.currentTarget);
     } else {
       const dato = {
         cantidad: parseInt(data.get("cant_equipo"), 10),
         equipo: equipoElegido._id,
       };
-      const equipoRepetido = pedidoEquipos.filter(
-        (elemento) => elemento.equipo === dato.equipo
-      );
+      const equipoRepetido = pedidoEquipos.filter((elemento) => elemento.equipo === dato.equipo);
       if (equipoRepetido.length > 0) {
         setErrorEquipo("block");
         setEquipoOk("none");
@@ -168,14 +149,10 @@ export default function NuevoPedido() {
     }
   };
   const eliminarEquipo = (event) => {
-    const cargar_Nuevos_EquiposVer = verMasEquip.filter(
-      (eq) => eq.equipo._id !== event._id
-    );
+    const cargar_Nuevos_EquiposVer = verMasEquip.filter((eq) => eq.equipo._id !== event._id);
     setverMasEquip(cargar_Nuevos_EquiposVer);
 
-    const cargar_Nuevos_Equipos = pedidoEquipos.filter(
-      (eq) => eq.equipo !== event._id
-    );
+    const cargar_Nuevos_Equipos = pedidoEquipos.filter((eq) => eq.equipo !== event._id);
     setPedidoEquipos(cargar_Nuevos_Equipos);
   };
 
@@ -194,20 +171,14 @@ export default function NuevoPedido() {
     const data = new FormData(event.currentTarget);
     console.log([materialElegido]);
     console.log(parseInt(data.get("cant_material")) === 0);
-    if (
-      materialElegido === "" ||
-      data.get("cant_material").length === 0 ||
-      parseInt(data.get("cant_material")) === 0
-    ) {
+    if (materialElegido === "" || data.get("cant_material").length === 0 || parseInt(data.get("cant_material")) === 0) {
       setAnchorEleM(event.currentTarget);
     } else {
       const dato = {
         cantidad: parseInt(data.get("cant_material"), 10),
         material: materialElegido._id,
       };
-      const materialRepetido = pedidoMateriales.filter(
-        (elemento) => elemento.material === dato.material
-      );
+      const materialRepetido = pedidoMateriales.filter((elemento) => elemento.material === dato.material);
       console.log(materialRepetido);
       if (materialRepetido.length > 0) {
         setErrorMaterial("block");
@@ -240,14 +211,10 @@ export default function NuevoPedido() {
 
   const eliminarMaterial = (event) => {
     console.log(event);
-    const pedido_MaterialesVer = verMasMateriales.filter(
-      (mate) => mate.material._id !== event._id
-    );
+    const pedido_MaterialesVer = verMasMateriales.filter((mate) => mate.material._id !== event._id);
     setverMasMateriales(pedido_MaterialesVer);
 
-    const pedido_Materiales = pedidoMateriales.filter(
-      (mate) => mate.material !== event._id
-    );
+    const pedido_Materiales = pedidoMateriales.filter((mate) => mate.material !== event._id);
     setPedidoMateriales(pedido_Materiales);
     console.log(event._id);
   };
@@ -357,8 +324,7 @@ export default function NuevoPedido() {
           elemento.concentracion_tipo === dato.concentracion_tipo &&
           elemento.concentracion_medida === dato.concentracion_medida &&
           elemento.disolvente === dato.disolvente &&
-          elemento.otro_disolvente_descripcion ===
-            dato.otro_disolvente_descripcion
+          elemento.otro_disolvente_descripcion === dato.otro_disolvente_descripcion,
       );
       if (reactivoRepetido.length > 0) {
         setErrorReactivo("block");
@@ -390,13 +356,9 @@ export default function NuevoPedido() {
   };
 
   const eliminarReactivo = (value) => {
-    const cargar_reactivos_ver = verMasReactivos.filter(
-      (reactivo) => reactivo.reactivo._id !== value._id
-    );
+    const cargar_reactivos_ver = verMasReactivos.filter((reactivo) => reactivo.reactivo._id !== value._id);
     setverMasReactivos(cargar_reactivos_ver);
-    const cargar_reactivos = pedidoReactivos.filter(
-      (reactivo) => reactivo.reactivo !== value._id
-    );
+    const cargar_reactivos = pedidoReactivos.filter((reactivo) => reactivo.reactivo !== value._id);
     setPedidoReactivos(cargar_reactivos);
   };
 
@@ -418,9 +380,7 @@ export default function NuevoPedido() {
 
     if (
       pedidoEncabezado !== "" &&
-      (pedidoMateriales.length > 0 ||
-        pedidoEquipos.length > 0 ||
-        pedidoReactivos.length > 0)
+      (pedidoMateriales.length > 0 || pedidoEquipos.length > 0 || pedidoReactivos.length > 0)
     ) {
       const pedido = {
         docente: {
@@ -459,12 +419,12 @@ export default function NuevoPedido() {
 
   const open2 = Boolean(anchorE2);
   const id2 = open2 ? "simple-popover" : undefined;
-  
+
   useEffect(() => {
     let mounted = true;
-    userInfo(user._id).then((res)=> {
-      setUserData(res)
-    })
+    userInfo(user._id).then((res) => {
+      setUserData(res);
+    });
     getListaEquipos().then((items) => {
       if (mounted) {
         setListaEquipos(items);

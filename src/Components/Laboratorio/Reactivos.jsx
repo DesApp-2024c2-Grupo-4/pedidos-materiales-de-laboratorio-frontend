@@ -4,9 +4,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { ThemeProvider } from "@mui/material/styles";
-import Theme1 from "../Theme/Theme1";
-import { getListaReactivosFiltrada } from "../../Services/getService";
+import { getListaReactivosFiltrada } from "../../services/legacy/getService";
 import quimica from "../../../public/image/quimica.png";
 import Buscador from "./Buscador";
 
@@ -70,12 +68,7 @@ export default function Reactivos() {
           spacing={{ xs: 1, md: 1 }}
           columns={{ xs: 12 }}
         >
-          <Grid
-            container
-            direction="row"
-            justifyContent="start"
-            alignItems="center"
-          >
+          <Grid container direction="row" justifyContent="start" alignItems="center">
             <Grid item xs={1} container justifyContent="center">
               <img width={30} alt="laboratorio" heigth={30} src={quimica} />
             </Grid>
@@ -85,10 +78,7 @@ export default function Reactivos() {
               </Typography>
             </Grid>
             <Grid item xs={3} container justifyContent="center">
-              <Buscador
-                onBuscar={handleBuscar}
-                placeholder={"Por descripción o CAS"}
-              ></Buscador>
+              <Buscador onBuscar={handleBuscar} placeholder={"Por descripción o CAS"}></Buscador>
             </Grid>
             <Grid item xs={4} container justifyContent="flex-end">
               <Nuevo
@@ -100,18 +90,8 @@ export default function Reactivos() {
               />
             </Grid>
           </Grid>
-          <Grid
-            container
-            direction="row"
-            justifyContent="start"
-            alignItems="center"
-            display={verEdicion}
-          >
-            <ModReactivo
-              setVerEdicion={setVerEdicion}
-              elegido={elegido}
-              setElegido={setElegido}
-            />
+          <Grid container direction="row" justifyContent="start" alignItems="center" display={verEdicion}>
+            <ModReactivo setVerEdicion={setVerEdicion} elegido={elegido} setElegido={setElegido} />
           </Grid>
           <Listar
             lista={listaReactivos}

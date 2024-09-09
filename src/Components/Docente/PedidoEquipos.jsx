@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import laboratorio from "../../../public/image/biologia.png";
-import {
-  Button,
-  Autocomplete,
-  TextField,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Button, Autocomplete, TextField, Grid, Typography } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Accordion from "@mui/material/Accordion";
@@ -15,7 +9,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { getEquipoPorId } from "../../Services/getEquipoPorId";
+import { getEquipoPorId } from "../../services/legacy/getEquipoPorId";
 import CartelAlerta from "../Mensajes/CartelAlerta";
 
 const PedidoEquipos = (props) => {
@@ -65,12 +59,7 @@ const PedidoEquipos = (props) => {
       columns={{ xs: 12 }}
     >
       {/* TITULO */}
-      <Grid
-        container
-        direction="row"
-        justifyContent="start"
-        alignItems="center"
-      >
+      <Grid container direction="row" justifyContent="start" alignItems="center">
         <Grid item xs={1} container justifyContent="center">
           <img width={30} alt="" heigth={30} src={laboratorio} />
         </Grid>
@@ -90,11 +79,7 @@ const PedidoEquipos = (props) => {
         columns={{ xs: 12 }}
       >
         <Grid item xs={1} container justifyContent="center">
-          <Typography
-            sx={{ fontSize: 14 }}
-            aria-label="simple table"
-            color="text.secondary"
-          ></Typography>
+          <Typography sx={{ fontSize: 14 }} aria-label="simple table" color="text.secondary"></Typography>
         </Grid>
         <Grid item xs={1} container justifyContent="center">
           <Typography sx={{ fontSize: 14 }} color="text.secondary">
@@ -176,21 +161,9 @@ const PedidoEquipos = (props) => {
           anchorEl={anchorEl}
         />
 
-        <Grid
-          item
-          xs={3}
-          container
-          justifyContent="center"
-          display={props.equipoOk}
-        />
+        <Grid item xs={3} container justifyContent="center" display={props.equipoOk} />
 
-        <Grid
-          item
-          xs={3}
-          container
-          justifyContent="center"
-          display={props.errorEquipo}
-        >
+        <Grid item xs={3} container justifyContent="center" display={props.errorEquipo}>
           <Button variant="outlined" color="error" fullWidth heigth={40}>
             EL EQUIPO YA FUE CARGADO
           </Button>
@@ -206,38 +179,16 @@ const PedidoEquipos = (props) => {
       </Grid>
 
       {props.verMasEquip.length > 0 ? (
-        <Grid
-          container
-          alignItems="center"
-          spacing={{ xs: 1, md: 1 }}
-          columns={{ xs: 12 }}
-        >
+        <Grid container alignItems="center" spacing={{ xs: 1, md: 1 }} columns={{ xs: 12 }}>
           <Grid item xs={12}>
-            <Accordion
-              expanded={expanded === "panel3"}
-              onChange={handleChange("panel3")}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel3bh-content"
-                id="panel3bh-header"
-              >
-                <Typography sx={{ width: "33%", flexShrink: 0 }}>
-                  MÁS EQUIPOS SOLICITADOS
-                </Typography>
-                <Typography sx={{ color: "text.secondary" }}>
-                  presione la flecha hacia abajo para ver
-                </Typography>
+            <Accordion expanded={expanded === "panel3"} onChange={handleChange("panel3")}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel3bh-content" id="panel3bh-header">
+                <Typography sx={{ width: "33%", flexShrink: 0 }}>MÁS EQUIPOS SOLICITADOS</Typography>
+                <Typography sx={{ color: "text.secondary" }}>presione la flecha hacia abajo para ver</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
-                  <Grid
-                    container
-                    direction="row"
-                    alignItems="center"
-                    spacing={{ xs: 2, md: 2 }}
-                    columns={{ xs: 12 }}
-                  >
+                  <Grid container direction="row" alignItems="center" spacing={{ xs: 2, md: 2 }} columns={{ xs: 12 }}>
                     <Grid item xs={6} container justifyContent="start">
                       Descripcion
                     </Grid>
@@ -271,12 +222,7 @@ const PedidoEquipos = (props) => {
                       <Grid item xs={2} container justifyContent="end">
                         {row.cantidad}
                       </Grid>
-                      <Grid
-                        item
-                        xs={1}
-                        container
-                        justifyContent="center"
-                      ></Grid>
+                      <Grid item xs={1} container justifyContent="center"></Grid>
                       <Grid item xs={1} container justifyContent="center">
                         <Button
                           fullWidth

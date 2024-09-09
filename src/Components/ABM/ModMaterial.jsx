@@ -16,12 +16,7 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 // import pipeta from '../Image/pipeta.png';
 
-import {
-  Checkbox,
-  FormControlLabel,
-  TextField,
-  ThemeProvider,
-} from "@mui/material";
+import { Checkbox, FormControlLabel, TextField, ThemeProvider } from "@mui/material";
 import Button from "@mui/material/Button";
 import Theme1 from "../Theme/Theme1";
 
@@ -31,15 +26,11 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 
-import updateMaterial from "../../Services/updateMaterial";
-import deleteMaterial from "../../Services/deleteMaterial";
+import updateMaterial from "../../services/legacy/updateMaterial";
+import deleteMaterial from "../../services/legacy/deleteMaterial";
 
 import PopUp from "./PopUp";
-function ModMaterial({
-  setVerEdicion = { setVerEdicion },
-  elegido = { elegido },
-  setElegido = { setElegido },
-}) {
+function ModMaterial({ setVerEdicion = { setVerEdicion }, elegido = { elegido }, setElegido = { setElegido } }) {
   const [nuevaDescripcion, setNuevaDescripcion] = useState("");
   const [nuevaClase, setNuevaClase] = useState("");
   const [nuevoStock, setNuevoStock] = useState("");
@@ -163,22 +154,8 @@ function ModMaterial({
             />
           </Grid>
 
-          <Grid
-            container
-            noValidate
-            direction="row"
-            justifyContent="start"
-            alignItems="center"
-            columns={{ xs: 12 }}
-          >
-            <Grid
-              item
-              xs={8}
-              container
-              justifyContent="center"
-              marginTop={1}
-              marginLeft={1}
-            >
+          <Grid container noValidate direction="row" justifyContent="start" alignItems="center" columns={{ xs: 12 }}>
+            <Grid item xs={8} container justifyContent="center" marginTop={1} marginLeft={1}>
               <FormControl fullWidth>
                 <InputLabel id="clase"> Clase </InputLabel>
                 <Select
@@ -268,20 +245,8 @@ function ModMaterial({
           </Grid>
         </Grid>
 
-        <Grid
-          container
-          direction="row"
-          justifyContent="end"
-          columns={{ xs: 12 }}
-        >
-          <Grid
-            item
-            xs={2}
-            height={30}
-            bgcolor={"error"}
-            borderRadius={2}
-            sx={{ mt: 3, mb: 2, mr: 2 }}
-          >
+        <Grid container direction="row" justifyContent="end" columns={{ xs: 12 }}>
+          <Grid item xs={2} height={30} bgcolor={"error"} borderRadius={2} sx={{ mt: 3, mb: 2, mr: 2 }}>
             <Button
               fullWidth
               margin="normal"
@@ -297,14 +262,7 @@ function ModMaterial({
               ELIMINAR
             </Button>
           </Grid>
-          <Grid
-            item
-            xs={2}
-            height={30}
-            bgcolor={"error"}
-            borderRadius={2}
-            sx={{ mt: 3, mb: 2 }}
-          >
+          <Grid item xs={2} height={30} bgcolor={"error"} borderRadius={2} sx={{ mt: 3, mb: 2 }}>
             <Button
               fullWidth
               margin="normal"
@@ -323,14 +281,7 @@ function ModMaterial({
             </Button>
           </Grid>
 
-          <Grid
-            item
-            xs={2}
-            height={30}
-            bgcolor={"primary.main"}
-            borderRadius={2}
-            sx={{ mt: 3, mb: 2, marginLeft: 2 }}
-          >
+          <Grid item xs={2} height={30} bgcolor={"primary.main"} borderRadius={2} sx={{ mt: 3, mb: 2, marginLeft: 2 }}>
             <Button
               fullWidth
               style={{ height: 50, borderRadius: 8 }}
@@ -374,8 +325,7 @@ const MaterialModificado = ({ material }) => {
         <strong>Clase: </strong> {material.clase}
       </p>
       <p>
-        <strong>Stock: </strong>{" "}
-        {material.stock == -1 ? "Suficiente" : material.stock}
+        <strong>Stock: </strong> {material.stock == -1 ? "Suficiente" : material.stock}
       </p>
     </div>
   );

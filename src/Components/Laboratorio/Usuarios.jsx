@@ -4,14 +4,14 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { getListaUsuariosFiltrada } from "../../Services/getUsuarioService";
+import { getListaUsuariosFiltrada } from "../../services/legacy/getUsuarioService";
 //import laboratorio from "../Image/laboratorio_personal.jpeg";
 import Buscador from "./Buscador";
 import Button from "@mui/material/Button";
 import AltaUsuario from "../ABM/AltaUsuario";
 import ModUsuario from "../ABM/ModUsuario";
 import ListarUsers from "./utils/ListarUsers";
-import { userContext } from "../../Context/LabProvider";
+import { userContext } from "../../context/LabProvider";
 import { useNavigate } from "react-router-dom";
 import { Stack } from "@mui/system";
 import { CircularProgress } from "@mui/material";
@@ -70,11 +70,7 @@ export default function Usuarios() {
         <Header texto={"Laboratorio"} isUserAdmin={"lab"}></Header>
       </Box>
       {loading ? (
-        <Stack
-          sx={{ justifyContent: "center", alignItems: "center", height: 300 }}
-          spacing={2}
-          direction="row"
-        >
+        <Stack sx={{ justifyContent: "center", alignItems: "center", height: 300 }} spacing={2} direction="row">
           <Typography>Cargando...</Typography>
           <CircularProgress color="success" />
         </Stack>
@@ -98,12 +94,7 @@ export default function Usuarios() {
             spacing={{ xs: 1, md: 1 }}
             columns={{ xs: 12 }}
           >
-            <Grid
-              container
-              direction="row"
-              justifyContent="start"
-              alignItems="center"
-            >
+            <Grid container direction="row" justifyContent="start" alignItems="center">
               <Grid item xs={1} container justifyContent="center">
                 <img width={30} alt="" heigth={30} src={""} />
               </Grid>
@@ -113,10 +104,7 @@ export default function Usuarios() {
                 </Typography>
               </Grid>
               <Grid item xs={3} container justifyContent="center">
-                <Buscador
-                  onBuscar={handleBuscar}
-                  placeholder={"Por usuario o DNI"}
-                ></Buscador>
+                <Buscador onBuscar={handleBuscar} placeholder={"Por usuario o DNI"}></Buscador>
               </Grid>
               <Grid item xs={4} container justifyContent="flex-end">
                 <NuevoUsuario
@@ -128,18 +116,8 @@ export default function Usuarios() {
                 ></NuevoUsuario>
               </Grid>
             </Grid>
-            <Grid
-              container
-              direction="row"
-              justifyContent="start"
-              alignItems="center"
-              display={verEdicion}
-            >
-              <ModUsuario
-                setVerEdicion={setVerEdicion}
-                elegido={elegido}
-                setElegido={setElegido}
-              />
+            <Grid container direction="row" justifyContent="start" alignItems="center" display={verEdicion}>
+              <ModUsuario setVerEdicion={setVerEdicion} elegido={elegido} setElegido={setElegido} />
             </Grid>
 
             <ListarUsers

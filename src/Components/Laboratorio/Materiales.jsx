@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { ThemeProvider } from "@mui/material/styles";
 import Theme1 from "../Theme/Theme1";
-import { getListaMaterialesFiltrada } from "../../Services/getService";
+import { getListaMaterialesFiltrada } from "../../services/legacy/getService";
 import pipeta from "../../../public/image/pipeta.png";
 import Buscador from "./Buscador";
 import AltaMaterial from "../ABM/AltaMaterial";
@@ -70,12 +70,7 @@ export default function Materiales() {
           spacing={{ xs: 1, md: 1 }}
           columns={{ xs: 12 }}
         >
-          <Grid
-            container
-            direction="row"
-            justifyContent="start"
-            alignItems="center"
-          >
+          <Grid container direction="row" justifyContent="start" alignItems="center">
             <Grid item xs={1} container justifyContent="center">
               <img width={30} alt="" heigth={30} src={pipeta} />
             </Grid>
@@ -85,10 +80,7 @@ export default function Materiales() {
               </Typography>
             </Grid>
             <Grid item xs={3} container justifyContent="center">
-              <Buscador
-                onBuscar={handleBuscar}
-                placeholder={"Buscar por descripción"}
-              ></Buscador>
+              <Buscador onBuscar={handleBuscar} placeholder={"Buscar por descripción"}></Buscador>
             </Grid>
             <Grid item xs={4} container justifyContent="flex-end">
               <NuevoMaterial
@@ -100,18 +92,8 @@ export default function Materiales() {
               ></NuevoMaterial>
             </Grid>
           </Grid>
-          <Grid
-            container
-            direction="row"
-            justifyContent="start"
-            alignItems="center"
-            display={verEdicion}
-          >
-            <ModMaterial
-              setVerEdicion={setVerEdicion}
-              elegido={elegido}
-              setElegido={setElegido}
-            />
+          <Grid container direction="row" justifyContent="start" alignItems="center" display={verEdicion}>
+            <ModMaterial setVerEdicion={setVerEdicion} elegido={elegido} setElegido={setElegido} />
           </Grid>
 
           <Listar

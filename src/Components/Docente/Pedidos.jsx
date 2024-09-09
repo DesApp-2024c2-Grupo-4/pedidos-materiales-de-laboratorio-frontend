@@ -1,4 +1,4 @@
-import { getPedidosPorDni } from "../../Services/getPedidosPorDNIService";
+import { getPedidosPorDni } from "../../services/legacy/getPedidosPorDNIService";
 import Header from "../Header/Header";
 import React, { useEffect, useMemo, useState } from "react";
 import { experimentalStyled as styled } from "@mui/material/styles";
@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import NoEncontrados from "../Mensajes/NoEncontrados";
 import NuevoPedido from "./NuevoPedido";
-import { userContext } from "../../Context/LabProvider";
+import { userContext } from "../../context/LabProvider";
 import BasicModal from "../Laboratorio/utils/BasicModal";
 import { CircularProgress, Fab } from "@mui/material";
 import Filtros from "../Laboratorio/Filtros";
@@ -70,15 +70,7 @@ function Pedidos() {
     }
     setAlert(false);
     if (dni) {
-      await getPedidosPorDni(
-        dni,
-        tipo_pedido,
-        fecha_inicio,
-        fecha_fin,
-        edificio,
-        checked,
-        page
-      ).then((item) => {
+      await getPedidosPorDni(dni, tipo_pedido, fecha_inicio, fecha_fin, edificio, checked, page).then((item) => {
         let newArray = [...list, ...item.data];
         setListaPedidos(newArray);
         setTotalLength(item.totalCount);
@@ -122,10 +114,7 @@ function Pedidos() {
       {!nuevoPedido ? (
         <Box sx={{ flexGrow: 0, m: 2 }}>
           <Fab color="primary" aria-label="add" className="boton-nuevo">
-            <BasicModal
-              recharger={recharger}
-              onClick={() => setNuevoPedido(true)}
-            ></BasicModal>
+            <BasicModal recharger={recharger} onClick={() => setNuevoPedido(true)}></BasicModal>
           </Fab>
         </Box>
       ) : (

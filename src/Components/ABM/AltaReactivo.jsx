@@ -2,42 +2,21 @@ import React, { useState } from "react";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
+
 import SendIcon from "@mui/icons-material/Send";
-import TableContainer from "@mui/material/TableContainer";
 
 import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-import moment from "moment";
+
 import Grid from "@mui/material/Grid";
 
 import quimica from "../../../public/image/quimica.png";
-import {
-  Autocomplete,
-  Checkbox,
-  FormControlLabel,
-  TextField,
-  ThemeProvider,
-} from "@mui/material";
+import { Autocomplete, Checkbox, FormControlLabel, TextField, ThemeProvider } from "@mui/material";
 import Button from "@mui/material/Button";
-import Theme1 from "../Theme/Theme1";
-import postReactivo from "../../Services/postReactivo";
 
-import { useEffect } from "react";
-import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
+import postReactivo from "../../services/legacy/postReactivo";
+
 import PopUp from "./PopUp";
-function AltaReactivo({
-  open = { open },
-  setOpen = { setOpen },
-  scroll = { scroll },
-  handleClose = { handleClose },
-}) {
+function AltaReactivo({ open = { open }, setOpen = { setOpen }, scroll = { scroll }, handleClose = { handleClose } }) {
   const [error, setError] = useState("none");
   const [openMensaje, setOpenMensaje] = useState(false);
   const [mensajeSalida, setMensajeSalida] = useState("");
@@ -48,11 +27,7 @@ function AltaReactivo({
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    if (
-      data.get("cas") != "" &&
-      data.get("descripcion") != "" &&
-      data.get("stock") != ""
-    ) {
+    if (data.get("cas") != "" && data.get("descripcion") != "" && data.get("stock") != "") {
       setError("none");
 
       const dato = {
@@ -120,13 +95,7 @@ function AltaReactivo({
                   Reactivo
                 </Typography>
               </Grid>
-              <Grid
-                item
-                xs={6}
-                display={error}
-                container
-                justifyContent="start"
-              >
+              <Grid item xs={6} display={error} container justifyContent="start">
                 <Typography sx={{ fontSize: 20 }} color="error">
                   FALTAN CARGAR DATOS
                 </Typography>
@@ -167,14 +136,7 @@ function AltaReactivo({
                 spacing={{ xs: 1, md: 1 }}
                 columns={{ xs: 12 }}
               >
-                <Grid
-                  item
-                  xs={8}
-                  container
-                  justifyContent="center"
-                  marginTop={1}
-                  marginLeft={1}
-                >
+                <Grid item xs={8} container justifyContent="center" marginTop={1} marginLeft={1}>
                   <TextField
                     sx={{ marginTop: 1, marginBottom: 1, marginLeft: 0 }}
                     fullWidth
@@ -225,20 +187,8 @@ function AltaReactivo({
               />
             </Grid>
 
-            <Grid
-              container
-              direction="row"
-              justifyContent="space-around"
-              columns={{ xs: 12 }}
-            >
-              <Grid
-                item
-                xs={4}
-                height={50}
-                bgcolor={"error"}
-                borderRadius={2}
-                sx={{ mt: 3, mb: 2 }}
-              >
+            <Grid container direction="row" justifyContent="space-around" columns={{ xs: 12 }}>
+              <Grid item xs={4} height={50} bgcolor={"error"} borderRadius={2} sx={{ mt: 3, mb: 2 }}>
                 <Button
                   fullWidth
                   margin="normal"
@@ -257,14 +207,7 @@ function AltaReactivo({
                 </Button>
               </Grid>
 
-              <Grid
-                item
-                xs={4}
-                height={50}
-                bgcolor={"primary.main"}
-                borderRadius={2}
-                sx={{ mt: 3, mb: 2 }}
-              >
+              <Grid item xs={4} height={50} bgcolor={"primary.main"} borderRadius={2} sx={{ mt: 3, mb: 2 }}>
                 <Button
                   fullWidth
                   style={{ height: 50, borderRadius: 8 }}
@@ -307,8 +250,7 @@ const ReactivoDadoAlta = ({ reactivo }) => {
         <strong>CAS: </strong> {reactivo.cas}
       </p>
       <p>
-        <strong>Stock: </strong>{" "}
-        {reactivo.stock == -1 ? "Suficiente" : reactivo.stock}
+        <strong>Stock: </strong> {reactivo.stock == -1 ? "Suficiente" : reactivo.stock}
       </p>
     </div>
   );

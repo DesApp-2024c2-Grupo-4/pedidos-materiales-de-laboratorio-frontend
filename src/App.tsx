@@ -15,7 +15,7 @@ import Equipos from "./Components/Laboratorio/Equipos";
 import Usuarios from "./Components/Laboratorio/Usuarios";
 import Materiales from "./Components/Laboratorio/Materiales";
 import Reactivos from "./Components/Laboratorio/Reactivos";
-import LabProvider from "./Context/LabProvider";
+import LabProvider from "./context/LabProvider";
 import { SnackbarProvider } from "notistack";
 import "./navbar.css";
 import "./pedidos.css";

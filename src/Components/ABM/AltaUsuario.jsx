@@ -20,19 +20,14 @@ import { Autocomplete, TextField, ThemeProvider } from "@mui/material";
 import Button from "@mui/material/Button";
 import Theme1 from "../Theme/Theme1";
 
-import postUsuario from "../../Services/postUsuario";
+import postUsuario from "../../services/legacy/postUsuario";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import PopUp from "./PopUp";
 
-function AltaUsuario({
-  open = { open },
-  setOpen = { setOpen },
-  scroll = { scroll },
-  handleClose = { handleClose },
-}) {
+function AltaUsuario({ open = { open }, setOpen = { setOpen }, scroll = { scroll }, handleClose = { handleClose } }) {
   const [openMensaje, setOpenMensaje] = useState(false);
   const [mensajeSalida, setMensajeSalida] = useState("");
   const [error2, setError2] = useState("none");
@@ -166,13 +161,7 @@ function AltaUsuario({
                   Usuario
                 </Typography>
               </Grid>
-              <Grid
-                item
-                xs={6}
-                display={error2}
-                container
-                justifyContent="start"
-              >
+              <Grid item xs={6} display={error2} container justifyContent="start">
                 <Typography sx={{ fontSize: 20 }} color="error">
                   FALTAN CARGAR DATOS
                 </Typography>
@@ -296,13 +285,7 @@ function AltaUsuario({
                 />
               </Grid>
 
-              <Grid
-                item
-                xs={4}
-                container
-                justifyContent="center"
-                sx={{ marginLeft: 4 }}
-              >
+              <Grid item xs={4} container justifyContent="center" sx={{ marginLeft: 4 }}>
                 <TextField
                   sx={{ marginTop: 1 }}
                   fullWidth
@@ -423,20 +406,8 @@ function AltaUsuario({
                             */}
             </Grid>
 
-            <Grid
-              container
-              direction="row"
-              justifyContent="space-around"
-              columns={{ xs: 12 }}
-            >
-              <Grid
-                item
-                xs={4}
-                height={50}
-                bgcolor={"error"}
-                borderRadius={2}
-                sx={{ mt: 3, mb: 2 }}
-              >
+            <Grid container direction="row" justifyContent="space-around" columns={{ xs: 12 }}>
+              <Grid item xs={4} height={50} bgcolor={"error"} borderRadius={2} sx={{ mt: 3, mb: 2 }}>
                 <Button
                   fullWidth
                   margin="normal"
@@ -455,14 +426,7 @@ function AltaUsuario({
                 </Button>
               </Grid>
 
-              <Grid
-                item
-                xs={4}
-                height={50}
-                bgcolor={"primary.main"}
-                borderRadius={2}
-                sx={{ mt: 3, mb: 2 }}
-              >
+              <Grid item xs={4} height={50} bgcolor={"primary.main"} borderRadius={2} sx={{ mt: 3, mb: 2 }}>
                 <Button
                   fullWidth
                   style={{ height: 50, borderRadius: 8 }}
@@ -516,8 +480,7 @@ const UsuarioDadoAlta = ({ usuario }) => {
         <strong> Email: </strong> {usuario.email}
       </p>
       <p>
-        <strong> Perfil: </strong>{" "}
-        {(usuario.rol = "lab" ? "LABORATORIO" : "DOCENTE")}
+        <strong> Perfil: </strong> {(usuario.rol = "lab" ? "LABORATORIO" : "DOCENTE")}
       </p>
       {/*<p>
             <strong> Editor: </strong> {usuario.editor ? "SI" : "NO"}
