@@ -1,6 +1,7 @@
 // AuthContext.tsx
 
-import React, { createContext, useState, useContext, ReactNode } from "react";
+import React, { createContext, useState, useContext, ReactNode, useEffect } from "react";
+import Cookies from "js-cookie";
 
 interface AuthContextType {
   authToken: string | null;
@@ -25,14 +26,19 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [authToken, setAuthToken] = useState<string | null>(localStorage.getItem("authToken") || null);
 
+  useEffect(() => {
+    const accesToken = Cookies.get("x-access-token");
+    if (accesToken) setAuthToken(accesToken);
+  }, []);
+
   const login = (token: string) => {
     setAuthToken(token);
-    localStorage.setItem("authToken", token);
+    Cookies.set("x-access-token", token);
   };
 
   const logout = () => {
     setAuthToken(null);
-    localStorage.removeItem("authToken");
+    Cookies.remove("x-access-token");
   };
 
   return <AuthContext.Provider value={{ authToken, login, logout }}>{children}</AuthContext.Provider>;

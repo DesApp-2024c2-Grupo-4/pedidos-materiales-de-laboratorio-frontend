@@ -1,49 +1,23 @@
-/* eslint-disable react/jsx-pascal-case */
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import "./App.css";
-import Login from "./Components/Login/Login";
-import RedirectDocente from "./Components/Login/RedirectDocente";
-import RedirectLaboratorio from "./Components/Login/RedirectLaboratorio";
-import RedirectLog from "./Components/Login/RedirectLog";
-import PedidoV1 from "./Components/Docente/PedidoV1";
-import NuevoPedido from "./Components/Docente/NuevoPedido";
-import Docente from "./Components/Docente/Pedidos";
-import Pedidos from "./Components/Laboratorio/Pedidos";
-import Alta_Equipo from "./Components/ABM/AltaEquipo";
-import Equipos from "./Components/Laboratorio/Equipos";
-import Usuarios from "./Components/Laboratorio/Usuarios";
-import Materiales from "./Components/Laboratorio/Materiales";
-import Reactivos from "./Components/Laboratorio/Reactivos";
-import LabProvider from "./context/LabProvider";
-import { SnackbarProvider } from "notistack";
+
+/* Components */
+import Template from "./views/template";
+import Login from "./views/login";
+
+/* Styles */
 import "./navbar.css";
 import "./pedidos.css";
+import "./App.scss";
 
 function App() {
   return (
     <BrowserRouter>
-      <SnackbarProvider maxSnack={3}>
-        <LabProvider>
-          <Routes>
-            <Route path="/" element={<RedirectLog />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/Docente/Pedidos" element={<Docente />} />
-            {/*  TODO: no anda revisar <Route
-              path="/Docente/Pedidos/PedidoV1"
-              element={<PedidoV1 pedido={""} esAdmin={false} />}
-            /> 
-            <Route path="/Laboratorio/Equipos" element={<Equipos />} />
-            <Route path="/Laboratorio/Usuarios" element={<Usuarios />} />
-             */}
-            <Route path="/Docente/NuevoPedido" element={<NuevoPedido />} />
-            <Route path="/Laboratorio/Pedidos" element={<Pedidos />} />
-            <Route path="/Laboratorio/Materiales" element={<Materiales />} />
-            <Route path="/Laboratorio/Reactivos" element={<Reactivos />} />
-            <Route path="/ABM/AltaEquipo" element={<Alta_Equipo />} />
-          </Routes>
-        </LabProvider>
-      </SnackbarProvider>
+      <Routes>
+        <Route path="/" element={<Template />}>
+          <Route index path="/login" element={<Login />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }

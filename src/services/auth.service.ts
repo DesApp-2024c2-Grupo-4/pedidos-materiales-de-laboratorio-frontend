@@ -1,6 +1,6 @@
 import useAxios from "./axios.config";
 import handlePromise from "../utils/promise";
-import { AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig, AxiosResponse } from "axios";
 
 type AccessTokenResponse = {
   accessToken: string;
@@ -19,7 +19,7 @@ const useAuthService = () => {
       },
     };
 
-    const [response, err] = await handlePromise<AccessTokenResponse, unknown>(axiosInstance(config));
+    const [response, err] = await handlePromise<AxiosResponse<AccessTokenResponse>, unknown>(axiosInstance(config));
 
     if (err) {
       Promise.reject(err);
@@ -29,7 +29,7 @@ const useAuthService = () => {
       return Promise.reject("Login response is empty"); /* Fixme: throw a better error */
     }
 
-    updateAuthToken(response.accessToken);
+    updateAuthToken(response.data.accessToken);
   };
 
   return {

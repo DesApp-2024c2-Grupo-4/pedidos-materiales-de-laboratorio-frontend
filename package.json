@@ -21,6 +21,7 @@
     "crypto-js": "^4.2.0",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.10",
+    "js-cookie": "^3.0.5",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",
     "moment": "^2.29.4",
@@ -30,6 +31,7 @@
     "react-hook-form": "^7.46.1",
     "react-infinite-scroll-component": "^6.1.0",
     "react-router-dom": "^6.4.2",
+    "sass": "^1.78.0",
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
     "styled-components": "^5.3.5",
@@ -63,6 +65,7 @@
     ]
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "ajv": "^7.2.4",
     "eslint": "^8.2.0",
     "eslint-config-airbnb": "^19.0.4",
