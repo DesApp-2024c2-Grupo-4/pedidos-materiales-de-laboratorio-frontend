@@ -62,7 +62,7 @@ const useMaterialService = () => {
     const config: AxiosRequestConfig = {
       method: "PUT",
       url: `/material/${id}`,
-      data: { material },
+      data: material,
     };
 
     const [, err] = await handlePromise<AxiosResponse<Material[]>, unknown>(axiosInstance(config));
