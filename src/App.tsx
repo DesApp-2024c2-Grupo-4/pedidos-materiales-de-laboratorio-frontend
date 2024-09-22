@@ -1,49 +1,30 @@
-/* eslint-disable react/jsx-pascal-case */
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import "./App.css";
-import Login from "./Components/Login/Login";
-import RedirectDocente from "./Components/Login/RedirectDocente";
-import RedirectLaboratorio from "./Components/Login/RedirectLaboratorio";
-import RedirectLog from "./Components/Login/RedirectLog";
-import PedidoV1 from "./Components/Docente/PedidoV1";
-import NuevoPedido from "./Components/Docente/NuevoPedido";
-import Docente from "./Components/Docente/Pedidos";
-import Pedidos from "./Components/Laboratorio/Pedidos";
-import Alta_Equipo from "./Components/ABM/AltaEquipo";
-import Equipos from "./Components/Laboratorio/Equipos";
-import Usuarios from "./Components/Laboratorio/Usuarios";
-import Materiales from "./Components/Laboratorio/Materiales";
-import Reactivos from "./Components/Laboratorio/Reactivos";
-import LabProvider from "./Context/LabProvider";
-import { SnackbarProvider } from "notistack";
-import "./navbar.css";
-import "./pedidos.css";
+
+/* Components */
+import Template from "./views/template";
+import Login from "./views/login";
+
+/* Styles */
+import "./App.scss";
+import PrivateRoute from "./components/private-route";
+import Home from "./views/home";
 
 function App() {
   return (
     <BrowserRouter>
-      <SnackbarProvider maxSnack={3}>
-        <LabProvider>
-          <Routes>
-            <Route path="/" element={<RedirectLog />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/Docente/Pedidos" element={<Docente />} />
-            {/*  TODO: no anda revisar <Route
-              path="/Docente/Pedidos/PedidoV1"
-              element={<PedidoV1 pedido={""} esAdmin={false} />}
-            /> 
-            <Route path="/Laboratorio/Equipos" element={<Equipos />} />
-            <Route path="/Laboratorio/Usuarios" element={<Usuarios />} />
-             */}
-            <Route path="/Docente/NuevoPedido" element={<NuevoPedido />} />
-            <Route path="/Laboratorio/Pedidos" element={<Pedidos />} />
-            <Route path="/Laboratorio/Materiales" element={<Materiales />} />
-            <Route path="/Laboratorio/Reactivos" element={<Reactivos />} />
-            <Route path="/ABM/AltaEquipo" element={<Alta_Equipo />} />
-          </Routes>
-        </LabProvider>
-      </SnackbarProvider>
+      <Routes>
+        <Route element={<Template />}>
+          <Route index path="/login" element={<Login />} />
+          {/* Component PrivateRoute will check for a valid JWT
+           * and redirect to '/login' if there isn't one
+           * so every route that requires an auth user should be
+           * defined inside this route*/}
+          <Route element={<PrivateRoute />}>
+            <Route index path="/home" element={<Home />} />
+          </Route>
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }

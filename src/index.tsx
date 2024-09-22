@@ -1,25 +1,19 @@
 import React from "react";
+import App from "./App";
 import ReactDOM from "react-dom/client";
+import reportWebVitals from "./reportWebVitals";
+
+/* Styles */
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import "./index.scss";
 
-import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import Theme1 from "./Components/Theme/Theme1";
-
-const rootElement = document.getElementById("root");
-const root = ReactDOM.createRoot(
-  rootElement ? rootElement : document.createElement("div")
-);
-root.render(
-  <ThemeProvider theme={Theme1}>
-    <CssBaseline />
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
     <App />
-  </ThemeProvider>
+  </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function
