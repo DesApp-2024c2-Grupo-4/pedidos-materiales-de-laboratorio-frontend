@@ -3,6 +3,7 @@ import "./styles.scss";
 import handlePromise from "../../utils/promise";
 import useAuthService from "../../services/auth.service";
 import { Button, TextField } from "@mui/material";
+import { loginImage } from "../../../public/image/loginImage";
 import { useNavigate } from "react-router-dom";
 
 export default function Login(): ReactElement {
@@ -20,11 +21,19 @@ export default function Login(): ReactElement {
   };
 
   return (
-    <form onSubmit={onLogin}>
-      <TextField variant="filled" type="text" label="Email" name="email" />
-      <TextField variant="filled" type="password" label="Contraseña" name="password" />
-      <Button type="submit">Submit</Button>
-      {error && <small>{error}</small>}
-    </form>
+    <div className="container">
+      <div className="banner">
+        <div className="logo-uni"></div>
+        <div className="image"></div>
+      </div>
+      <div className="form">
+        <form onSubmit={onLogin}>
+          <TextField variant="filled" type="text" label="Email" name="email" />
+          <TextField variant="filled" type="password" label="Contraseña" name="password" />
+          <Button type="submit">Submit</Button>
+          {error && <small>{error}</small>}
+        </form>
+      </div>
+    </div>
   );
 }
