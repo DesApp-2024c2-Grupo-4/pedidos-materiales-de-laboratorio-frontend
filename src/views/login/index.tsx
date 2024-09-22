@@ -3,7 +3,6 @@ import "./styles.scss";
 import handlePromise from "../../utils/promise";
 import useAuthService from "../../services/auth.service";
 import { Button, TextField } from "@mui/material";
-import { loginImage } from "../../../public/image/loginImage";
 import { useNavigate } from "react-router-dom";
 
 export default function Login(): ReactElement {
@@ -20,17 +19,45 @@ export default function Login(): ReactElement {
     navigate("/home");
   };
 
+
+const containerStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  height: '100vh',
+};
+
+const bannerStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  backgroundColor: '#2b76ff',
+};
+
+const logoUniStyle = {
+  textAlign: 'center',
+};
+
+const buttonStyle = {
+  textTransform: 'none',
+};
+
+
   return (
-    <div className="container">
-      <div className="banner">
-        <div className="logo-uni"></div>
-        <div className="image"></div>
+    <div className="container" style={containerStyle}>
+      <div className="banner" style={bannerStyle}>
+        <div className="logo-uni" style={logoUniStyle}>
+          <img src="/image/logo-universidad.png" alt="Login image"/>
+        </div>
+        <div className="image">
+          <img src="/image/loginImage.png" alt="Login Image" />
+        </div>
       </div>
       <div className="form">
         <form onSubmit={onLogin}>
           <TextField variant="filled" type="text" label="Email" name="email" />
           <TextField variant="filled" type="password" label="Contraseña" name="password" />
-          <Button type="submit">Submit</Button>
+          <Button type="submit" style={buttonStyle}>Iniciar Sesión </Button>
           {error && <small>{error}</small>}
         </form>
       </div>
