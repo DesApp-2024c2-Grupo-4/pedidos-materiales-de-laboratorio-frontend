@@ -10,7 +10,7 @@ import SendIcon from "@mui/icons-material/Send";
 import InputAdornment from "@mui/material/InputAdornment";
 
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import usuario from "../Image/laboratorio_personal.jpeg";
+//import usuario from "../Image/laboratorio_personal.jpeg";
 import Typography from "@mui/material/Typography";
 // import Paper from '@mui/material/Paper';
 // import moment from 'moment'
@@ -98,7 +98,7 @@ function AltaUsuario({
         rol: perfil,
         editor: false,
         email: email,
-        admin: false
+        admin: false,
         // "dni":parseInt(data.get('dni'))
       };
 
@@ -159,7 +159,7 @@ function AltaUsuario({
               columns={{ xs: 12 }}
             >
               <Grid item xs={1} container justifyContent="center">
-                <img width={30} alt="" heigth={30} src={usuario} />
+                <img width={30} alt="" heigth={30} src={""} />
               </Grid>
               <Grid item xs={4} container justifyContent="start">
                 <Typography sx={{ fontSize: 30 }} color="text.secondary">

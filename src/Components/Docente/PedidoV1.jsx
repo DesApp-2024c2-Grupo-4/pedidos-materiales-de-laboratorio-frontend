@@ -1,5 +1,5 @@
 import React from "react";
-import pedidoicon from "../Image/pedido-icon.png";
+import pedidoIcon from "../../../public/image/pedido-icon.png";
 import moment from "moment";
 import {
   Box,
@@ -13,7 +13,7 @@ import {
 import PedidoDetalle from "../Laboratorio/PedidoDetalle";
 import PedidoDetalleLabo from "../Laboratorio/PedidoDetalleLabo";
 import { Tooltip, Typography } from "@mui/material";
-import DownloadIcon from "@mui/icons-material/Download";
+//import DownloadIcon from "@mui/icons-material/Download";
 import "jspdf-autotable";
 import { handleDownload } from "./Steps/handles";
 
@@ -79,7 +79,7 @@ function PedidoV1({ pedido, esAdmin }) {
           <CardActionArea onClick={handleClickOpen("body")}>
             <CardHeader
               style={{ textAlign: "left" }}
-              avatar={<img className="pedido-icon" src={pedidoicon} alt="" />}
+              avatar={<img className="pedido-icon" src={pedidoIcon} alt="" />}
               title={`Pedido #${numero_tp}`}
               // subheader={`Fecha : ${fecha_solicitud}`}
               subheader={`Fecha de Práctica: ${fecha_utilizar}`}
@@ -93,7 +93,7 @@ function PedidoV1({ pedido, esAdmin }) {
                   ></Box>
                   <Tooltip title="Descargas">
                     <IconButton onClick={(e) => handleDownload(e, pedido)}>
-                      <DownloadIcon style={{ color: "#fff" }} />
+                      {/* <DownloadIcon style={{ color: "#fff" }} /> */}
                     </IconButton>
                   </Tooltip>
                 </Box>

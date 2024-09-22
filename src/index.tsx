@@ -10,14 +10,16 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import Theme1 from "./Components/Theme/Theme1";
-import { BrowserRouter } from "react-router-dom";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const rootElement = document.getElementById("root");
+const root = ReactDOM.createRoot(
+  rootElement ? rootElement : document.createElement("div")
+);
 root.render(
-    <ThemeProvider theme={Theme1}>
-      <CssBaseline />
-      <App />
-    </ThemeProvider>
+  <ThemeProvider theme={Theme1}>
+    <CssBaseline />
+    <App />
+  </ThemeProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

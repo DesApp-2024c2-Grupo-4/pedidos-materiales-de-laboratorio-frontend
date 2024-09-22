@@ -14,8 +14,7 @@ import Paper from "@mui/material/Paper";
 import moment from "moment";
 import Grid from "@mui/material/Grid";
 
-import quimica from "../Image/quimica.png";
-import laboratorio from "../Image/biologia.png";
+import quimica from "../../../public/image/quimica.png";
 import {
   Autocomplete,
   Checkbox,

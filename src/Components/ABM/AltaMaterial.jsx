@@ -5,7 +5,7 @@ import DialogContent from "@mui/material/DialogContent";
 import SendIcon from "@mui/icons-material/Send";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import pipeta from "../Image/pipeta.png";
+import pipeta from "../../../public/image/pipeta.png";
 import {
   Autocomplete,
   Checkbox,
@@ -51,7 +51,7 @@ function AltaMaterial({
         descripcion: data.get("descripcion"),
         stock: !enough ? parseInt(data.get("stock")) : -1,
         unidadMedida: "UNI",
-        disponible: !notAvailable
+        disponible: !notAvailable,
       };
 
       postMaterial(dato);
