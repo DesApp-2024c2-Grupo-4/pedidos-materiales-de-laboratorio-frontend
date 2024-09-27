@@ -47,7 +47,7 @@ export default function Login(): ReactElement {
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 8,
-    border: 'radius 20px', // revisar no me esta funcionando
+    border: 'radius 20px',
   };
 
   const containerStyle = {
@@ -66,21 +66,46 @@ export default function Login(): ReactElement {
   };
 
   const textFieldStyle = {
-    width : '90vw',
-    marginTop: '40px', 
-  }
-
+    width: '90vw',
+    marginTop: '40px',
+  };
 
   const buttonStyle = {
     borderRadius: '8px',
     textTransform: 'none',
-    backgroundColor : '#2b76ff',
+    backgroundColor: '#2b76ff',
     padding: '12px',
     color: 'white',
-    boxShadow: 'none', // revisar 
-    width : '90vw',
-    marginTop: '20px', 
+    boxShadow: 'none',
+    width: '90vw',
+    marginTop: '20px',
+  };
 
+ 
+  const emailInputProps = {
+    startAdornment: (
+      <InputAdornment position="start">
+        <EmailIcon />
+      </InputAdornment>
+    ),
+  };
+
+  const passwordInputProps = {
+    startAdornment: (
+      <InputAdornment position="start">
+        <LockIcon />
+      </InputAdornment>
+    ),
+    endAdornment: (
+      <InputAdornment position="end">
+        <IconButton
+          onClick={handleTogglePasswordVisibility}
+          onMouseDown={(e) => e.preventDefault()} 
+        >
+          {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+        </IconButton>
+      </InputAdornment>
+    ),
   };
 
   return (
@@ -89,46 +114,24 @@ export default function Login(): ReactElement {
         <img src="/image/logo-universidad.png" alt="Login image" style={logoUniStyle} />
         <img src="/image/loginImage.png" alt="Login Image" style={imageStyle} />
       </div>
-        <form onSubmit={onLogin} style={formEndStyle}>
-          <TextField style={textFieldStyle} 
-            variant='filled' 
-            placeholder="Email" 
-            type="text" 
-            name="email" 
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <EmailIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-          <TextField  style={textFieldStyle}
-            variant="filled" 
-            type={showPassword ? "text" : "password"} // Cambiar según el estado de showPassword
-            placeholder="Contraseña" 
-            name="password" 
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <LockIcon />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={handleTogglePasswordVisibility}
-                    onMouseDown={(e) => e.preventDefault()} // Prevenir el comportamiento predeterminado
-                  >
-                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />} {/* Mostrar ícono según el estado */}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-          <Button type="submit" style={buttonStyle}  >Iniciar Sesión</Button>
-          {error && <small>{error}</small>}
-        </form>
+      <form onSubmit={onLogin} style={formEndStyle}>
+        <TextField style={textFieldStyle} 
+          variant='filled' 
+          placeholder="Email" 
+          type="text" 
+          name="email" 
+          InputProps={emailInputProps}
+        />
+        <TextField style={textFieldStyle}
+          variant="filled" 
+          type={showPassword ? "text" : "password"} 
+          placeholder="Contraseña" 
+          name="password" 
+          InputProps={passwordInputProps}
+        />
+        <Button type="submit" style={buttonStyle}>Iniciar Sesión</Button>
+        {error && <small>{error}</small>}
+      </form>
     </div>
   );
 }
