@@ -120,7 +120,7 @@ export default function Login(): ReactElement {
                     onClick={handleTogglePasswordVisibility}
                     onMouseDown={(e) => e.preventDefault()} // Prevenir el comportamiento predeterminado
                   >
-                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />} {/* Mostrar ícono según el estado */}
+                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />} {/* Mostrar ícono según el estado */}
                   </IconButton>
                 </InputAdornment>
               ),
