@@ -4,10 +4,10 @@ import useAuthService from "../../services/auth.service";
 import { useNavigate } from "react-router-dom";
 import './styles.scss';
 import InputAdornment from "@mui/material/InputAdornment";
-import EmailIcon from "@mui/icons-material/Email";
+import EmailIcon from '@mui/icons-material/EmailOutlined';
 import TextField from "@mui/material/TextField";
 import Button from '@mui/material/Button';
-import LockIcon from '@mui/icons-material/Lock';
+import LockIcon from '@mui/icons-material/LockOutlined';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton'; 
@@ -36,18 +36,21 @@ export default function Login(): ReactElement {
   };
 
   const imageStyle = {
-    zIndex: 10,
-    position: 'relative',
+    position: 'absolute',
+    marginTop: '70px', 
+    zIndex: '10'
+
+
   };
 
   const formEndStyle = {
     backgroundColor: 'white',
-    height: '100vh',
-    width: '100vw',
+    height: '60%',
+    width: '90vw',
     alignItems: 'center',
     justifyContent: 'center',
-    zIndex: 8,
-    border: 'radius 20px',
+    borderTopLeftRadius: '8%',
+    borderTopRightRadius: '8%',
   };
 
   const containerStyle = {
@@ -62,12 +65,16 @@ export default function Login(): ReactElement {
     flexDirection: 'column',
     alignItems: 'center',
     backgroundColor: '#2b76ff',
-    width: '100vw'
+    width: '100vw',
+    height: '40%',
+    marginBottom  : '-25px' 
+
   };
 
   const textFieldStyle = {
     width: '90vw',
     marginTop: '40px',
+
   };
 
   const buttonStyle = {
@@ -76,7 +83,6 @@ export default function Login(): ReactElement {
     backgroundColor: '#2b76ff',
     padding: '12px',
     color: 'white',
-    boxShadow: 'none',
     width: '90vw',
     marginTop: '20px',
   };
@@ -108,22 +114,24 @@ export default function Login(): ReactElement {
     ),
   };
 
+
+
   return (
     <div className="container" style={containerStyle}>
       <div className="banner" style={bannerStyle}>
-        <img src="/image/logo-universidad.png" alt="Login image" style={logoUniStyle} />
-        <img src="/image/loginImage.png" alt="Login Image" style={imageStyle} />
+        <img src="/image/logo-universidad.png" alt="UNAHUR" style={logoUniStyle} />
+        <img src="/image/login-hero.png" alt="Cientifico de laboratorio" style={imageStyle} />
       </div>
       <form onSubmit={onLogin} style={formEndStyle}>
         <TextField style={textFieldStyle} 
-          variant='filled' 
+          variant='standard' 
           placeholder="Email" 
           type="text" 
           name="email" 
           InputProps={emailInputProps}
         />
         <TextField style={textFieldStyle}
-          variant="filled" 
+          variant="standard" 
           type={showPassword ? "text" : "password"} 
           placeholder="Contraseña" 
           name="password" 
