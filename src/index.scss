@@ -1,3 +1,4 @@
+@use "sass:color";
 @import "./globals.scss";
 
 * {
@@ -54,7 +55,7 @@ main > article {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: lighten(color("scroll"), 3);
+  background: color.adjust($color: color("scroll"), $lightness: 3%);
 }
 
 @media screen and (min-width: 800px) {
@@ -65,6 +66,7 @@ main > article {
   .desktop {
     display: flex;
   }
+
   .mobile,
   nav.mobile {
     display: none;

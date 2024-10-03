@@ -1,9 +1,9 @@
 // AuthContext.tsx
 
-import React, { createContext, useState, useContext, ReactNode, useEffect } from "react";
+import React, { createContext, useState, useContext, ReactNode } from "react";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
-import { useNavigate } from "react-router-dom";
+import AuthTokenInfo from "../types/auth-token-info";
 
 const ACCESS_TOKEN_COOKIE = "x-access-token";
 
@@ -12,6 +12,7 @@ interface AuthContextType {
   login: (token: string) => void;
   logout: () => void;
   isAuthenticated: () => boolean;
+  getTokenInfo: () => AuthTokenInfo | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -50,6 +51,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return false;
   };
 
+  const getTokenInfo = (): AuthTokenInfo | null => {
+    if (!authToken) return null;
+
+    try {
+      return jwtDecode(authToken);
+    } catch (e) {
+      console.error({ e });
+      return null;
+    }
+  };
+
   const isValidAuthToken = (token: string | null) => {
     if (!token) return false;
 
@@ -65,5 +77,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  return <AuthContext.Provider value={{ authToken, login, logout, isAuthenticated }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ authToken, login, logout, isAuthenticated, getTokenInfo }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
