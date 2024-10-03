@@ -16,7 +16,7 @@ export default function Login(): ReactElement {
     const password = (e.target as any).password.value;
     const [, err] = await handlePromise<void, string>(login(email, password));
     if (err) return setError(err);
-    navigate("/home");
+    navigate("/requests");
   };
 
   return (

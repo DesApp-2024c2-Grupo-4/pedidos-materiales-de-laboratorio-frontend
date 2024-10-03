@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect } from "react";
 import "./styles.scss";
 import useMaterialService from "../../services/material.service";
 
-export default function Home(): ReactElement {
+export default function RequestsView(): ReactElement {
   const { addMaterial } = useMaterialService();
 
   useEffect(() => {
@@ -15,5 +15,5 @@ export default function Home(): ReactElement {
       inUse: [],
     }).catch((e) => console.error(e));
   });
-  return <div>home</div>;
+  return <div>Requests</div>;
 }
