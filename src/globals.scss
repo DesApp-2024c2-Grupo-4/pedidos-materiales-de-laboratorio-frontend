@@ -4,12 +4,13 @@ $palette: (
   text-primary: #202020,
   text-secondary: #747474,
 
-  background: #f6f5f6,
-  background-card: #ffffff,
+  background: #f8f8fc,
   background-dark: #1f232f,
-  background-light: #373e4e,
-  accent: #01ac85,
-  separator: #afafaf,
+  background-light: #fff,
+  accent: #4a6088,
+  accent-dark: #212044,
+  accent-light: #78a7fe,
+  separator: #00000026,
   outline: #373e4e,
   scroll: #373e4e,
 );
@@ -18,5 +19,5 @@ $radius: 5px;
 $padding: 20px;
 
 @function color($colorName) {
-  @return map-get($map: $palette, $key: $colorName);
+  @return map.get($map: $palette, $key: $colorName);
 }
