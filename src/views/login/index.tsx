@@ -30,58 +30,8 @@ export default function Login(): ReactElement {
   const handleTogglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
-
-  const logoUniStyle = {
-    textAlign: "center",
-  };
-
-  const imageStyle = {
-    position: "absolute",
-    marginTop: "70px",
-    zIndex: "10",
-  };
-
-  const formEndStyle = {
-    backgroundColor: "white",
-    height: "60%",
-    width: "90vw",
-    alignItems: "center",
-    justifyContent: "center",
-    borderTopLeftRadius: "8%",
-    borderTopRightRadius: "8%",
-  };
-
-  const containerStyle = {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    height: "100vh",
-  };
-
-  const bannerStyle = {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    backgroundColor: "#2b76ff",
-    width: "100vw",
-    height: "50%",
-    marginBottom: "-25px",
-  };
-
-  const textFieldStyle = {
-    width: "90vw",
-    marginTop: "40px",
-  };
-
-  const buttonStyle = {
-    borderRadius: "8px",
-    textTransform: "none",
-    backgroundColor: "#2b76ff",
-    padding: "12px",
-    color: "white",
-    width: "90vw",
-    marginTop: "20px",
-  };
+ 
+  
 
   const emailInputProps = {
     startAdornment: (
@@ -107,29 +57,30 @@ export default function Login(): ReactElement {
   };
 
   return (
-    <div className="container" style={containerStyle}>
-      <div className="banner" style={bannerStyle}>
-        <img src="/image/logo-universidad.png" alt="UNAHUR" style={logoUniStyle} />
-        <img src="/image/scientist.png" alt="Cientifico de laboratorio" style={imageStyle} />
+    <div className="container containerStyle" >
+      <div className="banner bannerStyle">
+        <img src="/img/logo-universidad.png" alt="UNAHUR" className="logoUniStyle" />
+        <img src="/img/scientist.png" alt="Cientifico de laboratorio" className="imageStyle" />
       </div>
-      <form onSubmit={onLogin} style={formEndStyle}>
+      <form onSubmit={onLogin} className="formEndStyle">
         <TextField
-          style={textFieldStyle}
+          className="textFieldStyle"
           variant="standard"
           placeholder="Email"
           type="text"
           name="email"
           InputProps={emailInputProps}
+          autoComplete="off"
         />
         <TextField
-          style={textFieldStyle}
+          className="textFieldStyle"
           variant="standard"
           type={showPassword ? "text" : "password"}
           placeholder="Contraseña"
           name="password"
           InputProps={passwordInputProps}
         />
-        <Button type="submit" style={buttonStyle}>
+        <Button type="submit" className="buttonStyle">
           Iniciar Sesión
         </Button>
         {error && <small>{error}</small>}

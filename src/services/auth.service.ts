@@ -1,6 +1,7 @@
 import useAxios from "../hooks/axios.hook";
 import handlePromise from "../utils/promise";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import md5 from "md5";
 
 type AccessTokenResponse = {
   accessToken: string;
@@ -9,13 +10,33 @@ type AccessTokenResponse = {
 const useAuthService = () => {
   const { axiosInstance, updateAuthToken } = useAxios();
 
-  const login = async (email: string, password): Promise<void> => {
+  function mailvalidation(mail) {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(mail);
+}
+
+  const login = async (mail: string, password:string): Promise<void> => {
+    
+    console.log(mailvalidation(mail))
+    if(!mailvalidation(mail))
+    {
+      const msg = "bad user";
+      return Promise.reject(msg);
+    }
+
+    if(!password) 
+    {
+      const msg = "password empty";
+      return Promise.reject(msg);
+    }
+
+    const hashedPass :string = md5(password)
     const config: AxiosRequestConfig = {
       method: "POST",
       url: `/auth/login`,
       data: {
-        email,
-        password,
+        email: mail,
+        pass: hashedPass
       },
     };
 
@@ -24,7 +45,7 @@ const useAuthService = () => {
     );
 
     if (err) {
-      const msg = err.response?.data?.message || "Unknown error";
+      const msg = err.response?.data?.message || "there was a problem sending the request";
       return Promise.reject(msg);
     }
 
