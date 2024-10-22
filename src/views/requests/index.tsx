@@ -1,19 +1,25 @@
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement } from "react";
 import "./styles.scss";
-import useMaterialService from "../../services/material.service";
+import Header from "../../components/header";
 
 export default function RequestsView(): ReactElement {
-  const { addMaterial } = useMaterialService();
 
-  useEffect(() => {
-    addMaterial({
-      description: "material falso",
-      unitMeasure: "u",
-      type: "falso",
-      stock: 123,
-      isAvailable: true,
-      inUse: [],
-    }).catch((e) => console.error(e));
-  });
-  return <div>Requests</div>;
+  const onSearchResult = (input:string)=>{
+    console.log({input})
+  }
+
+  const headerAttributes = {
+    title: "pedidos",
+    enableSearch:true,
+    icon: 'request.svg',
+    searchPlaceholder: 'Buscar pedidos',
+    searchCallback: onSearchResult
+  }
+
+  return <>
+      <Header {...headerAttributes}></Header>
+      <main>
+
+      </main>
+    </>;
 }
