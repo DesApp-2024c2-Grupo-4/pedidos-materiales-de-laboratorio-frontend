@@ -16,55 +16,53 @@ form {
 
 .formEndStyle {
   background-color: white;
-  height: 60%;
-  width: 90vw;
+  height: 65%;
+  width: 98vw;
   align-items: center;
   justify-content: center;
   border-top-left-radius: 8%;
   border-top-right-radius: 8%;
 }
 
-.bannerStyle  {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #2b76ff;
-    width: 100vw;
-    height: 50%;
-    margin-bottom: -25px;
-  };
+.bannerStyle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #2b76ff;
+  width: 100vw;
+  height: 50%;
+  margin-bottom: -25px;
+}
 
+.logoUniStyle {
+  text-align: center;
+}
 
-  .logoUniStyle {
-    text-align: center;
-  };
+.imageStyle {
+  position: absolute;
+  margin-top: 70px;
+  z-index: 10;
+}
 
-  .imageStyle {
-    position: absolute;
-    margin-top: 70px;
-    z-index: 10;
-  };
+.containerStyle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+}
 
+.textFieldStyle {
+  width: 90vw;
+  margin-top: 40px;
+  max-width: 75%;
+}
 
-  .containerStyle {
-    display: flex;
-    flex-direction: column;
-    align-items: center;  
-    height: 100vh;
-  };
-
-  .textFieldStyle {
-    width: 90vw;
-    margin-top: 40px;
-    max-width:75%
-  };
-
-  .buttonStyle {
-    border-radius: 8px;
-    text-transform: none;
-    background-color: #2b76ff;
-    padding: 12px;
-    color: white;
-    width: 90vw;
-    margin-top: 20px;
-  };
+.buttonStyle {
+  border-radius: 8px;
+  text-transform: none;
+  background-color: #2b76ff;
+  padding: 12px;
+  color: white;
+  width: 90vw;
+  margin-top: 20px;
+}
