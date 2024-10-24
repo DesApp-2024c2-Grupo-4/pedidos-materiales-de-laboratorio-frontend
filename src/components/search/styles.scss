@@ -1,7 +1,27 @@
-.search{
-    padding:0;
-    
+.searchform{
+    display: grid;
+    grid-template-columns: 10% 90%;
+    margin: 2px; 
+    border: 2px solid #c7c7c7a1; 
+    padding: 2px; 
+    width: 100%;
+    background-color: white;
+    gap:  1em 0;
     input[type=text]{
+        
+    }
 
+    svg{
+         fill: #929DA5;
+    }
+    input:focus {
+    outline: none; /* Quita el contorno por defecto */
     }
 }
+
+.searcher{
+    background-color: #ffff;
+    border-radius: 6%;
+    border: 0px;
+}
+

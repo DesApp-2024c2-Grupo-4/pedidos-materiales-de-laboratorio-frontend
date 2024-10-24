@@ -1,5 +1,7 @@
 import React, { FormEvent, ReactElement } from "react";
 import './styles.scss'
+import { ImagesearchRoller } from "@mui/icons-material"
+import { ZoomIn,ArrowDropUp }  from "@mui/icons-material"
 
 
 export type SearchProps = {
@@ -15,7 +17,10 @@ export default function Search({placeholder,callback}:SearchProps): ReactElement
     callback(input)
   }
 
-  return <form onSubmit={onSearch} className="search">
-    <input type="text" name="input" id="input" placeholder={placeholder}/>
-  </form>;
+  return (
+     <form onSubmit={onSearch} className="searchform">
+        <ArrowDropUp/>
+        <input className="searcher" type="text" name="input" id="input" placeholder={placeholder}/>
+      </form>
+  );
 }
