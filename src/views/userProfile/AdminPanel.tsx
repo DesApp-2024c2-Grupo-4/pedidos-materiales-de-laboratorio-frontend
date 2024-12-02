@@ -9,6 +9,7 @@ import { Button } from "@mui/material";
 import GenerateLink from "./generateRegister";
 import handlePromise from "../../utils/promise";
 import useUserService from "../../services/user.service";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const items = [
@@ -18,15 +19,15 @@ const items = [
     description: "Copiar link",
     modalTitle: "Generar registro para usuario",
     content: "Ingresa la dirección de correo electrónico del nuevo usuario.",
-    open: false,
+    open: "false",
   },
   {
     icon: <ManageAccountsIcon sx={{ color: "text.secondary" }} />,
-    title: "Definir rol para usuario",
-    description: "Asignar rol",
+    title: "Administrar Usuarios",
+    description: "Ir a la tabla",
     modalTitle: "Elegir rol para usuario",
     content: "Seleccionar el rol para el usuario",
-    open: true,
+    open: "link",
   },
   {
     icon: <PersonOffIcon sx={{ color: "text.secondary" }} />,
@@ -34,13 +35,13 @@ const items = [
     description: "Borrar usuario",
     modalTitle: "Eliminar usuario",
     content: "Ingresa la dirección de correo electrónico del usuario a eliminar.",
-    open: true,
+    open: "true",
   },
 ];
 
 export default function AdminPanel() {
   const { createToken } = useUserService();
-
+  const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   const [modalContent, setModalContent] = React.useState({ title: "", content: "", open: false });
 
@@ -107,7 +108,13 @@ export default function AdminPanel() {
             </Typography>
             <Button
               variant="contained"
-              onClick={item.open ? () => handleClickOpen(item.modalTitle, item.content) : () => getToken()}
+              onClick={() => {
+                item.open === "true"
+                  ? handleClickOpen(item.modalTitle, item.content)
+                  : item.open === "link"
+                    ? navigate("users")
+                    : getToken();
+              }}
             >
               {item.description}
             </Button>
