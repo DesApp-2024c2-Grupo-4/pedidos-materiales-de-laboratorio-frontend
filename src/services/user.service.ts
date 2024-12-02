@@ -56,6 +56,19 @@ const useUserService = () => {
       Promise.reject(err);
     }
   };
+  const updateUserAdmin = async (id, params): Promise<void> => {
+    const config: AxiosRequestConfig = {
+      method: "PUT",
+      url: `/user/${id}`,
+      data: params,
+    };
+
+    const [, err] = await handlePromise<AxiosResponse<User[]>, unknown>(axiosInstance(config));
+
+    if (err) {
+      Promise.reject(err);
+    }
+  };
 
   const updateUser = async (user: User): Promise<void> => {
     const config: AxiosRequestConfig = {
@@ -114,6 +127,7 @@ const useUserService = () => {
     getUsers,
     addUser,
     updateUser,
+    updateUserAdmin,
     removeUser,
   };
 };

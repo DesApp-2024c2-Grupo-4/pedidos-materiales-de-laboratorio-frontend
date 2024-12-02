@@ -20,6 +20,7 @@ import EquipmentsView from "./views/Equipments";
 import UserProfile from "./views/userProfile/UserProfile";
 import ReactivesView from "./views/Reactives";
 import ReactivesDetailsView from "./views/ReactiveDetail";
+import UserAdmin from "./views/userProfile/UsersTable";
 
 function App() {
   const [text, useText] = useState([]);
@@ -43,6 +44,9 @@ function App() {
               <Route path="/Reactives/" element={<ReactivesView />} />
               <Route path="/Reactives/:id" element={<ReactivesDetailsView />} />
               <Route path="/profile" element={<UserProfile />} />
+              <Route path="/profile/users" element={<UserAdmin />} />
+
+              
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />
