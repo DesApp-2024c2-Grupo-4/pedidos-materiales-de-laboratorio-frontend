@@ -4,7 +4,7 @@ import { tr } from 'date-fns/locale';
 import useUserService from '../../services/user.service';
 import handlePromise from '../../utils/promise';
 
-const ModalEditarPerfil = ({ open, handleClose, userInfo }) => {
+const ModalEditarPerfil = ({ open, handleClose, userInfo, updateUserData }) => {
     const { updateUserAdmin } = useUserService();
 
     const updateUserInfo = async (data) => {
@@ -12,6 +12,7 @@ const ModalEditarPerfil = ({ open, handleClose, userInfo }) => {
         if (err) {
           return;
         }
+        updateUserData({ ...userInfo, ...data });
         handleClose();
     
         return;
@@ -30,7 +31,7 @@ const ModalEditarPerfil = ({ open, handleClose, userInfo }) => {
         email: data.get("email") || userInfo.email,
         name: data.get("Nombre") || userInfo.name,
         lastName: data.get("Apellido") || userInfo.lastName,
-        dni: +(data.get("Dni") ?? userInfo.dni),
+        dni: +(data.get("Dni") || userInfo.dni),
       });
     }  
     const validateInputs = () => {

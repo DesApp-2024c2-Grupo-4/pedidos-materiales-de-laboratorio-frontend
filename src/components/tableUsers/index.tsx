@@ -20,6 +20,14 @@ export default function BasicTable() {
     setSelectedRow(row);
     setOpen(true);
   };
+  const updateUserData = (updatedUser) => {
+    setUserData((prevUserData) =>
+      prevUserData.map((user) =>
+        user._id === updatedUser._id ? updatedUser : user
+      )
+    );
+  };
+  
 
   const handleClose = () => {
     setOpen(false);
@@ -75,7 +83,11 @@ export default function BasicTable() {
     if (!currentRoles.includes(role)) {
       const updatedRoles = [...currentRoles, role];
       await updateUserAdmin(row._id, { roles: updatedRoles });
-      Swal.fire(`Seleccionaste: ${role}`);
+      Swal.fire(`Rol agregado: ${role}`);
+      setUserData((prevUserData) =>
+        prevUserData.map((user) =>
+          user._id === row._id ? { ...user, roles: updatedRoles } : user
+        ))
     } else {
       Swal.fire(`El usuario ya tiene el rol: ${role}`);
     }
@@ -84,6 +96,7 @@ export default function BasicTable() {
 
 
   const handleDelete = (row) => {
+    console.log(row);
     Swal.fire({
       title: "¿Estás seguro?",
       text: `Estás a punto de borrar al usuario ${row.name} ${row.lastName}.`,
@@ -99,7 +112,6 @@ export default function BasicTable() {
           .then(() => {
             Swal.fire("¡Usuario borrado!", "El usuario ha sido borrado correctamente.", "success").then(() => {
               setUserData((prevUserData) => prevUserData.filter((user) => user._id !== row._id));
-              setOpen(false);
             });
           })
           .catch(() => {
@@ -183,6 +195,8 @@ export default function BasicTable() {
         open={open}
         handleClose={handleClose}
         userInfo={selectedRow}
+        updateUserData={updateUserData}
+
       />} 
     </div>
   );
