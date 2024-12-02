@@ -1,6 +1,8 @@
 import React, { ReactElement, useState } from "react";
 import "./styles.scss";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import { EquipmentRequest, MaterialRequest, ReactiveRequest } from "../../types/request";
+import PDFDocument from "./pdf";
 
 export type CardProps = {
   title: string;
@@ -97,6 +99,29 @@ export default function CardRequestDetails({
                 {material.material} - Cantidad: {material.quantity}
               </p>
             ))}
+            <PDFDownloadLink
+              document={
+                <PDFDocument
+                  title={title}
+                  date={date}
+                  endDate={endDate}
+                  status={status}
+                  laboratory={laboratory}
+                  building={building}
+                  proffesor={proffesor}
+                  students={students}
+                  groupsAmount={groupsAmount}
+                  subject={subject}
+                  tpNumber={tpNumber}
+                  equipments={equipments}
+                  reactives={reactives}
+                  materials={materials}
+                />
+              }
+              fileName="request-details.pdf"
+            >
+              "Descargar PDF"
+            </PDFDownloadLink>
           </div>
         )}
       </div>
