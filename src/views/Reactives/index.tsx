@@ -57,7 +57,7 @@ export default function ReactivesView(): ReactElement {
     <>
       <Header {...headerAttributes}></Header>
       <main>
-        <div className="body">
+        <div className="bodys">
           <div className="newFormButton">
             <Button variant="contained" size="medium" onClick={() => navigate("New")}>
               Crear {headerAttributes.title}
