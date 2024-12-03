@@ -6,6 +6,8 @@ import MobileNav from "../../components/mobile-nav";
 import useRequestService from "../../services/request.service";
 import handlePromise from "../../utils/promise";
 import { Request } from "../../types/request";
+import Filter from "../../components/filter";
+
 
 export default function RequestsView(): ReactElement {
   const [requestData, setRequestData] = useState<Request[]>([]);
@@ -50,11 +52,13 @@ export default function RequestsView(): ReactElement {
   return (
     <>
       <Header {...headerAttributes}></Header>
+      <Filter elements={requestData} ></Filter>
       <main>
         <div className="body">
           {showedRequest.map((requested, index) => (
             <div className="listElements">
               <CardRequest
+                id={requested._id}
                 title={requested.description}
                 date={requested.usageDate.toString()}
                 laboratory={requested.lab?.toString() || ""}

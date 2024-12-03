@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./styles.scss";
 
 export type CardProps = {
+  id:string;
   title: string;
   date: string;
   banner?: string;
@@ -13,6 +14,7 @@ export type CardProps = {
 };
 
 export default function CardRequest({
+  id,
   title,
   date,
   banner,
@@ -22,7 +24,7 @@ export default function CardRequest({
   students,
 }: CardProps): ReactElement {
   return (
-    <Link to="/requests">
+    <Link to={`/request/${id}`}>
       <div className="card">
         <div className="card-body">
           <div className="card-header">
