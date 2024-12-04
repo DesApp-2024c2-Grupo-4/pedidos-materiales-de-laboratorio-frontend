@@ -21,6 +21,20 @@ export type  RequestableElement = {
   missingAmount?: number;
   id:string;
 }
+export interface EquipmentRequest {
+  amount: number;
+  id: {
+    _id: string;
+    type: string;
+    description: string;
+    stock: number;
+    inRepair: number;
+    createdAt: Date;
+    updatedAt: Date;
+    __v: number;
+  };
+  _id: string;
+}
 
 export type  Request = {
   _id:string;
@@ -46,4 +60,5 @@ export type  Request = {
   isCompleted: boolean;
   isRejected: boolean;
   isExpired: boolean;
+
 }
