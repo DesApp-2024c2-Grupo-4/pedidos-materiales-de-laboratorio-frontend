@@ -134,13 +134,40 @@ const useSharedService = () => {
     return respond;
   };
 
+   const getLabs = () =>  {
+    return getType(`/request/constants/labs`)
+  }
+   const getstatus = () =>  {
+    return getType(`/request/constants/statuses`)
+  }
+   const getType = async (urlType: string): Promise<SelectOptions[]> => {
+    const config: AxiosRequestConfig = {
+      method: "GET",
+      url: urlType,
+    };
+    const [response, err] = await handlePromise<AxiosResponse<Request>, unknown>(axiosInstance(config));
+
+    if (err) {
+      Promise.reject(err);
+    }
+
+    if (!response?.data) {
+      return Promise.reject("Response is empty"); 
+    }
+
+    const respond :SelectOptions[] = Object.keys(response.data).map(key =>({value:key,text:response.data[key]}))
+
+    return respond;
+  };
 
   return {
    getEquipmentTypes,
    getMaterialTypes,
    getUnits,
    getReactiveTypes,
-   getReactiveSolvents
+   getReactiveSolvents,
+   getLabs,
+   getstatus
   };
 };
 

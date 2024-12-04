@@ -45,3 +45,17 @@
     font-size: 1.2em;
   }
 }
+
+.container {
+    display: grid; /* Activar el modelo Flexbox */
+    grid-template-columns: 30% 10% 10% 15% 15% 10%;
+    gap: 6px;
+    justify-content: space-between; /* Espaciado entre los elementos */
+  }
+
+.box {
+    width: 100%;    
+}
+.sp{
+        padding-top: 10px;
+     }

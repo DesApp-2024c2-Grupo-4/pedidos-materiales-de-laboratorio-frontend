@@ -35,24 +35,20 @@ export default function RequestsView(): ReactElement {
     fetchRequests();
   }, []);
 
-  const onSearchResult = (input: string) => {
-    input
-      ? setShowedRequest(requestData.filter((m) => m.description.toLowerCase().includes(input.toLowerCase())))
-      : setShowedRequest(requestData);
+  const onSearchResult = (input: Request[]) => {
+     setShowedRequest(input)
   };
 
   const headerAttributes = {
     title: "pedidos",
-    enableSearch: true,
+    enableSearch: false,
     icon: "request.svg",
-    searchPlaceholder: "Buscar pedidos",
-    searchCallback: onSearchResult,
   };
 
   return (
     <>
       <Header {...headerAttributes}></Header>
-      <Filter elements={requestData} ></Filter>
+      <Filter elements={requestData}  callback={onSearchResult} ></Filter>
       <main>
         <div className="body">
           {showedRequest.map((requested, index) => (
