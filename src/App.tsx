@@ -21,7 +21,6 @@ import UserProfile from "./views/userProfile/UserProfile";
 import ReactivesView from "./views/Reactives";
 import ReactivesDetailsView from "./views/ReactiveDetail";
 import UserAdmin from "./views/userProfile/UsersTable";
-import RequestView from "./views/RequestDetail";
 
 function App() {
   const [text, useText] = useState([]);
@@ -38,7 +37,7 @@ function App() {
             <Route element={<Template />}>
               <Route element={<Navigate replace to="/requests" />} index />
               <Route path="/requests" element={<RequestsView />} />
-              <Route path="/requests/:id" element={<RequestView />} />
+              {/* <Route path="/requests/:id" element={<RequestDetailView />} /> */}
               <Route path="/materials" element={<MaterialsView />} />
               <Route path="/materials/:id" element={<MaterialDetailsView />} />
               <Route path="/equipments" element={<EquipmentsView />} />
@@ -47,8 +46,6 @@ function App() {
               <Route path="/Reactives/:id" element={<ReactivesDetailsView />} />
               <Route path="/profile" element={<UserProfile />} />
               <Route path="/profile/users" element={<UserAdmin />} />
-
-              
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />

@@ -2,6 +2,7 @@ import React, { ReactElement, useEffect, useState } from "react";
 import "./styles.scss";
 import Header from "../../components/header";
 import CardRequest from "../../components/card";
+import SelectionItem from "../../components/dropdownVersatil";
 import MobileNav from "../../components/mobile-nav";
 import useRequestService from "../../services/request.service";
 import handlePromise from "../../utils/promise";
@@ -12,20 +13,17 @@ import { Equipment } from "../../types/equipment";
 import useMaterialService from "../../services/material.service";
 import useEquipmentService from "../../services/equipment.service";
 
-
 export default function RequestsView(): ReactElement {
   const [requestData, setRequestData] = useState<Request[]>([]);
   const [showedRequest, setShowedRequest] = useState<Request[]>([]);
-
 
   const requestService = useRequestService();
   const materialService = useMaterialService();
   const equipmentService = useEquipmentService();
 
-  //para agregar vista previa  
-  const [materials, setMaterials] = useState<Material[]>([])
-  const [equipments, setequipments] = useState<Equipment[]>([])
-
+  //para agregar vista previa
+  const [materials, setMaterials] = useState<Material[]>([]);
+  const [equipments, setequipments] = useState<Equipment[]>([]);
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -47,14 +45,22 @@ export default function RequestsView(): ReactElement {
 
     const getEquipment = async () => {
       const [equipments, errEq] = await handlePromise(equipmentService.getEquipments());
-      if (errEq) { throw errEq; }
-      if (equipments) { setequipments(equipments) }
-    }
+      if (errEq) {
+        throw errEq;
+      }
+      if (equipments) {
+        setequipments(equipments);
+      }
+    };
     const getMaterial = async () => {
       const [material, errEq] = await handlePromise(materialService.getMaterials());
-      if (errEq) { throw errEq; }
-      if (material) { setMaterials(material) }
-    }
+      if (errEq) {
+        throw errEq;
+      }
+      if (material) {
+        setMaterials(material);
+      }
+    };
 
     fetchRequests();
     getEquipment();
@@ -62,7 +68,7 @@ export default function RequestsView(): ReactElement {
   }, []);
 
   const onSearchResult = (input: Request[]) => {
-    setShowedRequest(input)
+    setShowedRequest(input);
   };
 
   const headerAttributes = {
@@ -75,33 +81,35 @@ export default function RequestsView(): ReactElement {
     return new Date(dateString).toLocaleDateString("es-ES");
   };
 
-
-
   return (
     <>
       <Header {...headerAttributes}></Header>
-      <Filter elements={requestData} callback={onSearchResult} ></Filter>
+      <Filter elements={requestData} callback={onSearchResult}></Filter>
       <main>
         <div className="body">
           {showedRequest.map((requested, index) => (
-            <div className="listElements">
-              <CardRequest
-                id={requested._id}
-                title={requested.description}
-                date={requested.usageDate ? requested.usageDate.toString() : ""}
-                laboratory={requested.lab?.toString() || ""}
-                building={requested.building || ""}
-                proffesor={requested.requestantUser}
-                students={requested.studentsNumber ? requested.studentsNumber.toString() : ''}
-                status={requested.status}
-                groupsAmount={requested.groupNumber}
-                subject={"titulo"}
-                tpNumber={requested.tpNumber}
-                equipments={requested.equipments}
-                reactives={requested.reactives}
-                materials={requested.materials}
-              />
-
+            <div>
+              <div className="listElements">
+                <CardRequest
+                  id={requested._id}
+                  title={requested.description}
+                  date={requested.usageDate ? requested.usageDate.toString() : ""}
+                  laboratory={requested.lab?.toString() || ""}
+                  building={requested.building || ""}
+                  proffesor={requested.requestantUser}
+                  students={requested.studentsNumber ? requested.studentsNumber.toString() : ""}
+                  status={requested.status}
+                  // endDate={requested.creationDate ? requested.creationDate.toString() : ""}
+                  groupsAmount={requested.groupNumber}
+                  subject={requested.subject}
+                  tpNumber={requested.tpNumber}
+                />
+                <SelectionItem
+                  title={"Equipment"}
+                  isEditable={false}
+                  equipmentList={requested.equipments}
+                ></SelectionItem>
+              </div>
             </div>
           ))}
         </div>
@@ -113,4 +121,3 @@ export default function RequestsView(): ReactElement {
 function setShowedItems(simpleList: any) {
   throw new Error("Function not implemented.");
 }
-

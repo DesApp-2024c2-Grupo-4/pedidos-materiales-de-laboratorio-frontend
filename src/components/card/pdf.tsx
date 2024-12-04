@@ -65,9 +65,9 @@ const PDFDocument = ({
   groupsAmount,
   subject,
   tpNumber,
-  equipments,
-  reactives,
-  materials,
+  equipments = [],
+  reactives = [],
+  materials = [],
 }) => (
   <Document>
     <Page size="A4" style={styles.page}>
@@ -86,27 +86,30 @@ const PDFDocument = ({
       </View>
       <View style={styles.section}>
         <Text style={styles.header}>Equipos:</Text>
-        {equipments.map((equipment) => (
-          <Text key={equipment._id} style={styles.text}>
-            {equipment.id.description} - Cantidad: {equipment.amount}
-          </Text>
-        ))}
+        {equipments &&
+          equipments.map((equipment) => (
+            <Text key={equipment._id} style={styles.text}>
+              {equipment.id.description} - Cantidad: {equipment.amount}
+            </Text>
+          ))}
       </View>
       <View style={styles.section}>
         <Text style={styles.header}>Reactivos:</Text>
-        {reactives.map((reactive, index) => (
-          <Text key={index} style={styles.text}>
-            {reactive.reactive} - Cantidad: {reactive.quantity} {reactive.unitMeasure}
-          </Text>
-        ))}
+        {reactives &&
+          reactives.map((reactive, index) => (
+            <Text key={index} style={styles.text}>
+              {reactive.reactive} - Cantidad: {reactive.quantity} {reactive.unitMeasure}
+            </Text>
+          ))}
       </View>
       <View style={styles.section}>
         <Text style={styles.header}>Materiales:</Text>
-        {materials.map((material, index) => (
-          <Text key={index} style={styles.text}>
-            {material.material} - Cantidad: {material.quantity}
-          </Text>
-        ))}
+        {materials &&
+          materials.map((material, index) => (
+            <Text key={index} style={styles.text}>
+              {material.material} - Cantidad: {material.quantity}
+            </Text>
+          ))}
       </View>
     </Page>
   </Document>

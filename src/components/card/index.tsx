@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from "react";
 import "./styles.scss";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { EquipmentRequest, MaterialRequest, ReactiveRequest } from "../../types/request";
+import { EquipmentRequest, ReactiveRequest } from "../../types/request";
 import PDFDocument from "./pdf";
 
 export type CardProps = {
@@ -17,9 +17,9 @@ export type CardProps = {
   groupsAmount: number;
   subject: string;
   tpNumber: number;
-  equipments: EquipmentRequest[];
-  reactives: ReactiveRequest[];
-  materials: MaterialRequest[];
+  equipments?: EquipmentRequest[];
+  reactives?: ReactiveRequest[];
+  materials?: [];
 };
 
 export default function CardRequestDetails({
@@ -79,23 +79,26 @@ export default function CardRequestDetails({
         {showDetails && (
           <div className="card-details">
             <h4>Equipos:</h4>
-            {equipments.map((equipment) => (
-              <p key={equipment._id}>
-                {equipment.id.description} - Cantidad: {equipment.amount}
-              </p>
-            ))}
+            {equipments &&
+              equipments.map((equipment) => (
+                <p key={equipment._id}>
+                  {equipment.id.description} - Cantidad: {equipment.amount}
+                </p>
+              ))}
             <h4>Reactivos:</h4>
-            {reactives.map((reactive, index) => (
-              <p key={index}>
-                {reactive.id.description} - Cantidad: {reactive.amount} {reactive.unitMeasure}
-              </p>
-            ))}
+            {reactives &&
+              reactives.map((reactive, index) => (
+                <p key={index}>
+                  {reactive.description} - Cantidad: {reactive.amount} {reactive.unitMeasure}
+                </p>
+              ))}
             <h4>Materiales:</h4>
-            {materials.map((material, index) => (
-              <p key={index}>
-                {material.id.description} - Cantidad: {material.amount}
-              </p>
-            ))}
+            {materials &&
+              materials.map((material, index) => (
+                <p key={index}>
+                  {"completar"} - Cantidad: {"completar"}
+                </p>
+              ))}
             <PDFDownloadLink
               document={
                 <PDFDocument
