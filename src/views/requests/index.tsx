@@ -6,6 +6,8 @@ import MobileNav from "../../components/mobile-nav";
 import useRequestService from "../../services/request.service";
 import handlePromise from "../../utils/promise";
 import { Request } from "../../types/request";
+import Filter from "../../components/filter";
+
 
 const mockData = [
   {
@@ -198,18 +200,14 @@ export default function RequestsView(): ReactElement {
     fetchRequests();
   }, []);
 
-  const onSearchResult = (input: string) => {
-    input
-      ? setShowedRequest(requestData.filter((m) => m.description.toLowerCase().includes(input.toLowerCase())))
-      : setShowedRequest(requestData);
+  const onSearchResult = (input: Request[]) => {
+     setShowedRequest(input)
   };
 
   const headerAttributes = {
     title: "pedidos",
-    enableSearch: true,
+    enableSearch: false,
     icon: "request.svg",
-    searchPlaceholder: "Buscar pedidos",
-    searchCallback: onSearchResult,
   };
   const formatDate = (dateString) => {
     const options = { day: "2-digit", month: "2-digit", year: "numeric" };
@@ -219,11 +217,20 @@ export default function RequestsView(): ReactElement {
   return (
     <>
       <Header {...headerAttributes}></Header>
+      <Filter elements={requestData}  callback={onSearchResult} ></Filter>
       <main>
         <div className="body">
           {mockData.map((requested, index) => (
             <div className="listElements">
-              <CardRequest {...requested} />
+              <CardRequest
+                id={requested._id}
+                title={requested.description}
+                date={requested.usageDate.toString()}
+                laboratory={requested.lab?.toString() || ""}
+                building={requested.building || ""}
+                proffesor={requested.requestantUser}
+                students={requested.studentsNumber.toString()}
+              />
             </div>
           ))}
         </div>

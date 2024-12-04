@@ -5,6 +5,7 @@ import { EquipmentRequest, MaterialRequest, ReactiveRequest } from "../../types/
 import PDFDocument from "./pdf";
 
 export type CardProps = {
+  id:string;
   title: string;
   date: string;
   banner?: string;
@@ -23,7 +24,9 @@ export type CardProps = {
   materials: MaterialRequest[];
 };
 
+
 export default function CardRequestDetails({
+  id,
   title,
   date,
   banner,

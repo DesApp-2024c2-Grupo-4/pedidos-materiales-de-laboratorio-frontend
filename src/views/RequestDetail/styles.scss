@@ -1,0 +1,34 @@
+@import "../../globals.scss";
+
+.title {
+  font-weight: 500;
+  text-decoration: none;
+  color: color("text-secondary");
+  font-size: 14px;
+}
+
+.listElements {
+  padding: 8px 8px;
+}
+
+.fbuttons {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  height: 60px;
+  padding: 0% 5% 15%;
+}
+.body {
+  padding-bottom: 15vh;
+  @include breakpoint(small) {
+    padding-bottom: 6vh;
+  }
+}
+.newFormButton {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 1em;
+  @include breakpoint(small) {
+    display: none;
+  }
+}

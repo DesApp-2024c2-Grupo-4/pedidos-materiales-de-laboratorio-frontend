@@ -1,21 +1,33 @@
-export interface SolventRequest {
+
+
+export type  SolventRequest  = {
   name: string;
   description: string;
 }
 
-export interface ReactiveRequest {
-  quantity: number;
+export type  ReactiveRequest = {
   unitMeasure: string;
   quality: string;
   concentrationType: string;
   concentrationAmount: string;
   solvents: SolventRequest[];
   reactive: string;
+  amount: number;
+  missingAmount: number;
 }
 
-export interface MaterialRequest {
-  quantity: number;
+export type  MaterialRequest = {
   material: string;
+  amount: number;
+  missingAmount: number;
+
+}
+
+export type  EquipmentRequest = {
+  material: string;
+  amount: number;
+  missingAmount: number;
+
 }
 export interface EquipmentRequest {
   amount: number;
@@ -32,21 +44,29 @@ export interface EquipmentRequest {
   _id: string;
 }
 
-export interface Request {
-  _id: string;
+export type  Request = {
+  _id:string;
   requestantUser: string;
-  status: string;
-  startDate: Date;
-  endDate: Date;
-  studentsAmount: number;
-  groupsAmount: number;
+  assignedUser: string;
+  description: string;
+  creationDate: Date;
+  usageDate: Date;
+  lab: string ;
+  type: string;
+  studentsNumber: number;
+  building?: string;
+  groupNumber: number;
+  observations?: string;
   subject: string;
   tpNumber: number;
-  description: string;
+  messages: string;
   equipments: EquipmentRequest[];
-  reactives: ReactiveRequest[]; 
-  materials: MaterialRequest[]; 
-  createdAt: Date;
-  updatedAt: Date;
-  __v: number;
+  reactives: ReactiveRequest[];
+  materials: MaterialRequest[];
+  requestNumber: number;
+  status: string;
+  isCompleted: boolean;
+  isRejected: boolean;
+  isExpired: boolean;
+
 }

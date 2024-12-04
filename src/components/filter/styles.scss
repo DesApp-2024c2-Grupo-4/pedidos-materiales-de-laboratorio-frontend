@@ -1,0 +1,61 @@
+@import "../../globals.scss";
+
+.searchform {
+  color: color("text-secondary");
+  display: grid;
+  grid-template-columns: 10% 90%;
+  justify-items: center;
+  align-items: center;
+  margin: 2px;
+  border: 2px solid #c7c7c7a1;
+  padding: 2px;
+  width: 100%;
+  background-color: white;
+  gap: 1em 0;
+  
+
+  svg {
+    fill: #929da5;
+  }
+  input:focus {
+    outline: none; /* Quita el contorno por defecto */
+  }
+  img {
+    color: color("text-secondary");
+    height: 2em;
+  }
+  @include breakpoint(small) {
+    img {
+      height: 1.6em;
+    }
+  }
+}
+
+.searcher {
+  background-color: #ffff;
+  font-size: 1.8em;
+  justify-self: self-start;
+  border-radius: 6%;
+  border: 0px;
+  width: 95%;
+  @include breakpoint(small) {
+    img {
+      height: 1.6em;
+    }
+    font-size: 1.2em;
+  }
+}
+
+.container {
+    display: grid; /* Activar el modelo Flexbox */
+    grid-template-columns: 30% 10% 10% 15% 15% 10%;
+    gap: 6px;
+    justify-content: space-between; /* Espaciado entre los elementos */
+  }
+
+.box {
+    width: 100%;    
+}
+.sp{
+        padding-top: 10px;
+     }
