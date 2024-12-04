@@ -45,15 +45,14 @@ form {
 }
 
 .imageStyle {
-  z-index: 10;  
+  z-index: 10;
   margin-top: 5%;
   max-height: 65%;
-  max-width:  65%;
+  max-width: 65%;
 
   @include breakpoint(small) {
     margin-top: 15%;
-      }
-
+  }
 }
 
 .containerStyle {

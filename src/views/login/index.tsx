@@ -74,7 +74,7 @@ export default function Login(): ReactElement {
   };
 
   return (
-    <div className="container containerStyle">
+    <div className="containerlogin containerStyle">
       <div className="banner bannerStyle">
         <img src="/img/logo-universidad.png" alt="UNAHUR" className="logoUniStyle" />
         <img src="/img/scientist.png" alt="Cientifico de laboratorio" className="imageStyle" />
