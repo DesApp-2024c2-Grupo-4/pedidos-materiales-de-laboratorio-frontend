@@ -1,11 +1,15 @@
 @import "../../globals.scss";
 
-a {
+.container {
   text-decoration: none;
   color: color("text-secondary");
   font: "Lato";
   font-style: normal;
-  font-size: 10px;
+  font-size: 25px;
+  font-weight: 400;
+  @include breakpoint(small) {
+    font-size: 12px;
+  }
 }
 .card {
   background-color: color("background-light");
@@ -27,8 +31,12 @@ a {
 .card-title {
   color: color("text-primary");
   font-style: normal;
-  font-size: 12px;
+  font-size: 26px;
+
   font-weight: 400;
+  @include breakpoint(small) {
+    font-size: 12px;
+  }
 }
 .card-info {
   display: flex;

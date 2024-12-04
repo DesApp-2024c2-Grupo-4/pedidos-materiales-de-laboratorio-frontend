@@ -21,6 +21,7 @@ import UserProfile from "./views/userProfile/UserProfile";
 import ReactivesView from "./views/Reactives";
 import ReactivesDetailsView from "./views/ReactiveDetail";
 import UserAdmin from "./views/userProfile/UsersTable";
+import RequestDetailView from "./views/requestDetail";
 
 function App() {
   const [text, useText] = useState([]);
@@ -37,6 +38,7 @@ function App() {
             <Route element={<Template />}>
               <Route element={<Navigate replace to="/requests" />} index />
               <Route path="/requests" element={<RequestsView />} />
+              <Route path="/requests/:id" element={<RequestDetailView />} />
               <Route path="/materials" element={<MaterialsView />} />
               <Route path="/materials/:id" element={<MaterialDetailsView />} />
               <Route path="/equipments" element={<EquipmentsView />} />
