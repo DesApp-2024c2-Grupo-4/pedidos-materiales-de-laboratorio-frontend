@@ -52,11 +52,11 @@ export default function SelectionItem({
     setEditingIndex(index);
   };
 
-  const handleSave = (index, newProducto, newCantidad) => {
+  const handleequipmentSave = (index, newProducto, newCantidad) => {
     const updatedItems = [...items];
     updatedItems[index] = { producto: newProducto, cantidad: newCantidad };
-    SimpleItem(updatedItems);
     setEditingIndex(null); 
+    SimpleItem(updatedItems);
   }; 
 
   useEffect(() => {
