@@ -1,4 +1,4 @@
-import React, { FormEvent, ReactElement, useEffect, useState } from "react";
+import React, { FormEvent, ReactElement, useCallback, useEffect, useState } from "react";
 import './styles.scss'
 import { ImagesearchRoller, Padding, SearchOutlined } from "@mui/icons-material"
 import { ZoomIn,ArrowDropUp }  from "@mui/icons-material"
@@ -23,9 +23,9 @@ export type SearchProps = {
 
 export default function Filter({  elements , callback }: SearchProps): ReactElement {
   
-  console.log('elements', elements)
   const [LabList,setLabList] =     useState<SelectOptions[]>([])
   const [statusList,setstatusList] = useState<SelectOptions[]>([])
+  
   const [Lab,     setLab] = useState('')
   const [status,  setStatus] = useState('')
   const [minDate, setminDate] = useState('');
@@ -40,14 +40,14 @@ export default function Filter({  elements , callback }: SearchProps): ReactElem
   };
 
 
-useEffect(() => {
+useCallback(() => {
     const fetchRequests = async () => {
        const [labs, err1]   = await handlePromise(sharedService.getLabs());
        const [status, err2] = await handlePromise(sharedService.getstatus());
       try {
         if (err1) {throw err1;}
         if (err2) {throw err2;}
-
+ 
         if (labs && status) {
           setLabList(labs);
           setstatusList(status)
@@ -60,15 +60,13 @@ useEffect(() => {
     fetchRequests();
   }, []);
 
+
   useEffect(() => {
-
-    
-
     const filterChanged = () => { 
       return elements.filter(item => {
-          const matchesLab =     Lab === '' || item.lab.toLowerCase().includes(Lab.toLowerCase());
-          const matchesName =     title === '' || item.description.toLowerCase().includes(title.toLowerCase());
-          const matchesStatus =   status  === '' || item.status === status;
+          const matchesLab =      Lab === ''    || item.lab.toLowerCase().includes(Lab.toLowerCase());
+          const matchesName =     title === ''  || item.description.toLowerCase().includes(title.toLowerCase());
+          const matchesStatus =   status  === ''|| item.status === status;
           const matchesMindate =  minDate == '' || new Date(item.usageDate) > new Date(minDate);
           const matchesMaxdate =  maxDate == '' || new Date(item.usageDate) < new Date(maxDate);
           
@@ -89,13 +87,12 @@ useEffect(() => {
         </form>
       </div>
       <div  className="box sp">
-        <FormControl fullWidth>
+        <FormControl>
           <InputLabel>Laboratorio</InputLabel>
           <Select
             value={Lab}
             label="Laboratorio"
-            onChange={(event) => {setLab(event.target.value)}}
-          >
+            onChange={(event) => {setLab(event.target.value)}}>
                 {LabList.map((t, index) => (
                     <MenuItem value={t.value}>{t.text}</MenuItem>
                   ))}
@@ -103,12 +100,10 @@ useEffect(() => {
         </FormControl>
       </div>
       <div  className="box sp">
-        <FormControl fullWidth>
+        <FormControl>
           <InputLabel >Estado</InputLabel>
           <Select value={status} label="edificio" onChange={(event) => {setStatus(event.target.value)}}>
-                {statusList.map((t, index) => (
-                    <MenuItem value={t.value}>{t.text}</MenuItem>
-                  ))}
+                {statusList.map((t, index) => (<MenuItem value={t.value}>{t.text}</MenuItem>))}
           </Select>
         </FormControl>
       </div>
@@ -129,11 +124,11 @@ useEffect(() => {
     
       <div  className="box sp" >
         <Button variant="outlined" startIcon={<DeleteIcon />} onClick={()=>{ 
-          setLab('')  
-          setStatus('')
-          setminDate('')
-          setmaxDate('')
-          setTitle('')
+          setLab(''); 
+          setStatus('');
+          setminDate('');
+          setmaxDate('');
+          setTitle('');
         }}>
           
       </Button>
@@ -144,3 +139,5 @@ useEffect(() => {
 
   );
 }
+
+

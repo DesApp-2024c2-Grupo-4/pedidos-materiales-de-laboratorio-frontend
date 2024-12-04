@@ -11,23 +11,15 @@ export type  ReactiveRequest = {
   concentrationType: string;
   concentrationAmount: string;
   solvents: SolventRequest[];
-  reactive: string;
+  id: string;
   amount: number;
   missingAmount: number;
 }
 
-export type  MaterialRequest = {
-  material: string;
+export type  RequestableElement = {
   amount: number;
-  missingAmount: number;
-
-}
-
-export type  EquipmentRequest = {
-  material: string;
-  amount: number;
-  missingAmount: number;
-
+  missingAmount?: number;
+  id:string;
 }
 export interface EquipmentRequest {
   amount: number;
@@ -60,9 +52,9 @@ export type  Request = {
   subject: string;
   tpNumber: number;
   messages: string;
-  equipments: EquipmentRequest[];
+  equipments: RequestableElement[];
   reactives: ReactiveRequest[];
-  materials: MaterialRequest[];
+  materials: RequestableElement[];
   requestNumber: number;
   status: string;
   isCompleted: boolean;
