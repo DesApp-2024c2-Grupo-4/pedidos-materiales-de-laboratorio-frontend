@@ -2,12 +2,12 @@ import React, { ReactElement, useEffect, useState } from "react";
 import "./styles.scss";
 import Header from "../../components/header";
 import CardRequest from "../../components/card";
+import SelectionItem  from "../../components/dropdownVersatil"
 import MobileNav from "../../components/mobile-nav";
 import useRequestService from "../../services/request.service";
 import handlePromise from "../../utils/promise";
 import { Request } from "../../types/request";
 import Filter from "../../components/filter";
-
 
 export default function RequestsView(): ReactElement {
   const [requestData, setRequestData] = useState<Request[]>([]);
@@ -34,7 +34,7 @@ export default function RequestsView(): ReactElement {
     };
     fetchRequests();
   }, []);
-
+  
   const onSearchResult = (input: Request[]) => {
      setShowedRequest(input)
   };
@@ -52,16 +52,24 @@ export default function RequestsView(): ReactElement {
       <main>
         <div className="body">
           {showedRequest.map((requested, index) => (
+            <div>
+              <p>requested._id</p>
             <div className="listElements">
               <CardRequest
                 id={requested._id}
                 title={requested.description}
-                date={requested.usageDate.toString()}
+                date={requested.usageDate? requested.usageDate.toString(): ""}
                 laboratory={requested.lab?.toString() || ""}
                 building={requested.building || ""}
                 proffesor={requested.requestantUser}
-                students={requested.studentsNumber.toString()}
+                students={requested.studentsNumber? requested.studentsNumber.toString() : ''}
               />
+            <SelectionItem
+             title ={"Equipment"} 
+             isEditable = {false}
+             equipmentList = {requested.equipments}   
+             ></SelectionItem>
+            </div>
             </div>
           ))}
         </div>
