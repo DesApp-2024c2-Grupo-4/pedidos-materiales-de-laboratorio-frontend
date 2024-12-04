@@ -17,28 +17,36 @@ export interface MaterialRequest {
   quantity: number;
   material: string;
 }
+export interface EquipmentRequest {
+  amount: number;
+  id: {
+    _id: string;
+    type: string;
+    description: string;
+    stock: number;
+    inRepair: number;
+    createdAt: Date;
+    updatedAt: Date;
+    __v: number;
+  };
+  _id: string;
+}
 
 export interface Request {
-  
+  _id: string;
   requestantUser: string;
-  assignedUser: string;
-  description: string;
-  creationDate: Date;
-  usageDate: Date;
-  lab?: Number;
-  type: string;
-  studentsNumber: number;
-  building?: string;
-  groupNumber: number;
-  observations?: string;
+  status: string;
+  startDate: Date;
+  endDate: Date;
+  studentsAmount: number;
+  groupsAmount: number;
   subject: string;
   tpNumber: number;
-  messages: string;
-  equipments: string[];
-  reactives: string[];
-  materials: string[];
-  requestNumber: number;
-  isCompleted:  boolean;
-  isRejected:  boolean;
-  isExpired: boolean;
+  description: string;
+  equipments: EquipmentRequest[];
+  reactives: ReactiveRequest[]; 
+  materials: MaterialRequest[]; 
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
 }
