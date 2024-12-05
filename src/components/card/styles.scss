@@ -50,21 +50,28 @@
   display: flex;
   justify-content: center;
   align-self: center;
-  font-size: 10px;
+  font-size: 18px;
   width: 20%;
   height: 100%;
   border-radius: 30px;
+  @include breakpoint(small) {
+    font-size: 10px;
+  }
 
-  &.Pendiente {
+  &.PENDING {
     border: 1px solid orange;
     color: orange;
   }
-  &.Rechazado {
+  &.REJECTED {
     border: 1px solid red;
     color: red;
   }
-  &.Aceptado {
+  &.APPROVED {
     border: 1px solid rgb(0, 255, 30);
     color: rgb(0, 255, 30);
+  }
+  &.COMPLETED {
+    border: 1px solid rgb(0, 255, 30);
+    color: rgb(38, 151, 227);
   }
 }

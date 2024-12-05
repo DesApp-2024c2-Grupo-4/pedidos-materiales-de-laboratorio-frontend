@@ -25,12 +25,10 @@ export type CardProps = {
 export default function CardRequestDetails({
   title,
   date,
-  banner,
   laboratory,
   building,
   proffesor,
   students,
-  id,
   status,
   groupsAmount,
   subject,
@@ -53,9 +51,9 @@ export default function CardRequestDetails({
             <div>
               <h3 className="card-title">{title}</h3>
               <p>Fecha practica: {date}</p>
-              <p>Estado: {status}</p>
+              <p>TP Número: {tpNumber}</p>
             </div>
-            {banner && <p className={`card-banner ${banner}`}>{banner}</p>}
+            {status && <p className={`card-banner ${status}`}>{status}</p>}
           </div>
           <div className="card-info">
             <div>
@@ -71,7 +69,6 @@ export default function CardRequestDetails({
               <p>Estudiantes: {students}</p>
               <p>Grupos: {groupsAmount}</p>
               <p>Materia: {subject}</p>
-              <p>TP Número: {tpNumber}</p>
             </div>
           </div>
         </div>

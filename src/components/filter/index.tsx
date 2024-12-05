@@ -65,8 +65,8 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
         const matchesLab = Lab === "" || item.lab?.includes(Lab);
         const matchesName = title === "" || item.description.includes(title);
         const matchesStatus = status === "" || item.status === status;
-        const matchesMindate = minDate == "" || new Date(item.usageDate) > new Date(minDate);
-        const matchesMaxdate = maxDate == "" || new Date(item.usageDate) < new Date(maxDate);
+        const matchesMindate = minDate == "" || new Date(item.startDate) > new Date(minDate);
+        const matchesMaxdate = maxDate == "" || new Date(item.endDate) < new Date(maxDate);
 
         return matchesLab && matchesName && matchesStatus && matchesMindate && matchesMaxdate;
       });

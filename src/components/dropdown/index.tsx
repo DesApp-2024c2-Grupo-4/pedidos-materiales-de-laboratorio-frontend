@@ -63,7 +63,7 @@ export default function Dropdown({
               <div className="drop-info">
                 <div>
                   <p>Stock: {stock}</p>
-                  <p>En reparación: {repair}</p>
+                  {repair && <p>En reparación: {repair}</p>}
                 </div>
                 <div>
                   {clase ? <p> Clase: {clase}</p> : ""}
