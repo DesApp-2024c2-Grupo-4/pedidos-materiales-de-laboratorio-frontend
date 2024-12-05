@@ -36,7 +36,7 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
     setTitle(input);
   };
 
-  useCallback(() => {
+  useEffect(() => {
     const fetchRequests = async () => {
       const [labs, err1] = await handlePromise(sharedService.getLabs());
       const [status, err2] = await handlePromise(sharedService.getstatus());
