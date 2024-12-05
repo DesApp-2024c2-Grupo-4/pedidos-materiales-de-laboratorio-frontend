@@ -22,7 +22,6 @@ export type  ReactiveElement = {
   missingAmount: number;
 }
 
-
 export type  ReactiveRequest = {
   unitMeasure: string;
   quality: string;
@@ -63,7 +62,6 @@ export interface EquipmentRequest {
   _id: string;
 }
 
-
 export interface MaterialRequest {
   amount: number;
   id: {
@@ -79,7 +77,6 @@ export interface MaterialRequest {
   };
   _id: string;
 }
-
 
 export type  Request = {
   _id:string;
