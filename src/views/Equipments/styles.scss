@@ -33,3 +33,9 @@ form {
     display: none;
   }
 }
+.bodyEquipment {
+  padding-bottom: 15vh;
+  @include breakpoint(small) {
+    padding-bottom: 6vh;
+  }
+}

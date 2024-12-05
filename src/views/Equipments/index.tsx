@@ -62,7 +62,7 @@ export default function EquipmentsView(): ReactElement {
     <>
       <Header {...headerAttributes}></Header>
       <main>
-        <div className="body">
+        <div className="bodyEquipment">
           <div className="newFormButtonEquipment">
             <Button variant="contained" size="medium" onClick={() => navigate("New")}>
               Crear {headerAttributes.title}
