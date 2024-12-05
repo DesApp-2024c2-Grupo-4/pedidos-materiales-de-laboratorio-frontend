@@ -19,6 +19,7 @@ export type dropProps = {
   simpleList: RequestableElement[]  //lista de elementos a desplegar
   equipments: Equipment[]
   materials: Material[]
+  reactives: Reactive[]
   callBack: (list: RequestableElement[]) => void
 };
 
@@ -28,6 +29,7 @@ export default function SelectionItem({
   , simpleList
   , equipments
   , materials
+  ,reactives
   , callBack
 }: dropProps): ReactElement {
 
@@ -51,6 +53,10 @@ export default function SelectionItem({
   };
 
 
+  const handleErase = (id) => {
+    setShowedItems(showedItems.filter(i =>i.id != id))
+  };
+
   const handleAdd = () => {
     if (idSelected.trim() !== '') { // Check if product name is not empty
       setShowedItems([...showedItems, {
@@ -59,7 +65,6 @@ export default function SelectionItem({
       }]);
       setid(''); // Clear input after adding
       setamount(''); // Reset quantity to default
-      callBack(showedItems);
     } else {
       console.log("ocurrio un error al persistir en elemento en la tabla")
     }
@@ -70,13 +75,22 @@ export default function SelectionItem({
     updated[index] = { amount: Number(newCantidad), id: newid }
     setShowedItems(updated)
     setEditingIndex(null);
-    callBack(updated);
+
   };
 
   useEffect(() => {
     setShowedItems(simpleList)
 
   }, []);
+
+
+  useEffect(() => {
+    callBack(showedItems)
+        setid('')
+    setamount('')
+  }, [showedItems]);
+
+  
 
   return (
     <div className="containerdropdown">
@@ -105,8 +119,9 @@ export default function SelectionItem({
                 <div className="row" key={index} >
                   <Select className="select" defaultValue={r.id} label={title} disabled={index != editingIndex}
                     onChange={(event) => { setid(event.target.value) }}>
-                    {equipments ? equipments.map((t) => (<MenuItem value={t._id}>{t.description}</MenuItem>)) : undefined}
+                    {equipments ? equipments.filter(e =>e._id ).map((t) => (<MenuItem value={t._id}>{t.description}</MenuItem>)) : undefined}
                     {materials ? materials.map((t) => (<MenuItem value={t._id}>{t.description}</MenuItem>)) : undefined}
+                    {reactives ? reactives.map((t) => (<MenuItem value={t._id}>{t.description}</MenuItem>)) : undefined}
                   </Select>
                   <TextField label="Unidades" id="txtUnidades" defaultValue={r.amount}
                     onChange={(event) => { setamount(event.target.value) }}
@@ -121,7 +136,7 @@ export default function SelectionItem({
                     ) :
                     (
                       <div>
-                        <Button variant="outlined" onClick={() => { console.log(r.id) }} startIcon={<DeleteIcon />}>Borrar</Button>
+                        <Button variant="outlined" onClick={() => {  handleErase(r.id) }} startIcon={<DeleteIcon />}>Borrar</Button>
                         <Button variant="contained" onClick={() => { handleEdit(index) }} >Editar</Button>
                       </div>
                     )
@@ -130,16 +145,18 @@ export default function SelectionItem({
             })}
             <Divider variant="inset" component="div" />
             Agregar
+
             <div className="row">
-              <Select defaultValue={''} className="select" placeholder="Seleccione" name="addelement" label={title} disabled={!isEditable}
-                onChange={(event) => { setid(event.target.value) }}>
+              <Select defaultValue={''} className="select" placeholder="Seleccione" name="addelement" label={title} disabled={editingIndex!=null}
+                onChange={(event) => { setid(event.target.value)  }}>
                 {equipments ? equipments.map((t) => (<MenuItem value={t._id}>{t.description}</MenuItem>)) : undefined}
                 {materials ? materials.map((t) => (<MenuItem value={t._id}>{t.description}</MenuItem>)) : undefined}
+                {reactives ? reactives.map((t) => (<MenuItem value={t._id}>{t.description}</MenuItem>)) : undefined}
               </Select>
-              <TextField label="Unidades" id="txtUnidades"
-                onChange={(event) => { setamount(event.target.value) }}
+              <TextField label="Unidades" id="cantidad"
+                onChange={(event) => { setamount(event.target.value)  }}
                 disabled={!isEditable} />
-              <Button variant="contained" onClick={() => { handleAdd() }} >Editar</Button>
+              <Button variant="contained" onClick={(e) => { handleAdd()  }} >Agregar</Button>
 
             </div>
           </div>
