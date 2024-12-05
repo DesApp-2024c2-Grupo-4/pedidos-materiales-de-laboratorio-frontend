@@ -6,179 +6,26 @@ import SelectionItem  from "../../components/dropdownVersatil"
 import MobileNav from "../../components/mobile-nav";
 import useRequestService from "../../services/request.service";
 import handlePromise from "../../utils/promise";
-import { Request } from "../../types/request";
+import { EquipmentRequest, Request, RequestableElement } from "../../types/request";
 import Filter from "../../components/filter";
+import { Material } from "../../types/material";
+import { Equipment } from "../../types/equipment";
+import useMaterialService from "../../services/material.service";
+import useEquipmentService from "../../services/equipment.service";
 
-const mockData = [
-  {
-    title: "Pedido de Química",
-    date: "25/11/2024",
-    banner: "Pendiente",
-    laboratory: "1201",
-    building: "Malvinas",
-    proffesor: "Dr. Juan Pérez",
-    students: "30",
-    id: "674de383fbe4a54feea93028",
-    status: "PENDING",
-    endDate: "02/12/2024",
-    groupsAmount: 5,
-    subject: "Química",
-    tpNumber: 10,
-    equipments: [
-      {
-        amount: 1,
-        id: {
-          _id: "674de2a7fbe4a54feea93010",
-          type: "AGITADORES-CENTRIFUGAS",
-          description: "Test equipment 2",
-          stock: 10,
-          inRepair: 1,
-          createdAt: new Date("2024-12-02T16:39:03.293Z"),
-          updatedAt: new Date("2024-12-02T16:39:03.293Z"),
-          __v: 0,
-        },
-        _id: "674de383fbe4a54feea93029",
-      },
-    ],
-    reactives: [
-      {
-        quantity: 2,
-        unitMeasure: "L",
-        quality: "Alta",
-        concentrationType: "Molar",
-        concentrationAmount: "1M",
-        solvents: [
-          {
-            name: "Agua",
-            description: "Solvente universal",
-          },
-        ],
-        reactive: "Ácido sulfúrico",
-      },
-      {
-        quantity: 2,
-        unitMeasure: "L",
-        quality: "Alta",
-        concentrationType: "Molar",
-        concentrationAmount: "1M",
-        solvents: [
-          {
-            name: "Agua",
-            description: "Solvente universal",
-          },
-        ],
-        reactive: "Ácido sulfúrico",
-      },
-      {
-        quantity: 2,
-        unitMeasure: "L",
-        quality: "Alta",
-        concentrationType: "Molar",
-        concentrationAmount: "1M",
-        solvents: [
-          {
-            name: "Agua",
-            description: "Solvente universal",
-          },
-        ],
-        reactive: "Ácido sulfúrico",
-      },
-    ],
-    materials: [
-      {
-        quantity: 10,
-        material: "Vasos de precipitados",
-      },
-    ],
-  },
-  {
-    title: "Pedido de Química",
-    date: "25/11/2024",
-    banner: "Pendiente",
-    laboratory: "1201",
-    building: "Malvinas",
-    proffesor: "Dr. Juan Pérez",
-    students: "30",
-    id: "674de383fbe4a54feea93028",
-    status: "PENDING",
-    endDate: "02/12/2024",
-    groupsAmount: 5,
-    subject: "Química",
-    tpNumber: 10,
-    equipments: [
-      {
-        amount: 1,
-        id: {
-          _id: "674de2a7fbe4a54feea93010",
-          type: "AGITADORES-CENTRIFUGAS",
-          description: "Test equipment 2",
-          stock: 10,
-          inRepair: 1,
-          createdAt: new Date("2024-12-02T16:39:03.293Z"),
-          updatedAt: new Date("2024-12-02T16:39:03.293Z"),
-          __v: 0,
-        },
-        _id: "674de383fbe4a54feea93029",
-      },
-    ],
-    reactives: [
-      {
-        quantity: 2,
-        unitMeasure: "L",
-        quality: "Alta",
-        concentrationType: "Molar",
-        concentrationAmount: "1M",
-        solvents: [
-          {
-            name: "Agua",
-            description: "Solvente universal",
-          },
-        ],
-        reactive: "Ácido sulfúrico",
-      },
-      {
-        quantity: 2,
-        unitMeasure: "L",
-        quality: "Alta",
-        concentrationType: "Molar",
-        concentrationAmount: "1M",
-        solvents: [
-          {
-            name: "Agua",
-            description: "Solvente universal",
-          },
-        ],
-        reactive: "Ácido sulfúrico",
-      },
-      {
-        quantity: 2,
-        unitMeasure: "L",
-        quality: "Alta",
-        concentrationType: "Molar",
-        concentrationAmount: "1M",
-        solvents: [
-          {
-            name: "Agua",
-            description: "Solvente universal",
-          },
-        ],
-        reactive: "Ácido sulfúrico",
-      },
-    ],
-    materials: [
-      {
-        quantity: 10,
-        material: "Vasos de precipitados",
-      },
-    ],
-  },
-];
 
 export default function RequestsView(): ReactElement {
   const [requestData, setRequestData] = useState<Request[]>([]);
   const [showedRequest, setShowedRequest] = useState<Request[]>([]);
 
   const requestService = useRequestService();
+  const materialService = useMaterialService();
+  const equipmentService = useEquipmentService();
+  
+  //para agregar vista previa  
+  const [materials ,setMaterials]   =useState<Material[]>([])
+  const [equipments ,setequipments] =useState<Equipment[]>([])
+
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -197,7 +44,23 @@ export default function RequestsView(): ReactElement {
         setShowedRequest([]);
       }
     };
+
+    const getEquipment  = async () =>
+    {      
+           const [equipments, errEq] = await handlePromise(equipmentService.getEquipments());
+            if (errEq) {throw errEq;}
+            if (equipments) {setequipments(equipments)}
+    }
+    const getMaterial  = async () =>
+    {      
+           const [material, errEq] = await handlePromise(materialService.getMaterials());
+            if (errEq) {throw errEq;}
+            if (material) {setMaterials(material)}
+    }
+
     fetchRequests();
+    getEquipment();
+    getMaterial();
   }, []);
   
   const onSearchResult = (input: Request[]) => {
@@ -214,31 +77,37 @@ export default function RequestsView(): ReactElement {
     return new Date(dateString).toLocaleDateString("es-ES");
   };
 
+  function modelo(lista: EquipmentRequest[]): RequestableElement[] {
+  return lista.map(l  => ({
+    id: l.id._id,
+    amount: l.amount
+  }));
+}
+
   return (
     <>
       <Header {...headerAttributes}></Header>
       <Filter elements={requestData}  callback={onSearchResult} ></Filter>
       <main>
         <div className="body">
-
-          {showedRequest.map((requested, index) => (
-            <div>
+         {showedRequest.map((requested, index) => (
             <div className="listElements">
               <CardRequest
-                id={requested._id}
-                title={requested.description}
-                date={requested.usageDate? requested.usageDate.toString(): ""}
-                laboratory={requested.lab?.toString() || ""}
-                building={requested.building || ""}
-                proffesor={requested.requestantUser}
-                students={requested.studentsNumber? requested.studentsNumber.toString() : ''}
-              />
-            <SelectionItem
-             title ={"Equipment"} 
-             isEditable = {false}
-             equipmentList = {requested.equipments}   
-             ></SelectionItem>
-            </div>
+               id={requested._id}
+               title={requested.description}
+               date={requested.usageDate ? requested.usageDate.toString() : ""}
+               laboratory={requested.lab?.toString() || ""}
+               building={requested.building || ""}
+               proffesor={requested.requestantUser}
+               students={requested.studentsNumber ? requested.studentsNumber.toString() : ''} 
+               status={requested.status} 
+               groupsAmount={requested.groupNumber}
+              subject={"titulo"} 
+              tpNumber={requested.tpNumber} 
+              equipments={requested.equipments} 
+              reactives={requested.reactives} 
+              materials={requested.materials}              />
+
             </div>
           ))}
         </div>
@@ -247,3 +116,7 @@ export default function RequestsView(): ReactElement {
     </>
   );
 }
+function setShowedItems(simpleList: any) {
+  throw new Error("Function not implemented.");
+}
+

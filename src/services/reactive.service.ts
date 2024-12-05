@@ -28,7 +28,7 @@ const useReactiveService = () => {
   const getReactives = async (): Promise<Reactive[]> => {
     const config: AxiosRequestConfig = {
       method: "GET",
-      url: `/reactive`,
+      url: `/reactive?isAvailable=true`,
     };
 
     const [response, err] = await handlePromise<AxiosResponse<Reactive[]>, unknown>(axiosInstance(config));

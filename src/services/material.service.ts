@@ -28,7 +28,7 @@ const useMaterialService = () => {
   const getMaterials = async (): Promise<Material[]> => {
     const config: AxiosRequestConfig = {
       method: "GET",
-      url: `/material`,
+      url: `/material?isAvailable=true`,
     };
 
     const [response, err] = await handlePromise<AxiosResponse<Material[]>, unknown>(axiosInstance(config));

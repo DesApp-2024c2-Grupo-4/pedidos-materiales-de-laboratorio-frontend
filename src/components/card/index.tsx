@@ -14,7 +14,6 @@ export type CardProps = {
   students: string;
   id: string;
   status: string;
-  endDate: string;
   groupsAmount: number;
   subject: string;
   tpNumber: number;
@@ -33,7 +32,6 @@ export default function CardRequestDetails({
   students,
   id,
   status,
-  endDate,
   groupsAmount,
   subject,
   tpNumber,
@@ -48,14 +46,13 @@ export default function CardRequestDetails({
   };
 
   return (
-    <div className="container">
+    <div className="container2">
       <div className="card">
         <div className="card-body">
           <div className="card-header">
             <div>
               <h3 className="card-title">{title}</h3>
               <p>Fecha practica: {date}</p>
-              <p>Fecha fin: {endDate}</p>
               <p>Estado: {status}</p>
             </div>
             {banner && <p className={`card-banner ${banner}`}>{banner}</p>}
@@ -90,13 +87,13 @@ export default function CardRequestDetails({
             <h4>Reactivos:</h4>
             {reactives.map((reactive, index) => (
               <p key={index}>
-                {reactive.reactive} - Cantidad: {reactive.quantity} {reactive.unitMeasure}
+                {reactive.id.description} - Cantidad: {reactive.amount} {reactive.unitMeasure}
               </p>
             ))}
             <h4>Materiales:</h4>
             {materials.map((material, index) => (
               <p key={index}>
-                {material.material} - Cantidad: {material.quantity}
+                {material.id.description} - Cantidad: {material.amount}
               </p>
             ))}
             <PDFDownloadLink
@@ -104,7 +101,7 @@ export default function CardRequestDetails({
                 <PDFDocument
                   title={title}
                   date={date}
-                  endDate={endDate}
+                  endDate={""}
                   status={status}
                   laboratory={laboratory}
                   building={building}

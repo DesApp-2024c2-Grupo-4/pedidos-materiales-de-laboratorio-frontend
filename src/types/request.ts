@@ -5,7 +5,13 @@ export type  SolventRequest  = {
   description: string;
 }
 
-export type  ReactiveRequest = {
+
+export type  RequestableElement = {
+  amount: number;
+  missingAmount?: number;
+  id:string;
+}
+export type  ReactiveElement = {
   unitMeasure: string;
   quality: string;
   concentrationType: string;
@@ -16,11 +22,32 @@ export type  ReactiveRequest = {
   missingAmount: number;
 }
 
-export type  RequestableElement = {
+
+export type  ReactiveRequest = {
+  unitMeasure: string;
+  quality: string;
+  concentrationType: string;
+  concentrationAmount: string;
+  solvents: SolventRequest[];
+  _id: string;
   amount: number;
-  missingAmount?: number;
-  id:string;
-}
+  missingAmount: number;
+  id: {
+					_id: string;
+					description: string;
+					cas: string;
+					stock: number;
+					isAvailable: boolean;
+					__v: 0;
+					deletedBy: string;
+					deletionDate:Date;
+					isSoftDeleted: boolean
+				}
+    }
+
+
+
+
 export interface EquipmentRequest {
   amount: number;
   id: {
@@ -35,6 +62,24 @@ export interface EquipmentRequest {
   };
   _id: string;
 }
+
+
+export interface MaterialRequest {
+  amount: number;
+  id: {
+    _id: string;
+    description: string;
+    unitMeasure: string;
+    type: string;
+    stock: number;
+    inRepair: number;
+    createdAt: Date;
+    updatedAt: Date;
+    __v: number;
+  };
+  _id: string;
+}
+
 
 export type  Request = {
   _id:string;
@@ -52,13 +97,12 @@ export type  Request = {
   subject: string;
   tpNumber: number;
   messages: string;
-  equipments: RequestableElement[];
+  equipments: EquipmentRequest[];
   reactives: ReactiveRequest[];
-  materials: RequestableElement[];
+  materials: MaterialRequest[];
   requestNumber: number;
   status: string;
   isCompleted: boolean;
   isRejected: boolean;
   isExpired: boolean;
-
 }

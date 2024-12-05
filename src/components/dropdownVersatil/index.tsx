@@ -6,87 +6,77 @@ import "./styles.scss";
 import { Material } from "../../types/material";
 import { Equipment } from "../../types/equipment";
 import { Reactive } from "../../types/reactive";
-import { RequestableElement , ReactiveRequest } from "../../types/request";
+import { RequestableElement , ReactiveRequest, EquipmentRequest } from "../../types/request";
 import useEquipmentService from "../../services/equipment.service";
 import useMaterialService from "../../services/material.service";
 import useReactiveService from "../../services/reactive.service";
 import handlePromise from "../../utils/promise";
-import { Button, Input, MenuItem, Select, TextField } from "@mui/material";
+import { Button, Divider, Input, MenuItem, Select, TextField } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 
 export type dropProps = {
   title          : string;
   isEditable     : boolean
-  equipmentList? : RequestableElement[]  //lista de elementos a desplegar
-  reactiveList?  : RequestableElement[]  //lista de elementos a desplegar
-  materialList?  : RequestableElement[]  //lista de elementos a desplegar
-    ,SimpleItem? : (list :RequestableElement[]) =>  void
-  ,ReactiveItem? : (list :ReactiveRequest[]) =>  void
-
+  simpleList  : RequestableElement[]  //lista de elementos a desplegar
+  equipments:  Equipment[]
+  materials:  Material[]
+  callBack : (list :RequestableElement[]) =>  void
 };
 
 export default function SelectionItem({
-  title
+   title
   ,isEditable
-  ,equipmentList
-  ,reactiveList
-  ,materialList
-  ,SimpleItem
-  ,ReactiveItem
-  
+  ,simpleList
+  ,equipments
+  ,materials
+  ,callBack  
 }: dropProps): ReactElement {
-  const materialService = useMaterialService();
-  const reactiveService = useReactiveService();
-  const equipmentService = useEquipmentService();
-  
-  
+ 
+
+
+  const [idSelected, setid] = useState("")
+  const [amountSelected, setamount] = useState("")
+
   const [desplegado, setDesplegado] = useState(false)
-  const [materials ,setmaterials]   =useState<Material[]>([])
-  const [equipments ,setequipments] =useState<Equipment[]>([])
-  const [editingIndex,setEditingIndex]   =useState<Reactive[]>([])
+  const [editingIndex,setEditingIndex]   =useState(null)
+  const [showedItems, setShowedItems] = useState<RequestableElement[]>([])
 
 
 
-  const handleEdit = (index) => {
-    setEditingIndex(index);
+  const handleEdit = (index) => { 
+    if (editingIndex != index){
+      setEditingIndex(index);
+    }else
+    {
+      setEditingIndex(null);
+    }
   };
 
-  const handleequipmentSave = (index, newProducto, newCantidad) => {
-    const updatedItems = [...items];
-    updatedItems[index] = { producto: newProducto, cantidad: newCantidad };
+
+  const handleAdd = () => {
+    if (idSelected.trim() !== '') { // Check if product name is not empty
+      setShowedItems([...showedItems, {   id: idSelected, 
+                                          amount : Number(amountSelected) }]);
+      setid(''); // Clear input after adding
+      setamount(''); // Reset quantity to default
+      callBack(showedItems);
+    } else {
+      console.log("ocurrio un error al persistir en elemento en la tabla")
+    }
+  }
+
+  const handleSimpleSave = (index ,newid :string, newCantidad : string) => {
+    let updated : RequestableElement[]  = showedItems || [];
+    updated[index]=  { amount: Number(newCantidad) , id: newid}
+    setShowedItems(updated)
     setEditingIndex(null); 
-    SimpleItem(updatedItems);
-  }; 
+    callBack(updated);
+  };  
 
   useEffect(() => {
-    const fetchRequests = async () => {  
-      try 
-      {  
-          if (materialList) {
-            const [materials, errMat] = await handlePromise(materialService.getMaterials());
-            if (errMat) {throw errMat;}
-            if (materials) {setmaterials(materials)}
-          }
-          if (equipmentList) {
-            const [equipments, errEq] = await handlePromise(equipmentService.getEquipments());
-            if (errEq) {throw errEq;}
-            if (equipments) {setequipments(equipments)}
-          }
-/*           if (reactiveList) {
-            const [reactives,  errRe] = await handlePromise(reactiveService.getReactives());
-            if (errRe) {throw errRe;}
-            if (reactives) {setreactives(reactives)}
-          } */
-      }
-      catch (error) 
-      {
-      setmaterials([])
-      setequipments([])
-      /* setreactives([]) */
-      }
-    };
-    fetchRequests();
+            setShowedItems(simpleList)
+
   }, []);
 
   return (
@@ -111,27 +101,48 @@ export default function SelectionItem({
             </div>
           </div>
           {desplegado && ( <div className="info-card"> 
-               {equipmentList && equipmentList!.map((r,index) =>{
+               {simpleList && showedItems!.map((r,index) =>{
                  return (
-                   <div className="row" key={index}   >
-                     <Select defaultValue={r.id} label="Laboratorio" disabled={false} 
-                       onChange={(event) => { console.log(event.target.value) } }>
-                       {equipments.map((t) => ( <MenuItem value={t._id}>{t.description}</MenuItem>))}
+                  <div className="row" key={index} >
+                    <Select className="select" defaultValue={r.id}  label={title} disabled={index!=editingIndex} 
+                       onChange={(event) => { setid(event.target.value) } }>
+                       {equipments ? equipments.map((t) => ( <MenuItem value={t._id}>{t.description}</MenuItem>)) : undefined}
+                       {materials  ? materials.map((t) =>  ( <MenuItem value={t._id}>{t.description}</MenuItem>)) : undefined}
                      </Select>
-
-                    <TextField label="Unidades" id="txtUnidades" defaultValue={r.amount}  disabled={false} />
-                   
-                   <Button variant="outlined" startIcon={<DeleteIcon />}>
-                      Delete
-                    </Button>
-                    
-                    <Button variant="contained" endIcon={<SendIcon />}>
-                      Send
-                    </Button>
-                   </div>);
+                    <TextField label="Unidades" id="txtUnidades" defaultValue={r.amount}
+                            onChange={(event) => { setamount(event.target.value) }}
+                             disabled={index!=editingIndex} />
+                
+                  {index == editingIndex?  
+                    (
+                      <div>
+                        <Button variant="outlined"  onClick={()=>{handleEdit(null)}} >Cancelar</Button>
+                        <Button variant="contained" onClick={()=>{handleSimpleSave(index,idSelected,amountSelected)}} endIcon={<SendIcon />}>Guardar</Button>  
+                      </div>
+                    ):
+                    (
+                      <div>
+                        <Button variant="outlined"  onClick={()=>{console.log(r.id)}}  startIcon={<DeleteIcon />}>Borrar</Button>
+                        <Button variant="contained" onClick={()=>{handleEdit(index)}} >Editar</Button>  
+                    </div>
+                    )
+                  }                   
+                  </div>);
                })}
-               {/* {reactiveList && reactiveList!.map((r ) => (<div> {r.id}  {r.amount}  </div>))} */}
-               {materialList && materialList!.map((r ) => (<div> {r.id}  {r.amount} </div>))}
+              <Divider variant="inset" component="div" />
+               Agregar
+               <div className="row">
+                  <Select defaultValue={''}  className="select" placeholder="Seleccione"   name="addelement" label={title} disabled={!isEditable} 
+                       onChange={(event) => { setid(event.target.value) } }>
+                       {equipments ? equipments.map((t) => ( <MenuItem value={t._id}>{t.description}</MenuItem>)) : undefined}
+                       {materials  ? materials.map((t) =>  ( <MenuItem value={t._id}>{t.description}</MenuItem>)) : undefined}
+                  </Select>
+                  <TextField label="Unidades" id="txtUnidades" 
+                            onChange={(event) => { setamount(event.target.value) }}
+                             disabled={!isEditable} />
+                  <Button variant="contained" onClick={()=>{handleAdd()}} >Editar</Button>  
+
+                </div>
          </div>
           )}
         </div>

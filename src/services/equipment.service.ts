@@ -28,7 +28,7 @@ const useEquipmentService = () => {
   const getEquipments = async (): Promise<Equipment[]> => {
     const config: AxiosRequestConfig = {
       method: "GET",
-      url: `/equipment`,
+      url: `/equipment?isAvailable=true`,
     };
 
     const [response, err] = await handlePromise<AxiosResponse<Equipment[]>, unknown>(axiosInstance(config));

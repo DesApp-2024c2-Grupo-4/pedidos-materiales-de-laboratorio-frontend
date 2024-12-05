@@ -99,37 +99,13 @@ export default function RequestView(): ReactElement {
           </div>
         </div>
 
-        <DropdownVersatil 
-                          title="Materiales" 
-                          desplegado={selectedid == "MATERIALS"}
-                          onClick={() => (selectedid == "MATERIALS" ? setSelectedid("") : setSelectedid("MATERIALS"))}
-                          children={<div/>}
-                           ></DropdownVersatil>
-        <DropdownVersatil 
-                          title="Equipos" 
-                          desplegado={selectedid == "EQUIPMENT"}
-                          onClick={() => (selectedid == "EQUIPMENT" ? setSelectedid("") : setSelectedid("EQUIPMENT"))}
-                          children={<div/>}
-                           ></DropdownVersatil>
-        <DropdownVersatil 
-                          title="Reactivos" 
-                          desplegado={selectedid == "REACTIVES"}
-                          onClick={() => (selectedid == "REACTIVES" ? setSelectedid("") : setSelectedid("REACTIVES"))}
-                          children={<div/>}
-                           ></DropdownVersatil>
+       
 
           <div className="newFormButton">
             <Button variant="contained" size="medium" onClick={() => navigate("New")}>
               Crear {headerAttributes.title}
             </Button>
           </div>
-          {
-            requestData?.materials.map((m, index) => (
-              <div className="listElements">
-                {m.material}  
-              </div>
-            ))
-          }
         </div>
       </main>
 
