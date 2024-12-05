@@ -83,13 +83,13 @@ export type  Request = {
   requestantUser: string;
   assignedUser: string;
   description: string;
-  creationDate: Date;
-  usageDate: Date;
+  startDate: Date;
+  endDate: Date;
   lab: string ;
   type: string;
-  studentsNumber: number;
+  studentsAmount: number;
   building?: string;
-  groupNumber: number;
+  groupsAmount: number;
   observations?: string;
   subject: string;
   tpNumber: number;

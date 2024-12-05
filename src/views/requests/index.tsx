@@ -14,14 +14,16 @@ import { Equipment } from "../../types/equipment";
 import useMaterialService from "../../services/material.service";
 import useEquipmentService from "../../services/equipment.service";
 import { useNavigate } from "react-router-dom";
+import { User } from "../../types/user";
+import useUserService from "../../services/user.service"
 
 export default function RequestsView(): ReactElement {
   const [requestData, setRequestData] = useState<Request[]>([]);
   const [showedRequest, setShowedRequest] = useState<Request[]>([]);
+  const [usersData, setusers] = useState<User[]>([]);
 
   const requestService = useRequestService();
-  const materialService = useMaterialService();
-  const equipmentService = useEquipmentService();
+  const userService = useUserService();
   const navigate = useNavigate();
 
   //para agregar vista previa
@@ -35,7 +37,7 @@ export default function RequestsView(): ReactElement {
         if (err) {
           throw err;
         }
-        console.log(requesteds);
+        
         if (requesteds) {
           setRequestData(requesteds);
           setShowedRequest(requesteds);
@@ -46,28 +48,20 @@ export default function RequestsView(): ReactElement {
       }
     };
 
-    const getEquipment = async () => {
-      const [equipments, errEq] = await handlePromise(equipmentService.getEquipments());
+    const getuser = async () => {
+      const [users, errEq] = await handlePromise(userService.getUsers());
       if (errEq) {
         throw errEq;
       }
-      if (equipments) {
-        setequipments(equipments);
+      if (users) {
+        setusers(usersData);
+        console.log(users)
       }
     };
-    const getMaterial = async () => {
-      const [material, errEq] = await handlePromise(materialService.getMaterials());
-      if (errEq) {
-        throw errEq;
-      }
-      if (material) {
-        setMaterials(material);
-      }
-    };
+ 
 
     fetchRequests();
-    getEquipment();
-    getMaterial();
+    getuser();
   }, []);
 
   const onSearchResult = (input: Request[]) => {
@@ -100,13 +94,13 @@ export default function RequestsView(): ReactElement {
               <CardRequest
                 id={requested._id}
                 title={requested.description}
-                date={requested.usageDate ? requested.usageDate.toString() : ""}
+                date={requested.endDate? requested.endDate.toString() : ""}
                 laboratory={requested.lab?.toString() || ""}
                 building={requested.building || ""}
-                proffesor={requested.requestantUser}
-                students={requested.studentsNumber ? requested.studentsNumber.toString() : ""}
+                proffesor={usersData.find( u => u._id == requested.requestantUser)?.name || requested.requestantUser}
+                students={requested.studentsAmount ? requested.studentsAmount.toString() : ""}
                 status={requested.status}
-                groupsAmount={requested.groupNumber}
+                groupsAmount={requested.groupsAmount}
                 subject={"titulo"}
                 tpNumber={requested.tpNumber}
                 equipments={requested.equipments}
