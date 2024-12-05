@@ -62,14 +62,14 @@ export default function EquipmentsView(): ReactElement {
     <>
       <Header {...headerAttributes}></Header>
       <main>
-        <div className="body">
-          <div className="newFormButton">
+        <div className="bodyEquipment">
+          <div className="newFormButtonEquipment">
             <Button variant="contained" size="medium" onClick={() => navigate("New")}>
               Crear {headerAttributes.title}
             </Button>
           </div>{" "}
           {showedEquipment.map((m, index) => (
-            <div className="listElements">
+            <div className="listElementsEquipment">
               <Dropdown
                 key={m._id}
                 title={m.description}
