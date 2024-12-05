@@ -93,7 +93,7 @@ export default function RequestsView(): ReactElement {
             </Button>
           </div>
           {showedRequest.map((requested, index) => (
-            <div className="listElements">
+            <div className="listElements2">
               <CardRequest
                 id={requested._id}
                 title={requested.description}

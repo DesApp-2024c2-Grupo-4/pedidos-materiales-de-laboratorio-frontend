@@ -128,11 +128,12 @@ export default function RequestView(): ReactElement {
        } 
     console.log(a)
       
-    const [, err] = await handlePromise<void, string>(
+    const [data, err] = await handlePromise<any, string>(
       requestService.addRequest(a)
     );
     if (err) return console.log(err);
-    console.log("funco!")
+    console.log(data)
+    
   };
 
 
@@ -162,6 +163,9 @@ export default function RequestView(): ReactElement {
       <main>
         <form onSubmit={onsubmit} className="formEndStyle">
 
+          <Button type="submit" variant="contained">
+            agregar
+          </Button>
 
           <TextField
             className="textFieldStyler"
@@ -287,12 +291,6 @@ export default function RequestView(): ReactElement {
             </SelectionItem>
           </div>
 
-
-          <Button type="submit" variant="contained">
-            Registrarse
-          </Button>
-          {/* {error && <small>{error}</small>}
-           */}
         </form>
       </main>
       
