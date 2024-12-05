@@ -1,8 +1,6 @@
 import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Stack from "@mui/material/Stack";
-import SignInCard from "./ProfileCard";
-import Content from "./AdminPanel";
 import Header from "../../components/header";
 import MobileNav from "../../components/mobile-nav";
 import BasicTable from "../../components/tableUsers";
@@ -10,7 +8,7 @@ import BasicTable from "../../components/tableUsers";
 const headerAttributes = {
   title: "Administrar Usuarios",
   enableSearch: false,
-  icon: "profile.svg",
+  icon: "material.svg",
 };
 
 export default function UserAdmin() {
