@@ -18,13 +18,13 @@
   height: 60px;
   padding: 0% 5% 15%;
 }
-.body {
+.bodyMaterial {
   padding-bottom: 15vh;
   @include breakpoint(small) {
     padding-bottom: 6vh;
   }
 }
-.newFormButton {
+.newFormButtonMaterial {
   display: flex;
   justify-content: flex-end;
   padding-bottom: 1em;

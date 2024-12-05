@@ -65,8 +65,8 @@ export default function MaterialsView(): ReactElement {
       <Header {...headerAttributes}></Header>
 
       <main>
-        <div className="body">
-          <div className="newFormButton">
+        <div className="bodyMaterial">
+          <div className="newFormButtonMaterial">
             <Button variant="contained" size="medium" onClick={() => navigate("New")}>
               Crear {headerAttributes.title}
             </Button>
