@@ -3,8 +3,8 @@ import React, { FormEvent, ReactElement, useEffect, useState } from "react";
 import "./styles.scss";
 import Header from "../../components/header";
 import MobileNav from "../../components/mobile-nav";
-import DropdownVersatil from "../../components/dropdownVersatil"
-import SelectionItem from "../../components/dropdownVersatil"
+import DropdownVersatil from "../../components/dropdownVersatil";
+import SelectionItem from "../../components/dropdownVersatil";
 
 import useRequestService from "../../services/request.service";
 import useMaterialService from "../../services/material.service";
@@ -19,22 +19,21 @@ import { Reactive } from "../../types/reactive";
 import { EquipmentRequest, MaterialRequest, Request, RequestableElement, RequestSet } from "../../types/request";
 
 import handlePromise from "../../utils/promise";
-import Dropdown from "../../components/dropdown";
-import AddIcon from "@mui/icons-material/Add";
 import { useNavigate, useParams } from "react-router-dom";
 import { SelectOptions } from "../../types/shared";
 
-import { DateField } from '@mui/x-date-pickers/DateField';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import dayjs from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import dayjs from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers";
+import Swal from "sweetalert2";
+import { da } from "date-fns/locale";
 
 export default function RequestView(): ReactElement {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [requestData, setRequestData] = useState<Request>()
+  const [requestData, setRequestData] = useState<Request>();
 
   const [materialData, setMaterialData] = useState<Material[]>([]);
   const [equipmentData, setEquipmentData] = useState<Equipment[]>([]);
@@ -47,11 +46,11 @@ export default function RequestView(): ReactElement {
   const materialService = useMaterialService();
   const equipmentService = useEquipmentService();
   const reactiveService = useReactiveService();
-  const [LabList, setLabList] = useState<SelectOptions[]>([])
+  const [LabList, setLabList] = useState<SelectOptions[]>([]);
 
   const sharedService = useSharedService();
   const [TypeOptions, setTypeOptions] = useState<SelectOptions[]>([]);
-  const [statusList, setstatusList] = useState<SelectOptions[]>([])
+  const [statusList, setstatusList] = useState<SelectOptions[]>([]);
 
   const [equipments, setequipments] = useState<RequestableElement[]>([]);
   const [materials, setmaterials] = useState<RequestableElement[]>([]);
@@ -61,8 +60,12 @@ export default function RequestView(): ReactElement {
     const fetchRequest = async () => {
       if (id && !(id == "New")) {
         const [request, err] = await handlePromise(requestService.getRequest(id));
-        if (err) { throw err; }
-        if (request) { setRequestData(request); }
+        if (err) {
+          throw err;
+        }
+        if (request) {
+          setRequestData(request);
+        }
       }
       try {
       } catch (error) {
@@ -76,19 +79,28 @@ export default function RequestView(): ReactElement {
       const [reactive, err5] = await handlePromise(reactiveService.getReactives());
 
       try {
-        if (err1) { throw err1; }
-        if (err2) { throw err2; }
-        if (err3) { throw err3; }
-        if (err4) { throw err4; }
-        if (err5) { throw err5; }
+        if (err1) {
+          throw err1;
+        }
+        if (err2) {
+          throw err2;
+        }
+        if (err3) {
+          throw err3;
+        }
+        if (err4) {
+          throw err4;
+        }
+        if (err5) {
+          throw err5;
+        }
 
-        if (labs && status && equipment && material && reactive)  {
+        if (labs && status && equipment && material && reactive) {
           setLabList(labs);
-          setstatusList(status)
-          setEquipmentData(equipment)
-          setMaterialData(material)
-          setReactiveData(reactive)
-
+          setstatusList(status);
+          setEquipmentData(equipment);
+          setMaterialData(material);
+          setReactiveData(reactive);
         }
       } catch (error) {
         setLabList([]);
@@ -100,60 +112,68 @@ export default function RequestView(): ReactElement {
   const headerAttributes = {
     title: "Pedido",
     icon: "request.svg",
-    enableSearch: false
+    enableSearch: false,
   };
-
 
   const onsubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-   
-  /*   const validationError = validateForm(formData);
+
+    /*   const validationError = validateForm(formData);
     if (validationError) {
       setError(validationError);
       return;
     } */
-   let a : RequestSet = {
-        description : (e.target as any).description.value
-        ,startDate :  startDate
-        ,endDate :    endDate
-        ,lab : Lab
-        ,observations : (e.target as any).observations.value
-        ,subject : (e.target as any).subject.value
-        ,groupsAmount : Number((e.target as any).groupsAmount.value)
-        ,studentsAmount : Number((e.target as any).studentsAmount.value)
-        ,tpNumber : Number((e.target as any).tpNumber.value)
-        ,equipments : equipments
-        ,reactives : reactives
-        ,materials : materials
-       } 
-    console.log(a)
-      
-    const [data, err] = await handlePromise<any, string>(
-      requestService.addRequest(a)
-    );
-    if (err) return console.log(err);
-    console.log(data)
-    
+    let a: RequestSet = {
+      description: (e.target as any).description.value,
+      startDate: startDate,
+      endDate: endDate,
+      lab: Lab,
+      observations: (e.target as any).observations.value,
+      subject: (e.target as any).subject.value,
+      groupsAmount: Number((e.target as any).groupsAmount.value),
+      studentsAmount: Number((e.target as any).studentsAmount.value),
+      tpNumber: Number((e.target as any).tpNumber.value),
+      equipments: equipments,
+      reactives: reactives,
+      materials: materials,
+    };
+
+    const [data, err] = await handlePromise<any, string>(requestService.addRequest(a));
+    console.log(err, data);
+    if (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: err,
+      });
+      return;
+    } else {
+      Swal.fire({
+        icon: "success",
+        title: "Creación exitosa",
+        text: "EL pedido ha sido creado exitosamente.",
+      }).then(() => {
+        navigate("/requests");
+      });
+    }
   };
 
-
-
-  const [description, setDescription] = useState("")
-  const [startDate, setstartDate] = useState<Date|undefined >(undefined)
-  const [endDate, setendDate] = useState<Date|undefined >(undefined)
-  const [Lab, setLab] = useState('')
+  const [description, setDescription] = useState("");
+  const [startDate, setstartDate] = useState<Date | undefined>(undefined);
+  const [endDate, setendDate] = useState<Date | undefined>(undefined);
+  const [Lab, setLab] = useState("");
 
   function modeloEquipo(lista: EquipmentRequest[]): RequestableElement[] {
-    return lista.map(l => ({
+    return lista.map((l) => ({
       id: l.id._id,
-      amount: l.amount
+      amount: l.amount,
     }));
   }
 
   function modeloMaterial(lista: MaterialRequest[]): RequestableElement[] {
-    return lista.map(l => ({
+    return lista.map((l) => ({
       id: l.id._id,
-      amount: l.amount
+      amount: l.amount,
     }));
   }
 
@@ -162,11 +182,6 @@ export default function RequestView(): ReactElement {
       <Header {...headerAttributes}></Header>
       <main>
         <form onSubmit={onsubmit} className="formEndStyle">
-
-          <Button type="submit" variant="contained">
-            agregar
-          </Button>
-
           <TextField
             className="textFieldStyler"
             variant="standard"
@@ -177,27 +192,41 @@ export default function RequestView(): ReactElement {
           />
 
           <div className="flex">
-
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={['DatePicker']}>
-                <DatePicker label="startDate" value={startDate} onChange={(newValue) => { newValue ? setstartDate(newValue) : '' }} />
+              <DemoContainer components={["DatePicker"]}>
+                <DatePicker
+                  label="startDate"
+                  value={startDate}
+                  onChange={(newValue) => {
+                    newValue ? setstartDate(newValue) : "";
+                  }}
+                />
               </DemoContainer>
             </LocalizationProvider>
 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={['DatePicker']}>
-                <DatePicker label="endDate" value={endDate} onChange={(newValue) => { newValue ? setendDate(newValue) : '' }} />
+              <DemoContainer components={["DatePicker"]}>
+                <DatePicker
+                  label="endDate"
+                  value={endDate}
+                  onChange={(newValue) => {
+                    newValue ? setendDate(newValue) : "";
+                  }}
+                />
               </DemoContainer>
             </LocalizationProvider>
 
-              <div className="checkboxStyle">
+            <div className="checkboxStyle">
               <FormControl>
                 <InputLabel>Laboratorio</InputLabel>
                 <Select
                   className="selectStyle"
                   value={Lab}
                   label="Laboratorio"
-                  onChange={(event) => { setLab(event.target.value) }}>
+                  onChange={(event) => {
+                    setLab(event.target.value);
+                  }}
+                >
                   {LabList.map((t, index) => (
                     <MenuItem value={t.value}>{t.text}</MenuItem>
                   ))}
@@ -251,23 +280,24 @@ export default function RequestView(): ReactElement {
             autoComplete="off"
           />
 
-          <div className="flex">
-          
-          </div>
- 
-          <div className="containerdropdown" >
-            <SelectionItem 
+          <div className="flex"></div>
+
+          <div className="containerdropdown">
+            <SelectionItem
               title={"Equipos"}
               isEditable={true}
               simpleList={equipments}
               equipments={equipmentData}
               reactives={[]}
               materials={[]}
-              callBack={(list: RequestableElement[]) => {console.log(list); setequipments(list) }}>
-            </SelectionItem>
+              callBack={(list: RequestableElement[]) => {
+                console.log(list);
+                setequipments(list);
+              }}
+            ></SelectionItem>
           </div>
 
-          <div className="containerdropdown" >
+          <div className="containerdropdown">
             <SelectionItem
               title={"Materiales"}
               isEditable={true}
@@ -275,25 +305,32 @@ export default function RequestView(): ReactElement {
               materials={materialData}
               reactives={[]}
               equipments={[]}
-              callBack={(list: RequestableElement[]) => {  console.log(list); setmaterials(list) }}>
-            </SelectionItem>
+              callBack={(list: RequestableElement[]) => {
+                console.log(list);
+                setmaterials(list);
+              }}
+            ></SelectionItem>
           </div>
 
-   <div className="containerdropdown" >
+          <div className="containerdropdown">
             <SelectionItem
               title={"Reactivos"}
-              isEditable={true} 
+              isEditable={true}
               simpleList={reactives}
               materials={[]}
               reactives={reactiveData}
               equipments={[]}
-              callBack={(list: RequestableElement[]) => {  console.log(list); setreactives(list) }}>
-            </SelectionItem>
+              callBack={(list: RequestableElement[]) => {
+                console.log(list);
+                setreactives(list);
+              }}
+            ></SelectionItem>
           </div>
-
+          <Button type="submit" variant="contained">
+            agregar
+          </Button>
         </form>
       </main>
-      
     </>
   );
 }

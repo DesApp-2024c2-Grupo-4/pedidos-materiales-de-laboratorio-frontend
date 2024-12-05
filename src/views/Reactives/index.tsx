@@ -57,14 +57,14 @@ export default function ReactivesView(): ReactElement {
     <>
       <Header {...headerAttributes}></Header>
       <main>
-        <div className="bodys">
-          <div className="newFormButton">
+        <div className="bodyReactive\">
+          <div className="newFormButtonReactive">
             <Button variant="contained" size="medium" onClick={() => navigate("New")}>
               Crear {headerAttributes.title}
             </Button>
           </div>
           {showedReactive.map((m, index) => (
-            <div className="listElements">
+            <div className="listElementsReactive">
               <Dropdown
                 key={m._id}
                 title={m.description}

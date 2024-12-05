@@ -53,7 +53,6 @@ export default function Dropdown({
               {desplegado && (
                 <div onClick={onClick} style={{ fontSize: "calc(22px + 1vw)" }}>
                   <ArrowDropDownIcon fontSize="inherit" />
-
                 </div>
               )}
             </div>
@@ -67,9 +66,9 @@ export default function Dropdown({
                   <p>En reparación: {repair}</p>
                 </div>
                 <div>
-                 {clase ?  <p> Clase: {clase}</p>  : "" } 
-                 {tipo ?  <p> Tipo: {tipo}</p>  : "" } 
-                 {cas ?  <p> C.A.S: {cas}</p> : "" } 
+                  {clase ? <p> Clase: {clase}</p> : ""}
+                  {tipo ? <p> Tipo: {tipo}</p> : ""}
+                  {cas ? <p> C.A.S: {cas}</p> : ""}
                 </div>
               </div>
             </div>

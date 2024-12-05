@@ -7,7 +7,7 @@
   font-size: 14px;
 }
 
-.listElements {
+.listElementsReactive {
   padding: 8px 8px;
 }
 
@@ -19,7 +19,7 @@
   padding: 0% 5% 15%;
 }
 
-.newFormButton {
+.newFormButtonReactive {
   display: flex;
   justify-content: flex-end;
   padding-bottom: 1em;
@@ -28,7 +28,7 @@
   }
 }
 
-.body {
+.bodyReactive {
   padding-bottom: 15vh;
   @include breakpoint(small) {
     padding-bottom: 6vh;

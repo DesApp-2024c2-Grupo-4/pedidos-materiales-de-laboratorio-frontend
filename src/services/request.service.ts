@@ -15,7 +15,7 @@ const useRequestService = () => {
     const [response, err] = await handlePromise<AxiosResponse<Request>, unknown>(axiosInstance(config));
 
     if (err) {
-      Promise.reject(err);
+      return Promise.reject(err);
     }
 
     if (!response?.data) {
@@ -34,7 +34,7 @@ const useRequestService = () => {
     const [response, err] = await handlePromise<AxiosResponse<Request[]>, unknown>(axiosInstance(config));
 
     if (err) {
-      Promise.reject(err);
+      return Promise.reject(err);
     }
 
     if (!response?.data) {
@@ -47,15 +47,18 @@ const useRequestService = () => {
   const addRequest = async (request: RequestSet): Promise<void> => {
     const config: AxiosRequestConfig = {
       method: "POST",
-      url: `/request`,
+      url: "/request",
       data: request,
     };
 
     const [, err] = await handlePromise<AxiosResponse<Request[]>, unknown>(axiosInstance(config));
 
     if (err) {
-      Promise.reject(err);
+      console.log(err);
+      return Promise.reject((err as any).response?.data.message || "An unknown error occurred");
     }
+
+    return Promise.resolve();
   };
 
   const updateRequest = async (id: string, request: Request): Promise<void> => {
