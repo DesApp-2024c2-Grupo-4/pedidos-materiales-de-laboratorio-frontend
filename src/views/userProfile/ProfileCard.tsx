@@ -14,7 +14,6 @@ import { CancelOutlined, EditOutlined } from "@mui/icons-material";
 import useUserService from "../../services/user.service";
 import handlePromise from "../../utils/promise";
 import { useAuth } from "../../context/auth.context";
-import { User } from "../../types/user";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -80,7 +79,6 @@ export default function ProfileCard() {
       email: user?.email || "",
       nombre: user?.name || "",
       apellido: user?.lastName || "",
-      dni: 0,
     });
   }, []);
 
@@ -155,24 +153,6 @@ export default function ProfileCard() {
             type="Nombre"
             id="Nombre"
             autoComplete="current-Nombre"
-            autoFocus
-            required
-            fullWidth
-            variant="outlined"
-          />
-        </FormControl>
-        <FormControl>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <FormLabel htmlFor="Dni">Dni</FormLabel>
-          </Box>
-          <TextField
-            disabled={true}
-            error={false}
-            name="Dni"
-            placeholder={userInfo.dni.toString()}
-            type="Dni"
-            id="Dni"
-            autoComplete="current-Dni"
             autoFocus
             required
             fullWidth

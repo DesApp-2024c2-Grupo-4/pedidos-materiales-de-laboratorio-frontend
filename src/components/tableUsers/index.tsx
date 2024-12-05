@@ -61,7 +61,7 @@ export default function BasicTable() {
     }
 
     if (role) {
-      filteredUsers = filteredUsers.filter((user) => user.role.includes(role));
+      filteredUsers = filteredUsers.filter((user) => user.roles.includes(role));
     }
 
     setShowedUser(filteredUsers);
