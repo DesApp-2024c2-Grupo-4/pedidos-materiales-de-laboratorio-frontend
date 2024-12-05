@@ -10,39 +10,34 @@ import { RequestableElement, ReactiveRequest, EquipmentRequest } from "../../typ
 
 import handlePromise from "../../utils/promise";
 import { Button, Divider, Input, MenuItem, Select, TextField } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
-import SendIcon from '@mui/icons-material/Send';
+import DeleteIcon from "@mui/icons-material/Delete";
+import SendIcon from "@mui/icons-material/Send";
 
 export type dropProps = {
   title: string;
-  isEditable: boolean
-  simpleList: RequestableElement[]  //lista de elementos a desplegar
-  equipments: Equipment[]
-  materials: Material[]
-  reactives: Reactive[]
-  callBack: (list: RequestableElement[]) => void
+  isEditable: boolean;
+  simpleList: RequestableElement[]; //lista de elementos a desplegar
+  equipments: Equipment[];
+  materials: Material[];
+  reactives: Reactive[];
+  callBack: (list: RequestableElement[]) => void;
 };
 
 export default function SelectionItem({
-  title
-  , isEditable
-  , simpleList
-  , equipments
-  , materials
-  ,reactives
-  , callBack
+  title,
+  isEditable,
+  simpleList,
+  equipments,
+  materials,
+  reactives,
+  callBack,
 }: dropProps): ReactElement {
+  const [idSelected, setid] = useState("");
+  const [amountSelected, setamount] = useState("");
 
-
-
-  const [idSelected, setid] = useState("")
-  const [amountSelected, setamount] = useState("")
-
-  const [desplegado, setDesplegado] = useState(false)
-  const [editingIndex, setEditingIndex] = useState(null)
-  const [showedItems, setShowedItems] = useState<RequestableElement[]>([])
-
-
+  const [desplegado, setDesplegado] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [showedItems, setShowedItems] = useState<RequestableElement[]>([]);
 
   const handleEdit = (index) => {
     if (editingIndex != index) {
@@ -52,53 +47,51 @@ export default function SelectionItem({
     }
   };
 
-
   const handleErase = (id) => {
-    setShowedItems(showedItems.filter(i =>i.id != id))
+    setShowedItems(showedItems.filter((i) => i.id != id));
   };
 
   const handleAdd = () => {
-    if (idSelected.trim() !== '') { // Check if product name is not empty
-      setShowedItems([...showedItems, {
-        id: idSelected,
-        amount: Number(amountSelected)
-      }]);
-      setid(''); // Clear input after adding
-      setamount(''); // Reset quantity to default
+    if (idSelected.trim() !== "") {
+      // Check if product name is not empty
+      setShowedItems([
+        ...showedItems,
+        {
+          id: idSelected,
+          amount: Number(amountSelected),
+        },
+      ]);
+      setid(""); // Clear input after adding
+      setamount(""); // Reset quantity to default
     } else {
-      console.log("ocurrio un error al persistir en elemento en la tabla")
+      console.log("ocurrio un error al persistir en elemento en la tabla");
     }
-  }
+  };
 
   const handleSimpleSave = (index, newid: string, newCantidad: string) => {
     let updated: RequestableElement[] = showedItems || [];
-    updated[index] = { amount: Number(newCantidad), id: newid }
-    setShowedItems(updated)
+    updated[index] = { amount: Number(newCantidad), id: newid };
+    setShowedItems(updated);
     setEditingIndex(null);
-
   };
 
   useEffect(() => {
-    setShowedItems(simpleList)
-
+    setShowedItems(simpleList);
   }, []);
 
-
   useEffect(() => {
-    callBack(showedItems)
-        setid('')
-    setamount('')
+    callBack(showedItems);
+    setid("");
+    setamount("");
   }, [showedItems]);
-
-  
 
   return (
     <div className="containerdropdown">
-      <div className="drop" style={{ paddingBottom: desplegado ? "5%" : undefined }}>
+      <div className="dropdropVersatil" style={{ paddingBottom: desplegado ? "5%" : undefined }}>
         <div className="drop-body">
           <div className="drop-header">
             <div>
-              <h3 className="drop-title">{title}  </h3>
+              <h3 className="drop-title">{title} </h3>
             </div>
             <div className="icons">
               {!desplegado && (
@@ -106,60 +99,130 @@ export default function SelectionItem({
                   <ArrowRightIcon fontSize="inherit" />
                 </div>
               )}
-              {desplegado &&
-                (<div onClick={() => setDesplegado(false)} style={{ fontSize: "calc(22px + 1vw)" }}>
+              {desplegado && (
+                <div onClick={() => setDesplegado(false)} style={{ fontSize: "calc(22px + 1vw)" }}>
                   <ArrowDropDownIcon fontSize="inherit" />
-                </div>)
-              }
+                </div>
+              )}
             </div>
           </div>
-          {desplegado && (<div className="info-card">
-            {simpleList && showedItems!.map((r, index) => {
-              return (
-                <div className="row" key={index} >
-                  <Select className="select" defaultValue={r.id} label={title} disabled={index != editingIndex}
-                    onChange={(event) => { setid(event.target.value) }}>
-                    {equipments ? equipments.filter(e =>e._id ).map((t) => (<MenuItem value={t._id}>{t.description}</MenuItem>)) : undefined}
-                    {materials ? materials.map((t) => (<MenuItem value={t._id}>{t.description}</MenuItem>)) : undefined}
-                    {reactives ? reactives.map((t) => (<MenuItem value={t._id}>{t.description}</MenuItem>)) : undefined}
-                  </Select>
-                  <TextField label="Unidades" id="txtUnidades" defaultValue={r.amount}
-                    onChange={(event) => { setamount(event.target.value) }}
-                    disabled={index != editingIndex} />
+          {desplegado && (
+            <div className="info-card">
+              {simpleList &&
+                showedItems!.map((r, index) => {
+                  return (
+                    <div className="row" key={index}>
+                      <Select
+                        className="select"
+                        defaultValue={r.id}
+                        label={title}
+                        disabled={index != editingIndex}
+                        onChange={(event) => {
+                          setid(event.target.value);
+                        }}
+                      >
+                        {equipments
+                          ? equipments
+                              .filter((e) => e._id)
+                              .map((t) => <MenuItem value={t._id}>{t.description}</MenuItem>)
+                          : undefined}
+                        {materials
+                          ? materials.map((t) => <MenuItem value={t._id}>{t.description}</MenuItem>)
+                          : undefined}
+                        {reactives
+                          ? reactives.map((t) => <MenuItem value={t._id}>{t.description}</MenuItem>)
+                          : undefined}
+                      </Select>
+                      <TextField
+                        label="Unidades"
+                        id="txtUnidades"
+                        defaultValue={r.amount}
+                        onChange={(event) => {
+                          setamount(event.target.value);
+                        }}
+                        disabled={index != editingIndex}
+                      />
 
-                  {index == editingIndex ?
-                    (
-                      <div>
-                        <Button variant="outlined" onClick={() => { handleEdit(null) }} >Cancelar</Button>
-                        <Button variant="contained" onClick={() => { handleSimpleSave(index, idSelected, amountSelected) }} endIcon={<SendIcon />}>Guardar</Button>
-                      </div>
-                    ) :
-                    (
-                      <div>
-                        <Button variant="outlined" onClick={() => {  handleErase(r.id) }} startIcon={<DeleteIcon />}>Borrar</Button>
-                        <Button variant="contained" onClick={() => { handleEdit(index) }} >Editar</Button>
-                      </div>
-                    )
-                  }
-                </div>);
-            })}
-            <Divider variant="inset" component="div" />
-            Agregar
-
-            <div className="row">
-              <Select defaultValue={''} className="select" placeholder="Seleccione" name="addelement" label={title} disabled={editingIndex!=null}
-                onChange={(event) => { setid(event.target.value)  }}>
-                {equipments ? equipments.map((t) => (<MenuItem value={t._id}>{t.description}</MenuItem>)) : undefined}
-                {materials ? materials.map((t) => (<MenuItem value={t._id}>{t.description}</MenuItem>)) : undefined}
-                {reactives ? reactives.map((t) => (<MenuItem value={t._id}>{t.description}</MenuItem>)) : undefined}
-              </Select>
-              <TextField label="Unidades" id="cantidad"
-                onChange={(event) => { setamount(event.target.value)  }}
-                disabled={!isEditable} />
-              <Button variant="contained" onClick={(e) => { handleAdd()  }} >Agregar</Button>
-
+                      {index == editingIndex ? (
+                        <div>
+                          <Button
+                            variant="outlined"
+                            onClick={() => {
+                              handleEdit(null);
+                            }}
+                          >
+                            Cancelar
+                          </Button>
+                          <Button
+                            variant="contained"
+                            onClick={() => {
+                              handleSimpleSave(index, idSelected, amountSelected);
+                            }}
+                            endIcon={<SendIcon />}
+                          >
+                            Guardar
+                          </Button>
+                        </div>
+                      ) : (
+                        <div>
+                          <Button
+                            variant="outlined"
+                            onClick={() => {
+                              handleErase(r.id);
+                            }}
+                            startIcon={<DeleteIcon />}
+                          >
+                            Borrar
+                          </Button>
+                          <Button
+                            variant="contained"
+                            onClick={() => {
+                              handleEdit(index);
+                            }}
+                          >
+                            Editar
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              <Divider variant="inset" component="div" />
+              Agregar
+              <div className="row">
+                <Select
+                  defaultValue={""}
+                  className="select"
+                  placeholder="Seleccione"
+                  name="addelement"
+                  label={title}
+                  disabled={editingIndex != null}
+                  onChange={(event) => {
+                    setid(event.target.value);
+                  }}
+                >
+                  {equipments ? equipments.map((t) => <MenuItem value={t._id}>{t.description}</MenuItem>) : undefined}
+                  {materials ? materials.map((t) => <MenuItem value={t._id}>{t.description}</MenuItem>) : undefined}
+                  {reactives ? reactives.map((t) => <MenuItem value={t._id}>{t.description}</MenuItem>) : undefined}
+                </Select>
+                <TextField
+                  label="Unidades"
+                  id="cantidad"
+                  onChange={(event) => {
+                    setamount(event.target.value);
+                  }}
+                  disabled={!isEditable}
+                />
+                <Button
+                  variant="contained"
+                  onClick={(e) => {
+                    handleAdd();
+                  }}
+                >
+                  Agregar
+                </Button>
+              </div>
             </div>
-          </div>
           )}
         </div>
       </div>

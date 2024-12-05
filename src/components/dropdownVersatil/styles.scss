@@ -1,6 +1,6 @@
 @import "../../globals.scss";
 
-.drop {
+.dropVersatil {
   text-decoration: none;
   color: color("text-secondary");
   font: "Lato";
@@ -76,11 +76,13 @@
   }
 }
 
-.row
-{  display: flex;
+.row {
+  display: flex;
   justify-content: space-between;
   align-self: center;
   padding: 16px;
 }
 
-.select{ width: 500px;}
+.select {
+  width: 500px;
+}
