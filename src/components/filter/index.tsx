@@ -61,14 +61,14 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
 
   useEffect(() => {
     const filterChanged = () => {
-      return elements.filter(item => {
-        const matchesLab = Lab === '' || item.lab?.includes(Lab);
-        const matchesName = title === '' || item.description.includes(title);
-        const matchesStatus = status === '' || item.status === status;
-        const matchesMindate = minDate == '' || new Date(item.usageDate) > new Date(minDate);
-        const matchesMaxdate = maxDate == '' || new Date(item.usageDate) < new Date(maxDate);
+      return elements.filter((item) => {
+        const matchesLab = Lab === "" || item.lab?.includes(Lab);
+        const matchesName = title === "" || item.description.includes(title);
+        const matchesStatus = status === "" || item.status === status;
+        const matchesMindate = minDate == "" || new Date(item.usageDate) > new Date(minDate);
+        const matchesMaxdate = maxDate == "" || new Date(item.usageDate) < new Date(maxDate);
 
-        return matchesLab && matchesName && matchesStatus && matchesMindate && matchesMaxdate
+        return matchesLab && matchesName && matchesStatus && matchesMindate && matchesMaxdate;
       });
     };
     callback(filterChanged());
@@ -120,6 +120,7 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
             <DemoContainer components={["DatePicker"]}>
               <DatePicker
                 label="Desde"
+                format="DD/MM/YYYY"
                 value={minDate}
                 onChange={(newValue) => {
                   newValue ? setminDate(newValue.toString()) : "";
@@ -132,6 +133,7 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={["DatePicker"]}>
               <DatePicker
+                format="DD/MM/YYYY"
                 label="Hasta"
                 value={maxDate}
                 onChange={(newValue) => {

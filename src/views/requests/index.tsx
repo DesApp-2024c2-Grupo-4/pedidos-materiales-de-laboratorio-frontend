@@ -15,21 +15,18 @@ import useMaterialService from "../../services/material.service";
 import useEquipmentService from "../../services/equipment.service";
 import { useNavigate } from "react-router-dom";
 
-
 export default function RequestsView(): ReactElement {
   const [requestData, setRequestData] = useState<Request[]>([]);
   const [showedRequest, setShowedRequest] = useState<Request[]>([]);
-
 
   const requestService = useRequestService();
   const materialService = useMaterialService();
   const equipmentService = useEquipmentService();
   const navigate = useNavigate();
 
-  //para agregar vista previa  
-  const [materials, setMaterials] = useState<Material[]>([])
-  const [equipments, setequipments] = useState<Equipment[]>([])
-
+  //para agregar vista previa
+  const [materials, setMaterials] = useState<Material[]>([]);
+  const [equipments, setequipments] = useState<Equipment[]>([]);
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -51,14 +48,22 @@ export default function RequestsView(): ReactElement {
 
     const getEquipment = async () => {
       const [equipments, errEq] = await handlePromise(equipmentService.getEquipments());
-      if (errEq) { throw errEq; }
-      if (equipments) { setequipments(equipments) }
-    }
+      if (errEq) {
+        throw errEq;
+      }
+      if (equipments) {
+        setequipments(equipments);
+      }
+    };
     const getMaterial = async () => {
       const [material, errEq] = await handlePromise(materialService.getMaterials());
-      if (errEq) { throw errEq; }
-      if (material) { setMaterials(material) }
-    }
+      if (errEq) {
+        throw errEq;
+      }
+      if (material) {
+        setMaterials(material);
+      }
+    };
 
     fetchRequests();
     getEquipment();
@@ -66,7 +71,7 @@ export default function RequestsView(): ReactElement {
   }, []);
 
   const onSearchResult = (input: Request[]) => {
-    setShowedRequest(input)
+    setShowedRequest(input);
   };
 
   const headerAttributes = {
@@ -79,21 +84,19 @@ export default function RequestsView(): ReactElement {
     return new Date(dateString).toLocaleDateString("es-ES");
   };
 
-
-
   return (
     <>
       <Header {...headerAttributes}></Header>
-      <Filter elements={requestData} callback={onSearchResult} ></Filter>
+      <Filter elements={requestData} callback={onSearchResult}></Filter>
       <main>
         <div className="body">
-           <div className="newFormButton">
+          <div className="newFormButton">
             <Button variant="contained" size="medium" onClick={() => navigate("New")}>
               Crear {headerAttributes.title}
             </Button>
           </div>
           {showedRequest.map((requested, index) => (
-            <div className="listElements2">
+            <div className="listElementsRequest">
               <CardRequest
                 id={requested._id}
                 title={requested.description}
@@ -101,7 +104,7 @@ export default function RequestsView(): ReactElement {
                 laboratory={requested.lab?.toString() || ""}
                 building={requested.building || ""}
                 proffesor={requested.requestantUser}
-                students={requested.studentsNumber ? requested.studentsNumber.toString() : ''}
+                students={requested.studentsNumber ? requested.studentsNumber.toString() : ""}
                 status={requested.status}
                 groupsAmount={requested.groupNumber}
                 subject={"titulo"}
@@ -110,12 +113,11 @@ export default function RequestsView(): ReactElement {
                 reactives={requested.reactives}
                 materials={requested.materials}
               />
-
             </div>
           ))}
         </div>
       </main>
-            <div className="fbuttons">
+      <div className="fbuttons">
         <Fab color="primary" aria-label="add" onClick={() => navigate("New")}>
           <AddIcon />
         </Fab>
