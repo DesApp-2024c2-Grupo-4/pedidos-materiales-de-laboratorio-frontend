@@ -1,6 +1,6 @@
 @import "../../globals.scss";
 
-.searchform {
+.searchform-filter {
   color: color("text-secondary");
   display: grid;
   grid-template-columns: 10% 90%;
@@ -12,7 +12,6 @@
   width: 100%;
   background-color: white;
   gap: 1em 0;
-  
 
   svg {
     fill: #929da5;
@@ -31,7 +30,7 @@
   }
 }
 
-.searcher {
+.searcher-filter {
   background-color: #ffff;
   font-size: 1.8em;
   justify-self: self-start;
@@ -46,16 +45,16 @@
   }
 }
 
-.container {
-    display: grid; /* Activar el modelo Flexbox */
-    grid-template-columns: 30% 10% 10% 15% 15% 10%;
-    gap: 6px;
-    justify-content: space-between; /* Espaciado entre los elementos */
-  }
-
-.box {
-    width: 100%;    
+.container-filter {
+  display: grid; /* Activar el modelo Flexbox */
+  grid-template-columns: 30% 10% 10% 15% 15% 10%;
+  gap: 6px;
+  justify-content: space-between; /* Espaciado entre los elementos */
 }
-.sp{
-        padding-top: 10px;
-     }
+
+.box-filter {
+  width: 100%;
+}
+.sp-filter {
+  padding-top: 10px;
+}
