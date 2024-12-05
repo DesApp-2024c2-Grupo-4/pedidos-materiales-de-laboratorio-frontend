@@ -60,7 +60,6 @@ export default function CardRequestDetails({
           <div className="card-info">
             <div>
               <p>Laboratorio: {laboratory}</p>
-              <p>Edificio: {building}</p>
               <p>Profesor: {proffesor}</p>
               {!showDetails ? (
                 <button onClick={details}>Ver detalles</button>
