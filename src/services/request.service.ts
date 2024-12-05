@@ -1,6 +1,6 @@
 import useAxios from "../hooks/axios.hook";
 import handlePromise from "../utils/promise";
-import { Request } from "../types/request";
+import { Request, RequestSet } from "../types/request";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 
 const useRequestService = () => {
@@ -44,7 +44,7 @@ const useRequestService = () => {
     return response.data;
   };
 
-  const addRequest = async (request: Request): Promise<void> => {
+  const addRequest = async (request: RequestSet): Promise<void> => {
     const config: AxiosRequestConfig = {
       method: "POST",
       url: `/request`,

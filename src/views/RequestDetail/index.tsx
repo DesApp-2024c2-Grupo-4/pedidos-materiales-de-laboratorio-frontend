@@ -15,7 +15,8 @@ import useSharedService from "../../services/shared.service";
 import { Material } from "../../types/material";
 import { Equipment } from "../../types/equipment";
 import { Reactive } from "../../types/reactive";
-import { EquipmentRequest, MaterialRequest, Request, RequestableElement } from "../../types/request";
+
+import { EquipmentRequest, MaterialRequest, Request, RequestableElement, RequestSet } from "../../types/request";
 
 import handlePromise from "../../utils/promise";
 import Dropdown from "../../components/dropdown";
@@ -54,6 +55,7 @@ export default function RequestView(): ReactElement {
 
   const [equipments, setequipments] = useState<RequestableElement[]>([]);
   const [materials, setmaterials] = useState<RequestableElement[]>([]);
+  const [reactives, setreactives] = useState<RequestableElement[]>([]);
 
   useEffect(() => {
     const fetchRequest = async () => {
@@ -71,17 +73,21 @@ export default function RequestView(): ReactElement {
       const [status, err2] = await handlePromise(sharedService.getstatus());
       const [equipment, err3] = await handlePromise(equipmentService.getEquipments());
       const [material, err4] = await handlePromise(materialService.getMaterials());
+      const [reactive, err5] = await handlePromise(reactiveService.getReactives());
+
       try {
         if (err1) { throw err1; }
         if (err2) { throw err2; }
         if (err3) { throw err3; }
         if (err4) { throw err4; }
+        if (err5) { throw err5; }
 
-        if (labs && status && equipment && material) {
+        if (labs && status && equipment && material && reactive)  {
           setLabList(labs);
           setstatusList(status)
           setEquipmentData(equipment)
           setMaterialData(material)
+          setReactiveData(reactive)
 
         }
       } catch (error) {
@@ -98,36 +104,43 @@ export default function RequestView(): ReactElement {
   };
 
 
-
   const onsubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-
-    if (materialData && id) {
-      /*  
-         const [, err] = await handlePromise<void, string>(
-         materialService.updateMaterial(id, ),
-       );
-       if (err) return console.log(err);
-        */
-      navigate(-1);
-    } else {
-/*       const [, err] = await handlePromise<void, string>(
-        materialService.addMaterial({
-          description: description,
-          unitMeasure: unit,
-          type: type,
-          stock: Number(Stock),
-          inRepair: Number(Repair),
-        }),
-      );
-      if (err) return console.log(err);
- */      navigate(-1);
-    }
+   
+  /*   const validationError = validateForm(formData);
+    if (validationError) {
+      setError(validationError);
+      return;
+    } */
+   let a : RequestSet = {
+        description : (e.target as any).description.value
+        ,startDate :  startDate
+        ,endDate :    endDate
+        ,lab : Lab
+        ,observations : (e.target as any).observations.value
+        ,subject : (e.target as any).subject.value
+        ,groupsAmount : Number((e.target as any).groupsAmount.value)
+        ,studentsAmount : Number((e.target as any).studentsAmount.value)
+        ,tpNumber : Number((e.target as any).tpNumber.value)
+        ,equipments : equipments
+        ,reactives : reactives
+        ,materials : materials
+       } 
+    console.log(a)
+      
+    const [, err] = await handlePromise<void, string>(
+      requestService.addRequest(a)
+    );
+    if (err) return console.log(err);
+    console.log("funco!")
   };
 
+
+
   const [description, setDescription] = useState("")
-  const [startDate, setstartDate] = useState("")
-  const [endDate, setendDate] = useState("")
+  const [startDate, setstartDate] = useState<Date|undefined >(undefined)
+  const [endDate, setendDate] = useState<Date|undefined >(undefined)
+  const [Lab, setLab] = useState('')
 
   function modeloEquipo(lista: EquipmentRequest[]): RequestableElement[] {
     return lista.map(l => ({
@@ -163,22 +176,37 @@ export default function RequestView(): ReactElement {
 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['DatePicker']}>
-                <DatePicker label="startDate" value={startDate} onChange={(newValue) => { newValue ? setstartDate(newValue.toString()) : '' }} />
+                <DatePicker label="startDate" value={startDate} onChange={(newValue) => { newValue ? setstartDate(newValue) : '' }} />
               </DemoContainer>
             </LocalizationProvider>
 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['DatePicker']}>
-                <DatePicker label="endDate" value={endDate} onChange={(newValue) => { newValue ? setendDate(newValue.toString()) : '' }} />
+                <DatePicker label="endDate" value={endDate} onChange={(newValue) => { newValue ? setendDate(newValue) : '' }} />
               </DemoContainer>
             </LocalizationProvider>
+
+              <div className="checkboxStyle">
+              <FormControl>
+                <InputLabel>Laboratorio</InputLabel>
+                <Select
+                  className="selectStyle"
+                  value={Lab}
+                  label="Laboratorio"
+                  onChange={(event) => { setLab(event.target.value) }}>
+                  {LabList.map((t, index) => (
+                    <MenuItem value={t.value}>{t.text}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
           </div>
 
           <TextField
             className="textFieldStyler"
             variant="standard"
             placeholder="cantidad Estudiantes"
-            type="text"
+            type="number"
             name="studentsAmount"
             autoComplete="off"
           />
@@ -187,7 +215,7 @@ export default function RequestView(): ReactElement {
             className="textFieldStyler"
             variant="standard"
             placeholder="cantidad Grupos"
-            type="text"
+            type="number"
             name="groupsAmount"
             autoComplete="off"
           />
@@ -196,7 +224,7 @@ export default function RequestView(): ReactElement {
             className="textFieldStyler"
             variant="standard"
             placeholder="Numero de Trabajo Practico"
-            type="text"
+            type="number"
             name="tpNumber"
             autoComplete="off"
           />
@@ -220,47 +248,44 @@ export default function RequestView(): ReactElement {
           />
 
           <div className="flex">
-            <div className="checkboxStyle">
-              <FormControl>
-                <InputLabel>Laboratorio</InputLabel>
-                <Select
-                  className="selectStyle"
-                  value={''}
-                  label="Laboratorio"
-                  onChange={(event) => { console.log(event.target.value) }}>
-                  {LabList.map((t, index) => (
-                    <MenuItem value={t.value}>{t.text}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </div>
-            <div className="checkboxStyle">
-              <FormControl>
-                <InputLabel >Estado</InputLabel>
-                <Select className="selectStyle" value={''} label="edificio" onChange={(event) => { console.log(event.target.value) }}>
-                  {statusList.map((t, index) => (<MenuItem value={t.value}>{t.text}</MenuItem>))}
-                </Select>
-              </FormControl>
-            </div>
+          
+          </div>
+ 
+          <div className="containerdropdown" >
+            <SelectionItem 
+              title={"Equipos"}
+              isEditable={true}
+              simpleList={equipments}
+              equipments={equipmentData}
+              reactives={[]}
+              materials={[]}
+              callBack={(list: RequestableElement[]) => {console.log(list); setequipments(list) }}>
+            </SelectionItem>
           </div>
 
-          <SelectionItem
-            title={"Equipos"}
-            isEditable={true}
-            simpleList={equipments}
-            equipments={equipmentData}
-            materials={[]}
-            callBack={(list: RequestableElement[]) => { setequipments(list) }}>
-          </SelectionItem>
+          <div className="containerdropdown" >
+            <SelectionItem
+              title={"Materiales"}
+              isEditable={true}
+              simpleList={materials}
+              materials={materialData}
+              reactives={[]}
+              equipments={[]}
+              callBack={(list: RequestableElement[]) => {  console.log(list); setmaterials(list) }}>
+            </SelectionItem>
+          </div>
 
-          <SelectionItem
-            title={"Materiales"}
-            isEditable={true}
-            simpleList={materials}
-            materials={materialData}
-            equipments={[]}
-            callBack={(list: RequestableElement[]) => { setmaterials(list) }}>
-          </SelectionItem>
+   <div className="containerdropdown" >
+            <SelectionItem
+              title={"Reactivos"}
+              isEditable={true} 
+              simpleList={reactives}
+              materials={[]}
+              reactives={reactiveData}
+              equipments={[]}
+              callBack={(list: RequestableElement[]) => {  console.log(list); setreactives(list) }}>
+            </SelectionItem>
+          </div>
 
 
           <Button type="submit" variant="contained">
@@ -270,13 +295,7 @@ export default function RequestView(): ReactElement {
            */}
         </form>
       </main>
-
-      <div className="fbuttons">
-        <Fab color="primary" aria-label="add" onClick={() => navigate("New")}>
-          <AddIcon />
-        </Fab>
-      </div>
-      <MobileNav />
+      
     </>
   );
 }

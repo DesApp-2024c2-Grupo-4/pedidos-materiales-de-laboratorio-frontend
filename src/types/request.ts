@@ -103,3 +103,26 @@ export type  Request = {
   isRejected: boolean;
   isExpired: boolean;
 }
+
+export type  RequestSet = {
+  requestantUser?: string;
+  assignedUser?: string;
+  description?: string;
+  startDate?: Date;
+  endDate?: Date;
+  lab?: string ;
+  type?: string;
+  studentsAmount?: number;
+  building?: string;
+  groupsAmount?: number;
+  observations?: string;
+  subject?: string;
+  tpNumber?: number;
+  messages?: string;
+  equipments?: RequestableElement[];
+  reactives?:  RequestableElement[];
+  materials?:  RequestableElement[];
+  requestNumber?: number;
+  status?: string;
+
+}

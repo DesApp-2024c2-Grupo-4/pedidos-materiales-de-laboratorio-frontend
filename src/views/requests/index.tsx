@@ -1,5 +1,7 @@
+import AddIcon from "@mui/icons-material/Add";
 import React, { ReactElement, useEffect, useState } from "react";
 import "./styles.scss";
+import { Button, Fab } from "@mui/material";
 import Header from "../../components/header";
 import CardRequest from "../../components/card";
 import SelectionItem from "../../components/dropdownVersatil";
@@ -12,6 +14,7 @@ import { Material } from "../../types/material";
 import { Equipment } from "../../types/equipment";
 import useMaterialService from "../../services/material.service";
 import useEquipmentService from "../../services/equipment.service";
+import { useNavigate } from "react-router-dom";
 
 export default function RequestsView(): ReactElement {
   const [requestData, setRequestData] = useState<Request[]>([]);
@@ -20,6 +23,7 @@ export default function RequestsView(): ReactElement {
   const requestService = useRequestService();
   const materialService = useMaterialService();
   const equipmentService = useEquipmentService();
+  const navigate = useNavigate();
 
   //para agregar vista previa
   const [materials, setMaterials] = useState<Material[]>([]);
@@ -87,6 +91,11 @@ export default function RequestsView(): ReactElement {
       <Filter elements={requestData} callback={onSearchResult}></Filter>
       <main>
         <div className="body">
+           <div className="newFormButton">
+            <Button variant="contained" size="medium" onClick={() => navigate("New")}>
+              Crear {headerAttributes.title}
+            </Button>
+          </div>
           {showedRequest.map((requested, index) => (
             <div>
               <div className="listElements">
@@ -114,10 +123,14 @@ export default function RequestsView(): ReactElement {
           ))}
         </div>
       </main>
+            <div className="fbuttons">
+        <Fab color="primary" aria-label="add" onClick={() => navigate("New")}>
+          <AddIcon />
+        </Fab>
+      </div>
+
       <MobileNav />
     </>
   );
 }
-function setShowedItems(simpleList: any) {
-  throw new Error("Function not implemented.");
-}
+

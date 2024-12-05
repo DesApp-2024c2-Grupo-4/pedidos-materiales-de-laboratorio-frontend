@@ -61,14 +61,14 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
 
   useEffect(() => {
     const filterChanged = () => {
-      return elements.filter((item) => {
-        const matchesLab = Lab === "" || item.lab.toLowerCase().includes(Lab.toLowerCase());
-        const matchesName = title === "" || item.description.toLowerCase().includes(title.toLowerCase());
-        const matchesStatus = status === "" || item.status === status;
-        const matchesMindate = minDate == "" || new Date(item.usageDate) > new Date(minDate);
-        const matchesMaxdate = maxDate == "" || new Date(item.usageDate) < new Date(maxDate);
+      return elements.filter(item => {
+        const matchesLab = Lab === '' || item.lab?.includes(Lab);
+        const matchesName = title === '' || item.description.includes(title);
+        const matchesStatus = status === '' || item.status === status;
+        const matchesMindate = minDate == '' || new Date(item.usageDate) > new Date(minDate);
+        const matchesMaxdate = maxDate == '' || new Date(item.usageDate) < new Date(maxDate);
 
-        return matchesLab && matchesName && matchesStatus && matchesMindate && matchesMaxdate;
+        return matchesLab && matchesName && matchesStatus && matchesMindate && matchesMaxdate
       });
     };
     callback(filterChanged());
