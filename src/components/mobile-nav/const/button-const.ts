@@ -2,38 +2,38 @@ import { NavButtonType } from "..";
 
 /**
  * This constant will show menu items in order
- * role attribute indicates who can access the item
- * there's a wildcard role "any" to display icon
+ * roles attribute indicates who can access the item
+ * there's a wildcard roles ["ADMIN", "LAB", "TEACHER"],] to display icon
  * to every user.
  */
 export const NAV_BUTTONS: NavButtonType[] = [
   {
     name: "pedidos",
-    role: "any",
+    roles: ["ADMIN", "LAB", "TEACHER"],
     href: "/requests",
     icon: "request.svg",
   },
   {
     name: "equipos",
-    role: "lab",
+    roles: ["LAB"],
     href: "/equipments",
     icon: "equipment.svg",
   },
   {
     name: "materiales",
-    role: "lab",
+    roles: ["LAB"],
     href: "/materials",
     icon: "material.svg",
   },
   {
     name: "reactivos",
-    role: "lab",
+    roles: ["LAB"],
     href: "/reactives",
     icon: "reactive.svg",
   },
   {
     name: "perfil",
-    role: "any",
+    roles: ["ADMIN", "LAB", "TEACHER"],
     href: "/profile",
     icon: "profile.svg",
   },

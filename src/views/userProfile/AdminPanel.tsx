@@ -4,7 +4,6 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import PersonOffIcon from "@mui/icons-material/PersonOff";
 import { Button } from "@mui/material";
 import GenerateLink from "./generateRegister";
 import handlePromise from "../../utils/promise";
@@ -28,14 +27,6 @@ const items = [
     modalTitle: "Elegir rol para usuario",
     content: "Seleccionar el rol para el usuario",
     open: "link",
-  },
-  {
-    icon: <PersonOffIcon sx={{ color: "text.secondary" }} />,
-    title: "Eliminar un usuario",
-    description: "Borrar usuario",
-    modalTitle: "Eliminar usuario",
-    content: "Ingresa la dirección de correo electrónico del usuario a eliminar.",
-    open: "true",
   },
 ];
 

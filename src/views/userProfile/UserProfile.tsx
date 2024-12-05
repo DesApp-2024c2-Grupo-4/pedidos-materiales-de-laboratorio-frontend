@@ -5,6 +5,7 @@ import SignInCard from "./ProfileCard";
 import Content from "./AdminPanel";
 import Header from "../../components/header";
 import MobileNav from "../../components/mobile-nav";
+import { useAuth } from "../../context/auth.context";
 
 const headerAttributes = {
   title: "Perfil del Usuario",
@@ -13,6 +14,11 @@ const headerAttributes = {
 };
 
 export default function UserProfile() {
+  const authService = useAuth();
+  const authToken = authService.getTokenInfo();
+  const userRoles = authToken ? authToken.roles : [];
+  const isAdmin = userRoles.includes("ADMIN");
+
   return (
     <>
       <Header {...headerAttributes}></Header>
@@ -62,7 +68,7 @@ export default function UserProfile() {
               m: "auto",
             }}
           >
-            <Content />
+            {isAdmin && <Content />}
             <SignInCard />
           </Stack>
         </Stack>

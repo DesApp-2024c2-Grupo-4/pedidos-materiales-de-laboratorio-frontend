@@ -1,5 +1,5 @@
 import { User } from "./user";
 
-export type AuthTokenInfo = Pick<User, "role" | "name" | "lastName" | "email"> & { id: string };
+export type AuthTokenInfo = Pick<User, "roles" | "name" | "lastName" | "email"> & { id: string };
 
 export default AuthTokenInfo;

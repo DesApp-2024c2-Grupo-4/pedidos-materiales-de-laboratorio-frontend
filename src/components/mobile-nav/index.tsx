@@ -5,7 +5,7 @@ import { NAV_BUTTONS } from "./const/button-const";
 import "./styles.scss";
 
 export type NavButtonType = NavButtonProps & {
-  role: string;
+  roles: string[];
 };
 
 export default function MobileNav(): ReactElement {
@@ -14,8 +14,11 @@ export default function MobileNav(): ReactElement {
 
   useLayoutEffect(() => {
     const authToken = authService.getTokenInfo();
-    //if (!authToken) return;
-    setUserButtons(NAV_BUTTONS);
+    if (!authToken) return;
+    console.log(authToken, "authToken");
+    const userRoles = authToken.roles;
+    const filteredButtons = NAV_BUTTONS.filter((btn) => btn.roles.some((role) => userRoles.includes(role)));
+    setUserButtons(filteredButtons);
   }, []);
 
   return (
