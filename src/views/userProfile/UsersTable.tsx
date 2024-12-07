@@ -11,6 +11,7 @@ const headerAttributes = {
   title: "Administrar Usuarios",
   enableSearch: false,
   icon: "profile.svg",
+  backArrow: true,
 };
 
 export default function UserAdmin() {

@@ -112,6 +112,7 @@ export default function RequestView(): ReactElement {
   const headerAttributes = {
     title: "Pedido",
     icon: "request.svg",
+    backArrow: true,
     enableSearch: false,
   };
 

@@ -15,7 +15,7 @@ import useMaterialService from "../../services/material.service";
 import useEquipmentService from "../../services/equipment.service";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../types/user";
-import useUserService from "../../services/user.service"
+import useUserService from "../../services/user.service";
 
 export default function RequestsView(): ReactElement {
   const [requestData, setRequestData] = useState<Request[]>([]);
@@ -37,7 +37,7 @@ export default function RequestsView(): ReactElement {
         if (err) {
           throw err;
         }
-        
+
         if (requesteds) {
           setRequestData(requesteds);
           setShowedRequest(requesteds);
@@ -55,10 +55,9 @@ export default function RequestsView(): ReactElement {
       }
       if (users) {
         setusers(usersData);
-        console.log(users)
+        console.log(users);
       }
     };
- 
 
     fetchRequests();
     getuser();
@@ -94,10 +93,10 @@ export default function RequestsView(): ReactElement {
               <CardRequest
                 id={requested._id}
                 title={requested.description}
-                date={requested.endDate? requested.endDate.toString() : ""}
-                laboratory={requested.lab?.toString() || ""}
+                date={requested.endDate ? requested.endDate.toString() : ""}
+                laboratory={requested.lab?.toString() || " No asignado"}
                 building={requested.building || ""}
-                proffesor={usersData.find( u => u._id == requested.requestantUser)?.name || requested.requestantUser}
+                proffesor={usersData.find((u) => u._id == requested.requestantUser)?.name || requested.requestantUser}
                 students={requested.studentsAmount ? requested.studentsAmount.toString() : ""}
                 status={requested.status}
                 groupsAmount={requested.groupsAmount}
