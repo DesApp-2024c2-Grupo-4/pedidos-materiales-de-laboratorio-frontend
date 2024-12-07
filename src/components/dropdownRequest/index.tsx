@@ -1,5 +1,5 @@
 import React, { MouseEvent, ReactElement, useEffect, useState } from "react";
-import { EditOutlined } from "@mui/icons-material";
+import { EditOutlined, Title } from "@mui/icons-material";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import "./styles.scss";
@@ -18,8 +18,7 @@ export type dropProps = {
   title: string;
   isEditable: boolean;
   simpleList: RequestableElement[]; //lista de elementos a desplegar
-  equipments: Equipment[];
-  materials: Material[];
+  simpleCatalog: Equipment[] | Material[];
   reactives: Reactive[];
   callBack: (list: RequestableElement[]) => void;
 };
@@ -28,36 +27,28 @@ export default function SelectionItem({
   title,
   isEditable,
   simpleList,
-  equipments,
-  materials,
+  simpleCatalog,
   reactives,
   callBack,
 }: dropProps): ReactElement {
-  const [idSelected, setid] = useState("");
-  const [amountSelected, setamount] = useState("");
-
+  
   const [desplegado, setDesplegado] = useState(false);
   const [editingId, seteditingId] = useState(undefined);
   const [showedItems, setShowedItems] = useState<RequestableElement[]>([]);
-
-  const handleEdit = (index) => {
-    seteditingId(index);
-  };
+  const handleEdit = (index) => {    seteditingId(index);  };
 
   const handleErase = (id : string | undefined) => {
-    setShowedItems(showedItems.filter((i) => i.id != id));
+    setShowedItems(showedItems.filter(item1 =>  !(id === item1.id)));
+
+    
+    seteditingId(undefined);
   };
 
   const handleAdd = (requestable : RequestableElement) => {
     if (requestable.id  && requestable.amount > 0) {
-      setShowedItems([
-        ...showedItems,
-        requestable
-      ]);
-      setid(""); // Clear input after ahandleAdddding
-      setamount(""); // Reset quantity to default
+      setShowedItems([...showedItems,requestable]);
+      seteditingId(undefined);
     } else {
-      console.log("ocurrio un error al persistir en elemento en la tabla");
       console.log("ocurrio un error al leer requestable.id" , requestable.id);
       console.log("ocurrio un error al leer requestable.amount" , requestable.amount);
       
@@ -66,20 +57,22 @@ export default function SelectionItem({
 
   
   const handleSimpleSave = (index, requestable : RequestableElement) => {
-  
+  editingId
     let updated: RequestableElement[] = showedItems || [];
     updated[index] = requestable;
     setShowedItems(updated);
-    
-    console.log("actualiza elementos",{  id: requestable.id , amount: Number(requestable.amount) })
-    console.log("actualiza listas",updated)
     seteditingId(undefined);
+  };
+
+  const uniqueElement = (fullList, selecteds, excluded?) => {
+    return fullList.filter(available =>  ( available._id === excluded)
+     ||
+        !selecteds.some(currentSelected => currentSelected.id === available._id )
+    );
   };
 
   useEffect(() => {
     callBack(showedItems);
-    setid("");
-    setamount("");
   }, [showedItems]);
 
   return (
@@ -105,59 +98,37 @@ export default function SelectionItem({
           </div>
           {desplegado && (
             <div className="info-card">
+              Agregar  
+               <SelectRequestable 
+                    title={title} 
+                    element={undefined}
+                    ElementsList={uniqueElement(simpleCatalog,showedItems)}
+                    editingId={editingId}
+                    isAdd={true}
+                    SaveSelection={handleAdd}
+                    Editing={handleEdit} 
+                    Erase={handleErase}
+                    >
+                </SelectRequestable>              
+              <Divider variant="inset" component="div" />
+              todos:
               {simpleList &&
                 showedItems!.map((r, index) => {
                   return (
                     <SelectRequestable 
-                    title={"Materials"} 
-                    ElementsList={materials} 
-                    index={index}
-                    element={r}
-                    editingId={editingId}
-                    SaveSelection={handleSimpleSave}
-                    Editing={handleEdit} 
-                    Erase={handleErase}>
+                        title={title} 
+                        ElementsList={uniqueElement(simpleCatalog,showedItems,r.id)} 
+                        index={index}
+                        element={r}
+                        isAdd={false}
+                        editingId={editingId}
+                        SaveSelection={handleSimpleSave}
+                        Editing={handleEdit} 
+                        Erase={handleErase}>
                     </SelectRequestable>
                   );
                 })}
-              <Divider variant="inset" component="div" />
-              Agregar
 
-               <SelectRequestable 
-                    title={"Materials"} 
-                    ElementsList={materials} 
-                    SaveSelection={handleAdd}
-                    Editing={handleEdit} 
-                    Erase={handleErase}>
-                </SelectRequestable>
-
-              <div className="row">
-                <Select
-
-                  defaultValue={""}
-                  className="select"
-                  placeholder="Seleccione"
-                  name="addelement"
-                  label={title}
-                  
-                  onChange={(event) => {
-                    setid(event.target.value);
-                  }}
-                >
-                  {equipments ? equipments.map((t) => <MenuItem value={t._id}>{t.description}</MenuItem>) : undefined}
-                  {materials ? materials.map((t) => <MenuItem value={t._id}>{t.description}</MenuItem>) : undefined}
-                  {reactives ? reactives.map((t) => <MenuItem value={t._id}>{t.description}</MenuItem>) : undefined}
-                </Select>
-                <TextField
-                  label="Unidades"
-                  id="cantidad"
-                  onChange={(event) => {
-                    setamount(event.target.value);
-                  }}
-                  disabled={!isEditable}
-                />
-                
-              </div>
             </div>
           )}
         </div>

@@ -19,6 +19,7 @@ export type dropProps = {
   index?;
   element?: RequestableElement; 
   editingId? : string;
+  isAdd?:boolean
   SaveSelection : ( RequestableElement ,index?  )=>void
   Editing : (id: string | undefined) => void;
   Erase : (id: string | undefined) => void;
@@ -29,53 +30,81 @@ export default function SelectRequestable({
   index,
   element,
   editingId,
+  isAdd,
   SaveSelection,
   Editing,
   Erase
 }: dropProps): ReactElement {
-  const [idSelected, setid] = useState("");
-  const [amountSelected, setamount] = useState("");
+  const [idSelected, setid] = useState(element?.id || '');
+  const [amountSelected, setamount] = useState(element?.amount || '');
+  const isReactivo : boolean = true
 
-  
+    function onCreate(event): void {
+    if(idSelected !=""  &&  Number(amountSelected) > 0 )
+    {
+      const newelement :RequestableElement = {id: idSelected, amount:Number(amountSelected)}  
+      setid('')
+      setamount('')
+      SaveSelection(newelement)
+    }
+    else{
+            setid('')
+      setamount('')
+      throw new Error("Function not implemented.");
+    }
+  }
+  function onEdit(index: any) {
+    try{
+
+      SaveSelection( index, {id: idSelected, amount:Number(amountSelected)} as RequestableElement);
+    } catch{
+      throw new Error("Function not implemented.");
+    }
+  }
 
   return (
-    <div className="row">         
+    <div className="row"> 
+
                       <Select className="select" 
-                              defaultValue={element?.id} 
+                              value={idSelected} 
                               label={title}
-                              disabled={element?.id != editingId}
+                              disabled={!(element?.id === editingId) && !isAdd }
                               onChange={(event) => {setid(event.target.value);}}>
                           {
                             ElementsList && ElementsList.map((t) =>
                             <MenuItem value={t._id}>{t.description}</MenuItem>)
                            }
                       </Select>
+
                       <TextField
                         label="Unidades"
                         id="txtUnidades"
-                        defaultValue={element?.amount}
+                        type="number"
+                        value={amountSelected}
                         onChange={(event) => {
                           setamount(event.target.value);
                         }}
-                        disabled={element?.id != editingId}
+                        disabled={!(element?.id === editingId) && !isAdd}
                       />
+
+
+
+                      {/* botones */}
                       {!(index>-1)  && <Button
                                        variant="contained"
-                                        onClick={(e) => {SaveSelection( {id: idSelected, amount:Number(amountSelected)} as RequestableElement) }}>
+                                        onClick={(e) => {onCreate(e) }}>
                                     Agregar
                                   </Button> 
                       }
                       {(index>-1) && element?.id == editingId ? (
                         <div>
                           <Button variant="outlined"  
-                                onClick={() => {  Editing(element?.id); }}
-                          >
+                                onClick={() => {  Editing(undefined); }}>
                             Cancelar
                           </Button>
                           <Button variant="contained" hidden={idSelected !="" && Number(amountSelected)> 0}
-                                  onClick={() => {SaveSelection( index, {id: idSelected, amount:Number(amountSelected)} as RequestableElement);}}
-                                  endIcon={<SendIcon />}
-                          >
+                                  onClick={() => {onEdit(index)}}
+                                  endIcon={<SendIcon />}>
                             Guardar
                           </Button>
                         </div>

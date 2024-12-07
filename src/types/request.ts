@@ -10,6 +10,7 @@ export type  RequestableElement = {
   amount: number;
   missingAmount?: number;
   id:string;
+  
 }
 export type  ReactiveElement = {
   unitMeasure: string;

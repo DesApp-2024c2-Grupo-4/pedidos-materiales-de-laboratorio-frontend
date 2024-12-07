@@ -281,9 +281,8 @@ export default function RequestView(): ReactElement {
               title={"Equipos"}
               isEditable={true}
               simpleList={equipments}
-              equipments={equipmentData}
+              simpleCatalog={equipmentData}
               reactives={[]}
-              materials={[]}
               callBack={(list: RequestableElement[]) => {
                 console.log(list);
                 setequipments(list);
@@ -296,9 +295,8 @@ export default function RequestView(): ReactElement {
               title={"Materiales"}
               isEditable={true}
               simpleList={materials}
-              materials={materialData}
+              simpleCatalog={materialData}
               reactives={[]}
-              equipments={[]}
               callBack={(list: RequestableElement[]) => {
                 console.log(list);
                 setmaterials(list);
@@ -311,9 +309,8 @@ export default function RequestView(): ReactElement {
               title={"Reactivos"}
               isEditable={true}
               simpleList={reactives}
-              materials={[]}
               reactives={reactiveData}
-              equipments={[]}
+              simpleCatalog={[]}
               callBack={(list: RequestableElement[]) => {
                 console.log(list);
                 setreactives(list);
