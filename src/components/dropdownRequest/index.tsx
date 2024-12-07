@@ -12,6 +12,7 @@ import handlePromise from "../../utils/promise";
 import { Button, Divider, Input, MenuItem, Select, TextField } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
+import SelectRequestable from "../RequestableSelection";
 
 export type dropProps = {
   title: string;
@@ -36,48 +37,44 @@ export default function SelectionItem({
   const [amountSelected, setamount] = useState("");
 
   const [desplegado, setDesplegado] = useState(false);
-  const [editingIndex, setEditingIndex] = useState(null);
+  const [editingId, seteditingId] = useState(undefined);
   const [showedItems, setShowedItems] = useState<RequestableElement[]>([]);
 
   const handleEdit = (index) => {
-    if (editingIndex != index) {
-      setEditingIndex(index);
-    } else {
-      setEditingIndex(null);
-    }
+    seteditingId(index);
   };
 
-  const handleErase = (id) => {
+  const handleErase = (id : string | undefined) => {
     setShowedItems(showedItems.filter((i) => i.id != id));
   };
 
-  const handleAdd = () => {
-    if (idSelected.trim() !== "") {
-      // Check if product name is not empty
+  const handleAdd = (requestable : RequestableElement) => {
+    if (requestable.id  && requestable.amount > 0) {
       setShowedItems([
         ...showedItems,
-        {
-          id: idSelected,
-          amount: Number(amountSelected),
-        },
+        requestable
       ]);
-      setid(""); // Clear input after adding
+      setid(""); // Clear input after ahandleAdddding
       setamount(""); // Reset quantity to default
     } else {
       console.log("ocurrio un error al persistir en elemento en la tabla");
+      console.log("ocurrio un error al leer requestable.id" , requestable.id);
+      console.log("ocurrio un error al leer requestable.amount" , requestable.amount);
+      
     }
   };
 
-  const handleSimpleSave = (index, newid: string, newCantidad: string) => {
+  
+  const handleSimpleSave = (index, requestable : RequestableElement) => {
+  
     let updated: RequestableElement[] = showedItems || [];
-    updated[index] = { amount: Number(newCantidad), id: newid };
+    updated[index] = requestable;
     setShowedItems(updated);
-    setEditingIndex(null);
+    
+    console.log("actualiza elementos",{  id: requestable.id , amount: Number(requestable.amount) })
+    console.log("actualiza listas",updated)
+    seteditingId(undefined);
   };
-
-  useEffect(() => {
-    setShowedItems(simpleList);
-  }, []);
 
   useEffect(() => {
     callBack(showedItems);
@@ -111,92 +108,38 @@ export default function SelectionItem({
               {simpleList &&
                 showedItems!.map((r, index) => {
                   return (
-                    <div className="row" key={index}>
-                      <Select
-                        className="select"
-                        defaultValue={r.id}
-                        label={title}
-                        disabled={index != editingIndex}
-                        onChange={(event) => {
-                          setid(event.target.value);
-                        }}
-                      >
-                        {equipments
-                          ? equipments
-                              .filter((e) => e._id)
-                              .map((t) => <MenuItem value={t._id}>{t.description}</MenuItem>)
-                          : undefined}
-                        {materials
-                          ? materials.map((t) => <MenuItem value={t._id}>{t.description}</MenuItem>)
-                          : undefined}
-                        {reactives
-                          ? reactives.map((t) => <MenuItem value={t._id}>{t.description}</MenuItem>)
-                          : undefined}
-                      </Select>
-                      <TextField
-                        label="Unidades"
-                        id="txtUnidades"
-                        defaultValue={r.amount}
-                        onChange={(event) => {
-                          setamount(event.target.value);
-                        }}
-                        disabled={index != editingIndex}
-                      />
-
-                      {index == editingIndex ? (
-                        <div>
-                          <Button
-                            variant="outlined"
-                            onClick={() => {
-                              handleEdit(null);
-                            }}
-                          >
-                            Cancelar
-                          </Button>
-                          <Button
-                            variant="contained"
-                            onClick={() => {
-                              handleSimpleSave(index, idSelected, amountSelected);
-                            }}
-                            endIcon={<SendIcon />}
-                          >
-                            Guardar
-                          </Button>
-                        </div>
-                      ) : (
-                        <div>
-                          <Button
-                            variant="outlined"
-                            onClick={() => {
-                              handleErase(r.id);
-                            }}
-                            startIcon={<DeleteIcon />}
-                          >
-                            Borrar
-                          </Button>
-                          <Button
-                            variant="contained"
-                            onClick={() => {
-                              handleEdit(index);
-                            }}
-                          >
-                            Editar
-                          </Button>
-                        </div>
-                      )}
-                    </div>
+                    <SelectRequestable 
+                    title={"Materials"} 
+                    ElementsList={materials} 
+                    index={index}
+                    element={r}
+                    editingId={editingId}
+                    SaveSelection={handleSimpleSave}
+                    Editing={handleEdit} 
+                    Erase={handleErase}>
+                    </SelectRequestable>
                   );
                 })}
               <Divider variant="inset" component="div" />
               Agregar
+
+               <SelectRequestable 
+                    title={"Materials"} 
+                    ElementsList={materials} 
+                    SaveSelection={handleAdd}
+                    Editing={handleEdit} 
+                    Erase={handleErase}>
+                </SelectRequestable>
+
               <div className="row">
                 <Select
+
                   defaultValue={""}
                   className="select"
                   placeholder="Seleccione"
                   name="addelement"
                   label={title}
-                  disabled={editingIndex != null}
+                  
                   onChange={(event) => {
                     setid(event.target.value);
                   }}
@@ -213,14 +156,7 @@ export default function SelectionItem({
                   }}
                   disabled={!isEditable}
                 />
-                <Button
-                  variant="contained"
-                  onClick={(e) => {
-                    handleAdd();
-                  }}
-                >
-                  Agregar
-                </Button>
+                
               </div>
             </div>
           )}

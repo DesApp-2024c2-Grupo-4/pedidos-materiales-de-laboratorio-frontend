@@ -3,6 +3,7 @@ import "./styles.scss";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { EquipmentRequest, MaterialRequest, ReactiveRequest } from "../../types/request";
 import PDFDocument from "./pdf";
+import { Button } from "@mui/material";
 
 export type CardProps = {
   title: string;
@@ -60,9 +61,9 @@ export default function CardRequestDetails({
               <p>Laboratorio: {laboratory}</p>
               <p>Profesor: {proffesor}</p>
               {!showDetails ? (
-                <button onClick={details}>Ver detalles</button>
+                <Button variant="outlined"  onClick={details}>Ver detalles</Button>
               ) : (
-                <button onClick={details}>Ocultar detalles</button>
+                <Button variant="outlined" onClick={details}>Ocultar detalles</Button>
               )}
             </div>
             <div>

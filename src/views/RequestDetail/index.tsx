@@ -3,8 +3,8 @@ import React, { FormEvent, ReactElement, useEffect, useState } from "react";
 import "./styles.scss";
 import Header from "../../components/header";
 import MobileNav from "../../components/mobile-nav";
-import DropdownVersatil from "../../components/dropdownVersatil";
-import SelectionItem from "../../components/dropdownVersatil";
+import DropdownVersatil from "../../components/dropdownRequest";
+import SelectionItem from "../../components/dropdownRequest";
 
 import useRequestService from "../../services/request.service";
 import useMaterialService from "../../services/material.service";
@@ -16,7 +16,7 @@ import { Material } from "../../types/material";
 import { Equipment } from "../../types/equipment";
 import { Reactive } from "../../types/reactive";
 
-import { EquipmentRequest, MaterialRequest, Request, RequestableElement, RequestSet } from "../../types/request";
+import { EquipmentRequest, MaterialRequest, ReactiveRequest, Request, RequestableElement, RequestSet } from "../../types/request";
 
 import handlePromise from "../../utils/promise";
 import { useNavigate, useParams } from "react-router-dom";
@@ -163,19 +163,13 @@ export default function RequestView(): ReactElement {
   const [endDate, setendDate] = useState<Date | undefined>(undefined);
   const [Lab, setLab] = useState("");
 
-  function modeloEquipo(lista: EquipmentRequest[]): RequestableElement[] {
+  function modelo(lista: EquipmentRequest[] | MaterialRequest[] | ReactiveRequest[]): RequestableElement[] {
     return lista.map((l) => ({
       id: l.id._id,
       amount: l.amount,
     }));
   }
 
-  function modeloMaterial(lista: MaterialRequest[]): RequestableElement[] {
-    return lista.map((l) => ({
-      id: l.id._id,
-      amount: l.amount,
-    }));
-  }
 
   return (
     <>
