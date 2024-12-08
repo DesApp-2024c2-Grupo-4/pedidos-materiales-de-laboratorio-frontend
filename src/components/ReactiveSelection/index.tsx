@@ -106,7 +106,7 @@ export default function ReactiveSelection({
       setUnitMeasure('')
       setQuality('')
       setType('')
-      setSolvent({Agua :false,Alcohol :false, Otros :false})
+      setSolvent({Agua :false,Alcohol :false, Otros :false , Otrosdesc:""})
       setAmountConsentrationSelected('')
      
       SaveSelection(newelement)
