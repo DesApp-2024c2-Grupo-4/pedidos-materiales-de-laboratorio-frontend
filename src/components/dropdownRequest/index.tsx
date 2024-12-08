@@ -13,13 +13,14 @@ import { Button, Divider, Input, MenuItem, Select, TextField } from "@mui/materi
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 import SelectRequestable from "../RequestableSelection";
+import ReactiveSelection from "../ReactiveSelection";
 
 export type dropProps = {
   title: string;
   isEditable: boolean;
   simpleList: RequestableElement[]; //lista de elementos a desplegar
-  simpleCatalog: Equipment[] | Material[];
-  reactives: Reactive[];
+  simpleCatalog: Equipment[] | Material[] | Reactive[];
+  isReactive : boolean
   callBack: (list: RequestableElement[]) => void;
 };
 
@@ -28,7 +29,7 @@ export default function SelectionItem({
   isEditable,
   simpleList,
   simpleCatalog,
-  reactives,
+  isReactive,
   callBack,
 }: dropProps): ReactElement {
   
@@ -36,11 +37,8 @@ export default function SelectionItem({
   const [editingId, seteditingId] = useState(undefined);
   const [showedItems, setShowedItems] = useState<RequestableElement[]>([]);
   const handleEdit = (index) => {    seteditingId(index);  };
-
   const handleErase = (id : string | undefined) => {
     setShowedItems(showedItems.filter(item1 =>  !(id === item1.id)));
-
-    
     seteditingId(undefined);
   };
 
@@ -99,7 +97,7 @@ export default function SelectionItem({
           {desplegado && (
             <div className="info-card">
               Agregar  
-               <SelectRequestable 
+               {!isReactive && <SelectRequestable 
                     title={title} 
                     element={undefined}
                     ElementsList={uniqueElement(simpleCatalog,showedItems)}
@@ -109,10 +107,23 @@ export default function SelectionItem({
                     Editing={handleEdit} 
                     Erase={handleErase}
                     >
-                </SelectRequestable>              
+                </SelectRequestable>  
+                }     
+               {isReactive  && <ReactiveSelection 
+                    title={title} 
+                    element={undefined}
+                    ElementsList={uniqueElement(simpleCatalog,showedItems)}
+                    editingId={editingId}
+                    isAdd={true}
+                    SaveSelection={handleAdd}
+                    Editing={handleEdit} 
+                    Erase={handleErase}
+                    >
+                </ReactiveSelection>  
+                }     
               <Divider variant="inset" component="div" />
               todos:
-              {simpleList &&
+              {!isReactive && 
                 showedItems!.map((r, index) => {
                   return (
                     <SelectRequestable 
@@ -126,6 +137,23 @@ export default function SelectionItem({
                         Editing={handleEdit} 
                         Erase={handleErase}>
                     </SelectRequestable>
+                  );
+                })}
+
+              {isReactive && 
+                showedItems!.map((r, index) => {
+                  return (
+                    <ReactiveSelection 
+                        title={title} 
+                        ElementsList={uniqueElement(simpleCatalog,showedItems,r.id)} 
+                        index={index}
+                        element={r}
+                        isAdd={false}
+                        editingId={editingId}
+                        SaveSelection={handleSimpleSave}
+                        Editing={handleEdit} 
+                        Erase={handleErase}>
+                    </ReactiveSelection>
                   );
                 })}
 

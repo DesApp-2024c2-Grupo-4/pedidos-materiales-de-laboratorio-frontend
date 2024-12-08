@@ -70,7 +70,7 @@ const useSharedService = () => {
   };
 
   
-  const getReactivequalities = async (): Promise<SelectOptions[]> => {
+  const getReactiveQualities = async (): Promise<SelectOptions[]> => {
     const config: AxiosRequestConfig = {
       method: "GET",
       url: `/reactive/constants/qualities`,
@@ -166,6 +166,7 @@ const useSharedService = () => {
    getUnits,
    getReactiveTypes,
    getReactiveSolvents,
+   getReactiveQualities,
    getLabs,
    getstatus
   };

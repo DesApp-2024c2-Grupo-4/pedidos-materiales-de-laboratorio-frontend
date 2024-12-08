@@ -10,8 +10,13 @@ export type  RequestableElement = {
   amount: number;
   missingAmount?: number;
   id:string;
-  
+  unitMeasure?: string;
+  quality?: string;
+  concentrationType?: string;
+  concentrationAmount?: string;
+  solvents?: SolventRequest[];
 }
+
 export type  ReactiveElement = {
   unitMeasure: string;
   quality: string;
@@ -45,9 +50,7 @@ export type  ReactiveRequest = {
 				}
     }
 
-
-
-
+    
 export interface EquipmentRequest {
   amount: number;
   id: {

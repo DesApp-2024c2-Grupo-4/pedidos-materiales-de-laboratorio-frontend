@@ -37,7 +37,6 @@ export default function SelectRequestable({
 }: dropProps): ReactElement {
   const [idSelected, setid] = useState(element?.id || '');
   const [amountSelected, setamount] = useState(element?.amount || '');
-  const isReactivo : boolean = true
 
     function onCreate(event): void {
     if(idSelected !=""  &&  Number(amountSelected) > 0 )
