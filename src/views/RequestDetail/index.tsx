@@ -163,6 +163,8 @@ export default function RequestView(): ReactElement {
   const [startDate, setstartDate] = useState<Date | undefined>(undefined);
   const [endDate, setendDate] = useState<Date | undefined>(undefined);
   const [Lab, setLab] = useState("");
+  const [statusSelected,setStatus] = useState("");
+  
 
   function modelo(lista: EquipmentRequest[] | MaterialRequest[] | ReactiveRequest[]): RequestableElement[] {
     return lista.map((l) => ({
@@ -210,24 +212,6 @@ export default function RequestView(): ReactElement {
                 />
               </DemoContainer>
             </LocalizationProvider>
-
-            <div className="checkboxStyle">
-              <FormControl>
-                <InputLabel>Laboratorio</InputLabel>
-                <Select
-                  className="selectStyle"
-                  value={Lab}
-                  label="Laboratorio"
-                  onChange={(event) => {
-                    setLab(event.target.value);
-                  }}
-                >
-                  {LabList.map((t, index) => (
-                    <MenuItem value={t.value}>{t.text}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </div>
           </div>
 
           <TextField
@@ -283,7 +267,7 @@ export default function RequestView(): ReactElement {
               isEditable={true}
               simpleList={equipments}
               simpleCatalog={equipmentData}
-              reactives={[]}
+              isReactive={false}
               callBack={(list: RequestableElement[]) => {
                 console.log(list);
                 setequipments(list);
@@ -297,7 +281,7 @@ export default function RequestView(): ReactElement {
               isEditable={true}
               simpleList={materials}
               simpleCatalog={materialData}
-              reactives={[]}
+              isReactive={false}
               callBack={(list: RequestableElement[]) => {
                 console.log(list);
                 setmaterials(list);
@@ -310,14 +294,53 @@ export default function RequestView(): ReactElement {
               title={"Reactivos"}
               isEditable={true}
               simpleList={reactives}
-              reactives={reactiveData}
-              simpleCatalog={[]}
+              simpleCatalog={reactiveData}
+              isReactive={true}
               callBack={(list: RequestableElement[]) => {
                 console.log(list);
                 setreactives(list);
               }}
             ></SelectionItem>
           </div>
+
+
+
+            <div className="checkboxStyle">
+              <FormControl>
+                <InputLabel>Laboratorio</InputLabel>
+                <Select
+                  className="selectStyle"
+                  value={Lab}
+                  label="Laboratorio"
+                  onChange={(event) => {
+                    setLab(event.target.value);
+                  }}
+                >
+                  {LabList.map((t, index) => (
+                    <MenuItem value={t.value}>{t.text}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+
+            <div className="checkboxStyle">
+              <FormControl>
+                <InputLabel>estado</InputLabel>
+                <Select
+                  className="selectStyle"
+                  value={statusSelected}
+                  label="estado"
+                  onChange={(event) => {
+                    setStatus(event.target.value);
+                  }}
+                >
+                  {statusList.map((t, index) => (
+                    <MenuItem value={t.value}>{t.text}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+            
           <Button type="submit" variant="contained">
             agregar
           </Button>
