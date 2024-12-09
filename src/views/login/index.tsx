@@ -79,7 +79,7 @@ export default function Login(): ReactElement {
         <img src="/img/logo-universidad.png" alt="UNAHUR" className="logoUniStyle" />
         <img src="/img/scientist.png" alt="Cientifico de laboratorio" className="imageStyle" />
       </div>
-      <form onSubmit={onLogin} className="formEndStyle">
+      <form onSubmit={onLogin} className="formEndStyle" style={{ width: "100vh" }}>
         <TextField
           className="textFieldStyle"
           variant="standard"

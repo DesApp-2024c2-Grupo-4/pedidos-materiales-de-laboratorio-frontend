@@ -16,10 +16,9 @@ form {
 
 .formEndStyle {
   background-color: color("background");
-  max-width: 600px;
-  width: 90vw;
-  height: 65vw;
+  height: 65vh;
   align-items: center;
+  width: 100vh;
   justify-content: center;
   @include breakpoint(small) {
     width: 100vw;
@@ -60,12 +59,17 @@ form {
   flex-direction: column;
   align-items: center;
   height: 100vh;
+  width: 100vw;
 }
 
 .textFieldStyle {
   width: 40vw;
   margin-top: 40px;
   max-width: 75%;
+
+  @include breakpoint(small) {
+    width: 60vw;
+  }
 }
 
 .buttonStyle {
@@ -74,6 +78,5 @@ form {
   background-color: #2b76ff;
   padding: 12px;
   color: white;
-  width: 90vw;
   margin-top: 20px;
 }
