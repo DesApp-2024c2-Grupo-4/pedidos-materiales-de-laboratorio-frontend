@@ -3,7 +3,6 @@
 form {
   display: flex;
   flex-direction: column;
-  max-width: 800px;
   gap: 2em;
   background-color: rgba($color: #000000, $alpha: 0.2);
   padding: 20px;
@@ -17,8 +16,9 @@ form {
 
 .formEndStyle {
   background-color: color("background");
-  height: 65%;
-  width: 98vw;
+  max-width: 600px;
+  width: 90vw;
+  height: 65vw;
   align-items: center;
   justify-content: center;
   @include breakpoint(small) {
@@ -63,7 +63,7 @@ form {
 }
 
 .textFieldStyle {
-  width: 90vw;
+  width: 40vw;
   margin-top: 40px;
   max-width: 75%;
 }

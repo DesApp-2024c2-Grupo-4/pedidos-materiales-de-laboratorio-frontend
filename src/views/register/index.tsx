@@ -12,7 +12,6 @@ export default function Register(): ReactElement {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { token } = useParams();
-
   const onRegister = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     const formData = {
@@ -46,8 +45,8 @@ export default function Register(): ReactElement {
   };
 
   return (
-    <div className=" containerStyler">
-      <div className=" bannerStyler">
+    <div className="containerStyler">
+      <div className="bannerStyler">
         <img src="/img/logo-universidad.png" alt="UNAHUR" className="logoUniStyler" />
       </div>
       <form onSubmit={onRegister} className="formEndStyler">
@@ -86,18 +85,17 @@ export default function Register(): ReactElement {
         <TextField
           className="textFieldStyler"
           variant="standard"
-          type="text"
+          type={"password"}
           placeholder="Contraseña"
           name="password"
         />
         <TextField
           className="textFieldStyler"
           variant="standard"
-          type="text"
+          type={"password"}
           placeholder="Confirmar contraseña"
           name="confirmPassword"
         />
-
         <Button type="submit" variant="contained">
           Registrarse
         </Button>
