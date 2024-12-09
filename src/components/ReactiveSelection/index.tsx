@@ -43,10 +43,10 @@ export default function ReactiveSelection({
   const  [unitMeasureSelected,setUnitMeasure] = useState(element?.unitMeasure || '')
   const  [qualitySelected,setQuality] = useState(element?.quality || "")
   const  [TypeSelected,setType] = useState(element?.concentrationType || "")
+  const [amountConsentrationSelected,setAmountConsentrationSelected] = useState( element?.concentrationAmount ||'')
   const  [solventSelected,setSolvent] = useState<{
     Otrosdesc: string ;Agua : boolean; Alcohol : boolean ;Otros : boolean
 }>({Agua :false,Alcohol :false, Otros :false,Otrosdesc:""})
-  const [amountConsentrationSelected,setAmountConsentrationSelected] = useState('')
   const sharedService = useSharedService();
 
   //listas   
@@ -74,7 +74,8 @@ export default function ReactiveSelection({
 
         if(element?.solvents?.some(e => {return e.name  === "agua" ;} )) {setSolvent(prevState => ({...prevState, Agua: true }))}
         if(element?.solvents?.some(e => {return e.name  === "alcohol" ;} ))  {setSolvent(prevState => ({...prevState,Alcohol: true }))}
-        if(element?.solvents?.some(e => {return e.name  === "otros" ;} )) {setSolvent(prevState => ({...prevState, Otros: true }))}
+        if(element?.solvents?.some(e => {return e.name  === "otros" ;} )) {setSolvent(prevState => ({...prevState, Otros: true , Otrosdesc: element?.solvents?.find(e => {return e.name  === "otros" ;} )?.description! }))}
+        
 
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -89,13 +90,13 @@ export default function ReactiveSelection({
       let lista : SolventRequest[] = []
       if (solventSelected.Agua)  {lista.push({ name: 'agua' , description:""} as SolventRequest);}  
       if (solventSelected.Alcohol) {lista.push({ name: 'alcohol' , description:""} as SolventRequest);}  
-      if (solventSelected.Otros) {lista.push({ name: 'otros' , description:""} as SolventRequest);}  
+      if (solventSelected.Otros) {lista.push({ name: 'otros' , description:solventSelected.Otrosdesc   } as SolventRequest);}  
 
       const newelement : RequestableElement = {
         unitMeasure: unitMeasureSelected,
         quality: qualitySelected,
         concentrationType: TypeSelected,
-        concentrationAmount:(amountConsentrationSelected),
+        concentrationAmount:amountConsentrationSelected,
         solvents: lista,
         id: idSelected,
         amount: Number(amountSelected),
@@ -132,7 +133,7 @@ export default function ReactiveSelection({
         unitMeasure: unitMeasureSelected,
         quality: qualitySelected,
         concentrationType: TypeSelected,
-        concentrationAmount:(amountConsentrationSelected),
+        concentrationAmount:amountConsentrationSelected,
         solvents: lista,
         id: idSelected,
         amount: Number(amountSelected)
@@ -277,7 +278,7 @@ export default function ReactiveSelection({
                           <Button variant="contained" hidden={idSelected !="" && Number(amountSelected)> 0}
                                   onClick={() => {onEdit(index)}}
                                   endIcon={<SendIcon />}>
-                            Guardar
+                            GuardarD
                           </Button>
                         </div>
                       ) : ( (index>-1) &&
