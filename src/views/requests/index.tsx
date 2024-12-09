@@ -26,9 +26,6 @@ export default function RequestsView(): ReactElement {
   const userService = useUserService();
   const navigate = useNavigate();
 
-  //para agregar vista previa
-  const [materials, setMaterials] = useState<Material[]>([]);
-  const [equipments, setequipments] = useState<Equipment[]>([]);
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -55,7 +52,6 @@ export default function RequestsView(): ReactElement {
       }
       if (users) {
         setusers(usersData);
-        console.log(users);
       }
     };
 
@@ -96,7 +92,7 @@ export default function RequestsView(): ReactElement {
                 date={requested.endDate ? requested.endDate.toString() : ""}
                 laboratory={requested.lab?.toString() || " No asignado"}
                 building={requested.building || ""}
-                proffesor={usersData.find((u) => u._id == requested.requestantUser)?.name || requested.requestantUser}
+                proffesor={usersData.find((u) => u._id == requested.requestantUser)?.name || ''}
                 students={requested.studentsAmount ? requested.studentsAmount.toString() : ""}
                 status={requested.status}
                 groupsAmount={requested.groupsAmount}

@@ -1,38 +1,48 @@
-
-import { useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useAuth } from "../context/auth.context";
-import { io, Manager } from "socket.io-client";
+import { io, Manager, Socket } from "socket.io-client";
 
-const useSocket = () => {
+export default function useSocket() {
+  const [socket, setSocket] = useState<Socket>();
+  const [messages, setMessages] = useState<any[]>([]);
+  const [stateRoom, setstateRoom] = useState<any>(false);
 
-  const authService = useAuth();
+  useEffect(() => {
+    const newSocket = io('ws://localhost:3000', {
+      extraHeaders: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
 
-  useLayoutEffect(() => {
-    const authToken = authService.getTokenInfo();
-    if (!authToken) return;
-    console.log(authToken, "authToken");
-    const userRoles = authToken.roles;
-      
+    
+    newSocket.on('message', (data) => {
+      setMessages([...messages, data]);
+    });
+    
+    newSocket.on('readMessage', () => {
+      return messages
+    });
+
+    newSocket.on('joinRoom', (data) => {
+      setstateRoom(data)
+    });
+
+
+    newSocket.on('leaveRoom', () => {
+      setstateRoom(undefined)
+    });
+
+    
+    setSocket(newSocket);
+    
+    return () => {
+      newSocket.disconnect();
+    };
   }, []);
 
 
-
-const manager = new Manager("ws://localhost:3000", {
-  reconnectionDelayMax: 10000,
-  query: {
-    "Bearer": authService.authToken
-  }
-});
-
-const socket = manager.socket("/my-namespace", {
-  auth: {
-    token: "123"
-  }
-});
+  return {socket}
 
 
 
-  return { manager, socket };
 };
-
-export default useSocket;

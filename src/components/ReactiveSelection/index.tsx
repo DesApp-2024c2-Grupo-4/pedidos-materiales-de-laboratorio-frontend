@@ -101,7 +101,6 @@ export default function ReactiveSelection({
         id: idSelected,
         amount: Number(amountSelected),
       }
-      console.log(newelement);
       setid('')
       setamount('')
       setUnitMeasure('')

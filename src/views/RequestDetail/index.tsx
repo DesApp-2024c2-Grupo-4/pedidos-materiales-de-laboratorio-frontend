@@ -178,7 +178,7 @@ export default function RequestView(): ReactElement {
     <>
       <Header {...headerAttributes}></Header>
       <main>
-        <form onSubmit={onsubmit} className="formEndStyle">
+        <form onSubmit={onsubmit} className="RequestMenuStyle">
           <TextField
             className="textFieldStyler"
             variant="standard"

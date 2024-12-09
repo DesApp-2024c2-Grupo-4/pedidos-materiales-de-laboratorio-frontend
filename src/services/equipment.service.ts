@@ -64,8 +64,6 @@ const useEquipmentService = () => {
       url: `/equipment/${_id}`,
       data: equipment ,
     };
-
-    console.log("config",config.url)
     const [, err] = await handlePromise<AxiosResponse<Equipment[]>, unknown>(axiosInstance(config));
 
     if (err) {

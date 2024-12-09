@@ -15,7 +15,7 @@ export default function MobileNav(): ReactElement {
   useLayoutEffect(() => {
     const authToken = authService.getTokenInfo();
     if (!authToken) return;
-    console.log(authToken, "authToken");
+    
     const userRoles = authToken.roles;
     const filteredButtons = NAV_BUTTONS.filter((btn) => btn.roles.some((role) => userRoles.includes(role)));
     setUserButtons(filteredButtons);
