@@ -85,14 +85,13 @@ export default function RequestsView(): ReactElement {
                 key={index}
                 id={requested._id}
                 title={requested.description}
-                date={requested.endDate ? requested.endDate.toString() : ""}
+                date={requested.endDate ? formatDate(requested.endDate) : ""}
                 laboratory={requested.lab?.toString() || " No asignado"}
                 building={requested.building || ""}
                 proffesor={usersData.find((u) => u._id == requested.requestantUser)?.name || ""}
                 students={requested.studentsAmount ? requested.studentsAmount.toString() : ""}
                 status={requested.status}
                 groupsAmount={requested.groupsAmount}
-                subject={"titulo"}
                 tpNumber={requested.tpNumber}
                 equipments={requested.equipments}
                 reactives={requested.reactives}

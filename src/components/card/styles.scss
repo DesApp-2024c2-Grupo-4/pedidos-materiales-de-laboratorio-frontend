@@ -75,3 +75,24 @@
     color: rgb(38, 151, 227);
   }
 }
+
+.card-details {
+  overflow: hidden;
+  transform: translateY(10px);
+  transition:
+    max-height 0.6s ease,
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+.card-details.collapsed {
+  max-height: 0;
+}
+
+.card-details.expanded {
+  max-height: 1000px;
+}
+
+.button-container {
+  padding: 10px 0;
+}

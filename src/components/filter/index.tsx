@@ -80,7 +80,7 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
         <div className="box-filter sp-filter">
           <form onSubmit={onSearch} className="searchform-filter">
             <img src={`img/header/search.svg`}></img>
-            <input className="searcher-filter" type="text" name="input" id="input" placeholder="filtrar por Nombre" />
+            <input className="searcher-filter" type="text" name="input" id="input" placeholder="Buscar por nombre" />
           </form>
         </div>
         <div className="box-filter sp-filter">

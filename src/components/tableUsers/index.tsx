@@ -228,12 +228,7 @@ export default function BasicTable() {
           />
           <FormControl variant="outlined" margin="normal" sx={{ minWidth: 150 }}>
             <InputLabel id="role-filter-label">Filtrar por Rol</InputLabel>
-            <Select
-              labelId="role-filter-label"
-              value={roleFilter}
-              onChange={onRoleFilterChange}
-              label="Filtrar por Rol"
-            >
+            <Select labelId="role-filter-label" value={roleFilter} onChange={onRoleFilterChange} label="Buscar por Rol">
               <MenuItem value="">
                 <em>Todos</em>
               </MenuItem>

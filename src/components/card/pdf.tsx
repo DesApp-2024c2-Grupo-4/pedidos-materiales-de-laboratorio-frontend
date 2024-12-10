@@ -34,17 +34,27 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
   },
   tableRow: {
-    margin: "auto",
     flexDirection: "row",
   },
+  tableColHeader: {
+    width: "50%",
+    borderStyle: "solid",
+    borderColor: "#bfbfbf",
+    backgroundColor: "#f3f3f3",
+    padding: 5,
+  },
   tableCol: {
-    width: "25%",
+    width: "50%",
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: "#bfbfbf",
-    borderLeftWidth: 0,
-    borderTopWidth: 0,
     padding: 5,
+  },
+  tableCellHeader: {
+    margin: "auto",
+    marginTop: 5,
+    fontSize: 10,
+    fontWeight: "bold",
   },
   tableCell: {
     margin: "auto",
@@ -63,7 +73,6 @@ const PDFDocument = ({
   proffesor,
   students,
   groupsAmount,
-  subject,
   tpNumber,
   equipments,
   reactives,
@@ -73,41 +82,162 @@ const PDFDocument = ({
     <Page size="A4" style={styles.page}>
       <View style={styles.section}>
         <Text style={styles.header}>{title}</Text>
-        <Text style={styles.text}>Fecha practica: {date}</Text>
-        <Text style={styles.text}>Fecha fin: {endDate}</Text>
-        <Text style={styles.text}>Estado: {status}</Text>
-        <Text style={styles.text}>Laboratorio: {laboratory}</Text>
-        <Text style={styles.text}>Edificio: {building}</Text>
-        <Text style={styles.text}>Profesor: {proffesor}</Text>
-        <Text style={styles.text}>Estudiantes: {students}</Text>
-        <Text style={styles.text}>Grupos: {groupsAmount}</Text>
-        <Text style={styles.text}>Materia: {subject}</Text>
-        <Text style={styles.text}>TP Número: {tpNumber}</Text>
+        <View style={styles.table}>
+          <View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Fecha practica</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>{date}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Fecha fin</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>{endDate}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Estado</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>{status}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Laboratorio</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>{laboratory}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Edificio</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>{building}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Profesor</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>{proffesor}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Estudiantes</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>{students}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>Grupos</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>{groupsAmount}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={styles.tableColHeader}>
+              <Text style={styles.tableCellHeader}>TP Número</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>{tpNumber}</Text>
+            </View>
+          </View>
+        </View>
       </View>
-      <View style={styles.section}>
-        <Text style={styles.header}>Equipos:</Text>
-        {equipments.map((equipment) => (
-          <Text key={equipment._id} style={styles.text}>
-            {equipment.id.description} - Cantidad: {equipment.amount}
-          </Text>
-        ))}
-      </View>
-      <View style={styles.section}>
-        <Text style={styles.header}>Reactivos:</Text>
-        {reactives.map((reactive, index) => (
-          <Text key={index} style={styles.text}>
-            {reactive.reactive} - Cantidad: {reactive.quantity} {reactive.unitMeasure}
-          </Text>
-        ))}
-      </View>
-      <View style={styles.section}>
-        <Text style={styles.header}>Materiales:</Text>
-        {materials.map((material, index) => (
-          <Text key={index} style={styles.text}>
-            {material.material} - Cantidad: {material.quantity}
-          </Text>
-        ))}
-      </View>
+      {equipments.length > 0 && (
+        <View style={styles.section}>
+          <Text style={styles.subHeader}>Equipos:</Text>
+          <View style={styles.table}>
+            <View style={styles.tableRow}>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Descripción</Text>
+              </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Cantidad</Text>
+              </View>
+            </View>
+            {equipments.map((equipment) => (
+              <View style={styles.tableRow} key={equipment._id}>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{equipment.id.description}</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{equipment.amount}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
+        </View>
+      )}
+      {reactives.length > 0 && (
+        <View style={styles.section}>
+          <Text style={styles.subHeader}>Reactivos:</Text>
+          <View style={styles.table}>
+            <View style={styles.tableRow}>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Descripción</Text>
+              </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Cantidad</Text>
+              </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Unidad</Text>
+              </View>
+            </View>
+            {reactives.map((reactive, index) => (
+              <View style={styles.tableRow} key={index}>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{reactive.id.description}</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{reactive.quantity}</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{reactive.unitMeasure}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
+        </View>
+      )}
+      {materials.length > 0 && (
+        <View style={styles.section}>
+          <Text style={styles.subHeader}>Materiales:</Text>
+          <View style={styles.table}>
+            <View style={styles.tableRow}>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Descripción</Text>
+              </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Cantidad</Text>
+              </View>
+            </View>
+            {materials.map((material, index) => (
+              <View style={styles.tableRow} key={index}>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{material.id.description}</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}>{material.amount}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
+        </View>
+      )}
     </Page>
   </Document>
 );
