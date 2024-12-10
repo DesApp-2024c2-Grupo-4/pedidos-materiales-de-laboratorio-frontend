@@ -104,7 +104,7 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
             <InputLabel>Estado</InputLabel>
             <Select
               value={status}
-              label="edificio"
+              label="Edificio"
               onChange={(event) => {
                 setStatus(event.target.value);
               }}

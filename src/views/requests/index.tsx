@@ -7,12 +7,8 @@ import CardRequest from "../../components/card";
 import MobileNav from "../../components/mobile-nav";
 import useRequestService from "../../services/request.service";
 import handlePromise from "../../utils/promise";
-import { EquipmentRequest, Request, RequestableElement } from "../../types/request";
+import { Request } from "../../types/request";
 import Filter from "../../components/filter";
-import { Material } from "../../types/material";
-import { Equipment } from "../../types/equipment";
-import useMaterialService from "../../services/material.service";
-import useEquipmentService from "../../services/equipment.service";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../types/user";
 import useUserService from "../../services/user.service";
@@ -25,7 +21,6 @@ export default function RequestsView(): ReactElement {
   const requestService = useRequestService();
   const userService = useUserService();
   const navigate = useNavigate();
-
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -87,12 +82,13 @@ export default function RequestsView(): ReactElement {
           {showedRequest.map((requested, index) => (
             <div className="listElementsRequest">
               <CardRequest
+                key={index}
                 id={requested._id}
                 title={requested.description}
                 date={requested.endDate ? requested.endDate.toString() : ""}
                 laboratory={requested.lab?.toString() || " No asignado"}
                 building={requested.building || ""}
-                proffesor={usersData.find((u) => u._id == requested.requestantUser)?.name || ''}
+                proffesor={usersData.find((u) => u._id == requested.requestantUser)?.name || ""}
                 students={requested.studentsAmount ? requested.studentsAmount.toString() : ""}
                 status={requested.status}
                 groupsAmount={requested.groupsAmount}

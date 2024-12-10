@@ -112,7 +112,7 @@ export default function ReactiveDetailView(): ReactElement {
               multiline
               value={description}
               rows={4}
-              label="description"
+              label="Descripción"
               variant="outlined"
               onChange={(e) => setDescription(e.target.value)}
             />

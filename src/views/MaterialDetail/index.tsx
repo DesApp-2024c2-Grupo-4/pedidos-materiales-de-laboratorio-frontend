@@ -143,7 +143,7 @@ export default function MaterialDetailView(): ReactElement {
             multiline
             value={description}
             rows={4}
-            label="description"
+            label="Descripción"
             variant="outlined"
             onChange={(e) => setDescription(e.target.value)}
           />
@@ -154,7 +154,7 @@ export default function MaterialDetailView(): ReactElement {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={unit}
-              label="unidad de Medida"
+              label="Unidad de medida"
               onChange={(e) => setunit(e.target.value as string)}
             >
               <MenuItem value={"Unidades"}>Unidades</MenuItem>
@@ -187,7 +187,7 @@ export default function MaterialDetailView(): ReactElement {
           <TextField
             id="En Reparacion"
             className="formElement"
-            label="En Reparacion"
+            label="En Reparación"
             variant="outlined"
             onChange={(e) => setRepair(e.target.value)}
             value={Repair}

@@ -115,7 +115,7 @@ export default function EquipmentDetailView(): ReactElement {
               multiline
               value={description}
               rows={4}
-              label="description"
+              label="Descripción"
               variant="outlined"
               onChange={(e) => setDescription(e.target.value)}
             />
@@ -141,7 +141,7 @@ export default function EquipmentDetailView(): ReactElement {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={UnitMeasure}
-                label="unidad de Medida"
+                label="Unidad de medida"
                 onChange={(e) => setUnit(e.target.value)}
               >
                 <MenuItem value={"Tubos de ensayo"}>unidad</MenuItem>
@@ -160,7 +160,7 @@ export default function EquipmentDetailView(): ReactElement {
             <TextField
               id="En Reparacion"
               className="formElement"
-              label="En Reparacion"
+              label="En Reparación"
               variant="outlined"
               onChange={(e) => setRepair(e.target.value)}
               value={Repair}

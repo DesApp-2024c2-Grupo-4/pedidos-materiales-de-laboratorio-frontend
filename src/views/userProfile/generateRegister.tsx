@@ -52,7 +52,7 @@ export default function GenerateLink({ open, handleClose, handleFuncion, title, 
             margin="dense"
             id="email"
             name="email"
-            label="Email address"
+            label="Email"
             placeholder="Email address"
             type="email"
             fullWidth

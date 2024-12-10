@@ -38,7 +38,7 @@ export default function ForgotPassword({ open, handleClose }: ForgotPasswordProp
           margin="dense"
           id="email"
           name="email"
-          label="Email address"
+          label="Email"
           placeholder="Email address"
           type="email"
           fullWidth
