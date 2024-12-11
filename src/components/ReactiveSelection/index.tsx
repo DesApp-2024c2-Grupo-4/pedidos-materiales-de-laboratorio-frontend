@@ -34,6 +34,7 @@ export type dropProps = {
   element?: RequestableElement;
   editingId?: string;
   isAdd?: boolean;
+  isEditable:boolean;
   SaveSelection: (RequestableElement, index?) => void;
   Editing: (id: string | undefined) => void;
   Erase: (id: string | undefined) => void;
@@ -45,6 +46,7 @@ export default function ReactiveSelection({
   element,
   editingId,
   isAdd,
+  isEditable,
   SaveSelection,
   Editing,
   Erase,
@@ -362,11 +364,11 @@ export default function ReactiveSelection({
             }}
             endIcon={<SendIcon />}
           >
-            GuardarD
+            Guardar
           </Button>
         </div>
       ) : (
-        index > -1 && (
+        index > -1 && isEditable &&(
           <div>
             <Button
               variant="outlined"

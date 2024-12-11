@@ -19,8 +19,9 @@ export type dropProps = {
   index?;
   element?: RequestableElement; 
   editingId? : string;
-  isAdd?:boolean
-  SaveSelection : ( RequestableElement ,index?  )=>void
+  isAdd?:boolean;
+  isEditable:boolean;
+  SaveSelection : ( RequestableElement ,index?  )=>void;
   Editing : (id: string | undefined) => void;
   Erase : (id: string | undefined) => void;
 };
@@ -31,6 +32,7 @@ export default function SelectRequestable({
   element,
   editingId,
   isAdd,
+  isEditable,
   SaveSelection,
   Editing,
   Erase
@@ -107,7 +109,7 @@ export default function SelectRequestable({
                             Guardar
                           </Button>
                         </div>
-                      ) : ( (index>-1) &&
+                      ) : ( (index>-1) && isEditable &&
                         <div>
                           <Button variant="outlined" 
                             onClick={() => {  Erase(element!.id); }}

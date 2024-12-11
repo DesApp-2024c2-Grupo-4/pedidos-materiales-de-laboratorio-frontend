@@ -19,6 +19,7 @@ import { Reactive } from "../../types/reactive";
 import {
   EquipmentRequest,
   MaterialRequest,
+  ReactiveElement,
   ReactiveRequest,
   Request,
   RequestableElement,
@@ -35,33 +36,43 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers";
 import Swal from "sweetalert2";
-import { da } from "date-fns/locale";
+import { da, sr } from "date-fns/locale";
+import { set } from "date-fns";
 
 export default function RequestView(): ReactElement {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [requestData, setRequestData] = useState<Request>();
 
-  const [materialData, setMaterialData] = useState<Material[]>([]);
-  const [equipmentData, setEquipmentData] = useState<Equipment[]>([]);
-  const [reactiveData, setReactiveData] = useState<Reactive[]>([]);
-
-  const [selectedid, setSelectedid] = useState<string>("");
 
   const requestService = useRequestService();
-
   const materialService = useMaterialService();
   const equipmentService = useEquipmentService();
   const reactiveService = useReactiveService();
-  const [LabList, setLabList] = useState<SelectOptions[]>([]);
 
+  const [requestData, setRequestData] = useState<Request>();
+  const [materialData, setMaterialData] = useState<Material[]>([]);
+  const [equipmentData, setEquipmentData] = useState<Equipment[]>([]);
+  const [reactiveData, setReactiveData] = useState<Reactive[]>([]);
+  const [selectedid, setSelectedid] = useState<string>("");
+  const [LabList, setLabList] = useState<SelectOptions[]>([]);
   const sharedService = useSharedService();
   const [TypeOptions, setTypeOptions] = useState<SelectOptions[]>([]);
   const [statusList, setstatusList] = useState<SelectOptions[]>([]);
-
   const [equipments, setequipments] = useState<RequestableElement[]>([]);
   const [materials, setmaterials] = useState<RequestableElement[]>([]);
   const [reactives, setreactives] = useState<RequestableElement[]>([]);
+
+  const [description, setDescription] = useState("");
+  const [startDate, setstartDate] = useState<Date | undefined>(undefined);
+  const [endDate, setendDate] = useState<Date | undefined>(undefined);
+  const [Lab, setLab] = useState("");
+  const [statusSelected, setStatus] = useState("");
+  const [observations , setobservations] =useState("")
+  const [subject , setsubject] =useState("")
+  const [groupsAmount , setgroupsAmount] =useState("")
+  const [studentsAmount , setstudentsAmount] =useState("")
+  const [tpNumber , settpNumber] =useState("")
+
 
   useEffect(() => {
     const fetchRequest = async () => {
@@ -71,7 +82,34 @@ export default function RequestView(): ReactElement {
           throw err;
         }
         if (request) {
+          console.log(request)
           setRequestData(request);
+          setDescription(request.description)
+          setstartDate(request.startDate)
+          setendDate(request.endDate)
+          setLab(request.lab)
+          setStatus(request.status)
+          setsubject(request.subject)
+          setobservations(request.observations || '')
+          setstudentsAmount(request.studentsAmount.toString())
+          settpNumber(request.tpNumber.toString())
+          setgroupsAmount(request.groupsAmount.toString())
+          
+          
+          
+          setmaterials(request.materials.map((l) => ({id: l.id._id,amount: l.amount})))
+          setequipments(request.equipments.map((l) => ({id: l.id._id,amount: l.amount})))
+          setreactives(request.reactives.map((l) => ({
+              id: l.id._id,
+              amount: l.amount,
+              quality: l.quality,
+              unitMeasure: l.unitMeasure,
+              concentrationType: l.concentrationType,
+              concentrationAmount: l.concentrationAmount,
+              solvents: l.solvents,
+              missingAmount: l.missingAmount 
+        })))
+     
         }
       }
       try {
@@ -108,6 +146,7 @@ export default function RequestView(): ReactElement {
           setEquipmentData(equipment);
           setMaterialData(material);
           setReactiveData(reactive);
+          
         }
       } catch (error) {
         setLabList([]);
@@ -115,6 +154,8 @@ export default function RequestView(): ReactElement {
     };
     fetchRequest();
   }, []);
+
+
 
   const headerAttributes = {
     title: "Pedido",
@@ -132,15 +173,15 @@ export default function RequestView(): ReactElement {
       return;
     } */
     let a: RequestSet = {
-      description: (e.target as any).description.value,
+      description: description,
       startDate: startDate,
       endDate: endDate,
       lab: Lab,
-      observations: (e.target as any).observations.value,
-      subject: (e.target as any).subject.value,
-      groupsAmount: Number((e.target as any).groupsAmount.value),
-      studentsAmount: Number((e.target as any).studentsAmount.value),
-      tpNumber: Number((e.target as any).tpNumber.value),
+      observations: observations,
+      subject: subject,
+      groupsAmount: Number(groupsAmount),
+      studentsAmount: Number(studentsAmount),
+      tpNumber: Number(tpNumber),
       equipments: equipments,
       reactives: reactives,
       materials: materials,
@@ -166,17 +207,49 @@ export default function RequestView(): ReactElement {
     }
   };
 
-  const [description, setDescription] = useState("");
-  const [startDate, setstartDate] = useState<Date | undefined>(undefined);
-  const [endDate, setendDate] = useState<Date | undefined>(undefined);
-  const [Lab, setLab] = useState("");
-  const [statusSelected, setStatus] = useState("");
+  const UpdateRequest = async ()=> {
+  
 
-  function modelo(lista: EquipmentRequest[] | MaterialRequest[] | ReactiveRequest[]): RequestableElement[] {
-    return lista.map((l) => ({
-      id: l.id._id,
-      amount: l.amount,
-    }));
+    /*   const validationError = validateForm(formData);
+    if (validationError) {
+      setError(validationError);
+      return;
+    } */
+    let a: RequestSet = {
+  
+      description: description,
+      startDate: startDate,
+      endDate: endDate,
+      lab: Lab,
+      observations: observations,
+      subject: subject,
+      groupsAmount: Number(groupsAmount),
+      studentsAmount: Number(studentsAmount),
+      tpNumber: Number(tpNumber),
+      equipments: equipments,
+      reactives: reactives,
+      materials: materials,
+      status: statusSelected
+    };
+
+    const [data, err] = await handlePromise<any, string>(requestService.updateRequest(id!,a));
+    console.log(err, data);
+    if (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: err,
+      });
+      return;
+    } else {
+      Swal.fire({
+        icon: "success",
+        title: "Creación exitosa",
+        text: "EL pedido ha sido creado exitosamente.",
+      }).then(() => {
+        navigate("/requests");
+      });
+    }
   }
 
   return (
@@ -184,92 +257,126 @@ export default function RequestView(): ReactElement {
       <Header {...headerAttributes}></Header>
       <main>
         <form onSubmit={onsubmit} className="RequestMenuStyle">
-          <TextField
-            className="textFieldStyler"
-            variant="standard"
-            placeholder="Titulo"
-            type="text"
-            name="subject"
-            autoComplete="off"
-          />
+          { !requestData ?
+                    <TextField
+                      className="textFieldStyler"
+                      variant="standard"
+                      placeholder="Titulo"
+                      type="text"
+                      value={subject}
+                      onChange={(event) => {setsubject(event.target.value);}}
+                      name="subject"
+                      autoComplete="off"
+                    /> :  <div>cantidad Estudiantes : {requestData!.studentsAmount} </div> 
+          }
 
           <div className="flex">
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={["DatePicker"]}>
-                <DatePicker
-                  label="Fecha de inicio"
-                  value={startDate}
-                  onChange={(newValue) => {
-                    newValue ? setstartDate(newValue) : "";
-                  }}
-                />
-              </DemoContainer>
-            </LocalizationProvider>
+              { !requestData ?
+                        <div>
+                          <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DemoContainer components={["DatePicker"]}>
+                              <DatePicker
+                                label="Fecha de inicio"
+                                value={startDate}
+                                onChange={(newValue) => {
+                                  newValue ? setstartDate(newValue) : "";
+                                }}
+                              />
+                            </DemoContainer>
+                          </LocalizationProvider>
 
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={["DatePicker"]}>
-                <DatePicker
-                  label="Fecha de finalización"
-                  value={endDate}
-                  onChange={(newValue) => {
-                    newValue ? setendDate(newValue) : "";
-                  }}
-                />
-              </DemoContainer>
-            </LocalizationProvider>
+                          <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DemoContainer components={["DatePicker"]}>
+                              <DatePicker
+                                label="Fecha de finalización"
+                                value={endDate}
+                                onChange={(newValue) => {
+                                  newValue ? setendDate(newValue) : "";
+                                }}
+                              />
+                            </DemoContainer>
+                          </LocalizationProvider>
+                        </div> : 
+                        <div>
+                          <div>
+                            fecha de inicio : {startDate?.toString().replace('T03:00:00.000Z','')}
+                          </div>
+                          <div>
+                            fecha de final : {endDate?.toString().replace('T03:00:00.000Z','')}
+                          </div>
+                        </div>
+                }
           </div>
 
+        { !requestData ?
           <TextField
             className="textFieldStyler"
             variant="standard"
             placeholder="cantidad Estudiantes"
             type="number"
+            value={studentsAmount}
+            onChange={(event) => {setstudentsAmount(event.target.value);}}
             name="studentsAmount"
             autoComplete="off"
-          />
+          /> :   <div>cantidad Estudiantes : {requestData!.studentsAmount} </div> }
 
+        { !requestData ?
           <TextField
             className="textFieldStyler"
             variant="standard"
             placeholder="cantidad Grupos"
             type="number"
             name="groupsAmount"
+            value={groupsAmount}
+            onChange={(event) => {setgroupsAmount(event.target.value);}}
             autoComplete="off"
-          />
+          /> :   <div>cantidad Grupos : {requestData!.groupsAmount} </div> }
 
+
+        { !requestData ?
           <TextField
             className="textFieldStyler"
             variant="standard"
             placeholder="Numero de Trabajo Practico"
             type="number"
             name="tpNumber"
+            value={tpNumber}
+            onChange={(event) => {settpNumber(event.target.value);}}
             autoComplete="off"
-          />
+          /> : <div>Numero de Trabajo Practico : {requestData.tpNumber} </div> }
 
+        { !requestData ?
           <TextField
             className="textFieldStyler"
             variant="standard"
             placeholder="Descripcion"
             type="text"
             name="description"
+            value={description}
+            onChange={(event) => {setDescription(event.target.value);}}
             autoComplete="off"
-          />
+          /> : <div>Descripcion: {requestData!.description} </div> }
 
+
+        { !requestData ?
           <TextField
             className="textFieldStyler"
             variant="standard"
             placeholder="observaciones"
             type="text"
             name="observations"
+            value={observations}
+            onChange={(event) => {setobservations(event.target.value);}}
             autoComplete="off"
-          />
+          /> :   <div>observaciones: {requestData!.observations} </div> }
+
 
           <div className="flex"></div>
 
           <div className="containerdropdown">
             <SelectionItem
               title={"Equipos"}
-              isEditable={true}
+              isEditable={!requestData}
               simpleList={equipments}
               simpleCatalog={equipmentData}
               isReactive={false}
@@ -283,7 +390,7 @@ export default function RequestView(): ReactElement {
           <div className="containerdropdown">
             <SelectionItem
               title={"Materiales"}
-              isEditable={true}
+              isEditable={!requestData}
               simpleList={materials}
               simpleCatalog={materialData}
               isReactive={false}
@@ -297,7 +404,7 @@ export default function RequestView(): ReactElement {
           <div className="containerdropdown">
             <SelectionItem
               title={"Reactivos"}
-              isEditable={true}
+              isEditable={!requestData}
               simpleList={reactives}
               simpleCatalog={reactiveData}
               isReactive={true}
@@ -307,6 +414,8 @@ export default function RequestView(): ReactElement {
               }}
             ></SelectionItem>
           </div>
+          {
+            requestData && <div>
 
           <div className="checkboxStyle">
             <FormControl>
@@ -340,13 +449,23 @@ export default function RequestView(): ReactElement {
                 {statusList.map((t, index) => (
                   <MenuItem value={t.value}>{t.text}</MenuItem>
                 ))}
-              </Select>
+              </Select>list
             </FormControl>
           </div>
 
+            </div>
+          }
+
+          { !requestData &&
           <Button type="submit" variant="contained">
             agregar
           </Button>
+          }
+          { requestData &&
+          <Button type="button"  onClick={()=>{UpdateRequest()}} variant="contained">
+            modificar
+          </Button>
+          }
         </form>
       </main>
     </>

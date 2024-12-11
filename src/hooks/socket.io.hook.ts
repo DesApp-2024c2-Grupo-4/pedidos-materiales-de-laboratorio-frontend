@@ -41,7 +41,7 @@ export default function useSocket() {
   }, []);
 
 
-  return {socket}
+  return {socket,messages,stateRoom}
 
 
 

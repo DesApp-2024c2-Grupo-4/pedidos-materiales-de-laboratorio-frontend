@@ -105,6 +105,7 @@ export type Request = {
 };
 
 export type RequestSet = {
+  _id?:string;
   requestantUser?: requestantUser;
   assignedUser?: string;
   description?: string;

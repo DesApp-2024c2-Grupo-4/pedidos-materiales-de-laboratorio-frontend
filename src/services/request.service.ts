@@ -61,11 +61,11 @@ const useRequestService = () => {
     return Promise.resolve();
   };
 
-  const updateRequest = async (id: string, request: Request): Promise<void> => {
+  const updateRequest = async (id: string, request: RequestSet): Promise<void> => {
     const config: AxiosRequestConfig = {
       method: "PUT",
       url: `/request/${id}`,
-      data: { request },
+      data: request ,
     };
 
     const [, err] = await handlePromise<AxiosResponse<Request[]>, unknown>(axiosInstance(config));

@@ -8,6 +8,8 @@ import Swal from "sweetalert2";
 import handlePromise from "../../utils/promise";
 import useSharedService from "../../services/shared.service";
 import { SelectOptions } from "../../types/shared";
+import { useNavigate } from 'react-router-dom';
+
 
 export type CardProps = {
   title: string;
@@ -59,6 +61,7 @@ export default function CardRequestDetails({
   building,
   proffesor,
   students,
+  id,
   status,
   groupsAmount,
   tpNumber,
@@ -67,6 +70,8 @@ export default function CardRequestDetails({
   materials,
 }: CardProps): ReactElement {
   const sharedService = useSharedService();
+  const navigate = useNavigate();
+
 
   const [showDetails, setShowDetails] = useState(false);
   const [LabList, setLabList] = useState<SelectOptions[]>([]);
@@ -163,6 +168,7 @@ export default function CardRequestDetails({
               <p>Laboratorio: {laboratory}</p>
               <p>Profesor: {proffesor}</p>
               <div className="button-container">
+
                 {!showDetails ? (
                   <Button variant="outlined" onClick={details}>
                     Ver detalles
@@ -178,6 +184,12 @@ export default function CardRequestDetails({
               <p>Estudiantes: {students}</p>
               <p>Grupos: {groupsAmount}</p>
             </div>
+
+              <div className="button-container">
+                  <Button variant="outlined" onClick={()=>{navigate(`/requests/${id}`)}}>
+                    Editar Pedido
+                  </Button>
+              </div>
           </div>
         </div>
         <div className={`card-details ${showDetails ? "expanded" : "collapsed"} `}>
