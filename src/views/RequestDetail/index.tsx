@@ -19,6 +19,7 @@ import { Reactive } from "../../types/reactive";
 import {
   EquipmentRequest,
   MaterialRequest,
+  ReactiveElement,
   ReactiveRequest,
   Request,
   RequestableElement,
@@ -35,7 +36,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers";
 import Swal from "sweetalert2";
-import { da } from "date-fns/locale";
+import { da, sr } from "date-fns/locale";
 
 export default function RequestView(): ReactElement {
   const { id } = useParams();
@@ -45,6 +46,7 @@ export default function RequestView(): ReactElement {
   const [materialData, setMaterialData] = useState<Material[]>([]);
   const [equipmentData, setEquipmentData] = useState<Equipment[]>([]);
   const [reactiveData, setReactiveData] = useState<Reactive[]>([]);
+
 
   const [selectedid, setSelectedid] = useState<string>("");
 
@@ -63,6 +65,19 @@ export default function RequestView(): ReactElement {
   const [materials, setmaterials] = useState<RequestableElement[]>([]);
   const [reactives, setreactives] = useState<RequestableElement[]>([]);
 
+
+  const [description, setDescription] = useState("");
+  const [startDate, setstartDate] = useState<Date | undefined>(undefined);
+  const [endDate, setendDate] = useState<Date | undefined>(undefined);
+  const [Lab, setLab] = useState("");
+  const [statusSelected, setStatus] = useState("");
+  const [observations , setobservations] =useState("")
+  const [subject , setsubject] =useState("")
+  const [groupsAmount , setgroupsAmount] =useState("")
+  const [studentsAmount , setstudentsAmount] =useState("")
+  const [tpNumber , settpNumber] =useState("")
+
+
   useEffect(() => {
     const fetchRequest = async () => {
       if (id && !(id == "New")) {
@@ -71,7 +86,36 @@ export default function RequestView(): ReactElement {
           throw err;
         }
         if (request) {
+          console.log(request)
           setRequestData(request);
+          setDescription(request.description)
+          //setstartDate(request.startDate)
+          //setendDate(request.endDate)
+          setLab(request.lab)
+          setStatus(request.status)
+          
+          //setstartDate(request.startDate.toString())
+          //setendDate(request.endDate.toString())
+          setobservations(request.observations || '')
+          setsubject(request.subject)
+          setgroupsAmount(request.groupsAmount.toString())
+          setstudentsAmount(request.studentsAmount.toString())
+          settpNumber(request.tpNumber.toString())
+          
+          
+          setmaterials(request.materials.map((l) => ({id: l.id._id,amount: l.amount})))
+          setequipments(request.equipments.map((l) => ({id: l.id._id,amount: l.amount})))
+          setreactives(request.reactives.map((l) => ({
+              id: l.id._id,
+              amount: l.amount,
+              quality: l.quality,
+              unitMeasure: l.unitMeasure,
+              concentrationType: l.concentrationType,
+              concentrationAmount: l.concentrationAmount,
+              solvents: l.solvents,
+              missingAmount: l.missingAmount 
+        })))
+     
         }
       }
       try {
@@ -108,6 +152,7 @@ export default function RequestView(): ReactElement {
           setEquipmentData(equipment);
           setMaterialData(material);
           setReactiveData(reactive);
+          
         }
       } catch (error) {
         setLabList([]);
@@ -115,6 +160,8 @@ export default function RequestView(): ReactElement {
     };
     fetchRequest();
   }, []);
+
+
 
   const headerAttributes = {
     title: "Pedido",
@@ -132,15 +179,15 @@ export default function RequestView(): ReactElement {
       return;
     } */
     let a: RequestSet = {
-      description: (e.target as any).description.value,
+      description: description,
       startDate: startDate,
       endDate: endDate,
       lab: Lab,
-      observations: (e.target as any).observations.value,
-      subject: (e.target as any).subject.value,
-      groupsAmount: Number((e.target as any).groupsAmount.value),
-      studentsAmount: Number((e.target as any).studentsAmount.value),
-      tpNumber: Number((e.target as any).tpNumber.value),
+      observations: observations,
+      subject: subject,
+      groupsAmount: Number(groupsAmount),
+      studentsAmount: Number(studentsAmount),
+      tpNumber: Number(tpNumber),
       equipments: equipments,
       reactives: reactives,
       materials: materials,
@@ -166,19 +213,6 @@ export default function RequestView(): ReactElement {
     }
   };
 
-  const [description, setDescription] = useState("");
-  const [startDate, setstartDate] = useState<Date | undefined>(undefined);
-  const [endDate, setendDate] = useState<Date | undefined>(undefined);
-  const [Lab, setLab] = useState("");
-  const [statusSelected, setStatus] = useState("");
-
-  function modelo(lista: EquipmentRequest[] | MaterialRequest[] | ReactiveRequest[]): RequestableElement[] {
-    return lista.map((l) => ({
-      id: l.id._id,
-      amount: l.amount,
-    }));
-  }
-
   return (
     <>
       <Header {...headerAttributes}></Header>
@@ -189,6 +223,8 @@ export default function RequestView(): ReactElement {
             variant="standard"
             placeholder="Titulo"
             type="text"
+            value={subject}
+            onChange={(event) => {setsubject(event.target.value);}}
             name="subject"
             autoComplete="off"
           />
@@ -224,6 +260,8 @@ export default function RequestView(): ReactElement {
             variant="standard"
             placeholder="cantidad Estudiantes"
             type="number"
+            value={studentsAmount}
+            onChange={(event) => {setstudentsAmount(event.target.value);}}
             name="studentsAmount"
             autoComplete="off"
           />
@@ -234,6 +272,8 @@ export default function RequestView(): ReactElement {
             placeholder="cantidad Grupos"
             type="number"
             name="groupsAmount"
+            value={groupsAmount}
+            onChange={(event) => {setgroupsAmount(event.target.value);}}
             autoComplete="off"
           />
 
@@ -243,6 +283,8 @@ export default function RequestView(): ReactElement {
             placeholder="Numero de Trabajo Practico"
             type="number"
             name="tpNumber"
+            value={tpNumber}
+            onChange={(event) => {settpNumber(event.target.value);}}
             autoComplete="off"
           />
 
@@ -252,6 +294,8 @@ export default function RequestView(): ReactElement {
             placeholder="Descripcion"
             type="text"
             name="description"
+            value={description}
+            onChange={(event) => {setDescription(event.target.value);}}
             autoComplete="off"
           />
 
@@ -261,6 +305,8 @@ export default function RequestView(): ReactElement {
             placeholder="observaciones"
             type="text"
             name="observations"
+            value={observations}
+            onChange={(event) => {setobservations(event.target.value);}}
             autoComplete="off"
           />
 
@@ -340,7 +386,7 @@ export default function RequestView(): ReactElement {
                 {statusList.map((t, index) => (
                   <MenuItem value={t.value}>{t.text}</MenuItem>
                 ))}
-              </Select>
+              </Select>list
             </FormControl>
           </div>
 

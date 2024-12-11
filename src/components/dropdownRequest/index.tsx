@@ -35,16 +35,16 @@ export default function SelectionItem({
   
   const [desplegado, setDesplegado] = useState(false);
   const [editingId, seteditingId] = useState(undefined);
-  const [showedItems, setShowedItems] = useState<RequestableElement[]>([]);
+  
   const handleEdit = (index) => {    seteditingId(index);  };
   const handleErase = (id : string | undefined) => {
-    setShowedItems(showedItems.filter(item1 =>  !(id === item1.id)));
+    callBack(simpleList.filter(item1 =>  !(id === item1.id)));
     seteditingId(undefined);
   };
 
   const handleAdd = (requestable : RequestableElement) => {
     if (requestable.id  && requestable.amount > 0) {
-      setShowedItems([...showedItems,requestable]);
+      callBack([...simpleList,requestable]);
       seteditingId(undefined);
     } else {
       console.log("ocurrio un error al leer requestable.id" , requestable.id);
@@ -55,10 +55,10 @@ export default function SelectionItem({
 
   
   const handleSimpleSave = (index, requestable : RequestableElement) => {
-  editingId
-    let updated: RequestableElement[] = showedItems || [];
+  
+    let updated: RequestableElement[] = simpleList || [];
     updated[index] = requestable;
-    setShowedItems(updated);
+    callBack(updated);
     seteditingId(undefined);
   };
 
@@ -69,9 +69,6 @@ export default function SelectionItem({
     );
   };
 
-  useEffect(() => {
-    callBack(showedItems);
-  }, [showedItems]);
 
   return (
     <div className="containerdropdown">
@@ -100,7 +97,7 @@ export default function SelectionItem({
                {!isReactive && <SelectRequestable 
                     title={title} 
                     element={undefined}
-                    ElementsList={uniqueElement(simpleCatalog,showedItems)}
+                    ElementsList={uniqueElement(simpleCatalog,simpleList)}
                     editingId={editingId}
                     isAdd={true}
                     SaveSelection={handleAdd}
@@ -112,7 +109,7 @@ export default function SelectionItem({
                {isReactive  && <ReactiveSelection 
                     title={title} 
                     element={undefined}
-                    ElementsList={uniqueElement(simpleCatalog,showedItems)}
+                    ElementsList={uniqueElement(simpleCatalog,simpleList)}
                     editingId={editingId}
                     isAdd={true}
                     SaveSelection={handleAdd}
@@ -124,11 +121,11 @@ export default function SelectionItem({
               <Divider variant="inset" component="div" />
               todos:
               {!isReactive && 
-                showedItems!.map((r, index) => {
+                simpleList!.map((r, index) => {
                   return (
                     <SelectRequestable 
                         title={title} 
-                        ElementsList={uniqueElement(simpleCatalog,showedItems,r.id)} 
+                        ElementsList={uniqueElement(simpleCatalog,simpleList,r.id)} 
                         index={index}
                         element={r}
                         isAdd={false}
@@ -141,11 +138,11 @@ export default function SelectionItem({
                 })}
 
               {isReactive && 
-                showedItems!.map((r, index) => {
+                simpleList!.map((r, index) => {
                   return (
                     <ReactiveSelection 
                         title={title} 
-                        ElementsList={uniqueElement(simpleCatalog,showedItems,r.id)} 
+                        ElementsList={uniqueElement(simpleCatalog,simpleList,r.id)} 
                         index={index}
                         element={r}
                         isAdd={false}

@@ -4,6 +4,7 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import { EquipmentRequest, MaterialRequest, ReactiveRequest } from "../../types/request";
 import PDFDocument from "./pdf";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export type CardProps = {
   title: string;
@@ -39,6 +40,7 @@ export default function CardRequestDetails({
   building,
   proffesor,
   students,
+  id,
   status,
   groupsAmount,
   tpNumber,
@@ -47,7 +49,7 @@ export default function CardRequestDetails({
   materials,
 }: CardProps): ReactElement {
   const [showDetails, setShowDetails] = useState(false);
-
+  const navigate = useNavigate();
   const details = () => {
     setShowDetails(!showDetails);
   };
@@ -69,6 +71,7 @@ export default function CardRequestDetails({
               <p>Laboratorio: {laboratory}</p>
               <p>Profesor: {proffesor}</p>
               <div className="button-container">
+
                 {!showDetails ? (
                   <Button variant="outlined" onClick={details}>
                     Ver detalles
@@ -84,6 +87,12 @@ export default function CardRequestDetails({
               <p>Estudiantes: {students}</p>
               <p>Grupos: {groupsAmount}</p>
             </div>
+
+              <div className="button-container">
+                  <Button variant="outlined" onClick={()=>{navigate(`/requests/${id}`)}}>
+                    Editar Pedido
+                  </Button>
+              </div>
           </div>
         </div>
         <div className={`card-details ${showDetails ? "expanded" : "collapsed"}`}>
