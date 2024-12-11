@@ -1,17 +1,28 @@
 @import "../../globals.scss";
 
+.container-filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100vw;
+  height: 48px;
+  padding-top: 2rem;
+  @include breakpoint(small) {
+    display: none;
+  }
+}
 .searchform-filter {
   color: color("text-secondary");
   display: grid;
   grid-template-columns: 10% 90%;
   justify-items: center;
   align-items: center;
-  margin: 2px;
   border: 2px solid #c7c7c7a1;
   padding: 2px;
   width: 100%;
   background-color: white;
   gap: 1em 0;
+  height: 49.5px;
 
   svg {
     fill: #929da5;
@@ -36,7 +47,7 @@
   justify-self: self-start;
   border-radius: 6%;
   border: 0px;
-  width: 95%;
+  width: 100%;
   @include breakpoint(small) {
     img {
       height: 1.6em;
@@ -45,16 +56,8 @@
   }
 }
 
-.container-filter {
-  display: grid; /* Activar el modelo Flexbox */
-  grid-template-columns: 30% 10% 10% 15% 15% 10%;
-  gap: 6px;
-  justify-content: space-between; /* Espaciado entre los elementos */
-}
-
 .box-filter {
-  width: 100%;
 }
 .sp-filter {
-  padding-top: 10px;
+  margin-top: 8px;
 }

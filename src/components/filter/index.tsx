@@ -12,7 +12,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import handlePromise from "../../utils/promise";
 import useSharedService from "../../services/shared.service";
 import { SelectOptions } from "../../types/shared";
-import DeleteIcon from "@mui/icons-material/Delete";
+import dayjs from "dayjs";
 
 export type SearchProps = {
   elements: Request[];
@@ -25,8 +25,8 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
 
   const [Lab, setLab] = useState("");
   const [status, setStatus] = useState("");
-  const [minDate, setminDate] = useState("");
-  const [maxDate, setmaxDate] = useState("");
+  const [minDate, setminDate] = useState(dayjs().subtract(1, "day"));
+  const [maxDate, setmaxDate] = useState(dayjs());
   const [title, setTitle] = useState("");
   const sharedService = useSharedService();
 
@@ -65,8 +65,8 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
         const matchesLab = Lab === "" || item.lab?.includes(Lab);
         const matchesName = title === "" || item.description.includes(title);
         const matchesStatus = status === "" || item.status === status;
-        const matchesMindate = minDate == "" || new Date(item.startDate) > new Date(minDate);
-        const matchesMaxdate = maxDate == "" || new Date(item.endDate) < new Date(maxDate);
+        const matchesMindate = minDate == dayjs().subtract(1, "day") || new Date(item.startDate) > new Date(minDate);
+        const matchesMaxdate = maxDate == dayjs() || new Date(item.endDate) < new Date(maxDate);
 
         return matchesLab && matchesName && matchesStatus && matchesMindate && matchesMaxdate;
       });
@@ -83,9 +83,9 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
             <input className="searcher-filter" type="text" name="input" id="input" placeholder="Buscar por nombre" />
           </form>
         </div>
-        <div className="box-filter sp-filter">
-          <FormControl>
-            <InputLabel>Laboratorio</InputLabel>
+        <div>
+          <FormControl variant="outlined" margin="normal" sx={{ minWidth: 150 }}>
+            <InputLabel id="role-filter-label">Laboratorio</InputLabel>
             <Select
               value={Lab}
               label="Laboratorio"
@@ -99,8 +99,8 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
             </Select>
           </FormControl>
         </div>
-        <div className="box-filter sp-filter">
-          <FormControl>
+        <div>
+          <FormControl variant="outlined" margin="normal" sx={{ minWidth: 150 }}>
             <InputLabel>Estado</InputLabel>
             <Select
               value={status}
@@ -115,7 +115,7 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
             </Select>
           </FormControl>
         </div>
-        <div className="box-filter">
+        <div>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={["DatePicker"]}>
               <DatePicker
@@ -129,7 +129,7 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
             </DemoContainer>
           </LocalizationProvider>
         </div>
-        <div className="box-filter">
+        <div>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={["DatePicker"]}>
               <DatePicker
@@ -144,10 +144,11 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
           </LocalizationProvider>
         </div>
 
-        <div className="box-filter sp-filter">
+        <div className="sp-filter">
           <Button
+            style={{ height: "56px" }}
             variant="outlined"
-            startIcon={<DeleteIcon />}
+            size="large"
             onClick={() => {
               setLab("");
               setStatus("");
@@ -155,7 +156,9 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
               setmaxDate("");
               setTitle("");
             }}
-          ></Button>
+          >
+            Borrar filtros
+          </Button>
         </div>
       </div>
     </>

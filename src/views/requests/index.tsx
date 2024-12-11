@@ -38,6 +38,13 @@ export default function RequestsView(): ReactElement {
     fetchRequests();
   }, []);
 
+  const updateRequestList = async () => {
+    const [data, err] = await handlePromise(requestService.getRequests());
+    if (data) {
+      setRequestData(data);
+    }
+  };
+
   const onSearchResult = (input: Request[]) => {
     setShowedRequest(input);
   };
@@ -80,6 +87,7 @@ export default function RequestsView(): ReactElement {
                 equipments={requested.equipments}
                 reactives={requested.reactives}
                 materials={requested.materials}
+                updateRequestList={updateRequestList}
               />
             </div>
           ))}
