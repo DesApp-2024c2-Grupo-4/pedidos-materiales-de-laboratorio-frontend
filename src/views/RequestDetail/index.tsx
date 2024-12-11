@@ -207,6 +207,51 @@ export default function RequestView(): ReactElement {
     }
   };
 
+  const UpdateRequest = async ()=> {
+  
+
+    /*   const validationError = validateForm(formData);
+    if (validationError) {
+      setError(validationError);
+      return;
+    } */
+    let a: RequestSet = {
+  
+      description: description,
+      startDate: startDate,
+      endDate: endDate,
+      lab: Lab,
+      observations: observations,
+      subject: subject,
+      groupsAmount: Number(groupsAmount),
+      studentsAmount: Number(studentsAmount),
+      tpNumber: Number(tpNumber),
+      equipments: equipments,
+      reactives: reactives,
+      materials: materials,
+      status: statusSelected
+    };
+
+    const [data, err] = await handlePromise<any, string>(requestService.updateRequest(id!,a));
+    console.log(err, data);
+    if (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: err,
+      });
+      return;
+    } else {
+      Swal.fire({
+        icon: "success",
+        title: "Creación exitosa",
+        text: "EL pedido ha sido creado exitosamente.",
+      }).then(() => {
+        navigate("/requests");
+      });
+    }
+  }
+
   return (
     <>
       <Header {...headerAttributes}></Header>
@@ -369,6 +414,8 @@ export default function RequestView(): ReactElement {
               }}
             ></SelectionItem>
           </div>
+          {
+            requestData && <div>
 
           <div className="checkboxStyle">
             <FormControl>
@@ -405,14 +452,18 @@ export default function RequestView(): ReactElement {
               </Select>list
             </FormControl>
           </div>
+
+            </div>
+          }
+
           { !requestData &&
           <Button type="submit" variant="contained">
             agregar
           </Button>
           }
           { requestData &&
-          <Button type="submit" variant="contained">
-            agregar
+          <Button type="button"  onClick={()=>{UpdateRequest()}} variant="contained">
+            modificar
           </Button>
           }
         </form>
