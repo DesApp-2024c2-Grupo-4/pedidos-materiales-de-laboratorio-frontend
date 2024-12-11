@@ -8,8 +8,8 @@ import Swal from "sweetalert2";
 import handlePromise from "../../utils/promise";
 import useSharedService from "../../services/shared.service";
 import { SelectOptions } from "../../types/shared";
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
+import useRequestService from "../../services/request.service";
 
 export type CardProps = {
   title: string;
@@ -26,6 +26,7 @@ export type CardProps = {
   equipments: EquipmentRequest[];
   reactives: ReactiveRequest[];
   materials: MaterialRequest[];
+  updateRequestList: () => void;
 };
 type StatusProps = {
   status: "PENDING" | "REJECTED" | "APPROVED" | "COMPLETED";
@@ -61,17 +62,18 @@ export default function CardRequestDetails({
   building,
   proffesor,
   students,
-  id,
   status,
   groupsAmount,
   tpNumber,
   equipments,
   reactives,
   materials,
+  updateRequestList,
 }: CardProps): ReactElement {
   const sharedService = useSharedService();
   const navigate = useNavigate();
 
+  const requestService = useRequestService();
 
   const [showDetails, setShowDetails] = useState(false);
   const [LabList, setLabList] = useState<SelectOptions[]>([]);
@@ -112,7 +114,7 @@ export default function CardRequestDetails({
     fetchRequest();
   }, []);
 
-  const administrarPedido = (id: string) => {
+  const administrarPedido = async (id: string) => {
     const labOptionsHTML = getSelectOptionsHTML(LabList, Lab, "Laboratorio");
     const statusOptionsHTML = getSelectOptionsHTML(
       statusList.map((e) => {
@@ -124,8 +126,8 @@ export default function CardRequestDetails({
       statusSelected,
       "Estado",
     );
-    console.log(statusOptionsHTML);
-
+    const [pedidoActual, err2] = await handlePromise(requestService.getRequest(id));
+    console.log(pedidoActual);
     Swal.fire({
       title: "Administrar Pedido",
       html: `
@@ -134,18 +136,32 @@ export default function CardRequestDetails({
     `,
       showCancelButton: true,
       confirmButtonText: "Guardar",
-      preConfirm: () => {
-        const labSelect = (document.getElementById("laboratorio-select") as HTMLSelectElement).value;
-        const statusSelect = (document.getElementById("estado-select") as HTMLSelectElement).value;
-        setLab(labSelect);
-        setStatus(statusSelect);
-      },
-    }).then((result) => {
+    }).then(async (result) => {
+      const labSelect = (document.getElementById("laboratorio-select") as HTMLSelectElement).value;
+      const statusSelect = (document.getElementById("estado-select") as HTMLSelectElement).value;
       if (result.isConfirmed) {
+        const request: RequestSet = {
+          lab: labSelect,
+          status: statusSelect,
+          startDate: pedidoActual?.startDate,
+          endDate: pedidoActual?.endDate,
+          studentsAmount: pedidoActual?.studentsAmount,
+          groupsAmount: pedidoActual?.groupsAmount,
+          subject: pedidoActual?.subject,
+          tpNumber: pedidoActual?.tpNumber,
+          description: pedidoActual?.description,
+          observations: pedidoActual?.observations || "",
+          equipments: pedidoActual?.equipments.map((l) => ({ id: l.id._id, amount: l.amount })),
+          reactives: pedidoActual?.reactives.map((l) => ({ id: l.id._id, amount: l.amount })),
+          materials: pedidoActual?.materials.map((l) => ({ id: l.id._id, amount: l.amount })),
+        };
+        const [data, err] = await handlePromise<any, string>(requestService.updateRequest(id, request));
+        if (!err) updateRequestList();
+
         Swal.fire({
           icon: "success",
-          title: Lab + " " + statusSelected,
-          text: "El pedido ha sido administrado exitosamente.",
+          title: labSelect + " " + statusTranslations[statusSelect],
+          text: "El pedido ha sido actualizado exitosamente.",
         });
       }
     });
@@ -168,7 +184,6 @@ export default function CardRequestDetails({
               <p>Laboratorio: {laboratory}</p>
               <p>Profesor: {proffesor}</p>
               <div className="button-container">
-
                 {!showDetails ? (
                   <Button variant="outlined" onClick={details}>
                     Ver detalles
@@ -185,11 +200,16 @@ export default function CardRequestDetails({
               <p>Grupos: {groupsAmount}</p>
             </div>
 
-              <div className="button-container">
-                  <Button variant="outlined" onClick={()=>{navigate(`/requests/${id}`)}}>
-                    Editar Pedido
-                  </Button>
-              </div>
+            <div className="button-container">
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  navigate(`/requests/${id}`);
+                }}
+              >
+                Editar Pedido
+              </Button>
+            </div>
           </div>
         </div>
         <div className={`card-details ${showDetails ? "expanded" : "collapsed"} `}>

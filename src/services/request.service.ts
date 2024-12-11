@@ -65,7 +65,7 @@ const useRequestService = () => {
     const config: AxiosRequestConfig = {
       method: "PUT",
       url: `/request/${id}`,
-      data: request ,
+      data: request,
     };
 
     const [, err] = await handlePromise<AxiosResponse<Request[]>, unknown>(axiosInstance(config));
