@@ -1,10 +1,13 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import "./styles.scss";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { EquipmentRequest, MaterialRequest, ReactiveRequest } from "../../types/request";
+import { EquipmentRequest, MaterialRequest, ReactiveRequest, RequestSet } from "../../types/request";
 import PDFDocument from "./pdf";
 import { Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import handlePromise from "../../utils/promise";
+import useSharedService from "../../services/shared.service";
+import { SelectOptions } from "../../types/shared";
 
 export type CardProps = {
   title: string;
@@ -32,8 +35,24 @@ const statusTranslations = {
   APPROVED: "APROBADO",
   COMPLETED: "COMPLETADO",
 };
+const getSelectOptionsHTML = (options: { value: string; text: string }[], selectedValue: string, label: string) => {
+  return `
+    <div class="swal2-select-container">
+      <label>${label}</label>
+      <select class="swal2-select" id="${label.toLowerCase()}-select">
+        ${options
+          .map(
+            (option) =>
+              `<option value="${option.value}" ${option.value === selectedValue ? "selected" : ""}>${option.text}</option>`,
+          )
+          .join("")}
+      </select>
+    </div>
+  `;
+};
 
 export default function CardRequestDetails({
+  id,
   title,
   date,
   laboratory,
@@ -48,10 +67,84 @@ export default function CardRequestDetails({
   reactives,
   materials,
 }: CardProps): ReactElement {
+  const sharedService = useSharedService();
+
   const [showDetails, setShowDetails] = useState(false);
-  const navigate = useNavigate();
+  const [LabList, setLabList] = useState<SelectOptions[]>([]);
+  const [statusList, setstatusList] = useState<SelectOptions[]>([]);
+
   const details = () => {
     setShowDetails(!showDetails);
+  };
+  const [Lab, setLab] = useState("");
+
+  const [statusSelected, setStatus] = useState("");
+  useEffect(() => {
+    const fetchRequest = async () => {
+      try {
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+
+      const [labs, err1] = await handlePromise(sharedService.getLabs());
+      const [status, err2] = await handlePromise(sharedService.getstatus());
+
+      try {
+        if (err1) {
+          throw err1;
+        }
+        if (err2) {
+          throw err2;
+        }
+
+        if (labs && status) {
+          setLabList(labs);
+          setstatusList(status);
+        }
+      } catch (error) {
+        setLabList([]);
+      }
+    };
+    fetchRequest();
+  }, []);
+
+  const administrarPedido = (id: string) => {
+    const labOptionsHTML = getSelectOptionsHTML(LabList, Lab, "Laboratorio");
+    const statusOptionsHTML = getSelectOptionsHTML(
+      statusList.map((e) => {
+        return {
+          value: e.value,
+          text: statusTranslations[e.text],
+        };
+      }),
+      statusSelected,
+      "Estado",
+    );
+    console.log(statusOptionsHTML);
+
+    Swal.fire({
+      title: "Administrar Pedido",
+      html: `
+      ${labOptionsHTML}
+      ${statusOptionsHTML}
+    `,
+      showCancelButton: true,
+      confirmButtonText: "Guardar",
+      preConfirm: () => {
+        const labSelect = (document.getElementById("laboratorio-select") as HTMLSelectElement).value;
+        const statusSelect = (document.getElementById("estado-select") as HTMLSelectElement).value;
+        setLab(labSelect);
+        setStatus(statusSelect);
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          icon: "success",
+          title: Lab + " " + statusSelected,
+          text: "El pedido ha sido administrado exitosamente.",
+        });
+      }
+    });
   };
 
   return (
@@ -95,39 +188,41 @@ export default function CardRequestDetails({
               </div>
           </div>
         </div>
-        <div className={`card-details ${showDetails ? "expanded" : "collapsed"}`}>
+        <div className={`card-details ${showDetails ? "expanded" : "collapsed"} `}>
           {showDetails && (
-            <div className="card-details">
-              {equipments.length > 0 && (
-                <>
-                  <h4>Equipos:</h4>
-                  {equipments.map((equipment) => (
-                    <p key={equipment._id}>
-                      {equipment.id.description} - Cantidad: {equipment.amount}
-                    </p>
-                  ))}
-                </>
-              )}
-              {reactives.length > 0 && (
-                <>
-                  <h4>Reactivos:</h4>
-                  {reactives.map((reactive, index) => (
-                    <p key={index}>
-                      {reactive.id.description} - Cantidad: {reactive.amount} {reactive.unitMeasure}
-                    </p>
-                  ))}
-                </>
-              )}
-              {materials.length > 0 && (
-                <>
-                  <h4>Materiales:</h4>
-                  {materials.map((material, index) => (
-                    <p key={index}>
-                      {material.id.description} - Cantidad: {material.amount}
-                    </p>
-                  ))}
-                </>
-              )}
+            <div className="card-details flex-card">
+              <div className="column-card">
+                {equipments.length > 0 && (
+                  <div className="column-card">
+                    <h4>Equipos:</h4>
+                    {equipments.map((equipment) => (
+                      <p key={equipment._id}>
+                        {equipment.id.description} - Cantidad: {equipment.amount}
+                      </p>
+                    ))}
+                  </div>
+                )}
+                {reactives.length > 0 && (
+                  <div className="column-card">
+                    <h4>Reactivos:</h4>
+                    {reactives.map((reactive, index) => (
+                      <p key={index}>
+                        {reactive.id.description} - Cantidad: {reactive.amount} {reactive.unitMeasure}
+                      </p>
+                    ))}
+                  </div>
+                )}
+                {materials.length > 0 && (
+                  <div className="column-card">
+                    <h4>Materiales:</h4>
+                    {materials.map((material, index) => (
+                      <p key={index}>
+                        {material.id.description} - Cantidad: {material.amount}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </div>
 
               <div className="button-container">
                 <PDFDownloadLink
@@ -155,6 +250,9 @@ export default function CardRequestDetails({
                   )}
                 </PDFDownloadLink>
               </div>
+              <Button variant="outlined" onClick={() => administrarPedido(id)}>
+                Administrar pedido
+              </Button>
             </div>
           )}
         </div>

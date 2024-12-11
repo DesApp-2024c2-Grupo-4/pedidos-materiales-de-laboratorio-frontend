@@ -1,23 +1,20 @@
-
-
-export type  SolventRequest  = {
+export type SolventRequest = {
   name: string;
   description: string;
-}
+};
 
-
-export type  RequestableElement = {
+export type RequestableElement = {
   amount: number;
   missingAmount?: number;
-  id:string;
+  id: string;
   unitMeasure?: string;
   quality?: string;
   concentrationType?: string;
   concentrationAmount?: string;
   solvents?: SolventRequest[];
-}
+};
 
-export type  ReactiveElement = {
+export type ReactiveElement = {
   unitMeasure: string;
   quality: string;
   concentrationType: string;
@@ -26,9 +23,9 @@ export type  ReactiveElement = {
   id: string;
   amount: number;
   missingAmount: number;
-}
+};
 
-export type  ReactiveRequest = {
+export type ReactiveRequest = {
   unitMeasure: string;
   quality: string;
   concentrationType: string;
@@ -38,19 +35,18 @@ export type  ReactiveRequest = {
   amount: number;
   missingAmount: number;
   id: {
-					_id: string;
-					description: string;
-					cas: string;
-					stock: number;
-					isAvailable: boolean;
-					__v: 0;
-					deletedBy: string;
-					deletionDate:Date;
-					isSoftDeleted: boolean
-				}
-    }
+    _id: string;
+    description: string;
+    cas: string;
+    stock: number;
+    isAvailable: boolean;
+    __v: 0;
+    deletedBy: string;
+    deletionDate: Date;
+    isSoftDeleted: boolean;
+  };
+};
 
-    
 export interface EquipmentRequest {
   amount: number;
   id: {
@@ -82,14 +78,14 @@ export interface MaterialRequest {
   _id: string;
 }
 
-export type  Request = {
-  _id:string;
-  requestantUser: string;
+export type Request = {
+  _id: string;
+  requestantUser: requestantUser;
   assignedUser: string;
   description: string;
   startDate: Date;
   endDate: Date;
-  lab: string ;
+  lab: string;
   type: string;
   studentsAmount: number;
   building?: string;
@@ -106,15 +102,15 @@ export type  Request = {
   isCompleted: boolean;
   isRejected: boolean;
   isExpired: boolean;
-}
+};
 
-export type  RequestSet = {
-  requestantUser?: string;
+export type RequestSet = {
+  requestantUser?: requestantUser;
   assignedUser?: string;
   description?: string;
   startDate?: Date;
   endDate?: Date;
-  lab?: string ;
+  lab?: string;
   type?: string;
   studentsAmount?: number;
   building?: string;
@@ -124,9 +120,15 @@ export type  RequestSet = {
   tpNumber?: number;
   messages?: string;
   equipments?: RequestableElement[];
-  reactives?:  RequestableElement[];
-  materials?:  RequestableElement[];
+  reactives?: RequestableElement[];
+  materials?: RequestableElement[];
   requestNumber?: number;
   status?: string;
+};
 
-}
+type requestantUser = {
+  _id: string;
+  email: string;
+  name: string;
+  lastName: string;
+};

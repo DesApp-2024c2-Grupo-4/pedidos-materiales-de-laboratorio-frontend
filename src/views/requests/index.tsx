@@ -10,16 +10,12 @@ import handlePromise from "../../utils/promise";
 import { Request } from "../../types/request";
 import Filter from "../../components/filter";
 import { useNavigate } from "react-router-dom";
-import { User } from "../../types/user";
-import useUserService from "../../services/user.service";
 
 export default function RequestsView(): ReactElement {
   const [requestData, setRequestData] = useState<Request[]>([]);
   const [showedRequest, setShowedRequest] = useState<Request[]>([]);
-  const [usersData, setusers] = useState<User[]>([]);
 
   const requestService = useRequestService();
-  const userService = useUserService();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,19 +35,7 @@ export default function RequestsView(): ReactElement {
         setShowedRequest([]);
       }
     };
-
-    const getuser = async () => {
-      const [users, errEq] = await handlePromise(userService.getUsers());
-      if (errEq) {
-        throw errEq;
-      }
-      if (users) {
-        setusers(usersData);
-      }
-    };
-
     fetchRequests();
-    getuser();
   }, []);
 
   const onSearchResult = (input: Request[]) => {
@@ -88,7 +72,7 @@ export default function RequestsView(): ReactElement {
                 date={requested.endDate ? formatDate(requested.endDate) : ""}
                 laboratory={requested.lab?.toString() || " No asignado"}
                 building={requested.building || ""}
-                proffesor={usersData.find((u) => u._id == requested.requestantUser)?.name || ""}
+                proffesor={requested.requestantUser?.name + " " + requested.requestantUser?.lastName || ""}
                 students={requested.studentsAmount ? requested.studentsAmount.toString() : ""}
                 status={requested.status}
                 groupsAmount={requested.groupsAmount}

@@ -80,17 +80,27 @@
   overflow: hidden;
   transform: translateY(10px);
   transition:
-    max-height 0.6s ease,
     opacity 0.6s ease,
     transform 0.6s ease;
 }
 
+.flex-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.column-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: start;
+}
 .card-details.collapsed {
   max-height: 0;
 }
 
 .card-details.expanded {
-  max-height: 1000px;
+  height: 10rem;
 }
 
 .button-container {
