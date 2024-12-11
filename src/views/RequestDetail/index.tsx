@@ -41,31 +41,25 @@ import { da, sr } from "date-fns/locale";
 export default function RequestView(): ReactElement {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [requestData, setRequestData] = useState<Request>();
 
+
+  const requestService = useRequestService();
+  const materialService = useMaterialService();
+  const equipmentService = useEquipmentService();
+  const reactiveService = useReactiveService();
+
+  const [requestData, setRequestData] = useState<Request>();
   const [materialData, setMaterialData] = useState<Material[]>([]);
   const [equipmentData, setEquipmentData] = useState<Equipment[]>([]);
   const [reactiveData, setReactiveData] = useState<Reactive[]>([]);
 
-
-  const [selectedid, setSelectedid] = useState<string>("");
-
-  const requestService = useRequestService();
-
-  const materialService = useMaterialService();
-  const equipmentService = useEquipmentService();
-  const reactiveService = useReactiveService();
   const [LabList, setLabList] = useState<SelectOptions[]>([]);
-
   const sharedService = useSharedService();
   const [TypeOptions, setTypeOptions] = useState<SelectOptions[]>([]);
   const [statusList, setstatusList] = useState<SelectOptions[]>([]);
-
   const [equipments, setequipments] = useState<RequestableElement[]>([]);
   const [materials, setmaterials] = useState<RequestableElement[]>([]);
   const [reactives, setreactives] = useState<RequestableElement[]>([]);
-
-
   const [description, setDescription] = useState("");
   const [startDate, setstartDate] = useState<Date | undefined>(undefined);
   const [endDate, setendDate] = useState<Date | undefined>(undefined);
@@ -89,13 +83,11 @@ export default function RequestView(): ReactElement {
           console.log(request)
           setRequestData(request);
           setDescription(request.description)
-          //setstartDate(request.startDate)
-          //setendDate(request.endDate)
+          setstartDate(request.startDate || '')
+          setendDate(request.endDate)
           setLab(request.lab)
           setStatus(request.status)
           
-          //setstartDate(request.startDate.toString())
-          //setendDate(request.endDate.toString())
           setobservations(request.observations || '')
           setsubject(request.subject)
           setgroupsAmount(request.groupsAmount.toString())
