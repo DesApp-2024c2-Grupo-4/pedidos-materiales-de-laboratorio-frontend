@@ -37,6 +37,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers";
 import Swal from "sweetalert2";
 import { da, sr } from "date-fns/locale";
+import { set } from "date-fns";
 
 export default function RequestView(): ReactElement {
   const { id } = useParams();
@@ -88,6 +89,11 @@ export default function RequestView(): ReactElement {
           setendDate(request.endDate)
           setLab(request.lab)
           setStatus(request.status)
+          setsubject(request.subject)
+          setobservations(request.observations || '')
+          setstudentsAmount(request.studentsAmount.toString())
+          settpNumber(request.tpNumber.toString())
+          setgroupsAmount(request.groupsAmount.toString())
           
           
           

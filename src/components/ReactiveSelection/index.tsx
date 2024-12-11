@@ -364,7 +364,7 @@ export default function ReactiveSelection({
             }}
             endIcon={<SendIcon />}
           >
-            GuardarD
+            Guardar
           </Button>
         </div>
       ) : (
