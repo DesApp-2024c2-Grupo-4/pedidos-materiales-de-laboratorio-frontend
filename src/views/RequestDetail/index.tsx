@@ -52,7 +52,7 @@ export default function RequestView(): ReactElement {
   const [materialData, setMaterialData] = useState<Material[]>([]);
   const [equipmentData, setEquipmentData] = useState<Equipment[]>([]);
   const [reactiveData, setReactiveData] = useState<Reactive[]>([]);
-
+  const [selectedid, setSelectedid] = useState<string>("");
   const [LabList, setLabList] = useState<SelectOptions[]>([]);
   const sharedService = useSharedService();
   const [TypeOptions, setTypeOptions] = useState<SelectOptions[]>([]);
@@ -60,6 +60,7 @@ export default function RequestView(): ReactElement {
   const [equipments, setequipments] = useState<RequestableElement[]>([]);
   const [materials, setmaterials] = useState<RequestableElement[]>([]);
   const [reactives, setreactives] = useState<RequestableElement[]>([]);
+
   const [description, setDescription] = useState("");
   const [startDate, setstartDate] = useState<Date | undefined>(undefined);
   const [endDate, setendDate] = useState<Date | undefined>(undefined);
@@ -83,16 +84,11 @@ export default function RequestView(): ReactElement {
           console.log(request)
           setRequestData(request);
           setDescription(request.description)
-          setstartDate(request.startDate || '')
+          setstartDate(request.startDate)
           setendDate(request.endDate)
           setLab(request.lab)
           setStatus(request.status)
           
-          setobservations(request.observations || '')
-          setsubject(request.subject)
-          setgroupsAmount(request.groupsAmount.toString())
-          setstudentsAmount(request.studentsAmount.toString())
-          settpNumber(request.tpNumber.toString())
           
           
           setmaterials(request.materials.map((l) => ({id: l.id._id,amount: l.amount})))
@@ -210,43 +206,58 @@ export default function RequestView(): ReactElement {
       <Header {...headerAttributes}></Header>
       <main>
         <form onSubmit={onsubmit} className="RequestMenuStyle">
-          <TextField
-            className="textFieldStyler"
-            variant="standard"
-            placeholder="Titulo"
-            type="text"
-            value={subject}
-            onChange={(event) => {setsubject(event.target.value);}}
-            name="subject"
-            autoComplete="off"
-          />
+          { !requestData ?
+                    <TextField
+                      className="textFieldStyler"
+                      variant="standard"
+                      placeholder="Titulo"
+                      type="text"
+                      value={subject}
+                      onChange={(event) => {setsubject(event.target.value);}}
+                      name="subject"
+                      autoComplete="off"
+                    /> :  <div>cantidad Estudiantes : {requestData!.studentsAmount} </div> 
+          }
 
           <div className="flex">
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={["DatePicker"]}>
-                <DatePicker
-                  label="Fecha de inicio"
-                  value={startDate}
-                  onChange={(newValue) => {
-                    newValue ? setstartDate(newValue) : "";
-                  }}
-                />
-              </DemoContainer>
-            </LocalizationProvider>
+              { !requestData ?
+                        <div>
+                          <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DemoContainer components={["DatePicker"]}>
+                              <DatePicker
+                                label="Fecha de inicio"
+                                value={startDate}
+                                onChange={(newValue) => {
+                                  newValue ? setstartDate(newValue) : "";
+                                }}
+                              />
+                            </DemoContainer>
+                          </LocalizationProvider>
 
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={["DatePicker"]}>
-                <DatePicker
-                  label="Fecha de finalización"
-                  value={endDate}
-                  onChange={(newValue) => {
-                    newValue ? setendDate(newValue) : "";
-                  }}
-                />
-              </DemoContainer>
-            </LocalizationProvider>
+                          <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DemoContainer components={["DatePicker"]}>
+                              <DatePicker
+                                label="Fecha de finalización"
+                                value={endDate}
+                                onChange={(newValue) => {
+                                  newValue ? setendDate(newValue) : "";
+                                }}
+                              />
+                            </DemoContainer>
+                          </LocalizationProvider>
+                        </div> : 
+                        <div>
+                          <div>
+                            fecha de inicio : {startDate?.toString().replace('T03:00:00.000Z','')}
+                          </div>
+                          <div>
+                            fecha de final : {endDate?.toString().replace('T03:00:00.000Z','')}
+                          </div>
+                        </div>
+                }
           </div>
 
+        { !requestData ?
           <TextField
             className="textFieldStyler"
             variant="standard"
@@ -256,8 +267,9 @@ export default function RequestView(): ReactElement {
             onChange={(event) => {setstudentsAmount(event.target.value);}}
             name="studentsAmount"
             autoComplete="off"
-          />
+          /> :   <div>cantidad Estudiantes : {requestData!.studentsAmount} </div> }
 
+        { !requestData ?
           <TextField
             className="textFieldStyler"
             variant="standard"
@@ -267,8 +279,10 @@ export default function RequestView(): ReactElement {
             value={groupsAmount}
             onChange={(event) => {setgroupsAmount(event.target.value);}}
             autoComplete="off"
-          />
+          /> :   <div>cantidad Grupos : {requestData!.groupsAmount} </div> }
 
+
+        { !requestData ?
           <TextField
             className="textFieldStyler"
             variant="standard"
@@ -278,8 +292,9 @@ export default function RequestView(): ReactElement {
             value={tpNumber}
             onChange={(event) => {settpNumber(event.target.value);}}
             autoComplete="off"
-          />
+          /> : <div>Numero de Trabajo Practico : {requestData.tpNumber} </div> }
 
+        { !requestData ?
           <TextField
             className="textFieldStyler"
             variant="standard"
@@ -289,8 +304,10 @@ export default function RequestView(): ReactElement {
             value={description}
             onChange={(event) => {setDescription(event.target.value);}}
             autoComplete="off"
-          />
+          /> : <div>Descripcion: {requestData!.description} </div> }
 
+
+        { !requestData ?
           <TextField
             className="textFieldStyler"
             variant="standard"
@@ -300,14 +317,15 @@ export default function RequestView(): ReactElement {
             value={observations}
             onChange={(event) => {setobservations(event.target.value);}}
             autoComplete="off"
-          />
+          /> :   <div>observaciones: {requestData!.observations} </div> }
+
 
           <div className="flex"></div>
 
           <div className="containerdropdown">
             <SelectionItem
               title={"Equipos"}
-              isEditable={true}
+              isEditable={!requestData}
               simpleList={equipments}
               simpleCatalog={equipmentData}
               isReactive={false}
@@ -321,7 +339,7 @@ export default function RequestView(): ReactElement {
           <div className="containerdropdown">
             <SelectionItem
               title={"Materiales"}
-              isEditable={true}
+              isEditable={!requestData}
               simpleList={materials}
               simpleCatalog={materialData}
               isReactive={false}
@@ -335,7 +353,7 @@ export default function RequestView(): ReactElement {
           <div className="containerdropdown">
             <SelectionItem
               title={"Reactivos"}
-              isEditable={true}
+              isEditable={!requestData}
               simpleList={reactives}
               simpleCatalog={reactiveData}
               isReactive={true}
@@ -381,10 +399,16 @@ export default function RequestView(): ReactElement {
               </Select>list
             </FormControl>
           </div>
-
+          { !requestData &&
           <Button type="submit" variant="contained">
             agregar
           </Button>
+          }
+          { requestData &&
+          <Button type="submit" variant="contained">
+            agregar
+          </Button>
+          }
         </form>
       </main>
     </>

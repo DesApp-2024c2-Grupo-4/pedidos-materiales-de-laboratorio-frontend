@@ -92,26 +92,27 @@ export default function SelectionItem({
             </div>
           </div>
           {desplegado && (
-            <div className="info-card">
-              Agregar  
-               {!isReactive && <SelectRequestable 
+            <div className="info-card">  
+               {isEditable && !isReactive && <SelectRequestable 
                     title={title} 
                     element={undefined}
                     ElementsList={uniqueElement(simpleCatalog,simpleList)}
                     editingId={editingId}
                     isAdd={true}
+                    isEditable={isEditable}
                     SaveSelection={handleAdd}
                     Editing={handleEdit} 
                     Erase={handleErase}
                     >
                 </SelectRequestable>  
                 }     
-               {isReactive  && <ReactiveSelection 
+                {isEditable  && isReactive  && <ReactiveSelection 
                     title={title} 
                     element={undefined}
                     ElementsList={uniqueElement(simpleCatalog,simpleList)}
                     editingId={editingId}
                     isAdd={true}
+                    isEditable={isEditable}
                     SaveSelection={handleAdd}
                     Editing={handleEdit} 
                     Erase={handleErase}
@@ -130,6 +131,7 @@ export default function SelectionItem({
                         element={r}
                         isAdd={false}
                         editingId={editingId}
+                        isEditable={isEditable}
                         SaveSelection={handleSimpleSave}
                         Editing={handleEdit} 
                         Erase={handleErase}>
@@ -147,6 +149,7 @@ export default function SelectionItem({
                         element={r}
                         isAdd={false}
                         editingId={editingId}
+                        isEditable={isEditable}
                         SaveSelection={handleSimpleSave}
                         Editing={handleEdit} 
                         Erase={handleErase}>

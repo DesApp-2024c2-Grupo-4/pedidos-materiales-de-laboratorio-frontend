@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import handlePromise from "../../utils/promise";
 import useSharedService from "../../services/shared.service";
 import { SelectOptions } from "../../types/shared";
+import { useNavigate } from 'react-router-dom';
 
 export type CardProps = {
   title: string;
@@ -52,7 +53,6 @@ const getSelectOptionsHTML = (options: { value: string; text: string }[], select
 };
 
 export default function CardRequestDetails({
-  id,
   title,
   date,
   laboratory,
@@ -68,6 +68,7 @@ export default function CardRequestDetails({
   materials,
 }: CardProps): ReactElement {
   const sharedService = useSharedService();
+  const navigate = useNavigate();
 
   const [showDetails, setShowDetails] = useState(false);
   const [LabList, setLabList] = useState<SelectOptions[]>([]);
