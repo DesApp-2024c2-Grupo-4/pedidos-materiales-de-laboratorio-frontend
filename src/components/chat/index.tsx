@@ -1,44 +1,43 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Box, Grid, TextField, Button, IconButton } from "@mui/material";
+import {
+  Box,
+  Grid,
+  TextField,
+  Button,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { useAuth } from "../../context/auth.context";
-
-import  useSocket from "../../hooks/socket.io.hook.ts"
-import { useParams } from "react-router-dom";
-import { io  } from "socket.io-client";
-import Cookies from "js-cookie";
-
-
+import useSocket from "../../hooks/socket.io.hook.ts";
 
 export default function ChatOnline({ onClose, id }) {
   const chatRef = useRef();
-  const socket =useSocket(id)
+  const socket = useSocket(id);
   const authService = useAuth();
 
-  
   const [inputMessage, setInputMessage] = useState("");
   const authToken = authService.getTokenInfo();
-  
-  
-  useEffect(() => {
-    socket.joinRoom(id)
-      
-    }, []);
 
   useEffect(() => {
-      socket.joinRoom(id)
-      
+    socket.joinRoom(id);
   }, []);
-  
+
+  useEffect(() => {
+    socket.joinRoom(id);
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    socket.message(id,inputMessage)
+    socket.message(id, inputMessage);
     setInputMessage("");
-    };
+  };
 
   const handleClose = () => {
-  
     onClose();
   };
 
@@ -59,12 +58,10 @@ export default function ChatOnline({ onClose, id }) {
 }
 
   return (
-    <Box sx={{ padding: 2 }}>
-      <Grid container justifyContent="center">
-        <Grid item xs={12} md={6}>
-          <Box sx={{ border: "1px solid #ccc", borderRadius: 2, padding: 2 }}>
-            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-              <IconButton onClick={handleClose}>
+    <Dialog open={true} onClose={handleClose} fullWidth maxWidth="sm">
+      <DialogTitle>
+        Chat
+        <IconButton onClick={handleClose}>
                 <CloseIcon />
               </IconButton>
             </Box>
@@ -93,27 +90,26 @@ export default function ChatOnline({ onClose, id }) {
                   </Box>
                 </Box>
               ))}
-            </Box> 
-            <form onSubmit={handleSubmit}>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <TextField
-                  fullWidth
-                  variant="outlined"
-                  placeholder="Escribe un mensaje aquí"
-                  value={inputMessage}
-                  onChange={(e) => setInputMessage(e.target.value)}
-                  sx={{ marginRight: 1 }}
-                />
-                <Button type="submit" variant="contained" color="primary">
-                  <ArrowDropUpIcon />
-                </Button>
               </Box>
-            </form>
-          </Box>
-        </Grid>
-      </Grid>
-    </Box>
+            </Box>
+          ))}
+        </Box>
+      </DialogContent>
+      <DialogActions>
+        <form onSubmit={handleSubmit} style={{ display: "flex", width: "100%", backgroundColor: "white" }}>
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Escribe un mensaje aquí"
+            value={inputMessage}
+            onChange={(e) => setInputMessage(e.target.value)}
+            sx={{ marginRight: 1 }}
+          />
+          <Button type="submit" variant="contained" color="primary">
+            <ArrowDropUpIcon />
+          </Button>
+        </form>
+      </DialogActions>
+    </Dialog>
   );
 }
-
-

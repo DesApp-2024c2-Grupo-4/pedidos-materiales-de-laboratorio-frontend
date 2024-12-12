@@ -41,11 +41,12 @@
 .card-info {
   display: flex;
   justify-content: space-between;
-  & div:first-child {
+  & .divider {
     width: 50%;
     border-right: solid 2px color("separator");
   }
 }
+
 .card-banner {
   display: flex;
   justify-content: center;
@@ -71,8 +72,8 @@
     color: rgb(0, 255, 30);
   }
   &.COMPLETED {
-    border: 1px solid rgb(0, 255, 30);
-    color: rgb(38, 151, 227);
+    border: 1px solid #4c2882;
+    color: #4c2882;
   }
 }
 
@@ -100,9 +101,25 @@
 }
 
 .card-details.expanded {
-  height: 10rem;
+  height: 12rem;
+  @include breakpoint(small) {
+    height: 5rem;
+  }
 }
 
 .button-container {
   padding: 10px 0;
+}
+
+.button-mobile {
+  display: none;
+  @include breakpoint(small) {
+    display: flex;
+  }
+}
+
+.button-desktop {
+  @include breakpoint(small) {
+    display: none;
+  }
 }

@@ -3,7 +3,7 @@ import "./styles.scss";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { EquipmentRequest, MaterialRequest, ReactiveRequest, RequestSet } from "../../types/request";
 import PDFDocument from "./pdf";
-import { Button } from "@mui/material";
+import { Box, Button, IconButton } from "@mui/material";
 import Swal from "sweetalert2";
 import handlePromise from "../../utils/promise";
 import useSharedService from "../../services/shared.service";
@@ -11,6 +11,10 @@ import { SelectOptions } from "../../types/shared";
 import { useNavigate } from "react-router-dom";
 import useRequestService from "../../services/request.service";
 import ChatOnline from "../chat";
+import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
+import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
+import ExpandLessOutlinedIcon from "@mui/icons-material/ExpandLessOutlined";
+import PlaylistAddCheckCircleOutlinedIcon from "@mui/icons-material/PlaylistAddCheckCircleOutlined";
 
 export type CardProps = {
   title: string;
@@ -73,7 +77,6 @@ export default function CardRequestDetails({
 }: CardProps): ReactElement {
   const sharedService = useSharedService();
   const navigate = useNavigate();
-
   const requestService = useRequestService();
 
   const [showDetails, setShowDetails] = useState(false);
@@ -137,6 +140,7 @@ export default function CardRequestDetails({
     `,
       showCancelButton: true,
       confirmButtonText: "Guardar",
+      cancelButtonText: "Cancelar",
     }).then(async (result) => {
       const labSelect = (document.getElementById("laboratorio-select") as HTMLSelectElement).value;
       const statusSelect = (document.getElementById("estado-select") as HTMLSelectElement).value;
@@ -181,27 +185,52 @@ export default function CardRequestDetails({
     <div className="container2">
       <div className="card">
         <div className="card-body">
+          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <IconButton color="primary" aria-label="abrir chat" onClick={openChat}>
+              <ChatOutlinedIcon style={{ fontSize: "calc(12px + 1vw)" }} />
+            </IconButton>
+          </Box>
+
           <div className="card-header">
             <div>
               <h3 className="card-title">{title}</h3>
               <p>Fecha práctica: {date.toLocaleUpperCase()}</p>
               <p>TP Número: {tpNumber}</p>
             </div>
+
             {status && <p className={`card-banner ${status}`}>{statusTranslations[status]}</p>}
           </div>
           <div className="card-info">
-            <div>
+            <div className="divider">
               <p>Laboratorio: {laboratory}</p>
               <p>Profesor: {proffesor}</p>
               <div className="button-container">
                 {!showDetails ? (
-                  <Button variant="outlined" onClick={details}>
-                    Ver detalles
-                  </Button>
+                  <>
+                    <div className="button-mobile">
+                      <IconButton color="primary" aria-label="abrir chat" onClick={details}>
+                        <ExpandCircleDownOutlinedIcon style={{ fontSize: "calc(12px + 1vw)" }} />
+                      </IconButton>
+                    </div>
+                    <div className="button-desktop">
+                      <Button variant="outlined" onClick={details}>
+                        Ver detalles
+                      </Button>
+                    </div>
+                  </>
                 ) : (
-                  <Button variant="outlined" onClick={details}>
-                    Ocultar detalles
-                  </Button>
+                  <>
+                    <div className="button-mobile">
+                      <IconButton color="primary" aria-label="abrir chat" onClick={details}>
+                        <ExpandLessOutlinedIcon style={{ fontSize: "calc(12px + 1vw)" }} />
+                      </IconButton>
+                    </div>
+                    <div className="button-desktop">
+                      <Button variant="outlined" onClick={details}>
+                        Ocultar detalles
+                      </Button>
+                    </div>
+                  </>
                 )}
               </div>
             </div>
@@ -216,7 +245,7 @@ export default function CardRequestDetails({
             <div className="card-details flex-card">
               <div className="column-card">
                 {equipments.length > 0 && (
-                  <div className="column-card">
+                  <div className="column-card add">
                     <h4>Equipos:</h4>
                     {equipments.map((equipment) => (
                       <p key={equipment._id}>
@@ -246,8 +275,7 @@ export default function CardRequestDetails({
                   </div>
                 )}
               </div>
-
-              <div className="button-container">
+              <div className="button-container button-desktop">
                 <PDFDownloadLink
                   document={
                     <PDFDocument
@@ -273,21 +301,22 @@ export default function CardRequestDetails({
                   )}
                 </PDFDownloadLink>
               </div>
-              <Button variant="outlined" onClick={() => administrarPedido(id)}>
-                Administrar pedido
-              </Button>
+              <>
+                <div className="button-mobile">
+                  <IconButton color="primary" aria-label="abrir chat" onClick={() => administrarPedido(id)}>
+                    <PlaylistAddCheckCircleOutlinedIcon style={{ fontSize: "calc(16px + 1vw)" }} />
+                  </IconButton>
+                </div>
+                <div className="button-desktop">
+                  <Button variant="outlined" onClick={() => administrarPedido(id)}>
+                    Administrar pedido
+                  </Button>
+                </div>
+              </>
             </div>
           )}
         </div>
         {isChatOpen && <ChatOnline onClose={closeChat} id={id} />}
-        <Button
-          variant="outlined"
-          onClick={() => {
-            openChat();
-          }}
-        >
-          Ver chat
-        </Button>
       </div>
     </div>
   );

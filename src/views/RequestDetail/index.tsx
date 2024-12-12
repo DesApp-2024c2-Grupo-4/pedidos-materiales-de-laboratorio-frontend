@@ -177,11 +177,22 @@ export default function RequestView(): ReactElement {
     const [data, err] = await handlePromise<any, string>(requestService.addRequest(a));
     console.log(err, data);
     if (err) {
+      console.log(err);
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: err,
+        text:
+          err === "Access denied: insufficient permissions for all required roles."
+            ? "No tienes permisos para realizar esta acción"
+            : err === "One or more equipments are not available"
+              ? "Uno o más equipos no están disponibles."
+              : err === "One or more materials are not available"
+                ? "Uno o más materiales no están disponibles."
+                : err === "One or more reactives are not available"
+                  ? "Uno o más reactivos no están disponibles."
+                  : "Ha ocurrido un error al crear el pedido.",
       });
+
       return;
     } else {
       Swal.fire({
