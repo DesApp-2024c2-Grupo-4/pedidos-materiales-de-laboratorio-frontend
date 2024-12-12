@@ -157,7 +157,12 @@ export default function CardRequestDetails({
           description: pedidoActual?.description,
           observations: pedidoActual?.observations || "",
           equipments: pedidoActual?.equipments.map((l) => ({ id: l.id._id, amount: l.amount })),
-          reactives: pedidoActual?.reactives.map((l) => ({ id: l.id._id, amount: l.amount })),
+          reactives: pedidoActual?.reactives.map((l) => ({ id: l.id._id, amount: l.amount ,
+                                                           concentrationType: l.concentrationType ,
+                                                           concentrationAmount: l.concentrationAmount ,
+                                                           quality: l.quality ,
+                                                           unitMeasure: l.unitMeasure,
+                                                           solvents: l.solvents })),
           materials: pedidoActual?.materials.map((l) => ({ id: l.id._id, amount: l.amount })),
         };
         const [data, err] = await handlePromise<any, string>(requestService.updateRequest(id, request));

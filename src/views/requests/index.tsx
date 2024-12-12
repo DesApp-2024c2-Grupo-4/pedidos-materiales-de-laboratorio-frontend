@@ -42,6 +42,7 @@ export default function RequestsView(): ReactElement {
     const [data, err] = await handlePromise(requestService.getRequests());
     if (data) {
       setRequestData(data);
+      setShowedRequest(data);
     }
   };
 

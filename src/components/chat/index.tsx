@@ -61,11 +61,12 @@ export default function ChatOnline({ onClose, id }) {
     <Dialog open={true} onClose={handleClose} fullWidth maxWidth="sm">
       <DialogTitle>
         Chat
+      </DialogTitle>
         <IconButton onClick={handleClose}>
                 <CloseIcon />
-              </IconButton>
-            </Box>
-         <Box ref={chatRef} sx={{ maxHeight: 300, overflowY: "auto", marginBottom: 2 }}>
+        </IconButton>
+      <DialogContent>
+        <Box ref={chatRef} sx={{ maxHeight: 300, overflowY: "auto", marginBottom: 2 }}>
               {socket.showMessages().map((mensaje, index) => (
                 <Box
                   key={index}
@@ -90,9 +91,6 @@ export default function ChatOnline({ onClose, id }) {
                   </Box>
                 </Box>
               ))}
-              </Box>
-            </Box>
-          ))}
         </Box>
       </DialogContent>
       <DialogActions>

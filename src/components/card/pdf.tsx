@@ -212,7 +212,7 @@ const PDFDocument = ({
                 <View style={styles.tableCol}>
                   {reactive.solvents.map((solvent, solventIndex) => (
                     <Text style={styles.tableCell} key={solventIndex}>
-                       {solvent.name} {solvent.description && ` - Descripcion: ${solvent.description}`  }
+                       {solvent.name} {solvent.name === "otros" && ` - Descripcion: ${solvent.description}`  }
                     </Text>
                   ))}
                 </View>
