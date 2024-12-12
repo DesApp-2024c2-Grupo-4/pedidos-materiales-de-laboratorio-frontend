@@ -25,8 +25,8 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
 
   const [Lab, setLab] = useState("");
   const [status, setStatus] = useState("");
-  const [minDate, setminDate] = useState(dayjs().subtract(1, "day"));
-  const [maxDate, setmaxDate] = useState(dayjs());
+  const [minDate, setminDate] = useState("");
+  const [maxDate, setmaxDate] = useState("");
   const [title, setTitle] = useState("");
   const sharedService = useSharedService();
 
@@ -65,9 +65,8 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
         const matchesLab = Lab === "" || item.lab?.includes(Lab);
         const matchesName = title === "" || item.description.includes(title);
         const matchesStatus = status === "" || item.status === status;
-        const matchesMindate =
-          minDate.isSame(dayjs().subtract(1, "day")) || new Date(item.startDate) > minDate.toDate();
-        const matchesMaxdate = maxDate.isSame(dayjs()) || new Date(item.endDate) < maxDate.toDate();
+        const matchesMindate = minDate == "" || new Date(item.startDate) > new Date(minDate);
+        const matchesMaxdate = maxDate == "" || new Date(item.endDate) < new Date(maxDate);
 
         return matchesLab && matchesName && matchesStatus && matchesMindate && matchesMaxdate;
       });
@@ -153,8 +152,8 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
             onClick={() => {
               setLab("");
               setStatus("");
-              setminDate(dayjs().subtract(1, "day"));
-              setmaxDate(dayjs());
+              setminDate("");
+              setmaxDate("");
               setTitle("");
             }}
           >
