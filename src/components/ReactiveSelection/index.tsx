@@ -132,10 +132,10 @@ export default function ReactiveSelection({
     if (idSelected != "" && Number(amountSelected) > 0) {
       let lista: SolventRequest[] = [];
       if (solventSelected.Agua) {
-        lista.push({ name: "agua", description: "" } as SolventRequest);
+        lista.push({ name: "agua", description: "Agua" } as SolventRequest);
       }
       if (solventSelected.Alcohol) {
-        lista.push({ name: "alcohol", description: "" } as SolventRequest);
+        lista.push({ name: "alcohol", description: "Alcohol" } as SolventRequest);
       }
       if (solventSelected.Otros) {
         lista.push({ name: "otros", description: solventSelected.Otrosdesc } as SolventRequest);
