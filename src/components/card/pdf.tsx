@@ -117,14 +117,6 @@ const PDFDocument = ({
           </View>
           <View style={styles.tableRow}>
             <View style={styles.tableColHeader}>
-              <Text style={styles.tableCellHeader}>Edificio</Text>
-            </View>
-            <View style={styles.tableCol}>
-              <Text style={styles.tableCell}>{building}</Text>
-            </View>
-          </View>
-          <View style={styles.tableRow}>
-            <View style={styles.tableColHeader}>
               <Text style={styles.tableCellHeader}>Profesor</Text>
             </View>
             <View style={styles.tableCol}>
@@ -194,7 +186,10 @@ const PDFDocument = ({
                 <Text style={styles.tableCellHeader}>Cantidad</Text>
               </View>
               <View style={styles.tableColHeader}>
-                <Text style={styles.tableCellHeader}>Unidad</Text>
+                <Text style={styles.tableCellHeader}>Concentracion</Text>
+              </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Tipo/Calidad</Text>
               </View>
               <View style={styles.tableColHeader}>
                 <Text style={styles.tableCellHeader}>Solventes:</Text>
@@ -209,12 +204,15 @@ const PDFDocument = ({
                   <Text style={styles.tableCell}>{reactive.amount}</Text>
                 </View>
                 <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>{reactive.unitMeasure}</Text>
+                  <Text style={styles.tableCell}> {`${reactive.concentrationAmount} ${reactive.unitMeasure}`} </Text>
+                </View>
+                <View style={styles.tableCol}>
+                  <Text style={styles.tableCell}> {`${reactive.concentrationType} - ${reactive.quality}`} </Text>
                 </View>
                 <View style={styles.tableCol}>
                   {reactive.solvents.map((solvent, solventIndex) => (
                     <Text style={styles.tableCell} key={solventIndex}>
-                      Nombre: {solvent.name}Descripción: {solvent.description}
+                       {solvent.name} {solvent.description && ` - Descripcion: ${solvent.description}`  }
                     </Text>
                   ))}
                 </View>
