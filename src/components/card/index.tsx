@@ -10,6 +10,8 @@ import useSharedService from "../../services/shared.service";
 import { SelectOptions } from "../../types/shared";
 import { useNavigate } from "react-router-dom";
 import useRequestService from "../../services/request.service";
+import { Chat } from "@mui/icons-material";
+import ChatOnline from "../chat";
 
 export type CardProps = {
   title: string;
@@ -166,6 +168,15 @@ export default function CardRequestDetails({
       }
     });
   };
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
+  const openChat = () => {
+    setIsChatOpen(true);
+  };
+
+  const closeChat = () => {
+    setIsChatOpen(false);
+  };
 
   return (
     <div className="container2">
@@ -280,6 +291,15 @@ export default function CardRequestDetails({
             </div>
           )}
         </div>
+        {isChatOpen && <ChatOnline onClose={closeChat} />}
+        <Button
+          variant="outlined"
+          onClick={() => {
+            openChat();
+          }}
+        >
+          Ver chat
+        </Button>
       </div>
     </div>
   );

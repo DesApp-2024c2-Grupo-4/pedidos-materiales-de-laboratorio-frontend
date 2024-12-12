@@ -65,8 +65,9 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
         const matchesLab = Lab === "" || item.lab?.includes(Lab);
         const matchesName = title === "" || item.description.includes(title);
         const matchesStatus = status === "" || item.status === status;
-        const matchesMindate = minDate == dayjs().subtract(1, "day") || new Date(item.startDate) > new Date(minDate);
-        const matchesMaxdate = maxDate == dayjs() || new Date(item.endDate) < new Date(maxDate);
+        const matchesMindate =
+          minDate.isSame(dayjs().subtract(1, "day")) || new Date(item.startDate) > minDate.toDate();
+        const matchesMaxdate = maxDate.isSame(dayjs()) || new Date(item.endDate) < maxDate.toDate();
 
         return matchesLab && matchesName && matchesStatus && matchesMindate && matchesMaxdate;
       });
@@ -123,7 +124,7 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
                 format="DD/MM/YYYY"
                 value={minDate}
                 onChange={(newValue) => {
-                  newValue ? setminDate(newValue.toString()) : "";
+                  newValue ? setminDate(newValue) : "";
                 }}
               />
             </DemoContainer>
@@ -137,7 +138,7 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
                 label="Hasta"
                 value={maxDate}
                 onChange={(newValue) => {
-                  newValue ? setmaxDate(newValue.toString()) : "";
+                  newValue ? setmaxDate(newValue) : "";
                 }}
               />
             </DemoContainer>
@@ -152,8 +153,8 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
             onClick={() => {
               setLab("");
               setStatus("");
-              setminDate("");
-              setmaxDate("");
+              setminDate(dayjs().subtract(1, "day"));
+              setmaxDate(dayjs());
               setTitle("");
             }}
           >
