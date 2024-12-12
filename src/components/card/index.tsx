@@ -204,7 +204,7 @@ export default function CardRequestDetails({
             <div className="divider">
               <p>Laboratorio: {laboratory}</p>
               <p>Profesor: {proffesor}</p>
-              <div>
+              <div className="button-container">
                 {!showDetails ? (
                   <>
                     <div className="button-mobile">
@@ -245,7 +245,7 @@ export default function CardRequestDetails({
             <div className="card-details flex-card">
               <div className="column-card">
                 {equipments.length > 0 && (
-                  <div className="column-card">
+                  <div className="column-card add">
                     <h4>Equipos:</h4>
                     {equipments.map((equipment) => (
                       <p key={equipment._id}>

@@ -101,7 +101,10 @@
 }
 
 .card-details.expanded {
-  height: 10rem;
+  height: 12rem;
+  @include breakpoint(small) {
+    height: 5rem;
+  }
 }
 
 .button-container {
