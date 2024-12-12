@@ -15,7 +15,7 @@ const useMaterialService = () => {
     const [response, err] = await handlePromise<AxiosResponse<Material>, unknown>(axiosInstance(config));
 
     if (err) {
-      Promise.reject(err);
+      return Promise.reject(err);
     }
 
     if (!response?.data) {
@@ -34,7 +34,7 @@ const useMaterialService = () => {
     const [response, err] = await handlePromise<AxiosResponse<Material[]>, unknown>(axiosInstance(config));
 
     if (err) {
-      Promise.reject(err);
+      return Promise.reject(err);
     }
 
     if (!response?.data) {
@@ -44,43 +44,54 @@ const useMaterialService = () => {
     return response.data;
   };
 
-  const addMaterial = async (material: { description : string , unitMeasure: string , type:string , stock :Number, inRepair: Number}): Promise<void> => {
+  const addMaterial = async (material: {
+    description: string;
+    unitMeasure: string;
+    type: string;
+    stock: Number;
+    inRepair: Number;
+  }): Promise<void> => {
     const config: AxiosRequestConfig = {
       method: "POST",
       url: `/material`,
-      data: { description   : material.description 
-              , unitMeasure : material.unitMeasure 
-              , type        : material.type 
-              , stock       : material.stock
-              , inRepair    : material.inRepair
-              , isAvailable : true
-            },
+      data: {
+        description: material.description,
+        unitMeasure: material.unitMeasure,
+        type: material.type,
+        stock: material.stock,
+        inRepair: material.inRepair,
+        isAvailable: true,
+      },
     };
 
     const [, err] = await handlePromise<AxiosResponse<Material[]>, unknown>(axiosInstance(config));
 
     if (err) {
-      Promise.reject(err);
+      return Promise.reject(err);
     }
   };
 
-  const updateMaterial = async (id: string, material: { description : string , unitMeasure: string , type:string , stock :Number, inRepair: Number}): Promise<void> => {
+  const updateMaterial = async (
+    id: string,
+    material: { description: string; unitMeasure: string; type: string; stock: Number; inRepair: Number },
+  ): Promise<void> => {
     const config: AxiosRequestConfig = {
       method: "PUT",
       url: `/material/${id}`,
-      data: { description   : material.description 
-              , unitMeasure : material.unitMeasure 
-              , type        : material.type 
-              , stock       : material.stock
-              , inRepair    : material.inRepair
-              , isAvailable : true
-            },
+      data: {
+        description: material.description,
+        unitMeasure: material.unitMeasure,
+        type: material.type,
+        stock: material.stock,
+        inRepair: material.inRepair,
+        isAvailable: true,
+      },
     };
 
     const [, err] = await handlePromise<AxiosResponse<Material[]>, unknown>(axiosInstance(config));
 
     if (err) {
-      Promise.reject(err);
+      return Promise.reject(err);
     }
   };
 

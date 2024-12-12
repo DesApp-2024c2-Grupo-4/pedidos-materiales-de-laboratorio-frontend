@@ -15,6 +15,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Delete, Save } from "@mui/icons-material";
 import { SelectOptions } from "../../types/shared";
+import Swal from "sweetalert2";
 
 export default function MaterialDetailView(): ReactElement {
   const { id } = useParams();
@@ -29,6 +30,7 @@ export default function MaterialDetailView(): ReactElement {
   const [Repair, setRepair] = useState("");
   const sharedService = useSharedService();
   const [TypeOptions, setTypeOptions] = useState<SelectOptions[]>([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchMaterials = async () => {
@@ -82,7 +84,17 @@ export default function MaterialDetailView(): ReactElement {
   };
 
   const onsubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+    setError("");
+
     e.preventDefault();
+    if (!description || !type || !Stock || !unit) {
+      setError("Falta completar campos  obligatorios");
+      return;
+    }
+    if (isNaN(Number(Stock))) {
+      setError("El stock debe ser un número");
+      return;
+    }
     const formData = {
       description: description,
       unit: unit,
@@ -91,19 +103,6 @@ export default function MaterialDetailView(): ReactElement {
       Repair: Repair,
     };
 
-    /*     const validationError = validateForm(formData);
-    if (validationError) {
-      setError(validationError);
-      return;
-    }
- */
-    console.log({
-      description: description,
-      unitMeasure: unit,
-      type: type,
-      stock: Stock,
-      inRepair: Repair,
-    });
     if (materialData && id) {
       const [, err] = await handlePromise<void, string>(
         materialService.updateMaterial(id, {
@@ -114,8 +113,20 @@ export default function MaterialDetailView(): ReactElement {
           inRepair: Number(Repair),
         }),
       );
-      if (err) return console.log(err);
-      navigate(-1);
+      if (err) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: err,
+        });
+      } else {
+        Swal.fire({
+          icon: "success",
+          title: "Material actualizado",
+          text: "El material ha sido actualizado correctamente",
+        });
+        return navigate(-1);
+      }
     } else {
       const [, err] = await handlePromise<void, string>(
         materialService.addMaterial({
@@ -126,8 +137,20 @@ export default function MaterialDetailView(): ReactElement {
           inRepair: Number(Repair),
         }),
       );
-      if (err) return console.log(err);
-      navigate(-1);
+      if (err) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: err,
+        });
+      } else {
+        Swal.fire({
+          icon: "success",
+          title: "Material creado",
+          text: "El material ha sido creado correctamente",
+        });
+        return navigate(-1);
+      }
     }
   };
 
@@ -192,6 +215,8 @@ export default function MaterialDetailView(): ReactElement {
             onChange={(e) => setRepair(e.target.value)}
             value={Repair}
           />
+          {error && <div className="error">{error}</div>}
+
           <div className="buttons">
             <Button type="submit" variant="contained" color="success">
               Grabar

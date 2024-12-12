@@ -16,6 +16,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Delete, Save } from "@mui/icons-material";
 import { SelectOptions } from "../../types/shared";
+import Swal from "sweetalert2";
 
 export default function ReactiveDetailView(): ReactElement {
   const { id } = useParams();
@@ -26,6 +27,7 @@ export default function ReactiveDetailView(): ReactElement {
   const [description, setDescription] = useState("");
   const [cas, setCas] = useState("");
   const [stock, setStock] = useState("");
+  const [error, setError] = useState("");
 
   const sharedService = useSharedService();
 
@@ -70,6 +72,7 @@ export default function ReactiveDetailView(): ReactElement {
   };
 
   const onsubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+    setError("");
     e.preventDefault();
     const formData: dtoReactive = {
       description: description,
@@ -77,9 +80,15 @@ export default function ReactiveDetailView(): ReactElement {
       stock: Number(stock),
       isAvailable: true,
     };
+    if (!description || !cas || !stock) {
+      setError("Falta completar campos obligatorios");
+      return;
+    }
 
-    console.log(formData);
-
+    if (isNaN(Number(stock))) {
+      setError("El stock debe ser un número");
+      return;
+    }
     if (reactiveData && id) {
       const formData: Reactive = {
         _id: id,
@@ -90,12 +99,36 @@ export default function ReactiveDetailView(): ReactElement {
       };
 
       const [, err] = await handlePromise<void, string>(reactiveService.updateReactive(id, formData));
-      if (err) return console.log(err);
-      navigate(-1);
+      if (err) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: err,
+        });
+      } else {
+        Swal.fire({
+          icon: "success",
+          title: "Reactivo actualizado",
+          text: "El reactivo ha sido actualizado correctamente",
+        });
+        return navigate(-1);
+      }
     } else {
       const [, err] = await handlePromise<void, string>(reactiveService.addReactive(formData));
-      if (err) return console.log(err);
-      navigate(-1);
+      if (err) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: err,
+        });
+      } else {
+        Swal.fire({
+          icon: "success",
+          title: "Reactivo creado",
+          text: "El reactivo ha sido creado correctamente",
+        });
+        return navigate(-1);
+      }
     }
   };
 
@@ -134,6 +167,7 @@ export default function ReactiveDetailView(): ReactElement {
               onChange={(e) => setStock(e.target.value)}
               value={stock}
             />
+            {error && <div className="error">{error}</div>}
 
             <div className="buttons">
               <Button type="submit" variant="contained" color="success">

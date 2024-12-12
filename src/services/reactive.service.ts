@@ -1,6 +1,6 @@
 import useAxios from "../hooks/axios.hook";
 import handlePromise from "../utils/promise";
-import { Reactive ,dtoReactive } from "../types/reactive";
+import { Reactive, dtoReactive } from "../types/reactive";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 
 const useReactiveService = () => {
@@ -15,7 +15,7 @@ const useReactiveService = () => {
     const [response, err] = await handlePromise<AxiosResponse<Reactive>, unknown>(axiosInstance(config));
 
     if (err) {
-      Promise.reject(err);
+      return Promise.reject(err);
     }
 
     if (!response?.data) {
@@ -34,7 +34,7 @@ const useReactiveService = () => {
     const [response, err] = await handlePromise<AxiosResponse<Reactive[]>, unknown>(axiosInstance(config));
 
     if (err) {
-      Promise.reject(err);
+      return Promise.reject(err);
     }
 
     if (!response?.data) {
@@ -54,7 +54,7 @@ const useReactiveService = () => {
     const [, err] = await handlePromise<AxiosResponse<Reactive[]>, unknown>(axiosInstance(config));
 
     if (err) {
-      Promise.reject(err);
+      return Promise.reject(err);
     }
   };
 
@@ -62,13 +62,13 @@ const useReactiveService = () => {
     const config: AxiosRequestConfig = {
       method: "PUT",
       url: `/reactive/${id}`,
-      data: reactive ,
+      data: reactive,
     };
 
     const [, err] = await handlePromise<AxiosResponse<Reactive[]>, unknown>(axiosInstance(config));
 
     if (err) {
-      Promise.reject(err);
+      return Promise.reject(err);
     }
   };
 
@@ -81,7 +81,7 @@ const useReactiveService = () => {
     const [, err] = await handlePromise<AxiosResponse<Reactive[]>, unknown>(axiosInstance(config));
 
     if (err) {
-      Promise.reject(err);
+      return Promise.reject(err);
     }
   };
 

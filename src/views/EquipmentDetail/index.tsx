@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { Cancel, Delete, Save } from "@mui/icons-material";
 import useSharedService from "../../services/shared.service";
 import { SelectOptions } from "../../types/shared";
+import Swal from "sweetalert2";
 
 export default function EquipmentDetailView(): ReactElement {
   const { id } = useParams();
@@ -28,7 +29,7 @@ export default function EquipmentDetailView(): ReactElement {
   const [Stock, setStock] = useState("");
   const [Repair, setRepair] = useState("");
   const [UnitMeasure, setUnit] = useState("");
-
+  const [error, setError] = useState("");
   const sharedService = useSharedService();
   const [TypeOptions, setTypeOptions] = useState<SelectOptions[]>([]);
 
@@ -80,7 +81,17 @@ export default function EquipmentDetailView(): ReactElement {
   };
 
   const onsubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+    setError("");
     e.preventDefault();
+
+    if (!description || !type || !Stock || !UnitMeasure) {
+      setError("Falta completar campos  obligatorios");
+      return;
+    }
+    if (isNaN(Number(Stock))) {
+      setError("El stock debe ser un número");
+      return;
+    }
 
     const newEquipment: createEquipment = {
       description: description,
@@ -93,12 +104,36 @@ export default function EquipmentDetailView(): ReactElement {
 
     if (equipmentData && id) {
       const [, err] = await handlePromise<void, string>(equipmentService.updateEquipment(id, newEquipment));
-      if (err) return console.log(err);
-      navigate(-1);
+      if (err) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: err,
+        });
+      } else {
+        Swal.fire({
+          icon: "success",
+          title: "Equipo actualizado",
+          text: "El equipo ha sido actualizado correctamente",
+        });
+        return navigate(-1);
+      }
     } else {
-      const [, err] = await handlePromise<void, string>(equipmentService.addEquipment(newEquipment));
-      if (err) return console.log(err);
-      navigate(-1);
+      const [data, err] = await handlePromise<void, string>(equipmentService.addEquipment(newEquipment));
+      if (err) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: err,
+        });
+      } else {
+        Swal.fire({
+          icon: "success",
+          title: "Equipo creado",
+          text: "El equipo ha sido creado correctamente",
+        });
+        return navigate(-1);
+      }
     }
   };
 
@@ -165,6 +200,7 @@ export default function EquipmentDetailView(): ReactElement {
               onChange={(e) => setRepair(e.target.value)}
               value={Repair}
             />
+            {error && <div className="error">{error}</div>}
 
             <div className="buttons">
               <Button type="submit" variant="contained" color="success">

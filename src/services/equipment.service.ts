@@ -15,7 +15,7 @@ const useEquipmentService = () => {
     const [response, err] = await handlePromise<AxiosResponse<Equipment>, unknown>(axiosInstance(config));
 
     if (err) {
-      Promise.reject(err);
+      return Promise.reject(err);
     }
 
     if (!response?.data) {
@@ -34,7 +34,7 @@ const useEquipmentService = () => {
     const [response, err] = await handlePromise<AxiosResponse<Equipment[]>, unknown>(axiosInstance(config));
 
     if (err) {
-      Promise.reject(err);
+      return Promise.reject(err);
     }
 
     if (!response?.data) {
@@ -54,7 +54,7 @@ const useEquipmentService = () => {
     const [, err] = await handlePromise<AxiosResponse<Equipment[]>, unknown>(axiosInstance(config));
 
     if (err) {
-      Promise.reject(err);
+      return Promise.reject(err);
     }
   };
 
@@ -62,12 +62,12 @@ const useEquipmentService = () => {
     const config: AxiosRequestConfig = {
       method: "PUT",
       url: `/equipment/${_id}`,
-      data: equipment ,
+      data: equipment,
     };
     const [, err] = await handlePromise<AxiosResponse<Equipment[]>, unknown>(axiosInstance(config));
 
     if (err) {
-      Promise.reject(err);
+      return Promise.reject(err);
     }
   };
 
@@ -80,7 +80,7 @@ const useEquipmentService = () => {
     const [, err] = await handlePromise<AxiosResponse<Equipment[]>, unknown>(axiosInstance(config));
 
     if (err) {
-      Promise.reject(err);
+      return Promise.reject(err);
     }
   };
 
