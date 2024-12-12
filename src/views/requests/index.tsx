@@ -76,10 +76,10 @@ export default function RequestsView(): ReactElement {
               <CardRequest
                 key={index}
                 id={requested._id}
-                title={requested.description}
+                title={requested.subject}
                 date={requested.endDate ? formatDate(requested.endDate) : ""}
                 laboratory={requested.lab?.toString() || " No asignado"}
-                building={requested.building || ""}
+                observations={requested.observations || ""}
                 proffesor={requested.requestantUser?.name + " " + requested.requestantUser?.lastName || ""}
                 students={requested.studentsAmount ? requested.studentsAmount.toString() : ""}
                 status={requested.status}

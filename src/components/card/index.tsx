@@ -21,7 +21,7 @@ export type CardProps = {
   date: string;
   banner?: StatusProps;
   laboratory: string;
-  building: string;
+  observations: string;
   proffesor: string;
   students: string;
   id: string;
@@ -64,7 +64,7 @@ export default function CardRequestDetails({
   title,
   date,
   laboratory,
-  building,
+  observations,
   proffesor,
   students,
   status,
@@ -249,6 +249,7 @@ export default function CardRequestDetails({
           {showDetails && (
             <div className="card-details flex-card">
               <div className="column-card">
+                <p>Observaciones: {observations}</p>
                 {equipments.length > 0 && (
                   <div className="column-card add">
                     <h4>Equipos:</h4>
@@ -288,8 +289,8 @@ export default function CardRequestDetails({
                       date={date}
                       endDate={date}
                       status={status}
-                      laboratory={building}
-                      building={building}
+                      laboratory={Lab}
+                      building={observations}
                       proffesor={proffesor}
                       students={students}
                       groupsAmount={groupsAmount}
