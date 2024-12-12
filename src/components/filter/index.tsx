@@ -23,10 +23,23 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
   const [LabList, setLabList] = useState<SelectOptions[]>([]);
   const [statusList, setstatusList] = useState<SelectOptions[]>([]);
 
+  const statusTranslations = {
+    PENDING: "PENDIENTE",
+    REJECTED: "RECHAZADO",
+    APPROVED: "APROBADO",
+    COMPLETED: "COMPLETADO",
+  };
+
+  const translatedStatus = statusList.map((e) => {
+    return {
+      value: e.value,
+      text: statusTranslations[e.text],
+    };
+  });
   const [Lab, setLab] = useState("");
   const [status, setStatus] = useState("");
-  const [minDate, setminDate] = useState("");
-  const [maxDate, setmaxDate] = useState("");
+  const [minDate, setminDate] = useState(undefined);
+  const [maxDate, setmaxDate] = useState(undefined);
   const [title, setTitle] = useState("");
   const sharedService = useSharedService();
 
@@ -109,7 +122,7 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
                 setStatus(event.target.value);
               }}
             >
-              {statusList.map((t, index) => (
+              {translatedStatus.map((t, index) => (
                 <MenuItem value={t.value}>{t.text}</MenuItem>
               ))}
             </Select>
@@ -152,8 +165,8 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
             onClick={() => {
               setLab("");
               setStatus("");
-              setminDate("");
-              setmaxDate("");
+              setminDate(undefined);
+              setmaxDate(undefined);
               setTitle("");
             }}
           >

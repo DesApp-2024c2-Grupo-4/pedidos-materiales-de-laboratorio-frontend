@@ -10,9 +10,7 @@ import useSharedService from "../../services/shared.service";
 import { SelectOptions } from "../../types/shared";
 import { useNavigate } from "react-router-dom";
 import useRequestService from "../../services/request.service";
-import { Chat } from "@mui/icons-material";
 import ChatOnline from "../chat";
-import useSocket from "../../hooks/socket.io.hook";
 
 export type CardProps = {
   title: string;
@@ -116,7 +114,6 @@ export default function CardRequestDetails({
     };
     fetchRequest();
   }, []);
-  const useSocketIo = useSocket();
 
   const administrarPedido = async (id: string) => {
     const labOptionsHTML = getSelectOptionsHTML(LabList, Lab, "Laboratorio");
@@ -173,7 +170,6 @@ export default function CardRequestDetails({
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   const openChat = () => {
-    useSocketIo.joinRoom(id);
     setIsChatOpen(true);
   };
 
@@ -188,7 +184,7 @@ export default function CardRequestDetails({
           <div className="card-header">
             <div>
               <h3 className="card-title">{title}</h3>
-              <p>Fecha practica: {date.toLocaleUpperCase()}</p>
+              <p>Fecha práctica: {date.toLocaleUpperCase()}</p>
               <p>TP Número: {tpNumber}</p>
             </div>
             {status && <p className={`card-banner ${status}`}>{statusTranslations[status]}</p>}
@@ -212,17 +208,6 @@ export default function CardRequestDetails({
             <div>
               <p>Estudiantes: {students}</p>
               <p>Grupos: {groupsAmount}</p>
-            </div>
-
-            <div className="button-container">
-              <Button
-                variant="outlined"
-                onClick={() => {
-                  navigate(`/requests/${id}`);
-                }}
-              >
-                Editar Pedido
-              </Button>
             </div>
           </div>
         </div>
