@@ -12,7 +12,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import handlePromise from "../../utils/promise";
 import useSharedService from "../../services/shared.service";
 import { SelectOptions } from "../../types/shared";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 export type SearchProps = {
   elements: Request[];
@@ -38,8 +38,8 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
   });
   const [Lab, setLab] = useState("");
   const [status, setStatus] = useState("");
-  const [minDate, setminDate] = useState(undefined);
-  const [maxDate, setmaxDate] = useState(undefined);
+  const [minDate, setminDate] = useState<Dayjs | null>(null);
+  const [maxDate, setmaxDate] = useState<Dayjs | null>(null);
   const [title, setTitle] = useState("");
   const sharedService = useSharedService();
 
@@ -78,8 +78,8 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
         const matchesLab = Lab === "" || item.lab?.includes(Lab);
         const matchesName = title === "" || item.description.includes(title);
         const matchesStatus = status === "" || item.status === status;
-        const matchesMindate = minDate == "" || new Date(item.startDate) > new Date(minDate);
-        const matchesMaxdate = maxDate == "" || new Date(item.endDate) < new Date(maxDate);
+        const matchesMindate = minDate == null || new Date(item.startDate) > new Date(minDate);
+        const matchesMaxdate = maxDate == null || new Date(item.endDate) < new Date(maxDate);
 
         return matchesLab && matchesName && matchesStatus && matchesMindate && matchesMaxdate;
       });
@@ -165,8 +165,8 @@ export default function Filter({ elements, callback }: SearchProps): ReactElemen
             onClick={() => {
               setLab("");
               setStatus("");
-              setminDate(undefined);
-              setmaxDate(undefined);
+              setminDate(null);
+              setmaxDate(null);
               setTitle("");
             }}
           >
