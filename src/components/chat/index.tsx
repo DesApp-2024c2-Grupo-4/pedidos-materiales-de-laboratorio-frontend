@@ -42,6 +42,22 @@ export default function ChatOnline({ onClose, id }) {
     onClose();
   };
 
+  function formatearFecha(fechaString) {
+    // Crear un objeto Date a partir de la cadena
+    const fecha = new Date(fechaString);
+
+    // Obtener los componentes de la fecha
+    const año = fecha.getFullYear();
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // Los meses son 0-indexados
+    const dia = String(fecha.getDate()).padStart(2, '0');
+    const horas = String(fecha.getHours()).padStart(2, '0');
+    const minutos = String(fecha.getMinutes()).padStart(2, '0');
+    const segundos = String(fecha.getSeconds()).padStart(2, '0');
+
+    // Formatear la fecha en el nuevo formato
+    return `${año}-${mes}-${dia} ${horas}:${minutos}:${segundos}`;
+}
+
   return (
     <Box sx={{ padding: 2 }}>
       <Grid container justifyContent="center">
@@ -73,7 +89,7 @@ export default function ChatOnline({ onClose, id }) {
                     }}
                   >
                     <p>{mensaje.message}</p>
-                    <Box sx={{ fontSize: "0.8em", textAlign: "right" }}>{mensaje.createdAt?.toString()}</Box>
+                    <Box sx={{ fontSize: "0.8em", textAlign: "right" }}>{formatearFecha(mensaje.createdAt)}</Box>
                   </Box>
                 </Box>
               ))}

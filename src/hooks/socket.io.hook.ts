@@ -10,8 +10,8 @@ interface Message {
   ownerId: string | null;
   delivered: any[];
   read: any[];
-  updatedAt: Date| string |null;
-  createdAt: Date| string |null;
+  updatedAt: Date|null;
+  createdAt: Date|null;
 }
 
 
