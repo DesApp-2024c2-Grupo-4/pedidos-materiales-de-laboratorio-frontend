@@ -73,7 +73,6 @@ export default function CardRequestDetails({
 }: CardProps): ReactElement {
   const sharedService = useSharedService();
   const navigate = useNavigate();
-
   const requestService = useRequestService();
 
   const [showDetails, setShowDetails] = useState(false);

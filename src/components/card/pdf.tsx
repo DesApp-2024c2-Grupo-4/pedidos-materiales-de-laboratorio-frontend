@@ -196,6 +196,9 @@ const PDFDocument = ({
               <View style={styles.tableColHeader}>
                 <Text style={styles.tableCellHeader}>Unidad</Text>
               </View>
+              <View style={styles.tableColHeader}>
+                <Text style={styles.tableCellHeader}>Solventes:</Text>
+              </View>
             </View>
             {reactives.map((reactive, index) => (
               <View style={styles.tableRow} key={index}>
@@ -203,10 +206,17 @@ const PDFDocument = ({
                   <Text style={styles.tableCell}>{reactive.id.description}</Text>
                 </View>
                 <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>{reactive.quantity}</Text>
+                  <Text style={styles.tableCell}>{reactive.amount}</Text>
                 </View>
                 <View style={styles.tableCol}>
                   <Text style={styles.tableCell}>{reactive.unitMeasure}</Text>
+                </View>
+                <View style={styles.tableCol}>
+                  {reactive.solvents.map((solvent, solventIndex) => (
+                    <Text style={styles.tableCell} key={solventIndex}>
+                      Nombre: {solvent.name}Descripción: {solvent.description}
+                    </Text>
+                  ))}
                 </View>
               </View>
             ))}
