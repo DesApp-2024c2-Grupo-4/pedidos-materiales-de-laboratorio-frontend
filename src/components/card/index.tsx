@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import useRequestService from "../../services/request.service";
 import { Chat } from "@mui/icons-material";
 import ChatOnline from "../chat";
+import useSocket from "../../hooks/socket.io.hook";
 
 export type CardProps = {
   title: string;
@@ -115,6 +116,7 @@ export default function CardRequestDetails({
     };
     fetchRequest();
   }, []);
+  const useSocketIo = useSocket();
 
   const administrarPedido = async (id: string) => {
     const labOptionsHTML = getSelectOptionsHTML(LabList, Lab, "Laboratorio");
@@ -171,6 +173,7 @@ export default function CardRequestDetails({
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   const openChat = () => {
+    useSocketIo.joinRoom(id);
     setIsChatOpen(true);
   };
 
@@ -291,7 +294,7 @@ export default function CardRequestDetails({
             </div>
           )}
         </div>
-        {isChatOpen && <ChatOnline onClose={closeChat} />}
+        {isChatOpen && <ChatOnline onClose={closeChat} id={id} />}
         <Button
           variant="outlined"
           onClick={() => {

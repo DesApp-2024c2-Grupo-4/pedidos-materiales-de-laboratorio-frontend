@@ -1,24 +1,26 @@
-import * as React from "react";
-import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-import { Grid, Box, TextField, Button, IconButton } from "@mui/material";
+import React, { useState, useEffect, useRef } from "react";
+import { Box, Grid, TextField, Button, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { useState, useEffect, useRef } from "react";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import newSocket from "./socketio";
 
-export default function ChatOnline({ onClose }) {
+export default function ChatOnline({ onClose, id }) {
   const chatRef = useRef();
-  const [userData, setUserData] = useState({});
-  const mockMensajes = [
-    { id_emisor: 1, mensaje: "Hola, ¿cómo estás?", nombre: "Juan" },
-    { id_emisor: 2, mensaje: "Bien, ¿y tú?", nombre: "María" },
-    { id_emisor: 1, mensaje: "Todo bien, gracias.", nombre: "Juan" },
-    { id_emisor: 2, mensaje: "¿Qué tal el proyecto?", nombre: "María" },
-  ];
+  const [messages, setMessages] = useState([]);
+  const [inputMessage, setInputMessage] = useState("");
 
   useEffect(() => {}, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aquí puedes agregar lógica para enviar mensajes
+    newSocket.emit("message", { requestId: "ejemplorequest", message: inputMessage });
+    setInputMessage("");
+  };
+
+  const handleClose = () => {
+    newSocket.emit("leaveRoom", { requestId: "ejemplorequest" });
+    newSocket.disconnect();
+    onClose();
   };
 
   return (
@@ -27,12 +29,12 @@ export default function ChatOnline({ onClose }) {
         <Grid item xs={12} md={6}>
           <Box sx={{ border: "1px solid #ccc", borderRadius: 2, padding: 2 }}>
             <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-              <IconButton onClick={onClose}>
+              <IconButton onClick={handleClose}>
                 <CloseIcon />
               </IconButton>
             </Box>
             <Box ref={chatRef} sx={{ maxHeight: 300, overflowY: "auto", marginBottom: 2 }}>
-              {mockMensajes.map((mensaje, index) => (
+              {messages.map((mensaje, index) => (
                 <Box
                   key={index}
                   sx={{
@@ -63,7 +65,8 @@ export default function ChatOnline({ onClose }) {
                   fullWidth
                   variant="outlined"
                   placeholder="Escribe un mensaje aquí"
-                  name="input"
+                  value={inputMessage}
+                  onChange={(e) => setInputMessage(e.target.value)}
                   sx={{ marginRight: 1 }}
                 />
                 <Button type="submit" variant="contained" color="primary">
