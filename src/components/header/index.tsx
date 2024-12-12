@@ -55,16 +55,38 @@ export default function Header({
   };
 
   return (
-    <header style={{ display: "flex", justifyContent: "space-between", maxWidth: "100%" }}>
+    <header
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        maxWidth: "100%",
+      }}
+    >
       <div>
         <h1>
-          {backArrow && (
-            <Link onClick={onBackClick} to={""} style={{ fontSize: "calc(14px + 1vw)", marginRight: "0.5em" }}>
-              <ArrowBack />
-            </Link>
-          )}
-          {icon && !backArrow && <img src={`img/header/${icon}`}></img>}
-          {title}
+          <div>
+            {backArrow && (
+              <Link
+                onClick={onBackClick}
+                to={""}
+                style={{
+                  fontSize: "calc(14px + 1vw)",
+                  marginRight: "0.5em",
+                  textDecoration: "none",
+                  color: "inherit",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <ArrowBack />
+              </Link>
+            )}
+          </div>
+          <div>
+            {icon && !backArrow && <img src={`img/header/${icon}`}></img>}
+            {title}
+          </div>
         </h1>
         <span>{children}</span>
         <div style={{ marginLeft: "1em" }}>
