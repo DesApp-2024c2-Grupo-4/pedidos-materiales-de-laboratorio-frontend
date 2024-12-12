@@ -1,6 +1,5 @@
 @import "../../globals.scss";
 
-
 form {
   display: flex;
   flex-direction: column;
@@ -14,6 +13,11 @@ form {
     color: red;
   }
 }
+.error {
+  color: red;
+  font-size: 16px;
+  margin-top: 5px;
+}
 
 .RequestMenuStyle {
   background-color: color("background");
@@ -21,7 +25,7 @@ form {
   align-items: center;
   justify-content: center;
   width: 90vw;
-  padding-bottom:200px
+  padding-bottom: 200px;
 }
 
 .title {
@@ -57,8 +61,7 @@ form {
   }
 }
 
-.flex
-{
+.flex {
   display: flex;
   align-items: space-between;
   justify-content: space-evenly;
@@ -69,12 +72,10 @@ form {
   margin-top: 40px;
   max-width: 65%;
 }
-.checkboxStyle{
+.checkboxStyle {
   padding-right: 60px;
-  
 }
 
-
-.containerdropdown{    
+.containerdropdown {
   width: 90vw;
 }
