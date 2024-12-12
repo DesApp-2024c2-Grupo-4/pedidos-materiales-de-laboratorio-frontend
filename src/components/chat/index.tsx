@@ -41,36 +41,55 @@ export default function ChatOnline({ onClose, id }) {
     onClose();
   };
 
+  function formatearFecha(fechaString) {
+    // Crear un objeto Date a partir de la cadena
+    const fecha = new Date(fechaString);
+
+    // Obtener los componentes de la fecha
+    const año = fecha.getFullYear();
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // Los meses son 0-indexados
+    const dia = String(fecha.getDate()).padStart(2, '0');
+    const horas = String(fecha.getHours()).padStart(2, '0');
+    const minutos = String(fecha.getMinutes()).padStart(2, '0');
+    const segundos = String(fecha.getSeconds()).padStart(2, '0');
+
+    // Formatear la fecha en el nuevo formato
+    return `${año}-${mes}-${dia} ${horas}:${minutos}:${segundos}`;
+}
+
   return (
     <Dialog open={true} onClose={handleClose} fullWidth maxWidth="sm">
       <DialogTitle>
         Chat
-        <IconButton onClick={handleClose} sx={{ position: "absolute", right: 8, top: 8 }}>
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
-      <DialogContent dividers>
-        <Box ref={chatRef} sx={{ maxHeight: 300, overflowY: "auto", marginBottom: 2 }}>
-          {socket.showMessages().map((mensaje, index) => (
-            <Box
-              key={index}
-              sx={{
-                display: "flex",
-                flexDirection: mensaje?.ownerId! !== authToken?.id ? "row" : "row-reverse",
-                alignItems: "center",
-                marginBottom: 1,
-              }}
-            >
-              <Box
-                sx={{
-                  backgroundColor: mensaje?.ownerId! == authToken?.id ? "#e0e0e0" : "#1976d2",
-                  color: mensaje?.ownerId! == authToken?.id ? "black" : "white",
-                  borderRadius: 2,
-                  padding: 1,
-                  maxWidth: "70%",
-                }}
-              >
-                <p>{mensaje.text}</p>
+        <IconButton onClick={handleClose}>
+                <CloseIcon />
+              </IconButton>
+            </Box>
+         <Box ref={chatRef} sx={{ maxHeight: 300, overflowY: "auto", marginBottom: 2 }}>
+              {socket.showMessages().map((mensaje, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    display: "flex",
+                    flexDirection: mensaje?.ownerId! !== authToken?.id ? "row" : "row-reverse",
+                    alignItems: "center",
+                    marginBottom: 1,
+                  }}
+                >
+                  <Box      
+                    sx={{
+                      backgroundColor: mensaje?.ownerId! == authToken?.id ? "#e0e0e0" : "#1976d2",
+                      color: mensaje?.ownerId! == authToken?.id ? "black" : "white",
+                      borderRadius: 2,
+                      padding: 1,
+                      maxWidth: "70%",
+                    }}
+                  >
+                    <p>{mensaje.message}</p>
+                    <Box sx={{ fontSize: "0.8em", textAlign: "right" }}>{formatearFecha(mensaje.createdAt)}</Box>
+                  </Box>
+                </Box>
+              ))}
               </Box>
             </Box>
           ))}
